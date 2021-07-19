@@ -1,0 +1,211 @@
+﻿@model CustomerSupport.Models.MServiceRequest
+
+@{
+    Layout = null;
+}
+
+<!--<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <div class="control-label">Tipo de Propiedad:</div>
+            <select id="lstBuild_PropertyType" class="form-control select2" style="width: 100%;">
+            </select>-->
+            @*@Html.HiddenFor(model => model.IdPropertyType, new { @id = "inpBuild_IdPropertyType" })*@
+            @*@Html.ValidationMessageFor(model => model.IdPropertyType, "", new { @class = "text-danger" })*@
+        <!--</div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <div class="control-label">Direccion de la Propiedad:</div>-->
+            @*@Html.TextAreaFor(model => model.Address, 3, 12, new { @class = "form-control", @id = "inpBuild_Address" })*@
+                @*@Html.TextArea("inpBuild_Address", Model.Address, 3, 12, new { @class = "form-control", @id = "inpBuild_Address" })*@
+                @*@Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })*@
+        <!--</div>
+    </div>
+</div>-->
+
+<div class="row">
+    <!--<div class="col-md-4">
+        <div class="form-group">
+            <div class="control-label">Valor Estimado de la Propiedad:</div>-->
+            @*@Html.TextBoxFor(model => model.EstimatedValue, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00", @id = "inpBuild_EstimatedValue" })*@
+            @*@Html.ValidationMessageFor(model => model.EstimatedValue, "", new { @class = "text-danger" })*@
+        <!--</div>
+    </div>-->
+    <div class="col-md-4">
+        <div class="form-group">
+            <div class="control-label">Tiene Planos?</div>
+
+            <label class="ss_radioButton">
+                Si
+                @*<input type="radio" checked="checked" name="radio">*@
+                @Html.RadioButtonFor(model => model.Plane, true)
+                <span class="checkmark"></span>
+            </label>
+            <label class="ss_radioButton">
+                No
+                @*<input type="radio" name="radio">*@
+                @Html.RadioButtonFor(model => model.Plane, false, new { @checked = "checked" })
+                <span class="checkmark"></span>
+            </label>
+            @Html.ValidationMessageFor(model => model.Plane, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <div class="control-label">Necesita Financiamiento?</div>
+
+            <label class="ss_radioButton">
+                Si
+                @*<input type="radio" checked="checked" name="radio">*@
+                @Html.RadioButtonFor(model => model.Financing, true)
+                <span class="checkmark"></span>
+            </label>
+            <label class="ss_radioButton">
+                No
+                @*<input type="radio" name="radio">*@
+                @Html.RadioButtonFor(model => model.Financing, false, new { @checked = "checked" })
+                <span class="checkmark"></span>
+            </label>
+            @Html.ValidationMessageFor(model => model.Financing, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+
+<div class="row pt-2 pb-3">
+
+    <div class="col-md-12">
+
+        <div class="accordion border" id="accordionOperacion">
+            <div class="card collapsed-card">
+                <div class="card-header" id="headingOperacion">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link text-decoration-none" type="button" data-toggle="collapse" data-target="#collapseCardOperacion" aria-expanded="false" aria-controls="collapseOperacion">
+                            Operaciones de Contrucción
+                        </button>
+                    </h2>
+                </div>
+
+                <div id="collapseCardOperacion" class="collapse" aria-labelledby="headingOperacion" data-parent="#accordionOperacion">
+
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="control-label">Operación:</div>
+                                    <select id="lst_ConstructionOption" class="form-control select2" style="width: 100%;">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="btn_option"><a onclick="addRowConstructionOption();"><i class="fas fa-plus"></i></a></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row pt-3">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="table-responsive">
+                                        <div class="container">
+
+                                            <table id="TConstructionOption" class="table table-bordered table-striped">
+                                                <thead class="font-weight-bold">
+                                                    <tr>
+                                                        <td style="display:none;">colHid_indexCell</td>
+                                                        <td style="display:none;">colHid_IdConstructionOption</td>
+                                                        <td style="display:none;">colHid_ConstructionOption</td>
+                                                        <td>Código</td>
+                                                        <td>Descripción</td>
+                                                        <td>Opciones</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="BodyConstructionOption">
+                                                    @if (Model != null)
+                                                    {
+                                                        if (Model.listConstructionOption != null)
+                                                        {
+                                                            string idRow;
+                                                            string idCol;
+                                                            string nameCol_IdConstructionOption;
+                                                            string nameCol_ConstructionOption;
+
+                                                            for (var i = 0; i < Model.listConstructionOption.Count; i++)
+                                                            {
+
+                                                                idRow = "trConstructionOption" + i.ToString();
+                                                                idCol = "listConstructionOption_" + i.ToString();
+                                                                nameCol_IdConstructionOption = "listConstructionOption[" + i.ToString() + "].IdConstructionOption";
+                                                                nameCol_ConstructionOption = "listConstructionOption[" + i.ToString() + "].ConstructionOption";
+
+                                                                <tr id='@idRow'>
+                                                                    <td style="display:none;"><input name="listConstructionOption.Index" type="hidden" value='@i' /></td>
+                                                                    <td style="display:none;"><input id='@idCol' name='@nameCol_IdConstructionOption' type="hidden" value='@Model.listConstructionOption[i].IdConstructionOption' /></td>
+                                                                    <td style="display:none;"><input id='@idCol' name='@nameCol_ConstructionOption' type="hidden" value='@Model.listConstructionOption[i].ConstructionOption' /></td>
+                                                                    <td>@Model.listConstructionOption[i].IdConstructionOption</td>
+                                                                    <td name='ConstOption'>@Model.listConstructionOption[i].ConstructionOption</td>
+                                                                    <td><div class="btn_option pt-0"><a onclick="deleteRowConstructionOption('@i');"><i class="far fa-trash-alt"></i></a></div></td>
+                                                                </tr>
+
+                                                                @*<tr>
+                                                                    <td style="display:none;"><input name="listConstructionOption.Index" type="hidden" value="'@i'" /></td>
+                                                                    <td style="display:none;"><input id="listConstructionOption_'@i'" name="listConstructionOption['@i'].IdConstructionOption" type="hidden" value='@Model.listConstructionOption[i].IdConstructionOption' /></td>
+                                                                    <td style="display:none;"><input id="listConstructionOption_'@i'" name="listConstructionOption['@i'].ConstructionOption" type="hidden" value='@Model.listConstructionOption[i].ConstructionOption' /></td>
+                                                                    <td>@Model.listConstructionOption[i].IdConstructionOption</td>
+                                                                    <td>@Model.listConstructionOption[i].ConstructionOption</td>
+                                                                    <td><div class="btn_option pt-0"><a onclick="deleteRowConstructionOption('@i');"><i class="far fa-trash-alt"></i></a></div></td>
+                                                                </tr>*@
+                                                            }
+                                                        }
+                                                    }
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!--<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            <div class="control-label">Ingreso Promedio:</div>-->
+            @*@Html.TextBoxFor(model => model.MonthlyIncome, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00", @id = "inpBuild_MonthlyIncome" })*@
+            @*@Html.ValidationMessageFor(model => model.MonthlyIncome, "", new { @class = "text-danger" })*@
+        <!--</div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <div class="control-label">Deudas/Pagos Promedio:</div>-->
+            @*@Html.TextBoxFor(model => model.DebtPayment, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00", @id = "inpBuild_DebtPayment" })*@
+            @*@Html.ValidationMessageFor(model => model.DebtPayment, "", new { @class = "text-danger" })*@
+        <!--</div>
+    </div>
+</div>-->
+
+@*@section Scripts {
+
+    <script>
+
+        $(document).ready(function () {
+
+
+        });
+
+    </script>
+}*@

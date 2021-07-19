@@ -1,0 +1,262 @@
+﻿@model CustomerSupport.Models.MUser
+
+@{
+    ViewBag.Title = "Detalle Usuario";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">@ViewBag.Title</h3>
+    </div>
+    <div class="card-body">
+
+        <div class="m-0 row justify-content-center">
+            <div class="form-horizontal col-md-12">
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="control-label"><b>Codigo:</b></div>
+                            @Html.DisplayFor(model => model.IdUser)
+                            @Html.HiddenFor(model => model.IdUser, new { @id = "IdUser" })
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="row shadow-sm p-3 mb-5 bg-white rounded">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="control-label"> <b>Nombres:</b> </div>
+                            <div class="">
+                                @Html.DisplayFor(model => model.PersonEmployee.Name)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            @* <div class="input-group">*@
+                            <div class="control-label"><b>Apellidos:</b> </div>
+                            <div class="">
+                                @Html.DisplayFor(model => model.PersonEmployee.LastName)
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            @*@Html.LabelFor(model => model.IdPosition, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                            <div class="control-label"><b>Cargo:</b></div>
+                            <div class="">
+                                @Html.DisplayFor(model => model.PersonEmployee.Position)
+                                @*@Html.ValidationMessageFor(model => model.IdPosition, "", new { @class = "text-danger" })*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            @*@Html.LabelFor(model => model.Login, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                            <div class="control-label"><b>Login:</b></div>
+                            <div class="">
+                                @Html.DisplayFor(model => model.Login)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label font-weight-bold">Estado: </label>
+                            @Html.DisplayFor(model => model.StatusDesc)
+                        </div>
+                    </div>
+
+                </div>
+
+                <br />
+                <div class="row">
+                    <div class="col-md-10">
+                        <div id="demo">
+                            <div class="table-responsive">
+                                <div class="container">
+                                    <table id="TMenuOptions" class="display table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>
+                                                    Opción
+                                                </th>
+                                            </tr>
+                                        </thead>
+
+                                        @foreach (var item in Model.UserAccesPadre)
+                                        {
+                                            <tr>
+                                                <td><img src="/Content/assets/images/details_open.png" alt="expand/collapse" rel="@item.IdOption" /></td>
+                                                <td>
+                                                    @item.OptionName
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+        <div>
+            @Html.ActionLink("Regresar a la Lista", "ListUser")
+        </div>
+
+
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/Content/assets/js/jquery.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            var oTable;
+
+            $('#TMenuOptions tbody td img').click(function () {
+                var nTr = this.parentNode.parentNode;
+                var objtable = "<table class='display table table-bordered table - striped' >";
+                objtable += "<tr><th>Opcion</th><th>Visible</th><th>Crear</th><th>Buscar</th><th>Editar</th></tr>";
+
+                if (this.src.match('details_close')) {
+                    /* This row is already open - close it */
+                    this.src = "/Content/assets/images/details_open.png";
+                    oTable.fnClose(nTr);
+                }
+                else {
+                    /* Open this row */
+                    this.src = "/Content/assets/images/details_close.png";
+                    var OptionId = $(this).attr("rel");
+                    var IdUser = $("#IdUser").val();
+                    var existe = 0;
+                    var params = {
+                        IdUser: IdUser,
+                        IdAssociated: OptionId
+                    };
+                    $.ajax({
+                        type: 'GET',
+                        url: '@Url.Action("DetailMenuOption", "User")',
+                        data: params,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        dataSrc: '',
+                        success: function (data) {
+
+                            $.each(data, function (index, item) {
+                                objtable += "<tr><td>" + item.OptionName + "</td>";
+
+                                if (item.Visible.toString() == "true") {
+                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 checked=checked ><span class='s_st_checkbox'></span></label></div></td>";
+                                }
+                                else {
+                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1><span class='s_st_checkbox'></span></label></div></td>";
+                                }
+
+                                if (item.Create.toString() == "true") {
+                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 checked=checked ><span class='s_st_checkbox'></span></label></div></td>";
+                                }
+                                else {
+                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1><span class='s_st_checkbox'></span></label></div></td>";
+                                }
+
+                                if (item.Search.toString() == "true") {
+                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 checked=checked ><span class='s_st_checkbox'></span></label></div></td>";
+                                }
+                                else {
+                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1><span class='s_st_checkbox'></span></label></div></td>";
+                                }
+
+                                if (item.Edit.toString() == "true") {
+                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 checked=checked ><span class='s_st_checkbox'></span></label></div></td>";
+                                }
+                                else {
+                                    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1><span class='s_st_checkbox'></span></label></div></td>";
+                                }
+
+                                //if (item.Delete.toString() == "true") {
+                                //    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1 checked=checked ><span class='s_st_checkbox'></span></label></div></td>";
+                                //}
+                                //else {
+                                //    objtable += "<td><div class='s_status'><span id='labEstatus'></span><input type=checkbox id=chk1><span class='s_st_checkbox'></span></label></div></td>";
+                                //}
+
+                                existe = 1;
+                            });
+                            if (existe == 1)
+                                objtable += "</table>";
+                            else
+                                objtable = "";
+                         
+                            oTable.fnOpen(nTr, objtable, 'details');
+
+                        }
+                    });
+                }
+            });
+
+            /* Initialize table and make first column non-sortable*/
+            oTable = $('#TMenuOptions').dataTable({
+                "bJQueryUI": true,
+                "Columns": [{ "bSortable": false, "bSearchable": false,"Width":"5%" },
+                   null
+                ],
+                "bAutoWidth": false,
+                "bInfo": false,
+                "language": {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "No existen Registros",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                }
+            });
+        });
+    </script>
+}

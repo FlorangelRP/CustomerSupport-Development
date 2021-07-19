@@ -1,0 +1,145 @@
+﻿@using CustomerSupport.Models
+@*@model MUser*@
+<section class="ss_index_one">
+
+    <div class="container-fluid">
+
+        @{
+            MUser objUser = new MUser();
+            string NameUser = "";
+        }
+        @if (Session["Usuario"] != null && ((MUser)Session["Usuario"]).Login != null)
+        {
+            objUser = ((MUser)Session["Usuario"]);
+            NameUser = objUser.PersonEmployee.LastName.ToString() + ", " + objUser.PersonEmployee.Name.ToString();
+
+        }
+
+        <div class="ss_header">
+
+            <div class="row">
+
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12 align-self-center">
+                    <div class="ss_logo">
+                        <a href="~/Home/Index"><img class="img-fluid" src="~/Content/assets/images/svg/MM_White_Small.svg" alt="logo" /></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-9 col-md-5 col-sm-12 col-12">
+                    <div class="ss_menu">
+                        <ul>
+
+                            <li><a href='@Url.Action("Index", "Home")'>Inicio</a></li>
+
+                            @if ((Session["Usuario"]) != null)
+                            {
+
+                                //Recorremos las Padres
+                                foreach (var mOptionPadre in (((MUser)Session["Usuario"])).UserAccesPadre)
+                                {
+
+                                    var Lis = (((MUser)Session["Usuario"])).UserAcces.Where(X => X.IdAssociated == mOptionPadre.IdOption && X.Visible == true).ToList();
+
+                                    if (Lis.Count > 0)
+                                    {
+                                        <li class="ss_menuP">
+                                            @mOptionPadre.OptionName
+
+                                            <ul class="ss_subMenu">
+                                                @foreach (var mOptionAso in Lis)
+                                                {
+                                                    if (mOptionAso.Visible == true)
+                                                    {
+                                                        <li><a href='@Url.Action(mOptionAso.Action, mOptionAso.Controller)'>@mOptionAso.OptionName</a></li>
+                                                    }
+                                                }
+                                            </ul>
+                                        </li>
+
+                                    }
+                                }
+                            }
+
+
+                            <li class="ss_menuP">
+                                <div class="ss_UserInfo">@objUser.Login.ToString()</div>
+                                
+                                <ul class="ss_subMenu">
+                                    <li><a href='@Url.Action("Close", "User")' class="">Salir</a></li>
+                                </ul>
+                            </li>
+
+                        </ul>
+
+                        <div class="head_icon">
+                            <div class="ss_menu_bar">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                @*<div class="col-lg-2 col-md-2 col-sm-12 col-12 text-right">*@
+
+                    @*<a href='@Url.Action("Close", "User")' class="white_btn">Salir</a>*@
+
+                    @*<button class="white_btn" onclick="openForm()">@objUser.Login.ToString()</button>
+                    <div class="form-popup" id="divFormLogOff">
+                        <form id="FormLogOff" class="form-container" onfocusout="closeForm()">
+                            <div>
+                                <label><span>@NameUser</span></label>
+                            </div>
+                            <hr>
+                            <div>
+                                <a href='@Url.Action("Close", "User")' class="">Cerrar Sesión</a>
+                            </div>
+                        </form>
+                    </div>*@
+
+                    @*<a href="#FormLogOff" data-rel="popup" data-position-to="window"
+                       class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-check ui-btn-icon-left ui-btn-a white_btn"
+                       data-transition="pop" onclick="openForm()">@objUser.Login.ToString()</a>
+                        <div data-role="popup" id="FormLogOff" data-theme="a" class="ui-corner-all form-popup">
+                        <form>
+                            <div class="form-container text-center">
+                                <h4>@objUser.Login.ToString()</h4>
+                                <label class="ui-hidden-accessible">@NameUser</label>
+                                <hr>
+                                <div class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check white_btn">
+                                    <a href='@Url.Action("Close", "User")'>Cerrar Sesion</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>*@
+
+                @*</div>*@
+
+            </div>
+
+        </div>
+
+        @*<div class="ss_banner_main banner_three">
+        </div>*@
+
+        @*<br />
+        <br />*@
+
+    </div>
+</section>
+
+@section Scripts {
+
+    <script>
+        //function openForm() {
+        //    document.getElementById("divFormLogOff").style.display = "block";
+        //}
+
+        //function closeForm() {
+        //    document.getElementById("divFormLogOff").style.display = "none";
+        //}
+    </script>  
+
+}

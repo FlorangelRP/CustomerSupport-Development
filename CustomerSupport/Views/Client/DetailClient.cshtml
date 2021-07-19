@@ -1,0 +1,188 @@
+﻿@using CustomerSupport.Models
+@model CustomerSupport.Models.MPerson
+
+@{
+    ViewBag.Title = "Detalle de Cliente";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">@ViewBag.Title</h3>
+    </div>
+    <div class="card-body">
+
+        <div class="m-0 row justify-content-center">
+            <div class="form-horizontal col-md-10">
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="control-label font-weight-bold">Codigo:</div>
+                            @Html.DisplayFor(model => model.IdPerson)
+
+                            @Html.HiddenFor(model => model.IdPersonType)
+                            @Html.HiddenFor(model => model.IdPosition)
+                            @Html.HiddenFor(model => model.ClientPermission)
+                        </div>
+                    </div>
+                </div>
+                <hr>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="control-label font-weight-bold">Tipo de Identificacion:</div>
+                            @Html.DisplayFor(model => model.IdentificationType)
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="control-label font-weight-bold">Numero de Identificacion:</div>
+                            @Html.DisplayFor(model => model.NumIdentification)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="control-label font-weight-bold">Nombres:</div>
+                            @Html.DisplayFor(model => model.Name)
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="control-label font-weight-bold">Apellidos:</div>
+                            @Html.DisplayFor(model => model.LastName)
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="control-label font-weight-bold">Fecha de Nacimiento:</div>
+                            @Html.DisplayFor(model => model.Birthday)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row pt-2 pb-3">
+
+                    <div class="col-md-12">
+
+                        <div class="accordion border" id="accordionContact">
+                            <div class="card collapsed-card">
+                                <div class="card-header" id="headingContact">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link text-decoration-none" type="button" data-toggle="collapse" data-target="#collapseCardContact" aria-expanded="false" aria-controls="collapseContact">
+                                            Teléfonos de Contacto
+                                        </button>
+                                    </h2>
+                                </div>
+
+                                <div id="collapseCardContact" class="collapse" aria-labelledby="headingContact" data-parent="#accordionContact">
+
+                                    <div class="card-body">
+
+                                        <div class="row pt-3">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="table-responsive">
+                                                        <div class="container">
+
+                                                            <table id="TPersonContact" class="table table-bordered table-striped">
+                                                                <thead class="font-weight-bold">
+                                                                    <tr>
+                                                                        <td style="display:none;">colHid_indexCell</td>
+                                                                        <td style="display:none;">colHid_IdPhoneNumberType</td>
+                                                                        <td style="display:none;">colHid_IdIsoCountry</td>
+                                                                        <td style="display:none;">colHid_PhoneNumber</td>
+                                                                        <td style="display:none;">colHid_PhoneNumberType</td>
+                                                                        <td style="display:none;">colHid_CountryAreaCode</td>
+                                                                        <td>Tipo</td>
+                                                                        <td>Código Area</td>
+                                                                        <td>Número</td>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="BodyPersonContact">
+                                                                    @if (Model != null)
+                                                                    {
+                                                                        if (Model.listPersonContact != null)
+                                                                        {
+                                                                            for (var i = 0; i < Model.listPersonContact.Count; i++)
+                                                                            {
+                                                                                <tr>
+                                                                                    <td style="display:none;"><input name="listPersonContact.Index" type="hidden" value="'@i'" /></td>
+                                                                                    <td style="display:none;"><input id="listPersonContact_'@i'" name="listPersonContact['@i'].IdPhoneNumberType" type="hidden" value='@Model.listPersonContact[i].IdPhoneNumberType' /></td>
+                                                                                    <td style="display:none;"><input id="listPersonContact_'@i'" name="listPersonContact['@i'].IdIsoCountry" type="hidden" value='@Model.listPersonContact[i].IdIsoCountry' /></td>
+                                                                                    <td style="display:none;"><input id="listPersonContact_'@i'" name="listPersonContact['@i'].PhoneNumber" type="hidden" value='@Model.listPersonContact[i].PhoneNumber' /></td>
+                                                                                    <td style="display:none;"><input id="listPersonContact_'@i'" name="listPersonContact['@i'].PhoneNumberType" type="hidden" value='@Model.listPersonContact[i].PhoneNumberType' /></td>
+                                                                                    <td style="display:none;"><input id="listPersonContact_'@i'" name="listPersonContact['@i'].CountryAreaCode" type="hidden" value='@Model.listPersonContact[i].CountryAreaCode' /></td>
+                                                                                    <td>@Model.listPersonContact[i].PhoneNumberType</td>
+                                                                                    <td>@Model.listPersonContact[i].CountryAreaCode</td>
+                                                                                    <td name="PhoneNumber_'@i'">@Model.listPersonContact[i].PhoneNumber</td>                                                                                    
+                                                                                </tr>
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                </tbody>
+                                                            </table>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="form-group">
+                            <div class="control-label font-weight-bold">Direccion:</div>
+                            @Html.DisplayFor(model => model.Address)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <div class="control-label font-weight-bold">Email:</div>
+                            @Html.DisplayFor(model => model.Email)
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <div class="control-label font-weight-bold">Via de Contacto:</div>
+                            @Html.DisplayFor(model => model.ContactType)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label class="control-label font-weight-bold">Estado: </label>
+                            @Html.DisplayFor(model => model.StatusDesc)
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div>
+            @Html.ActionLink("Regresar a la Lista", "ListClient")
+        </div>
+
+    </div>
+</div>
+

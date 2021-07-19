@@ -1,0 +1,464 @@
+﻿@using CustomerSupport.Models
+@model CustomerSupport.Models.MUser
+
+@{
+    ViewBag.Title = "Editar Usuario";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">@ViewBag.Title</h3>
+    </div>
+    <div class="card-body">
+
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="m-0 row justify-content-center">
+                <div class="form-horizontal col-md-10">
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <div class="control-label">Codigo:</div>
+                                @Html.DisplayFor(model => model.IdUser, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.HiddenFor(model => model.IdUser, new { @id = "IdUser" })
+                                @Html.HiddenFor(model => model.IdPerson, new { @id = "IdPerson" })
+
+                                @*@Html.HiddenFor(model => model.PersonEmployee.Birthday, new { @id = "Birthday" })
+                                @Html.HiddenFor(model => model.PersonEmployee.IdContactType, new { @id = "IdContactType" })
+                                @Html.HiddenFor(model => model.PersonEmployee.IdPosition, new { @id = "IdPosition" })
+                                @Html.HiddenFor(model => model.PersonEmployee.ClientPermission)
+                                @Html.HiddenFor(model => model.PersonEmployee.IdPersonType)*@
+
+                                @Html.HiddenFor(model => model.PersonEmployee.IdIdentificationType, new { @id = "IdIdentificationType" })
+                                @Html.HiddenFor(model => model.PersonEmployee.IdentificationType, new { @id = "IdentificationType" })
+                                @Html.HiddenFor(model => model.PersonEmployee.NumIdentification, new { @id = "NumIdentification" })
+                                @Html.HiddenFor(model => model.PersonEmployee.Name, new { @id = "Name" })
+                                @Html.HiddenFor(model => model.PersonEmployee.LastName, new { @id = "LastName" })
+                                @Html.HiddenFor(model => model.PersonEmployee.Birthday, new { @value = DateTime.Now, @id = "Birthday" })
+                                @Html.HiddenFor(model => model.PersonEmployee.Address, new { @id = "Address" })
+                                @Html.HiddenFor(model => model.PersonEmployee.Email, new { @id = "Email" })
+                                @Html.HiddenFor(model => model.PersonEmployee.IdContactType, new { @id = "IdContactType" })
+                                @Html.HiddenFor(model => model.PersonEmployee.IdPosition, new { @id = "IdPosition" })
+
+                                @Html.ValidationMessageFor(model => model.IdUser, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <div class="row shadow-sm p-3 mb-5 bg-white rounded">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="control-label"> <b>Nombres:</b> </div>
+                                <div class="">                                    
+                                    @Html.DisplayFor(model => model.PersonEmployee.Name, new { @id = "PersonEmployee.Name", @Name = "PersonEmployee.Name", @value = Model.PersonEmployee.Name })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">                                
+                                <div class="control-label"><b>Apellidos:</b> </div>
+                                <div class="">                                    
+                                    @Html.DisplayFor(model => model.PersonEmployee.LastName, new { @id = "PersonEmployee.LastName", @value = Model.PersonEmployee.LastName })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">                                
+                                <div class="control-label"><b>Cargo:</b></div>
+                                <div class="">
+                                    @*@Html.HiddenFor(model => model.PersonEmployee.IdIdentificationType, new { @id = "PersonEmployee.IdIdentificationType", @Name = "PersonEmployee.IdIdentificationType", @value = Model.PersonEmployee.IdIdentificationType })*@
+                                    @*@Html.HiddenFor(model => model.PersonEmployee.IdentificationType, new { @id = "PersonEmployee.IdentificationType", @Name = "PersonEmployee.IdIdentificationType", @value = Model.PersonEmployee.IdIdentificationType })*@
+                                    @*@Html.HiddenFor(model => model.PersonEmployee.Address, new { @id = "PersonEmployee.Address", @Name = "PersonEmployee.Address", @value = Model.PersonEmployee.Address })*@
+                                    @*@Html.HiddenFor(model => model.PersonEmployee.NumIdentification, new { @id = "PersonEmployee.NumIdentification", @Name = "PersonEmployee.NumIdentification", @value = Model.PersonEmployee.NumIdentification })*@
+                                    @*@Html.HiddenFor(model => model.PersonEmployee.Position, new { @id = "PersonEmployee.Position", @Name = "PersonEmployee.Position", @value = Model.PersonEmployee.Position })*@
+                                    @*@Html.HiddenFor(model => model.PersonEmployee.Email, new { @id = "PersonEmployee.Email", @Name = "PersonEmployee.Email", @value = Model.PersonEmployee.Email })*@
+                                    
+                                    @Html.DisplayFor(model => model.PersonEmployee.Position, new { @id = "PersonEmployee.Position", @value = Model.PersonEmployee.Position })
+
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <div class="control-label">Login:</div>
+                                @Html.TextBoxFor(model => model.Login, new { @maxlength = "15", @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Login, "", new { @maxlength = "15", @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <div class="control-label">Clave:</div>
+
+                                @Html.TextBoxFor(model => model.Password, new { @class = "form-control", @maxlength = "15", placeholder = "Password", @type = "password" })
+                                @Html.ValidationMessageFor(model => model.Password, "", new { @maxlength = "15", @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Estado: </label>
+                                <div class="col-md-6 s_Checkbox">
+                                    @Html.CheckBoxFor(model => model.Status, new { @id = "chkStatus" })
+                                    @Html.LabelForModel(Model.StatusDesc, new { @id = "labEstatus" })
+
+                                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-10">
+                            <div id="demo">
+                                <div class="table-responsive">
+                                    <div class="container">
+                                        <table id="TMenuOptions" class="display table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th style="display:none;">colHid_indexCell</th>
+                                                    <th style="display:none;">colHid_IdOption</th>
+                                                    <th style="display:none;">colHid_OptionName</th>
+                                                    <th>
+                                                        Opción
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            @if (Model != null)
+                                            {
+                                                if (Model.UserAccesPadre != null)
+                                                {
+
+                                                    for (var i = 0; i < Model.UserAccesPadre.Count; i++)
+                                                    {
+                                                        <tr>
+                                                            <td><img src="/Content/assets/images/details_open.png" alt="expand/collapse" rel="@Model.UserAccesPadre[i].IdOption" /></td>
+                                                            <td style="display:none;"><input name="UserAccesPadre.Index" type="hidden" value="'@i'" /></td>
+                                                            <td style="display:none;"><input id="UserAccesPadre_'@i'" name="UserAccesPadre['@i'].IdOption" type="hidden" value='@Model.UserAccesPadre[i].IdOption' /></td>
+                                                            <td style="display:none;"><input id="UserAccesPadre_'@i'" name="UserAccesPadre['@i'].OptionName" type="hidden" value='@Model.UserAccesPadre[i].OptionName' /></td>
+                                                            <td>@Model.UserAccesPadre[i].OptionName</td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            }
+                                        </table>
+                                        @Html.ValidationMessageFor(model => model.UserAcces, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-offset-2 col-md-10">
+                            <div class="form-group">
+                                <div class="text-center">
+                                    <button class="white_btn" type="submit">Grabar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-10 text-center">
+                            @*<span class="text-success">@ViewBag.SuccessSave</span>*@
+                            @*<span class="text-danger">@ViewBag.ErrorSave</span>*@
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        }
+
+        <div>
+            @Html.ActionLink("Regresar a la Lista", "ListUser")
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+
+    <script src="~/Content/assets/js/jquery.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="~/Content/assets/js/jquery.inputpicker.js?v3"></script>
+
+    <script type="text/javascript">
+
+        var OptionId = 0;
+        var Item = 0;
+
+        function Chk(source) {
+            var isSelected = $(source).is(":checked");
+            $(source).val(isSelected);
+        }
+
+        function toggle(source, valor) {
+
+            var isSelected = $(source).is(":checked");
+
+            var option = $(source).attr('rel');
+
+            switch (valor) {
+                case 1:
+                    checkboxes = document.getElementsByClassName('itemV' + option + '[]');
+                    break;
+                case 2:
+                    checkboxes = document.getElementsByClassName('itemC' + option + '[]');
+                    break;
+                case 3:
+                    checkboxes = document.getElementsByClassName('itemB' + option + '[]');
+                    break;
+                case 4:
+                    checkboxes = document.getElementsByClassName('itemE' + option + '[]');
+                    break;
+                case 5:
+                    checkboxes = document.getElementsByClassName('itemD' + option + '[]');
+                    break;
+            }
+
+            for (let i = 0; i < checkboxes.length; i++) {
+                checkboxes[i].checked = isSelected;
+                checkboxes[i].value = isSelected;
+            }
+
+        }
+
+        $(document).ready(function () {
+
+            //Mensaje de confirmacion--------------------
+            if ("@ViewBag.SuccessSave"!=""){
+                toastr.success("@ViewBag.SuccessSave");
+            }
+            if ("@ViewBag.ErrorSave" != ""){
+                toastr.error("@ViewBag.ErrorSave");
+            }
+            //-------------------------------------------
+
+            $("#chkStatus").on('click', function () {
+
+                var IsSelected = $('#chkStatus').is(":checked");
+
+                // If the checkbox is checked, display the output text
+                if (IsSelected == true) {
+                    $("#labEstatus").text("Activo");
+                } else {
+                    $("#labEstatus").text("Inactivo");
+                }
+
+            });
+
+            $('#TMenuOptions tbody td img').click(function () {
+
+                if (this.src.match('details_close')) {
+
+                    /* This row is already open - close it */
+                    this.src = "/Content/assets/images/details_open.png";
+                    var nTr = this.parentNode.parentNode;
+                    oTable.fnClose(nTr);
+                }
+                else
+                {
+                    OptionId = $(this).attr("rel");
+                    this.src = "/Content/assets/images/details_close.png";
+                    var IdUser = $("#IdUser").val();
+                    var existe = 0;
+                    var params = {
+                        IdUser: IdUser,
+                        IdAssociated: OptionId
+                    };
+
+                    var nTr = this.parentNode.parentNode;
+                    var objtable = "<table id='TMenuOptionsDetail" + OptionId + "' class='padre display table table-bordered table - striped' > ";
+                    objtable += "<thead> ";
+                    objtable += "<tr> ";
+                    objtable += "<td style='display: none; '>colHid_indexCell</td>";
+                    objtable += "<td style='display: none; '>colHid_IdOption</td>";
+                    objtable += "<td style='display: none; '>colHid_OptionName</td>";
+                    objtable += "<th>Opcion</th> ";
+                    objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,1)' /> Visible </th> ";
+                    objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,2)' /> Crear </th> ";
+                    objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,3)' /> Buscar </th> ";
+                    objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,4)' /> Editar </th> ";
+                    //objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,5)' /> Eliminar </th> ";
+                    objtable += "</tr> ";
+                    objtable += "</thead> ";
+                    nro = 0;
+
+                    /* Open this row */
+
+                    $.ajax({
+                        type: 'GET',
+                        url: '@Url.Action("DetailMenuOption", "User")',
+                        data: params,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        dataSrc: '',
+                        success: function (data) {
+
+
+                            $.each(data, function (index, item) {
+
+                                @if(Model!=null)
+                                {
+
+                                    if (Model.UserAccesPadre != null)
+                                    {
+                                        Model.UserAcces.Add(new MUserAcces());
+                                    }
+                                }
+
+
+                                /*  Item = index + 1;*/
+
+                                objtable += "<tbody><tr  id='trMenuOptionsDetail" + item.IdOption + ">";
+                                objtable += "<td style='display:none'><input name='UserAcces.Index' type = 'hidden' value = '" + item.IdOption + "' /></td > ";
+                                objtable += "<td style='display:none'><input id='UserAcces_" + item.IdOption + "' name='UserAcces[" + item.IdOption + "].IdOption' type='hidden' value=" + item.IdOption + " /></td> ";
+                                objtable += "<td style='display:none'><input id='UserAcces_" + item.IdOption + "' name='UserAcces[" + item.IdOption + "].OptionName' type='hidden' value=" + item.OptionName + " /></td> ";;
+                                objtable += "<td>" + item.OptionName + "</td> ";
+
+                                //objtable += "<td>" + item.OptionName + "</td>";
+
+
+                                var modelo = @Html.Raw(Json.Encode(Model.UserAcces));
+
+                                var Array = modelo.filter(word => word.IdOption == item.IdOption)
+
+                                var visible = false;
+                                var crear = false;
+                                var buscar = false;
+                                var Editar = false;
+                                var Eliminar = false;
+
+
+                                if (Array.length == 1) {
+                                    visible = Array[0].Visible;
+                                    crear = Array[0].Create;
+                                    buscar = Array[0].Search;
+                                    Editar = Array[0].Edit;
+                                    Eliminar = Array[0].Delete;
+                                }
+
+                                if (visible == true) {
+                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemV" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Visible' value=true></td>";
+                                }
+                                else {
+                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemV" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Visible' value=false ></td>";
+                                }
+
+                                if (crear == true) {
+                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemC" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Create' value=true></td>";
+                                }
+                                else {
+                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemC" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Create' value=false></td>";
+                                }
+
+                                if (buscar== true) {
+                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemB" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Search' value=true></td>";
+                                }
+                                else {
+                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemB" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Search' value=false></td>";
+                                }
+
+
+                                if (Editar == true) {
+                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemE" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Edit' value=true></td>";
+                                }
+                                else {
+                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemE" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Edit' value=false></td>";
+                                }
+
+
+                                //if (Eliminar== true) {
+                                //    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemD" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Delete' value=true></td>";
+                                //}
+                                //else {
+                                //    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemD" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Delete' value=false></td>";
+                                //}
+
+                                existe = 1;
+                            });
+
+                            if (existe == 1)
+                                objtable += "</tbody></table>";
+                            else
+                                objtable = "";
+
+                            oTable.fnOpen(nTr, objtable, 'details');
+
+
+
+                        }
+                    });
+                }
+            });
+
+            /* Initialize table and make first column non-sortable*/
+            oTable = $('#TMenuOptions').dataTable({
+                "bJQueryUI": true,
+                "Columns": [{ "bSortable": false, "bSearchable": false,"Width":"5%" },
+                    null
+                ],
+                "bAutoWidth": false,
+                "bInfo": false,
+                "language": {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "No existen Registros",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                }
+            });
+
+        });
+
+    </script>
+}

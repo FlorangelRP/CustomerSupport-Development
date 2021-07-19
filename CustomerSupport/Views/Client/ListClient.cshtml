@@ -1,0 +1,208 @@
+﻿@using CustomerSupport.Models
+@model CustomerSupport.Models.MPerson
+
+@{
+    ViewBag.Title = "Listado de Clientes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Action = "ListClient";
+}
+
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">@ViewBag.Title</h3>
+    </div>
+    <div class="card-body">
+
+        @*<form>*@
+
+        @{
+            MUserAcces perm = null;
+            if (Session["Usuario"] != null)
+            {
+                perm = (((MUser)Session["Usuario"])).UserAcces.Where(X => X.Action == @ViewBag.Action).FirstOrDefault();
+            }
+        }
+        @if (perm != null)
+        {
+            if (perm.Create == true)
+            {
+                <div class="row text-right">
+                    <div class="col-md-12">
+                        <div class="text-right">
+                            @*<button class="btn boton_personalizado" onclick="location.href='@Url.Action("Create", "User")';return false;"><i class="fas fa-user-plus"></i> Agregar</button>*@
+                            @*<a href="location.href='@Url.Action("Create", "Person")';return false;" class="white_btn">Agregar</a>*@
+                            <button class="white_btn" onclick="location.href='@Url.Action("AddClient", "Client")';return false;">Agregar</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+
+        @using (Html.BeginForm("ListClient", "Client", FormMethod.Post))
+        {
+            <div class="table-responsive">
+                <div class="container">
+                    <table id="TPerson" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Codigo</th>
+                                @*<th>Tipo</th>*@
+                                <th>Nombres</th>
+                                <th>Apellidos</th>
+                                <th>Tipo Identificacion</th>
+                                <th>N° Identificacion</th>
+                                <th>Estado</th>
+                                @if (perm != null)
+                                {
+                                    if (perm.Search == true || perm.Edit == true)
+                                    {
+                                        <th class="text-center" colspan="2">Opciones</th>
+                                    }
+                                }
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+
+            @Html.HiddenFor(model => model.IdPerson, new { @id = "hidd_IdPerson" })
+            @Html.Hidden("submit")
+
+        }
+
+        @*</form>*@
+
+    </div>
+</div>
+
+@section Scripts {
+
+    <script src="~/Content/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+    <script>
+
+        var Permis = @Html.Raw(Json.Encode(perm));
+        Buscar = Permis.Search;
+        Editar = Permis.Edit;
+
+        var table = $('#TPerson').DataTable({
+
+            'ajax': {
+                'url': '@Url.Action("GetListClient", "Client")',
+                'type': 'GET',
+                'dataType': 'json',
+                'dataSrc': ''
+            },
+            'columns':
+                [
+                    { 'data': 'IdPerson', 'autowidth': true },
+                    /*{ 'data': 'PersonType', 'autowidth': true },*/
+                    { 'data': 'Name', 'autowidth': true },
+                    { 'data': 'LastName', 'autowidth': true },
+                    { 'data': 'IdentificationType', 'autowidth': true },
+                    { 'data': 'NumIdentification', 'autowidth': true },
+                    { 'data': 'StatusDesc', 'autowidth': true },
+                    {
+                        'data': null, render: function (data, type, row) {
+                            //debugger;
+                            if (data != null) {
+                                if (row.IdPerson == null) {
+                                    return '';
+                                } else {
+                                    //return '<div class="btn_option pt-0"><a class="editRow"><i class="fas fa-edit"></i></a></div>';
+                                    var link = '<div class="btn_option pt-0"><button class="editRow border-0" name="linkEdit_&"><i class="fas fa-edit"></i></button></div>';
+                                    link = link.replace("&", row.IdPerson);
+                                    return link;
+                                }
+                            }
+                        }, 'autowidth': true
+                    },
+                    {
+                        'data': null, render: function (data, type, row) {
+                            //debugger;
+                            if (data != null) {
+                                if (row.IdPerson == null) {
+                                    return '';
+                                } else {
+                                    //return '<div class="btn_option pt-0"><a class="searchRow"><i class="fas fa-search"></i></a></div>';
+                                    var link = '<div class="btn_option pt-0"><button class="searchRow border-0" name="linkSearch_&"><i class="fas fa-search"></i></button></div>';
+                                    link = link.replace("&", row.IdPerson);
+                                    return link;
+                                }
+                            }
+                        }, 'autowidth': true
+                    },
+                    //{
+                    //    'data': null, render: function (data, type, row) {
+                    //        //debugger;
+                    //        if (data != null) {
+                    //            if (row.IdPerson == null) {
+                    //                return '';
+                    //            } else {
+                    //                return '<div class="btn_option pt-0"><a class="deleteRow"><i class="far fa-trash-alt"></i></a></div>';
+                    //            }
+                    //        }
+                    //    }, 'autowidth': true
+                    //}
+                ],
+            "columnDefs":
+                [
+                    { "targets": 0, "orderable": false },
+                    { "targets": 6, "bVisible": Editar },
+                    { "targets": 7, "bVisible": Buscar }
+                ],
+                "bAutoWidth": false,
+                "bInfo": false,
+                "language": {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "No existen Registros",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                }
+
+        });
+
+        $('#TPerson').on("click", "button.editRow", function () {
+            var data = table.row($(this).parents("tr")).data();
+            $("#hidd_IdPerson").val(data.IdPerson);
+            $("#submit").val("editRow");
+            location.href = '@Url.Action("ListClient", "Client")';
+            //$(".editRow").attr("href", 'Url.Action("EditClient", "Client")?id=' + data.IdPerson);
+        });
+        $('#TPerson').on("click", "button.searchRow", function () {
+            var data = table.row($(this).parents("tr")).data();
+            $("#hidd_IdPerson").val(data.IdPerson);
+            $("#submit").val("searchRow");
+            location.href = '@Url.Action("ListClient", "Client")';
+            //$(".searchRow").attr("href", 'Url.Action("DetailClient", "Client")?id=' + data.IdPerson);
+        });
+
+    </script>
+}

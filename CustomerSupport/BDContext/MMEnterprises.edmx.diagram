@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="6666d4b7e3bd487998b35603d58a423b" Name="Diagram1">
+        <EntityTypeShape EntityType="MMEnterprisesModel.Catalog" Width="1.5" PointX="0.75" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="MMEnterprisesModel.CatalogDetail" Width="1.5" PointX="3" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MMEnterprisesModel.Country" Width="1.5" PointX="5.25" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MMEnterprisesModel.OptionMenu" Width="1.5" PointX="7.5" PointY="15.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MMEnterprisesModel.Person" Width="1.5" PointX="5.25" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MMEnterprisesModel.PersonContact" Width="1.5" PointX="7.5" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MMEnterprisesModel.ServiceRequest" Width="1.5" PointX="9.75" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MMEnterprisesModel.Task" Width="1.5" PointX="12" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MMEnterprisesModel.User" Width="1.5" PointX="7.5" PointY="19.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MMEnterprisesModel.UserAcces" Width="1.5" PointX="9.75" PointY="19.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MMEnterprisesModel.VWListCatalog" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="MMEnterprisesModel.FK_CatalogDetail_Catalog" ManuallyRouted="false" />
+        <AssociationConnector Association="MMEnterprisesModel.FK_Person_ContactType" ManuallyRouted="false" />
+        <AssociationConnector Association="MMEnterprisesModel.FK_Person_IdentificationType" ManuallyRouted="false" />
+        <AssociationConnector Association="MMEnterprisesModel.FK_Person_PersonType" ManuallyRouted="false" />
+        <AssociationConnector Association="MMEnterprisesModel.FK_Person_Position" ManuallyRouted="false" />
+        <AssociationConnector Association="MMEnterprisesModel.FK_PersonContact_PhoneNumberType" ManuallyRouted="false" />
+        <AssociationConnector Association="MMEnterprisesModel.FK_ServiceRequest_ContactType" ManuallyRouted="false" />
+        <AssociationConnector Association="MMEnterprisesModel.FK_ServiceRequest_PropertyType" ManuallyRouted="false" />
+        <AssociationConnector Association="MMEnterprisesModel.FK_ServiceRequest_ServiceStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="MMEnterprisesModel.FK_ServiceRequest_ServiceType" ManuallyRouted="false" />
+        <AssociationConnector Association="MMEnterprisesModel.FK_PersonContact_Country" ManuallyRouted="false" />
+        <AssociationConnector Association="MMEnterprisesModel.FK_AssociatedMenu_OptionMenu" ManuallyRouted="false" />
+        <AssociationConnector Association="MMEnterprisesModel.FK_UserAcces_OptionMenu" ManuallyRouted="false" />
+        <AssociationConnector Association="MMEnterprisesModel.FK_PersonContact_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="MMEnterprisesModel.FK_ServiceRequest_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="MMEnterprisesModel.FK_User_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="MMEnterprisesModel.FK_ServiceRequest_User" ManuallyRouted="false" />
+        <AssociationConnector Association="MMEnterprisesModel.FK_Task_User" ManuallyRouted="false" />
+        <AssociationConnector Association="MMEnterprisesModel.FK_UserAcces_User" ManuallyRouted="false" />
+        <AssociationConnector Association="MMEnterprisesModel.PersonTask" ManuallyRouted="false" />
+        <AssociationConnector Association="MMEnterprisesModel.ServiceConstructionOption" ManuallyRouted="false" />
+        <AssociationConnector Association="MMEnterprisesModel.ServiceRequestTask" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

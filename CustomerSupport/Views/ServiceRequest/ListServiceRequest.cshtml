@@ -1,0 +1,216 @@
+﻿@using CustomerSupport.Models
+@model CustomerSupport.Models.MServiceRequest
+
+@{
+    ViewBag.Title = "Listado de Solicitudes de Servicio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Action = "ListServiceRequest";
+}
+
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">@ViewBag.Title</h3>
+    </div>
+    <div class="card-body">
+
+        @*<form>*@
+
+        @{
+            MUserAcces perm = null;
+            if (Session["Usuario"] != null)
+            {
+                perm = (((MUser)Session["Usuario"])).UserAcces.Where(X => X.Action == @ViewBag.Action).FirstOrDefault();
+            }
+        }
+
+        @if (perm != null)
+        {
+            if (perm.Create == true)
+            {
+                <div class="row text-right">
+                    <div class="col-md-12">
+                        <div class="text-right">
+                            @*<button class="btn boton_personalizado" onclick="location.href='@Url.Action("Create", "User")';return false;"><i class="fas fa-user-plus"></i> Agregar</button>*@
+                            @*<a href="location.href='@Url.Action("AddUser", "User")';return false;" class="white_btn">Agregar</a>*@
+                            <button class="white_btn" onclick="location.href='@Url.Action("AddServiceRequest", "ServiceRequest")';return false;">Agregar</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+
+        @using (Html.BeginForm("ListServiceRequest", "ServiceRequest", FormMethod.Post))
+        {
+            <div class="table-responsive">
+                <div class="container">
+                    <table id="TServiceRequest" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Numero</th>
+                                <th>Servicio</th>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Fecha Registro</th>
+                                <th>Estado</th>
+                                @if (perm != null)
+                                {
+                                    if (perm.Search == true || perm.Edit == true)
+                                    {
+                                        <th class="text-center" colspan="2">Opciones</th>
+                                    }
+                                }
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+
+            @Html.HiddenFor(model => model.IdServiceRequest, new { @id = "hidd_IdServiceRequest" })
+            @Html.Hidden("submit")
+
+        }        
+
+        @*</form>*@
+
+    </div>
+</div>
+
+@section Scripts {
+
+    @*<script scr="~/Content/assets/js/moment.min.js"></script>*@
+    <script scr="~/Content/assets/js/datetime.js"></script>
+    <script src="~/Content/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    @*<script scr="~/Content/assets/js/dataTables.dateTime.min.js"></script>*@
+
+    <script>
+
+        var Permis = @Html.Raw(Json.Encode(perm));
+        Buscar = Permis.Search;
+        Editar = Permis.Edit;
+
+        var table = $('#TServiceRequest').DataTable({
+
+                'ajax': {
+                    'url': '@Url.Action("GetListServiceRequest", "ServiceRequest")',
+                    'type': 'GET',
+                    'dataType': 'json',
+                    'dataSrc': ''
+                },
+                'columns':
+                    [
+                        { 'data': 'IdServiceRequest', 'autowidth': true },
+                        { 'data': 'ServiceType', 'autowidth': true },
+                        { 'data': 'PersonClient.Name', 'autowidth': true },
+                        { 'data': 'PersonClient.LastName', 'autowidth': true },
+                        { 'data': 'RegisterDate',
+                            'render': function (jsonDate) {
+                                var date = new Date(parseInt(jsonDate.substr(6)));
+                                var month = ("0" + (date.getMonth() + 1)).slice(-2);
+                                return ("0" + date.getDate()).slice(-2) + '-' + month + '-' + date.getFullYear();
+                            }
+                        },
+                        { 'data': 'ServiceStatus', 'autowidth': true },
+                        {
+                            'data': null, render: function (data, type, row) {
+                                if (data != null) {
+                                    if (row.IdServiceRequest == null) {
+                                        return '';
+                                    } else {
+                                        //return '<div class="btn_option pt-0"><a class="editRow"><i class="fas fa-edit"></i></a></div>';
+                                        var link = '<div class="btn_option pt-0"><button class="editRow border-0" name="linkEdit_&"><i class="fas fa-edit"></i></button></div>';
+                                        link = link.replace("&", row.IdServiceRequest);
+                                        return link;
+                                    }
+                                }
+                            }, 'autowidth': true
+                        },
+                        {
+                            'data': null, render: function (data, type, row) {
+                                if (data != null) {
+                                    if (row.IdServiceRequest == null) {
+                                        return '';
+                                    } else {
+                                        //return '<div class="btn_option pt-0"><a class="searchRow"><i class="fas fa-search"></i></a></div>';
+                                        var link = '<div class="btn_option pt-0"><button class="searchRow border-0" name="linkSearch_&"><i class="fas fa-search"></i></button></div>';
+                                        link = link.replace("&", row.IdServiceRequest);
+                                        return link;
+                                    }
+                                }
+                            }, 'autowidth': true
+                        },
+
+                        //{
+                        //    'data': null, render: function (data, type, row) {
+                        //        //debugger;
+                        //        if (data != null) {
+                        //            if (row.IdServiceRequest == null) {
+                        //                return '';
+                        //            } else {
+                        //                return '<div class="btn_option pt-0"><a class="deleteRow"><i class="far fa-trash-alt"></i></a></div>';
+                        //            }
+                        //        }
+                        //    }, 'autowidth': true
+                        //}
+                    ],
+                    "columnDefs":
+                        [
+                            {"targets": 0,"orderable": false },
+                            { "targets": 6, "bVisible": Editar },
+                            { "targets": 7, "bVisible": Buscar }
+                        ],
+                "bAutoWidth": false,
+                "bInfo": false,
+                "language": {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "No existen Registros",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                }
+
+        });
+
+        $('#TServiceRequest').on("click", "button.editRow", function () {
+            var data = table.row($(this).parents("tr")).data();
+            $("#hidd_IdServiceRequest").val(data.IdServiceRequest);
+            $("#submit").val("editRow");
+            location.href = '@Url.Action("ListServiceRequest", "ServiceRequest")';
+            //$(".editRow").attr("href", 'Url.Action("EditServiceRequest", "ServiceRequest")?id=' + data.IdServiceRequest);
+        });
+
+        $('#TServiceRequest').on("click", "button.searchRow", function () {
+            var data = table.row($(this).parents("tr")).data();
+            $("#hidd_IdServiceRequest").val(data.IdServiceRequest);
+            $("#submit").val("searchRow");
+            location.href = '@Url.Action("ListServiceRequest", "ServiceRequest")';
+            //$(".searchRow").attr("href", 'Url.Action("DetailServiceRequest", "ServiceRequest")?id=' + data.IdServiceRequest);
+        });
+
+    </script>
+}

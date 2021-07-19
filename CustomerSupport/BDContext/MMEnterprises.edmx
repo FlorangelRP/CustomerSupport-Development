@@ -1,0 +1,1934 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MMEnterprisesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Catalog">
+          <Key>
+            <PropertyRef Name="IdCatalog" />
+          </Key>
+          <Property Name="IdCatalog" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdTable" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="CatalogDetail">
+          <Key>
+            <PropertyRef Name="IdCatalogDetail" />
+          </Key>
+          <Property Name="IdCatalogDetail" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdTableDetail" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IdCatalog" Type="int" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Status" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="IdIsoCountry" />
+          </Key>
+          <Property Name="IdCountry" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdIsoCountry" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="Country" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="CountryAreaCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Status" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OptionMenu">
+          <Key>
+            <PropertyRef Name="IdOption" />
+          </Key>
+          <Property Name="IdOption" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OptionName" Type="varchar" MaxLength="50" />
+          <Property Name="IdAssociated" Type="int" />
+          <Property Name="AssociatedName" Type="varchar" MaxLength="50" />
+          <Property Name="Status" Type="bit" Nullable="false" />
+          <Property Name="Action" Type="varchar" MaxLength="50" />
+          <Property Name="Controller" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="IdPerson" />
+          </Key>
+          <Property Name="IdPerson" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdPersonType" Type="int" Nullable="false" />
+          <Property Name="IdIdentificationType" Type="int" Nullable="false" />
+          <Property Name="NumIdentification" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Birthday" Type="datetime" />
+          <Property Name="Address" Type="varchar" MaxLength="300" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="IdContactType" Type="int" />
+          <Property Name="IdPosition" Type="int" />
+          <Property Name="ClientPermission" Type="bit" Nullable="false" />
+          <Property Name="Status" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PersonContact">
+          <Key>
+            <PropertyRef Name="IdContact" />
+          </Key>
+          <Property Name="IdContact" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdPerson" Type="int" Nullable="false" />
+          <Property Name="IdPhoneNumberType" Type="int" Nullable="false" />
+          <Property Name="IdIsoCountry" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="Status" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PersonTask">
+          <Key>
+            <PropertyRef Name="IdTask" />
+            <PropertyRef Name="IdPerson" />
+          </Key>
+          <Property Name="IdTask" Type="int" Nullable="false" />
+          <Property Name="IdPerson" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ServiceConstructionOption">
+          <Key>
+            <PropertyRef Name="IdServiceRequest" />
+            <PropertyRef Name="IdConstructionOption" />
+          </Key>
+          <Property Name="IdServiceRequest" Type="int" Nullable="false" />
+          <Property Name="IdConstructionOption" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ServiceRequest">
+          <Key>
+            <PropertyRef Name="IdServiceRequest" />
+          </Key>
+          <Property Name="IdServiceRequest" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdServiceType" Type="int" Nullable="false" />
+          <Property Name="IdServiceStatus" Type="int" Nullable="false" />
+          <Property Name="IdPerson" Type="int" Nullable="false" />
+          <Property Name="IdContactType" Type="int" />
+          <Property Name="IdPropertyType" Type="int" />
+          <Property Name="Address" Type="varchar" MaxLength="500" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DownPayment" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ClosingCost" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="MonthlyIncome" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DebtPayment" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Piti" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Ratios" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="EstimatedValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="LoanAmount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CurrentDebt" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Assets" Type="varchar" MaxLength="500" />
+          <Property Name="Beneficiaries" Type="varchar" MaxLength="500" />
+          <Property Name="Process" Type="varchar" MaxLength="500" />
+          <Property Name="Wish" Type="varchar" MaxLength="500" />
+          <Property Name="Plane" Type="bit" />
+          <Property Name="Financing" Type="bit" />
+          <Property Name="Note" Type="varchar" MaxLength="500" />
+          <Property Name="IdUser" Type="int" Nullable="false" />
+          <Property Name="RegisterUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="RegisterDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ServiceRequestTask">
+          <Key>
+            <PropertyRef Name="IdTask" />
+            <PropertyRef Name="IdServiceRequest" />
+          </Key>
+          <Property Name="IdTask" Type="int" Nullable="false" />
+          <Property Name="IdServiceRequest" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="IdTask" />
+          </Key>
+          <Property Name="IdTask" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdUser" Type="int" Nullable="false" />
+          <Property Name="Activity" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="DateIni" Type="date" Nullable="false" />
+          <Property Name="DateEnd" Type="date" Nullable="false" />
+          <Property Name="HourIni" Type="time" Precision="7" Nullable="false" />
+          <Property Name="HourEnd" Type="time" Precision="7" Nullable="false" />
+          <Property Name="Place" Type="varchar" MaxLength="300" Nullable="false" />
+          <Property Name="Status" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="IdUser" />
+          </Key>
+          <Property Name="IdUser" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdPerson" Type="int" Nullable="false" />
+          <Property Name="Login" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Status" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserAcces">
+          <Key>
+            <PropertyRef Name="IdUser" />
+            <PropertyRef Name="IdOption" />
+          </Key>
+          <Property Name="IdUser" Type="int" Nullable="false" />
+          <Property Name="IdOption" Type="int" Nullable="false" />
+          <Property Name="Visible" Type="bit" Nullable="false" />
+          <Property Name="Create" Type="bit" Nullable="false" />
+          <Property Name="Search" Type="bit" Nullable="false" />
+          <Property Name="Edit" Type="bit" Nullable="false" />
+          <Property Name="Delete" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="VWListCatalog">
+          <Key>
+            <PropertyRef Name="IdCatalog" />
+            <PropertyRef Name="IdTable" />
+            <PropertyRef Name="IdCatalogDetail" />
+            <PropertyRef Name="IdTableDetail" />
+            <PropertyRef Name="DetailDesc" />
+            <PropertyRef Name="DetailStatus" />
+          </Key>
+          <Property Name="IdCatalog" Type="int" Nullable="false" />
+          <Property Name="IdTable" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TableDesc" Type="varchar" MaxLength="200" />
+          <Property Name="IdCatalogDetail" Type="int" Nullable="false" />
+          <Property Name="IdTableDetail" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DetailDesc" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="DetailStatus" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_AssociatedMenu_OptionMenu">
+          <End Role="OptionMenu" Type="Self.OptionMenu" Multiplicity="0..1" />
+          <End Role="OptionMenu1" Type="Self.OptionMenu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OptionMenu">
+              <PropertyRef Name="IdOption" />
+            </Principal>
+            <Dependent Role="OptionMenu1">
+              <PropertyRef Name="IdAssociated" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CatalogDetail_Catalog">
+          <End Role="Catalog" Type="Self.Catalog" Multiplicity="1" />
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Catalog">
+              <PropertyRef Name="IdCatalog" />
+            </Principal>
+            <Dependent Role="CatalogDetail">
+              <PropertyRef Name="IdCatalog" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_ContactType">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="0..1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="IdContactType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_IdentificationType">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="IdIdentificationType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_PersonType">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="IdPersonType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_Position">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="0..1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="IdPosition" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonContact_Country">
+          <End Role="Country" Type="Self.Country" Multiplicity="1" />
+          <End Role="PersonContact" Type="Self.PersonContact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="IdIsoCountry" />
+            </Principal>
+            <Dependent Role="PersonContact">
+              <PropertyRef Name="IdIsoCountry" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonContact_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="PersonContact" Type="Self.PersonContact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="IdPerson" />
+            </Principal>
+            <Dependent Role="PersonContact">
+              <PropertyRef Name="IdPerson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonContact_PhoneNumberType">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="1" />
+          <End Role="PersonContact" Type="Self.PersonContact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="PersonContact">
+              <PropertyRef Name="IdPhoneNumberType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonTask_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="PersonTask" Type="Self.PersonTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="IdPerson" />
+            </Principal>
+            <Dependent Role="PersonTask">
+              <PropertyRef Name="IdPerson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonTask_Task">
+          <End Role="Task" Type="Self.Task" Multiplicity="1" />
+          <End Role="PersonTask" Type="Self.PersonTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="IdTask" />
+            </Principal>
+            <Dependent Role="PersonTask">
+              <PropertyRef Name="IdTask" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceConstructionOption_ServiceRequest">
+          <End Role="ServiceRequest" Type="Self.ServiceRequest" Multiplicity="1" />
+          <End Role="ServiceConstructionOption" Type="Self.ServiceConstructionOption" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceRequest">
+              <PropertyRef Name="IdServiceRequest" />
+            </Principal>
+            <Dependent Role="ServiceConstructionOption">
+              <PropertyRef Name="IdServiceRequest" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceRequest_ConstructionOption">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="1" />
+          <End Role="ServiceConstructionOption" Type="Self.ServiceConstructionOption" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="ServiceConstructionOption">
+              <PropertyRef Name="IdConstructionOption" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceRequest_ContactType">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="0..1" />
+          <End Role="ServiceRequest" Type="Self.ServiceRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="ServiceRequest">
+              <PropertyRef Name="IdContactType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceRequest_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="ServiceRequest" Type="Self.ServiceRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="IdPerson" />
+            </Principal>
+            <Dependent Role="ServiceRequest">
+              <PropertyRef Name="IdPerson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceRequest_PropertyType">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="0..1" />
+          <End Role="ServiceRequest" Type="Self.ServiceRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="ServiceRequest">
+              <PropertyRef Name="IdPropertyType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceRequest_ServiceStatus">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="1" />
+          <End Role="ServiceRequest" Type="Self.ServiceRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="ServiceRequest">
+              <PropertyRef Name="IdServiceStatus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceRequest_ServiceType">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="1" />
+          <End Role="ServiceRequest" Type="Self.ServiceRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="ServiceRequest">
+              <PropertyRef Name="IdServiceType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceRequest_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="ServiceRequest" Type="Self.ServiceRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="IdUser" />
+            </Principal>
+            <Dependent Role="ServiceRequest">
+              <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceRequestTask_ServiceRequest">
+          <End Role="ServiceRequest" Type="Self.ServiceRequest" Multiplicity="1" />
+          <End Role="ServiceRequestTask" Type="Self.ServiceRequestTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceRequest">
+              <PropertyRef Name="IdServiceRequest" />
+            </Principal>
+            <Dependent Role="ServiceRequestTask">
+              <PropertyRef Name="IdServiceRequest" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceRequestTask_Task">
+          <End Role="Task" Type="Self.Task" Multiplicity="1" />
+          <End Role="ServiceRequestTask" Type="Self.ServiceRequestTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="IdTask" />
+            </Principal>
+            <Dependent Role="ServiceRequestTask">
+              <PropertyRef Name="IdTask" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Task_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Task" Type="Self.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="IdUser" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="IdPerson" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="IdPerson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserAcces_OptionMenu">
+          <End Role="OptionMenu" Type="Self.OptionMenu" Multiplicity="1" />
+          <End Role="UserAcces" Type="Self.UserAcces" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OptionMenu">
+              <PropertyRef Name="IdOption" />
+            </Principal>
+            <Dependent Role="UserAcces">
+              <PropertyRef Name="IdOption" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserAcces_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserAcces" Type="Self.UserAcces" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="IdUser" />
+            </Principal>
+            <Dependent Role="UserAcces">
+              <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="GNAuthenticationUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="strLogin" Type="varchar" Mode="In" />
+          <Parameter Name="strPassword" Type="varchar" Mode="In" />
+          <Parameter Name="IdUser" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="GNListCountry" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdCountry" Type="int" Mode="In" />
+          <Parameter Name="IdIsoCountry" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="GNListPerson" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdPerson" Type="int" Mode="In" />
+          <Parameter Name="IdPersonType" Type="int" Mode="In" />
+          <Parameter Name="Status" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="GNListPersonContact" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdPerson" Type="int" Mode="In" />
+          <Parameter Name="IdPersonType" Type="int" Mode="In" />
+          <Parameter Name="IdContact" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GNListPersonTask" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdTask" Type="int" Mode="In" />
+          <Parameter Name="IdPerson" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GNListServiceConstructionOption" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdServiceRequest" Type="int" Mode="In" />
+          <Parameter Name="IdConstructionOption" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GNListServiceRequest" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdServiceRequest" Type="int" Mode="In" />
+          <Parameter Name="IdServiceType" Type="int" Mode="In" />
+          <Parameter Name="IdServiceStatus" Type="int" Mode="In" />
+          <Parameter Name="IdPerson" Type="int" Mode="In" />
+          <Parameter Name="IdUser" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GNListTask" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SelectType" Type="varchar" Mode="In" />
+          <Parameter Name="IdTask" Type="int" Mode="In" />
+          <Parameter Name="IdServiceRequest" Type="int" Mode="In" />
+          <Parameter Name="IdUser" Type="int" Mode="In" />
+          <Parameter Name="Status" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="GNListUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdUser" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GNListUserAcces" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdUser" Type="int" Mode="In" />
+          <Parameter Name="IdAssociated" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GNTranPerson" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TransactionType" Type="char" Mode="In" />
+          <Parameter Name="IdPerson" Type="int" Mode="InOut" />
+          <Parameter Name="IdPersonType" Type="int" Mode="In" />
+          <Parameter Name="IdIdentificationType" Type="int" Mode="In" />
+          <Parameter Name="strNumIdentification" Type="varchar" Mode="In" />
+          <Parameter Name="strName" Type="varchar" Mode="In" />
+          <Parameter Name="strLastName" Type="varchar" Mode="In" />
+          <Parameter Name="dttBirthday" Type="datetime" Mode="In" />
+          <Parameter Name="strAddress" Type="varchar" Mode="In" />
+          <Parameter Name="strEmail" Type="varchar" Mode="In" />
+          <Parameter Name="IdContactType" Type="int" Mode="In" />
+          <Parameter Name="IdPosition" Type="int" Mode="In" />
+          <Parameter Name="btClientPermission" Type="bit" Mode="In" />
+          <Parameter Name="btStatus" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="GNTranPersonContact" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TransactionType" Type="char" Mode="In" />
+          <Parameter Name="IdContact" Type="int" Mode="InOut" />
+          <Parameter Name="IdPerson" Type="int" Mode="In" />
+          <Parameter Name="IdPhoneNumberType" Type="int" Mode="In" />
+          <Parameter Name="strIdIsoCountry" Type="varchar" Mode="In" />
+          <Parameter Name="strPhoneNumber" Type="varchar" Mode="In" />
+          <Parameter Name="btStatus" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="GNTranPersonTask" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TransactionType" Type="char" Mode="In" />
+          <Parameter Name="IdTask" Type="int" Mode="In" />
+          <Parameter Name="IdPerson" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GNTranServiceConstructionOption" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TransactionType" Type="char" Mode="In" />
+          <Parameter Name="IdServiceRequest" Type="int" Mode="In" />
+          <Parameter Name="IdConstructionOption" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GNTranServiceRequest" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TransactionType" Type="char" Mode="In" />
+          <Parameter Name="IdServiceRequest" Type="int" Mode="InOut" />
+          <Parameter Name="IdServiceType" Type="int" Mode="In" />
+          <Parameter Name="IdServiceStatus" Type="int" Mode="In" />
+          <Parameter Name="IdPerson" Type="int" Mode="In" />
+          <Parameter Name="IdContactType" Type="int" Mode="In" />
+          <Parameter Name="IdPropertyType" Type="int" Mode="In" />
+          <Parameter Name="Address" Type="varchar" Mode="In" />
+          <Parameter Name="Price" Type="decimal" Mode="In" />
+          <Parameter Name="DownPayment" Type="decimal" Mode="In" />
+          <Parameter Name="ClosingCost" Type="decimal" Mode="In" />
+          <Parameter Name="MonthlyIncome" Type="decimal" Mode="In" />
+          <Parameter Name="DebtPayment" Type="decimal" Mode="In" />
+          <Parameter Name="Piti" Type="decimal" Mode="In" />
+          <Parameter Name="Ratios" Type="decimal" Mode="In" />
+          <Parameter Name="EstimatedValue" Type="decimal" Mode="In" />
+          <Parameter Name="LoanAmount" Type="decimal" Mode="In" />
+          <Parameter Name="CurrentDebt" Type="decimal" Mode="In" />
+          <Parameter Name="Assets" Type="varchar" Mode="In" />
+          <Parameter Name="Beneficiaries" Type="varchar" Mode="In" />
+          <Parameter Name="Process" Type="varchar" Mode="In" />
+          <Parameter Name="Wish" Type="varchar" Mode="In" />
+          <Parameter Name="Plane" Type="bit" Mode="In" />
+          <Parameter Name="Financing" Type="bit" Mode="In" />
+          <Parameter Name="Note" Type="varchar" Mode="In" />
+          <Parameter Name="IdUser" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GNTranServiceRequestTask" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TransactionType" Type="char" Mode="In" />
+          <Parameter Name="IdTask" Type="int" Mode="In" />
+          <Parameter Name="IdServiceRequest" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GNTranTask" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TransactionType" Type="char" Mode="In" />
+          <Parameter Name="IdTask" Type="int" Mode="InOut" />
+          <Parameter Name="IdUser" Type="int" Mode="In" />
+          <Parameter Name="Activity" Type="varchar" Mode="In" />
+          <Parameter Name="DateIni" Type="date" Mode="In" />
+          <Parameter Name="DateEnd" Type="date" Mode="In" />
+          <Parameter Name="HourIni" Type="time" Mode="In" />
+          <Parameter Name="HourEnd" Type="time" Mode="In" />
+          <Parameter Name="Place" Type="varchar" Mode="In" />
+          <Parameter Name="Status" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="GNTranUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdPerson" Type="int" Mode="In" />
+          <Parameter Name="strLogin" Type="varchar" Mode="In" />
+          <Parameter Name="strPassword" Type="varchar" Mode="In" />
+          <Parameter Name="TransactionType" Type="char" Mode="In" />
+          <Parameter Name="IdUser" Type="int" Mode="InOut" />
+          <Parameter Name="btStatus" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="GNTranUserAcces" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdUser" Type="int" Mode="In" />
+          <Parameter Name="IdOption" Type="int" Mode="In" />
+          <Parameter Name="blnVisible" Type="int" Mode="In" />
+          <Parameter Name="blnCreate" Type="int" Mode="In" />
+          <Parameter Name="blnSearch" Type="int" Mode="In" />
+          <Parameter Name="blnEdit" Type="int" Mode="In" />
+          <Parameter Name="blnDelete" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="MMEnterprisesModelStoreContainer">
+          <EntitySet Name="Catalog" EntityType="Self.Catalog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CatalogDetail" EntityType="Self.CatalogDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OptionMenu" EntityType="Self.OptionMenu" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PersonContact" EntityType="Self.PersonContact" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PersonTask" EntityType="Self.PersonTask" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ServiceConstructionOption" EntityType="Self.ServiceConstructionOption" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ServiceRequest" EntityType="Self.ServiceRequest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ServiceRequestTask" EntityType="Self.ServiceRequestTask" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Task" EntityType="Self.Task" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserAcces" EntityType="Self.UserAcces" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VWListCatalog" EntityType="Self.VWListCatalog" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VWListCatalog].[IdCatalog] AS [IdCatalog], 
+    [VWListCatalog].[IdTable] AS [IdTable], 
+    [VWListCatalog].[TableDesc] AS [TableDesc], 
+    [VWListCatalog].[IdCatalogDetail] AS [IdCatalogDetail], 
+    [VWListCatalog].[IdTableDetail] AS [IdTableDetail], 
+    [VWListCatalog].[DetailDesc] AS [DetailDesc], 
+    [VWListCatalog].[DetailStatus] AS [DetailStatus]
+    FROM [dbo].[VWListCatalog] AS [VWListCatalog]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_AssociatedMenu_OptionMenu" Association="Self.FK_AssociatedMenu_OptionMenu">
+            <End Role="OptionMenu" EntitySet="OptionMenu" />
+            <End Role="OptionMenu1" EntitySet="OptionMenu" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CatalogDetail_Catalog" Association="Self.FK_CatalogDetail_Catalog">
+            <End Role="Catalog" EntitySet="Catalog" />
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_ContactType" Association="Self.FK_Person_ContactType">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="Person" EntitySet="Person" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_IdentificationType" Association="Self.FK_Person_IdentificationType">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="Person" EntitySet="Person" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_PersonType" Association="Self.FK_Person_PersonType">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="Person" EntitySet="Person" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_Position" Association="Self.FK_Person_Position">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="Person" EntitySet="Person" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonContact_Country" Association="Self.FK_PersonContact_Country">
+            <End Role="Country" EntitySet="Country" />
+            <End Role="PersonContact" EntitySet="PersonContact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonContact_Person" Association="Self.FK_PersonContact_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="PersonContact" EntitySet="PersonContact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonContact_PhoneNumberType" Association="Self.FK_PersonContact_PhoneNumberType">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="PersonContact" EntitySet="PersonContact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonTask_Person" Association="Self.FK_PersonTask_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="PersonTask" EntitySet="PersonTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonTask_Task" Association="Self.FK_PersonTask_Task">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="PersonTask" EntitySet="PersonTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceConstructionOption_ServiceRequest" Association="Self.FK_ServiceConstructionOption_ServiceRequest">
+            <End Role="ServiceRequest" EntitySet="ServiceRequest" />
+            <End Role="ServiceConstructionOption" EntitySet="ServiceConstructionOption" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceRequest_ConstructionOption" Association="Self.FK_ServiceRequest_ConstructionOption">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="ServiceConstructionOption" EntitySet="ServiceConstructionOption" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceRequest_ContactType" Association="Self.FK_ServiceRequest_ContactType">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="ServiceRequest" EntitySet="ServiceRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceRequest_Person" Association="Self.FK_ServiceRequest_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="ServiceRequest" EntitySet="ServiceRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceRequest_PropertyType" Association="Self.FK_ServiceRequest_PropertyType">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="ServiceRequest" EntitySet="ServiceRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceRequest_ServiceStatus" Association="Self.FK_ServiceRequest_ServiceStatus">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="ServiceRequest" EntitySet="ServiceRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceRequest_ServiceType" Association="Self.FK_ServiceRequest_ServiceType">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="ServiceRequest" EntitySet="ServiceRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceRequest_User" Association="Self.FK_ServiceRequest_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="ServiceRequest" EntitySet="ServiceRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceRequestTask_ServiceRequest" Association="Self.FK_ServiceRequestTask_ServiceRequest">
+            <End Role="ServiceRequest" EntitySet="ServiceRequest" />
+            <End Role="ServiceRequestTask" EntitySet="ServiceRequestTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceRequestTask_Task" Association="Self.FK_ServiceRequestTask_Task">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="ServiceRequestTask" EntitySet="ServiceRequestTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Task_User" Association="Self.FK_Task_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Task" EntitySet="Task" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Person" Association="Self.FK_User_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserAcces_OptionMenu" Association="Self.FK_UserAcces_OptionMenu">
+            <End Role="OptionMenu" EntitySet="OptionMenu" />
+            <End Role="UserAcces" EntitySet="UserAcces" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserAcces_User" Association="Self.FK_UserAcces_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserAcces" EntitySet="UserAcces" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MMEnterprisesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Catalog">
+          <Key>
+            <PropertyRef Name="IdCatalog" />
+          </Key>
+          <Property Name="IdCatalog" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdTable" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CatalogDetail" Relationship="Self.FK_CatalogDetail_Catalog" FromRole="Catalog" ToRole="CatalogDetail" />
+        </EntityType>
+        <EntityType Name="CatalogDetail">
+          <Key>
+            <PropertyRef Name="IdCatalogDetail" />
+          </Key>
+          <Property Name="IdCatalogDetail" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdTableDetail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdCatalog" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Catalog" Relationship="Self.FK_CatalogDetail_Catalog" FromRole="CatalogDetail" ToRole="Catalog" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_Person_ContactType" FromRole="CatalogDetail" ToRole="Person" />
+          <NavigationProperty Name="Person1" Relationship="Self.FK_Person_IdentificationType" FromRole="CatalogDetail" ToRole="Person" />
+          <NavigationProperty Name="Person2" Relationship="Self.FK_Person_PersonType" FromRole="CatalogDetail" ToRole="Person" />
+          <NavigationProperty Name="Person3" Relationship="Self.FK_Person_Position" FromRole="CatalogDetail" ToRole="Person" />
+          <NavigationProperty Name="PersonContact" Relationship="Self.FK_PersonContact_PhoneNumberType" FromRole="CatalogDetail" ToRole="PersonContact" />
+          <NavigationProperty Name="ServiceRequest" Relationship="Self.FK_ServiceRequest_ContactType" FromRole="CatalogDetail" ToRole="ServiceRequest" />
+          <NavigationProperty Name="ServiceRequest1" Relationship="Self.FK_ServiceRequest_PropertyType" FromRole="CatalogDetail" ToRole="ServiceRequest" />
+          <NavigationProperty Name="ServiceRequest2" Relationship="Self.FK_ServiceRequest_ServiceStatus" FromRole="CatalogDetail" ToRole="ServiceRequest" />
+          <NavigationProperty Name="ServiceRequest3" Relationship="Self.FK_ServiceRequest_ServiceType" FromRole="CatalogDetail" ToRole="ServiceRequest" />
+          <NavigationProperty Name="ServiceRequest4" Relationship="Self.ServiceConstructionOption" FromRole="CatalogDetail" ToRole="ServiceRequest" />
+        </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="IdIsoCountry" />
+          </Key>
+          <Property Name="IdCountry" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdIsoCountry" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Country1" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CountryAreaCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="PersonContact" Relationship="Self.FK_PersonContact_Country" FromRole="Country" ToRole="PersonContact" />
+        </EntityType>
+        <EntityType Name="OptionMenu">
+          <Key>
+            <PropertyRef Name="IdOption" />
+          </Key>
+          <Property Name="IdOption" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OptionName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IdAssociated" Type="Int32" />
+          <Property Name="AssociatedName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <Property Name="Action" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Controller" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="OptionMenu1" Relationship="Self.FK_AssociatedMenu_OptionMenu" FromRole="OptionMenu" ToRole="OptionMenu1" />
+          <NavigationProperty Name="OptionMenu2" Relationship="Self.FK_AssociatedMenu_OptionMenu" FromRole="OptionMenu1" ToRole="OptionMenu" />
+          <NavigationProperty Name="UserAcces" Relationship="Self.FK_UserAcces_OptionMenu" FromRole="OptionMenu" ToRole="UserAcces" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="IdPerson" />
+          </Key>
+          <Property Name="IdPerson" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdPersonType" Type="Int32" Nullable="false" />
+          <Property Name="IdIdentificationType" Type="Int32" Nullable="false" />
+          <Property Name="NumIdentification" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Birthday" Type="DateTime" Precision="3" />
+          <Property Name="Address" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdContactType" Type="Int32" />
+          <Property Name="IdPosition" Type="Int32" />
+          <Property Name="ClientPermission" Type="Boolean" Nullable="false" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CatalogDetail" Relationship="Self.FK_Person_ContactType" FromRole="Person" ToRole="CatalogDetail" />
+          <NavigationProperty Name="CatalogDetail1" Relationship="Self.FK_Person_IdentificationType" FromRole="Person" ToRole="CatalogDetail" />
+          <NavigationProperty Name="CatalogDetail2" Relationship="Self.FK_Person_PersonType" FromRole="Person" ToRole="CatalogDetail" />
+          <NavigationProperty Name="CatalogDetail3" Relationship="Self.FK_Person_Position" FromRole="Person" ToRole="CatalogDetail" />
+          <NavigationProperty Name="PersonContact" Relationship="Self.FK_PersonContact_Person" FromRole="Person" ToRole="PersonContact" />
+          <NavigationProperty Name="ServiceRequest" Relationship="Self.FK_ServiceRequest_Person" FromRole="Person" ToRole="ServiceRequest" />
+          <NavigationProperty Name="User" Relationship="Self.FK_User_Person" FromRole="Person" ToRole="User" />
+          <NavigationProperty Name="Task" Relationship="Self.PersonTask" FromRole="Person" ToRole="Task" />
+        </EntityType>
+        <EntityType Name="PersonContact">
+          <Key>
+            <PropertyRef Name="IdContact" />
+          </Key>
+          <Property Name="IdContact" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdPerson" Type="Int32" Nullable="false" />
+          <Property Name="IdPhoneNumberType" Type="Int32" Nullable="false" />
+          <Property Name="IdIsoCountry" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CatalogDetail" Relationship="Self.FK_PersonContact_PhoneNumberType" FromRole="PersonContact" ToRole="CatalogDetail" />
+          <NavigationProperty Name="Country" Relationship="Self.FK_PersonContact_Country" FromRole="PersonContact" ToRole="Country" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_PersonContact_Person" FromRole="PersonContact" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="ServiceRequest">
+          <Key>
+            <PropertyRef Name="IdServiceRequest" />
+          </Key>
+          <Property Name="IdServiceRequest" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdServiceType" Type="Int32" Nullable="false" />
+          <Property Name="IdServiceStatus" Type="Int32" Nullable="false" />
+          <Property Name="IdPerson" Type="Int32" Nullable="false" />
+          <Property Name="IdContactType" Type="Int32" />
+          <Property Name="IdPropertyType" Type="Int32" />
+          <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DownPayment" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ClosingCost" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="MonthlyIncome" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DebtPayment" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Piti" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Ratios" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="EstimatedValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="LoanAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CurrentDebt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Assets" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Beneficiaries" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Process" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Wish" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Plane" Type="Boolean" />
+          <Property Name="Financing" Type="Boolean" />
+          <Property Name="Note" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="IdUser" Type="Int32" Nullable="false" />
+          <Property Name="RegisterUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RegisterDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="CatalogDetail" Relationship="Self.FK_ServiceRequest_ContactType" FromRole="ServiceRequest" ToRole="CatalogDetail" />
+          <NavigationProperty Name="CatalogDetail1" Relationship="Self.FK_ServiceRequest_PropertyType" FromRole="ServiceRequest" ToRole="CatalogDetail" />
+          <NavigationProperty Name="CatalogDetail2" Relationship="Self.FK_ServiceRequest_ServiceStatus" FromRole="ServiceRequest" ToRole="CatalogDetail" />
+          <NavigationProperty Name="CatalogDetail3" Relationship="Self.FK_ServiceRequest_ServiceType" FromRole="ServiceRequest" ToRole="CatalogDetail" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_ServiceRequest_Person" FromRole="ServiceRequest" ToRole="Person" />
+          <NavigationProperty Name="User" Relationship="Self.FK_ServiceRequest_User" FromRole="ServiceRequest" ToRole="User" />
+          <NavigationProperty Name="CatalogDetail4" Relationship="Self.ServiceConstructionOption" FromRole="ServiceRequest" ToRole="CatalogDetail" />
+          <NavigationProperty Name="Task" Relationship="Self.ServiceRequestTask" FromRole="ServiceRequest" ToRole="Task" />
+        </EntityType>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="IdTask" />
+          </Key>
+          <Property Name="IdTask" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdUser" Type="Int32" Nullable="false" />
+          <Property Name="Activity" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DateIni" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DateEnd" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="HourIni" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="HourEnd" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="Place" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Task_User" FromRole="Task" ToRole="User" />
+          <NavigationProperty Name="Person" Relationship="Self.PersonTask" FromRole="Task" ToRole="Person" />
+          <NavigationProperty Name="ServiceRequest" Relationship="Self.ServiceRequestTask" FromRole="Task" ToRole="ServiceRequest" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="IdUser" />
+          </Key>
+          <Property Name="IdUser" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdPerson" Type="Int32" Nullable="false" />
+          <Property Name="Login" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_User_Person" FromRole="User" ToRole="Person" />
+          <NavigationProperty Name="ServiceRequest" Relationship="Self.FK_ServiceRequest_User" FromRole="User" ToRole="ServiceRequest" />
+          <NavigationProperty Name="Task" Relationship="Self.FK_Task_User" FromRole="User" ToRole="Task" />
+          <NavigationProperty Name="UserAcces" Relationship="Self.FK_UserAcces_User" FromRole="User" ToRole="UserAcces" />
+        </EntityType>
+        <EntityType Name="UserAcces">
+          <Key>
+            <PropertyRef Name="IdUser" />
+            <PropertyRef Name="IdOption" />
+          </Key>
+          <Property Name="IdUser" Type="Int32" Nullable="false" />
+          <Property Name="IdOption" Type="Int32" Nullable="false" />
+          <Property Name="Visible" Type="Boolean" Nullable="false" />
+          <Property Name="Create" Type="Boolean" Nullable="false" />
+          <Property Name="Search" Type="Boolean" Nullable="false" />
+          <Property Name="Edit" Type="Boolean" Nullable="false" />
+          <Property Name="Delete" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="OptionMenu" Relationship="Self.FK_UserAcces_OptionMenu" FromRole="UserAcces" ToRole="OptionMenu" />
+          <NavigationProperty Name="User" Relationship="Self.FK_UserAcces_User" FromRole="UserAcces" ToRole="User" />
+        </EntityType>
+        <EntityType Name="VWListCatalog">
+          <Key>
+            <PropertyRef Name="IdCatalog" />
+            <PropertyRef Name="IdTable" />
+            <PropertyRef Name="IdCatalogDetail" />
+            <PropertyRef Name="IdTableDetail" />
+            <PropertyRef Name="DetailDesc" />
+            <PropertyRef Name="DetailStatus" />
+          </Key>
+          <Property Name="IdCatalog" Type="Int32" Nullable="false" />
+          <Property Name="IdTable" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TableDesc" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="IdCatalogDetail" Type="Int32" Nullable="false" />
+          <Property Name="IdTableDetail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DetailDesc" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DetailStatus" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_CatalogDetail_Catalog">
+          <End Role="Catalog" Type="Self.Catalog" Multiplicity="1" />
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Catalog">
+              <PropertyRef Name="IdCatalog" />
+            </Principal>
+            <Dependent Role="CatalogDetail">
+              <PropertyRef Name="IdCatalog" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_ContactType">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="0..1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="IdContactType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_IdentificationType">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="IdIdentificationType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_PersonType">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="IdPersonType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_Position">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="0..1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="IdPosition" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonContact_PhoneNumberType">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="1" />
+          <End Role="PersonContact" Type="Self.PersonContact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="PersonContact">
+              <PropertyRef Name="IdPhoneNumberType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceRequest_ContactType">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="0..1" />
+          <End Role="ServiceRequest" Type="Self.ServiceRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="ServiceRequest">
+              <PropertyRef Name="IdContactType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceRequest_PropertyType">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="0..1" />
+          <End Role="ServiceRequest" Type="Self.ServiceRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="ServiceRequest">
+              <PropertyRef Name="IdPropertyType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceRequest_ServiceStatus">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="1" />
+          <End Role="ServiceRequest" Type="Self.ServiceRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="ServiceRequest">
+              <PropertyRef Name="IdServiceStatus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceRequest_ServiceType">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="1" />
+          <End Role="ServiceRequest" Type="Self.ServiceRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="ServiceRequest">
+              <PropertyRef Name="IdServiceType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonContact_Country">
+          <End Role="Country" Type="Self.Country" Multiplicity="1" />
+          <End Role="PersonContact" Type="Self.PersonContact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="IdIsoCountry" />
+            </Principal>
+            <Dependent Role="PersonContact">
+              <PropertyRef Name="IdIsoCountry" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AssociatedMenu_OptionMenu">
+          <End Role="OptionMenu" Type="Self.OptionMenu" Multiplicity="0..1" />
+          <End Role="OptionMenu1" Type="Self.OptionMenu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OptionMenu">
+              <PropertyRef Name="IdOption" />
+            </Principal>
+            <Dependent Role="OptionMenu1">
+              <PropertyRef Name="IdAssociated" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserAcces_OptionMenu">
+          <End Role="OptionMenu" Type="Self.OptionMenu" Multiplicity="1" />
+          <End Role="UserAcces" Type="Self.UserAcces" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OptionMenu">
+              <PropertyRef Name="IdOption" />
+            </Principal>
+            <Dependent Role="UserAcces">
+              <PropertyRef Name="IdOption" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonContact_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="PersonContact" Type="Self.PersonContact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="IdPerson" />
+            </Principal>
+            <Dependent Role="PersonContact">
+              <PropertyRef Name="IdPerson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceRequest_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="ServiceRequest" Type="Self.ServiceRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="IdPerson" />
+            </Principal>
+            <Dependent Role="ServiceRequest">
+              <PropertyRef Name="IdPerson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="IdPerson" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="IdPerson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceRequest_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="ServiceRequest" Type="Self.ServiceRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="IdUser" />
+            </Principal>
+            <Dependent Role="ServiceRequest">
+              <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Task_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Task" Type="Self.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="IdUser" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserAcces_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserAcces" Type="Self.UserAcces" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="IdUser" />
+            </Principal>
+            <Dependent Role="UserAcces">
+              <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PersonTask">
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <End Role="Task" Type="Self.Task" Multiplicity="*" />
+        </Association>
+        <Association Name="ServiceConstructionOption">
+          <End Role="ServiceRequest" Type="Self.ServiceRequest" Multiplicity="*" />
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="*" />
+        </Association>
+        <Association Name="ServiceRequestTask">
+          <End Role="ServiceRequest" Type="Self.ServiceRequest" Multiplicity="*" />
+          <End Role="Task" Type="Self.Task" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="MMEnterprisesEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Catalog" EntityType="Self.Catalog" />
+          <EntitySet Name="CatalogDetail" EntityType="Self.CatalogDetail" />
+          <EntitySet Name="Country" EntityType="Self.Country" />
+          <EntitySet Name="OptionMenu" EntityType="Self.OptionMenu" />
+          <EntitySet Name="Person" EntityType="Self.Person" />
+          <EntitySet Name="PersonContact" EntityType="Self.PersonContact" />
+          <EntitySet Name="ServiceRequest" EntityType="Self.ServiceRequest" />
+          <EntitySet Name="Task" EntityType="Self.Task" />
+          <EntitySet Name="User" EntityType="Self.User" />
+          <EntitySet Name="UserAcces" EntityType="Self.UserAcces" />
+          <EntitySet Name="VWListCatalog" EntityType="Self.VWListCatalog" />
+          <AssociationSet Name="FK_CatalogDetail_Catalog" Association="Self.FK_CatalogDetail_Catalog">
+            <End Role="Catalog" EntitySet="Catalog" />
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_ContactType" Association="Self.FK_Person_ContactType">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="Person" EntitySet="Person" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_IdentificationType" Association="Self.FK_Person_IdentificationType">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="Person" EntitySet="Person" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_PersonType" Association="Self.FK_Person_PersonType">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="Person" EntitySet="Person" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_Position" Association="Self.FK_Person_Position">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="Person" EntitySet="Person" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonContact_PhoneNumberType" Association="Self.FK_PersonContact_PhoneNumberType">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="PersonContact" EntitySet="PersonContact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceRequest_ContactType" Association="Self.FK_ServiceRequest_ContactType">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="ServiceRequest" EntitySet="ServiceRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceRequest_PropertyType" Association="Self.FK_ServiceRequest_PropertyType">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="ServiceRequest" EntitySet="ServiceRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceRequest_ServiceStatus" Association="Self.FK_ServiceRequest_ServiceStatus">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="ServiceRequest" EntitySet="ServiceRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceRequest_ServiceType" Association="Self.FK_ServiceRequest_ServiceType">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="ServiceRequest" EntitySet="ServiceRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonContact_Country" Association="Self.FK_PersonContact_Country">
+            <End Role="Country" EntitySet="Country" />
+            <End Role="PersonContact" EntitySet="PersonContact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AssociatedMenu_OptionMenu" Association="Self.FK_AssociatedMenu_OptionMenu">
+            <End Role="OptionMenu" EntitySet="OptionMenu" />
+            <End Role="OptionMenu1" EntitySet="OptionMenu" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserAcces_OptionMenu" Association="Self.FK_UserAcces_OptionMenu">
+            <End Role="OptionMenu" EntitySet="OptionMenu" />
+            <End Role="UserAcces" EntitySet="UserAcces" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonContact_Person" Association="Self.FK_PersonContact_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="PersonContact" EntitySet="PersonContact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceRequest_Person" Association="Self.FK_ServiceRequest_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="ServiceRequest" EntitySet="ServiceRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Person" Association="Self.FK_User_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceRequest_User" Association="Self.FK_ServiceRequest_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="ServiceRequest" EntitySet="ServiceRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Task_User" Association="Self.FK_Task_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Task" EntitySet="Task" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserAcces_User" Association="Self.FK_UserAcces_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserAcces" EntitySet="UserAcces" />
+          </AssociationSet>
+          <AssociationSet Name="PersonTask" Association="Self.PersonTask">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Task" EntitySet="Task" />
+          </AssociationSet>
+          <AssociationSet Name="ServiceConstructionOption" Association="Self.ServiceConstructionOption">
+            <End Role="ServiceRequest" EntitySet="ServiceRequest" />
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+          </AssociationSet>
+          <AssociationSet Name="ServiceRequestTask" Association="Self.ServiceRequestTask">
+            <End Role="ServiceRequest" EntitySet="ServiceRequest" />
+            <End Role="Task" EntitySet="Task" />
+          </AssociationSet>
+          <FunctionImport Name="GNAuthenticationUser">
+            <Parameter Name="strLogin" Mode="In" Type="String" />
+            <Parameter Name="strPassword" Mode="In" Type="String" />
+            <Parameter Name="IdUser" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNListCountry" ReturnType="Collection(MMEnterprisesModel.GNListCountry_Result)">
+            <Parameter Name="IdCountry" Mode="In" Type="Int32" />
+            <Parameter Name="IdIsoCountry" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GNListPerson" ReturnType="Collection(MMEnterprisesModel.GNListPerson_Result)">
+            <Parameter Name="IdPerson" Mode="In" Type="Int32" />
+            <Parameter Name="IdPersonType" Mode="In" Type="Int32" />
+            <Parameter Name="Status" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="GNListPersonContact" ReturnType="Collection(MMEnterprisesModel.GNListPersonContact_Result)">
+            <Parameter Name="IdPerson" Mode="In" Type="Int32" />
+            <Parameter Name="IdPersonType" Mode="In" Type="Int32" />
+            <Parameter Name="IdContact" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNListServiceConstructionOption" ReturnType="Collection(MMEnterprisesModel.GNListServiceConstructionOption_Result)">
+            <Parameter Name="IdServiceRequest" Mode="In" Type="Int32" />
+            <Parameter Name="IdConstructionOption" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNListServiceRequest" ReturnType="Collection(MMEnterprisesModel.GNListServiceRequest_Result)">
+            <Parameter Name="IdServiceRequest" Mode="In" Type="Int32" />
+            <Parameter Name="IdServiceType" Mode="In" Type="Int32" />
+            <Parameter Name="IdServiceStatus" Mode="In" Type="Int32" />
+            <Parameter Name="IdPerson" Mode="In" Type="Int32" />
+            <Parameter Name="IdUser" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNListTask" ReturnType="Collection(MMEnterprisesModel.GNListTask_Result)">
+            <Parameter Name="SelectType" Mode="In" Type="String" />
+            <Parameter Name="IdTask" Mode="In" Type="Int32" />
+            <Parameter Name="IdServiceRequest" Mode="In" Type="Int32" />
+            <Parameter Name="IdUser" Mode="In" Type="Int32" />
+            <Parameter Name="Status" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="GNListUser" ReturnType="Collection(MMEnterprisesModel.GNListUser_Result)">
+          <Parameter Name="IdUser" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNListUserAcces" ReturnType="Collection(MMEnterprisesModel.GNListUserAcces_Result)">
+            <Parameter Name="IdUser" Mode="In" Type="Int32" />
+            <Parameter Name="IdAssociated" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNTranPerson">
+            <Parameter Name="TransactionType" Mode="In" Type="String" />
+            <Parameter Name="IdPerson" Mode="InOut" Type="Int32" />
+            <Parameter Name="IdPersonType" Mode="In" Type="Int32" />
+            <Parameter Name="IdIdentificationType" Mode="In" Type="Int32" />
+            <Parameter Name="strNumIdentification" Mode="In" Type="String" />
+            <Parameter Name="strName" Mode="In" Type="String" />
+            <Parameter Name="strLastName" Mode="In" Type="String" />
+            <Parameter Name="dttBirthday" Mode="In" Type="DateTime" />
+            <Parameter Name="strAddress" Mode="In" Type="String" />
+            <Parameter Name="strEmail" Mode="In" Type="String" />
+            <Parameter Name="IdContactType" Mode="In" Type="Int32" />
+            <Parameter Name="IdPosition" Mode="In" Type="Int32" />
+            <Parameter Name="btClientPermission" Mode="In" Type="Boolean" />
+            <Parameter Name="btStatus" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="GNTranPersonContact">
+            <Parameter Name="TransactionType" Mode="In" Type="String" />
+            <Parameter Name="IdContact" Mode="InOut" Type="Int32" />
+            <Parameter Name="IdPerson" Mode="In" Type="Int32" />
+            <Parameter Name="IdPhoneNumberType" Mode="In" Type="Int32" />
+            <Parameter Name="strIdIsoCountry" Mode="In" Type="String" />
+            <Parameter Name="strPhoneNumber" Mode="In" Type="String" />
+            <Parameter Name="btStatus" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="GNTranPersonTask">
+            <Parameter Name="TransactionType" Mode="In" Type="String" />
+            <Parameter Name="IdTask" Mode="In" Type="Int32" />
+            <Parameter Name="IdPerson" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNTranServiceConstructionOption">
+            <Parameter Name="TransactionType" Mode="In" Type="String" />
+            <Parameter Name="IdServiceRequest" Mode="In" Type="Int32" />
+            <Parameter Name="IdConstructionOption" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNTranServiceRequest">
+            <Parameter Name="TransactionType" Mode="In" Type="String" />
+            <Parameter Name="IdServiceRequest" Mode="InOut" Type="Int32" />
+            <Parameter Name="IdServiceType" Mode="In" Type="Int32" />
+            <Parameter Name="IdServiceStatus" Mode="In" Type="Int32" />
+            <Parameter Name="IdPerson" Mode="In" Type="Int32" />
+            <Parameter Name="IdContactType" Mode="In" Type="Int32" />
+            <Parameter Name="IdPropertyType" Mode="In" Type="Int32" />
+            <Parameter Name="Address" Mode="In" Type="String" />
+            <Parameter Name="Price" Mode="In" Type="Decimal" />
+            <Parameter Name="DownPayment" Mode="In" Type="Decimal" />
+            <Parameter Name="ClosingCost" Mode="In" Type="Decimal" />
+            <Parameter Name="MonthlyIncome" Mode="In" Type="Decimal" />
+            <Parameter Name="DebtPayment" Mode="In" Type="Decimal" />
+            <Parameter Name="Piti" Mode="In" Type="Decimal" />
+            <Parameter Name="Ratios" Mode="In" Type="Decimal" />
+            <Parameter Name="EstimatedValue" Mode="In" Type="Decimal" />
+            <Parameter Name="LoanAmount" Mode="In" Type="Decimal" />
+            <Parameter Name="CurrentDebt" Mode="In" Type="Decimal" />
+            <Parameter Name="Assets" Mode="In" Type="String" />
+            <Parameter Name="Beneficiaries" Mode="In" Type="String" />
+            <Parameter Name="Process" Mode="In" Type="String" />
+            <Parameter Name="Wish" Mode="In" Type="String" />
+            <Parameter Name="Plane" Mode="In" Type="Boolean" />
+            <Parameter Name="Financing" Mode="In" Type="Boolean" />
+            <Parameter Name="Note" Mode="In" Type="String" />
+            <Parameter Name="IdUser" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNTranServiceRequestTask">
+            <Parameter Name="TransactionType" Mode="In" Type="String" />
+            <Parameter Name="IdTask" Mode="In" Type="Int32" />
+            <Parameter Name="IdServiceRequest" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNTranTask">
+            <Parameter Name="TransactionType" Mode="In" Type="String" />
+            <Parameter Name="IdTask" Mode="InOut" Type="Int32" />
+            <Parameter Name="IdUser" Mode="In" Type="Int32" />
+            <Parameter Name="Activity" Mode="In" Type="String" />
+            <Parameter Name="DateIni" Mode="In" Type="DateTime" />
+            <Parameter Name="DateEnd" Mode="In" Type="DateTime" />
+            <Parameter Name="HourIni" Mode="In" Type="Time" />
+            <Parameter Name="HourEnd" Mode="In" Type="Time" />
+            <Parameter Name="Place" Mode="In" Type="String" />
+            <Parameter Name="Status" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="GNTranUser">
+            <Parameter Name="IdPerson" Mode="In" Type="Int32" />
+            <Parameter Name="strLogin" Mode="In" Type="String" />
+            <Parameter Name="strPassword" Mode="In" Type="String" />
+            <Parameter Name="TransactionType" Mode="In" Type="String" />
+            <Parameter Name="IdUser" Mode="InOut" Type="Int32" />
+            <Parameter Name="btStatus" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="GNTranUserAcces">
+            <Parameter Name="IdUser" Mode="In" Type="Int32" />
+            <Parameter Name="IdOption" Mode="In" Type="Int32" />
+            <Parameter Name="blnVisible" Mode="In" Type="Int32" />
+            <Parameter Name="blnCreate" Mode="In" Type="Int32" />
+            <Parameter Name="blnSearch" Mode="In" Type="Int32" />
+            <Parameter Name="blnEdit" Mode="In" Type="Int32" />
+            <Parameter Name="blnDelete" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNListPersonTask" ReturnType="Collection(MMEnterprisesModel.GNListPersonTask_Result)">
+            <Parameter Name="IdTask" Mode="In" Type="Int32" />
+            <Parameter Name="IdPerson" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="GNListCountry_Result">
+          <Property Type="Int32" Name="IdCountry" Nullable="false" />
+          <Property Type="String" Name="IdIsoCountry" Nullable="false" MaxLength="6" />
+          <Property Type="String" Name="Country" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="CountryAreaCode" Nullable="false" MaxLength="10" />
+          <Property Type="Boolean" Name="Status" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GNListPerson_Result">
+          <Property Type="Int32" Name="IdPerson" Nullable="false" />
+          <Property Type="Int32" Name="IdPersonType" Nullable="false" />
+          <Property Type="String" Name="PersonType" Nullable="false" MaxLength="200" />
+          <Property Type="Int32" Name="IdIdentificationType" Nullable="false" />
+          <Property Type="String" Name="IdentificationType" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="NumIdentification" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="LastName" Nullable="false" MaxLength="100" />
+          <Property Type="DateTime" Name="Birthday" Nullable="true" Precision="23" />
+          <Property Type="String" Name="Address" Nullable="false" MaxLength="300" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="IdContactType" Nullable="true" />
+          <Property Type="String" Name="ContactType" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="IdPosition" Nullable="true" />
+          <Property Type="String" Name="Position" Nullable="true" MaxLength="200" />
+          <Property Type="Boolean" Name="ClientPermission" Nullable="false" />
+          <Property Type="Boolean" Name="Status" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GNListPersonContact_Result">
+          <Property Type="Int32" Name="IdPersonType" Nullable="false" />
+          <Property Type="Int32" Name="IdPerson" Nullable="false" />
+          <Property Type="Int32" Name="IdContact" Nullable="false" />
+          <Property Type="String" Name="IdIsoCountry" Nullable="false" MaxLength="6" />
+          <Property Type="String" Name="CountryAreaCode" Nullable="false" MaxLength="10" />
+          <Property Type="Int32" Name="IdPhoneNumberType" Nullable="false" />
+          <Property Type="String" Name="PhoneNumberType" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="PhoneNumber" Nullable="false" MaxLength="15" />
+          <Property Type="Boolean" Name="Status" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GNListServiceConstructionOption_Result">
+          <Property Type="Int32" Name="IdServiceRequest" Nullable="false" />
+          <Property Type="Int32" Name="IdConstructionOption" Nullable="false" />
+          <Property Type="String" Name="ConstructionOption" Nullable="false" MaxLength="200" />
+        </ComplexType>
+        <ComplexType Name="GNListServiceRequest_Result">
+          <Property Type="Int32" Name="IdServiceRequest" Nullable="false" />
+          <Property Type="Int32" Name="IdServiceType" Nullable="false" />
+          <Property Type="String" Name="ServiceType" Nullable="false" MaxLength="200" />
+          <Property Type="Int32" Name="IdServiceStatus" Nullable="false" />
+          <Property Type="String" Name="ServiceStatus" Nullable="false" MaxLength="200" />
+          <Property Type="Int32" Name="IdPerson" Nullable="false" />
+          <Property Type="Int32" Name="IdContactType" Nullable="true" />
+          <Property Type="String" Name="ContactType" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="IdPropertyType" Nullable="true" />
+          <Property Type="String" Name="PropertyType" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Address" Nullable="true" MaxLength="500" />
+          <Property Type="Decimal" Name="Price" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="DownPayment" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="ClosingCost" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="MonthlyIncome" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="DebtPayment" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="Piti" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="Ratios" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="EstimatedValue" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="LoanAmount" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="CurrentDebt" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="Assets" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="Beneficiaries" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="Process" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="Wish" Nullable="true" MaxLength="500" />
+          <Property Type="Boolean" Name="Plane" Nullable="true" />
+          <Property Type="Boolean" Name="Financing" Nullable="true" />
+          <Property Type="String" Name="Note" Nullable="true" MaxLength="500" />
+          <Property Type="Int32" Name="IdUser" Nullable="false" />
+          <Property Type="String" Name="RegisterUser" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="RegisterDate" Nullable="false" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="GNListTask_Result">
+          <Property Type="Int32" Name="IdTask" Nullable="false" />
+          <Property Type="Int32" Name="IdUser" Nullable="false" />
+          <Property Type="String" Name="Activity" Nullable="false" MaxLength="500" />
+          <Property Type="DateTime" Name="DateIni" Nullable="false" />
+          <Property Type="DateTime" Name="DateEnd" Nullable="false" />
+          <Property Type="Time" Name="HourIni" Nullable="false" />
+          <Property Type="Time" Name="HourEnd" Nullable="false" />
+          <Property Type="String" Name="Place" Nullable="false" MaxLength="300" />
+          <Property Type="Boolean" Name="Status" Nullable="false" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="UserLastName" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="GNListUser_Result">
+          <Property Type="Int32" Name="IdUser" Nullable="false" />
+          <Property Type="Int32" Name="IdPerson" Nullable="false" />
+          <Property Type="String" Name="Login" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="50" />
+          <Property Type="Boolean" Name="Status" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GNListUserAcces_Result">
+          <Property Type="Int32" Name="IdOption" Nullable="true" />
+          <Property Type="String" Name="OptionName" Nullable="true" MaxLength="100" />
+          <Property Type="Boolean" Name="Visible" Nullable="true" />
+          <Property Type="Boolean" Name="Create" Nullable="true" />
+          <Property Type="Boolean" Name="Search" Nullable="true" />
+          <Property Type="Boolean" Name="Edit" Nullable="true" />
+          <Property Type="Boolean" Name="Delete" Nullable="true" />
+          <Property Type="String" Name="Action" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Controller" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="IdAssociated" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GNListPersonTask_Result">
+          <Property Type="Int32" Name="IdTask" Nullable="false" />
+          <Property Type="Int32" Name="IdPersonEmployee" Nullable="false" />
+          <Property Type="String" Name="PersonEmployeeName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="PersonEmployeeLastName" Nullable="false" MaxLength="100" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MMEnterprisesModelStoreContainer" CdmEntityContainer="MMEnterprisesEntities">
+          <EntitySetMapping Name="Catalog">
+            <EntityTypeMapping TypeName="MMEnterprisesModel.Catalog">
+              <MappingFragment StoreEntitySet="Catalog">
+                <ScalarProperty Name="IdCatalog" ColumnName="IdCatalog" />
+                <ScalarProperty Name="IdTable" ColumnName="IdTable" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CatalogDetail">
+            <EntityTypeMapping TypeName="MMEnterprisesModel.CatalogDetail">
+              <MappingFragment StoreEntitySet="CatalogDetail">
+                <ScalarProperty Name="IdCatalogDetail" ColumnName="IdCatalogDetail" />
+                <ScalarProperty Name="IdTableDetail" ColumnName="IdTableDetail" />
+                <ScalarProperty Name="IdCatalog" ColumnName="IdCatalog" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Country">
+            <EntityTypeMapping TypeName="MMEnterprisesModel.Country">
+              <MappingFragment StoreEntitySet="Country">
+                <ScalarProperty Name="IdCountry" ColumnName="IdCountry" />
+                <ScalarProperty Name="IdIsoCountry" ColumnName="IdIsoCountry" />
+                <ScalarProperty Name="Country1" ColumnName="Country" />
+                <ScalarProperty Name="CountryAreaCode" ColumnName="CountryAreaCode" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OptionMenu">
+            <EntityTypeMapping TypeName="MMEnterprisesModel.OptionMenu">
+              <MappingFragment StoreEntitySet="OptionMenu">
+                <ScalarProperty Name="IdOption" ColumnName="IdOption" />
+                <ScalarProperty Name="OptionName" ColumnName="OptionName" />
+                <ScalarProperty Name="IdAssociated" ColumnName="IdAssociated" />
+                <ScalarProperty Name="AssociatedName" ColumnName="AssociatedName" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Action" ColumnName="Action" />
+                <ScalarProperty Name="Controller" ColumnName="Controller" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Person">
+            <EntityTypeMapping TypeName="MMEnterprisesModel.Person">
+              <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
+                <ScalarProperty Name="IdPersonType" ColumnName="IdPersonType" />
+                <ScalarProperty Name="IdIdentificationType" ColumnName="IdIdentificationType" />
+                <ScalarProperty Name="NumIdentification" ColumnName="NumIdentification" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="IdContactType" ColumnName="IdContactType" />
+                <ScalarProperty Name="IdPosition" ColumnName="IdPosition" />
+                <ScalarProperty Name="ClientPermission" ColumnName="ClientPermission" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PersonContact">
+            <EntityTypeMapping TypeName="MMEnterprisesModel.PersonContact">
+              <MappingFragment StoreEntitySet="PersonContact">
+                <ScalarProperty Name="IdContact" ColumnName="IdContact" />
+                <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
+                <ScalarProperty Name="IdPhoneNumberType" ColumnName="IdPhoneNumberType" />
+                <ScalarProperty Name="IdIsoCountry" ColumnName="IdIsoCountry" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ServiceRequest">
+            <EntityTypeMapping TypeName="MMEnterprisesModel.ServiceRequest">
+              <MappingFragment StoreEntitySet="ServiceRequest">
+                <ScalarProperty Name="IdServiceRequest" ColumnName="IdServiceRequest" />
+                <ScalarProperty Name="IdServiceType" ColumnName="IdServiceType" />
+                <ScalarProperty Name="IdServiceStatus" ColumnName="IdServiceStatus" />
+                <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
+                <ScalarProperty Name="IdContactType" ColumnName="IdContactType" />
+                <ScalarProperty Name="IdPropertyType" ColumnName="IdPropertyType" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="DownPayment" ColumnName="DownPayment" />
+                <ScalarProperty Name="ClosingCost" ColumnName="ClosingCost" />
+                <ScalarProperty Name="MonthlyIncome" ColumnName="MonthlyIncome" />
+                <ScalarProperty Name="DebtPayment" ColumnName="DebtPayment" />
+                <ScalarProperty Name="Piti" ColumnName="Piti" />
+                <ScalarProperty Name="Ratios" ColumnName="Ratios" />
+                <ScalarProperty Name="EstimatedValue" ColumnName="EstimatedValue" />
+                <ScalarProperty Name="LoanAmount" ColumnName="LoanAmount" />
+                <ScalarProperty Name="CurrentDebt" ColumnName="CurrentDebt" />
+                <ScalarProperty Name="Assets" ColumnName="Assets" />
+                <ScalarProperty Name="Beneficiaries" ColumnName="Beneficiaries" />
+                <ScalarProperty Name="Process" ColumnName="Process" />
+                <ScalarProperty Name="Wish" ColumnName="Wish" />
+                <ScalarProperty Name="Plane" ColumnName="Plane" />
+                <ScalarProperty Name="Financing" ColumnName="Financing" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+                <ScalarProperty Name="RegisterUser" ColumnName="RegisterUser" />
+                <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Task">
+            <EntityTypeMapping TypeName="MMEnterprisesModel.Task">
+              <MappingFragment StoreEntitySet="Task">
+                <ScalarProperty Name="IdTask" ColumnName="IdTask" />
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+                <ScalarProperty Name="Activity" ColumnName="Activity" />
+                <ScalarProperty Name="DateIni" ColumnName="DateIni" />
+                <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
+                <ScalarProperty Name="HourIni" ColumnName="HourIni" />
+                <ScalarProperty Name="HourEnd" ColumnName="HourEnd" />
+                <ScalarProperty Name="Place" ColumnName="Place" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User">
+            <EntityTypeMapping TypeName="MMEnterprisesModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+                <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserAcces">
+            <EntityTypeMapping TypeName="MMEnterprisesModel.UserAcces">
+              <MappingFragment StoreEntitySet="UserAcces">
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+                <ScalarProperty Name="IdOption" ColumnName="IdOption" />
+                <ScalarProperty Name="Visible" ColumnName="Visible" />
+                <ScalarProperty Name="Create" ColumnName="Create" />
+                <ScalarProperty Name="Search" ColumnName="Search" />
+                <ScalarProperty Name="Edit" ColumnName="Edit" />
+                <ScalarProperty Name="Delete" ColumnName="Delete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VWListCatalog">
+            <EntityTypeMapping TypeName="MMEnterprisesModel.VWListCatalog">
+              <MappingFragment StoreEntitySet="VWListCatalog">
+                <ScalarProperty Name="IdCatalog" ColumnName="IdCatalog" />
+                <ScalarProperty Name="IdTable" ColumnName="IdTable" />
+                <ScalarProperty Name="TableDesc" ColumnName="TableDesc" />
+                <ScalarProperty Name="IdCatalogDetail" ColumnName="IdCatalogDetail" />
+                <ScalarProperty Name="IdTableDetail" ColumnName="IdTableDetail" />
+                <ScalarProperty Name="DetailDesc" ColumnName="DetailDesc" />
+                <ScalarProperty Name="DetailStatus" ColumnName="DetailStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="PersonTask" TypeName="MMEnterprisesModel.PersonTask" StoreEntitySet="PersonTask">
+            <EndProperty Name="Person">
+              <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
+            </EndProperty>
+            <EndProperty Name="Task">
+              <ScalarProperty Name="IdTask" ColumnName="IdTask" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="ServiceConstructionOption" TypeName="MMEnterprisesModel.ServiceConstructionOption" StoreEntitySet="ServiceConstructionOption">
+            <EndProperty Name="ServiceRequest">
+              <ScalarProperty Name="IdServiceRequest" ColumnName="IdServiceRequest" />
+            </EndProperty>
+            <EndProperty Name="CatalogDetail">
+              <ScalarProperty Name="IdCatalogDetail" ColumnName="IdConstructionOption" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="ServiceRequestTask" TypeName="MMEnterprisesModel.ServiceRequestTask" StoreEntitySet="ServiceRequestTask">
+            <EndProperty Name="ServiceRequest">
+              <ScalarProperty Name="IdServiceRequest" ColumnName="IdServiceRequest" />
+            </EndProperty>
+            <EndProperty Name="Task">
+              <ScalarProperty Name="IdTask" ColumnName="IdTask" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="GNAuthenticationUser" FunctionName="MMEnterprisesModel.Store.GNAuthenticationUser" />
+          <FunctionImportMapping FunctionImportName="GNListCountry" FunctionName="MMEnterprisesModel.Store.GNListCountry">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListCountry_Result">
+                <ScalarProperty Name="IdCountry" ColumnName="IdCountry" />
+                <ScalarProperty Name="IdIsoCountry" ColumnName="IdIsoCountry" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="CountryAreaCode" ColumnName="CountryAreaCode" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNListPerson" FunctionName="MMEnterprisesModel.Store.GNListPerson">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListPerson_Result">
+                <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
+                <ScalarProperty Name="IdPersonType" ColumnName="IdPersonType" />
+                <ScalarProperty Name="PersonType" ColumnName="PersonType" />
+                <ScalarProperty Name="IdIdentificationType" ColumnName="IdIdentificationType" />
+                <ScalarProperty Name="IdentificationType" ColumnName="IdentificationType" />
+                <ScalarProperty Name="NumIdentification" ColumnName="NumIdentification" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="IdContactType" ColumnName="IdContactType" />
+                <ScalarProperty Name="ContactType" ColumnName="ContactType" />
+                <ScalarProperty Name="IdPosition" ColumnName="IdPosition" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="ClientPermission" ColumnName="ClientPermission" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNListPersonContact" FunctionName="MMEnterprisesModel.Store.GNListPersonContact">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListPersonContact_Result">
+                <ScalarProperty Name="IdPersonType" ColumnName="IdPersonType" />
+                <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
+                <ScalarProperty Name="IdContact" ColumnName="IdContact" />
+                <ScalarProperty Name="IdIsoCountry" ColumnName="IdIsoCountry" />
+                <ScalarProperty Name="CountryAreaCode" ColumnName="CountryAreaCode" />
+                <ScalarProperty Name="IdPhoneNumberType" ColumnName="IdPhoneNumberType" />
+                <ScalarProperty Name="PhoneNumberType" ColumnName="PhoneNumberType" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNListServiceConstructionOption" FunctionName="MMEnterprisesModel.Store.GNListServiceConstructionOption">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListServiceConstructionOption_Result">
+                <ScalarProperty Name="IdServiceRequest" ColumnName="IdServiceRequest" />
+                <ScalarProperty Name="IdConstructionOption" ColumnName="IdConstructionOption" />
+                <ScalarProperty Name="ConstructionOption" ColumnName="ConstructionOption" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNListServiceRequest" FunctionName="MMEnterprisesModel.Store.GNListServiceRequest">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListServiceRequest_Result">
+                <ScalarProperty Name="IdServiceRequest" ColumnName="IdServiceRequest" />
+                <ScalarProperty Name="IdServiceType" ColumnName="IdServiceType" />
+                <ScalarProperty Name="ServiceType" ColumnName="ServiceType" />
+                <ScalarProperty Name="IdServiceStatus" ColumnName="IdServiceStatus" />
+                <ScalarProperty Name="ServiceStatus" ColumnName="ServiceStatus" />
+                <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
+                <ScalarProperty Name="IdContactType" ColumnName="IdContactType" />
+                <ScalarProperty Name="ContactType" ColumnName="ContactType" />
+                <ScalarProperty Name="IdPropertyType" ColumnName="IdPropertyType" />
+                <ScalarProperty Name="PropertyType" ColumnName="PropertyType" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="DownPayment" ColumnName="DownPayment" />
+                <ScalarProperty Name="ClosingCost" ColumnName="ClosingCost" />
+                <ScalarProperty Name="MonthlyIncome" ColumnName="MonthlyIncome" />
+                <ScalarProperty Name="DebtPayment" ColumnName="DebtPayment" />
+                <ScalarProperty Name="Piti" ColumnName="Piti" />
+                <ScalarProperty Name="Ratios" ColumnName="Ratios" />
+                <ScalarProperty Name="EstimatedValue" ColumnName="EstimatedValue" />
+                <ScalarProperty Name="LoanAmount" ColumnName="LoanAmount" />
+                <ScalarProperty Name="CurrentDebt" ColumnName="CurrentDebt" />
+                <ScalarProperty Name="Assets" ColumnName="Assets" />
+                <ScalarProperty Name="Beneficiaries" ColumnName="Beneficiaries" />
+                <ScalarProperty Name="Process" ColumnName="Process" />
+                <ScalarProperty Name="Wish" ColumnName="Wish" />
+                <ScalarProperty Name="Plane" ColumnName="Plane" />
+                <ScalarProperty Name="Financing" ColumnName="Financing" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+                <ScalarProperty Name="RegisterUser" ColumnName="RegisterUser" />
+                <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNListTask" FunctionName="MMEnterprisesModel.Store.GNListTask">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListTask_Result">
+                <ScalarProperty Name="IdTask" ColumnName="IdTask" />
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+                <ScalarProperty Name="Activity" ColumnName="Activity" />
+                <ScalarProperty Name="DateIni" ColumnName="DateIni" />
+                <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
+                <ScalarProperty Name="HourIni" ColumnName="HourIni" />
+                <ScalarProperty Name="HourEnd" ColumnName="HourEnd" />
+                <ScalarProperty Name="Place" ColumnName="Place" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserLastName" ColumnName="UserLastName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNListUser" FunctionName="MMEnterprisesModel.Store.GNListUser">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListUser_Result">
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+                <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNListUserAcces" FunctionName="MMEnterprisesModel.Store.GNListUserAcces">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListUserAcces_Result">
+                <ScalarProperty Name="IdOption" ColumnName="IdOption" />
+                <ScalarProperty Name="OptionName" ColumnName="OptionName" />
+                <ScalarProperty Name="Visible" ColumnName="Visible" />
+                <ScalarProperty Name="Create" ColumnName="Create" />
+                <ScalarProperty Name="Search" ColumnName="Search" />
+                <ScalarProperty Name="Edit" ColumnName="Edit" />
+                <ScalarProperty Name="Delete" ColumnName="Delete" />
+                <ScalarProperty Name="Action" ColumnName="Action" />
+                <ScalarProperty Name="Controller" ColumnName="Controller" />
+                <ScalarProperty Name="IdAssociated" ColumnName="IdAssociated" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNTranPerson" FunctionName="MMEnterprisesModel.Store.GNTranPerson" />
+          <FunctionImportMapping FunctionImportName="GNTranPersonContact" FunctionName="MMEnterprisesModel.Store.GNTranPersonContact" />
+          <FunctionImportMapping FunctionImportName="GNTranPersonTask" FunctionName="MMEnterprisesModel.Store.GNTranPersonTask" />
+          <FunctionImportMapping FunctionImportName="GNTranServiceConstructionOption" FunctionName="MMEnterprisesModel.Store.GNTranServiceConstructionOption" />
+          <FunctionImportMapping FunctionImportName="GNTranServiceRequest" FunctionName="MMEnterprisesModel.Store.GNTranServiceRequest" />
+          <FunctionImportMapping FunctionImportName="GNTranServiceRequestTask" FunctionName="MMEnterprisesModel.Store.GNTranServiceRequestTask" />
+          <FunctionImportMapping FunctionImportName="GNTranTask" FunctionName="MMEnterprisesModel.Store.GNTranTask" />
+          <FunctionImportMapping FunctionImportName="GNTranUser" FunctionName="MMEnterprisesModel.Store.GNTranUser" />
+          <FunctionImportMapping FunctionImportName="GNTranUserAcces" FunctionName="MMEnterprisesModel.Store.GNTranUserAcces" />
+          <FunctionImportMapping FunctionImportName="GNListPersonTask" FunctionName="MMEnterprisesModel.Store.GNListPersonTask">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListPersonTask_Result">
+                <ScalarProperty Name="IdTask" ColumnName="IdTask" />
+                <ScalarProperty Name="IdPersonEmployee" ColumnName="IdPersonEmployee" />
+                <ScalarProperty Name="PersonEmployeeName" ColumnName="PersonEmployeeName" />
+                <ScalarProperty Name="PersonEmployeeLastName" ColumnName="PersonEmployeeLastName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

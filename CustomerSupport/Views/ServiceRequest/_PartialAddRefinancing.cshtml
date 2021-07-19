@@ -1,0 +1,97 @@
+﻿@model CustomerSupport.Models.MServiceRequest
+
+@{
+    Layout = null;
+}
+
+<!--<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <div class="control-label">Tipo de Propiedad:</div>
+            <select id="lstRefin_PropertyType" class="form-control select2" style="width: 100%;">
+            </select>-->
+            @*@Html.HiddenFor(model => model.IdPropertyType, new { @id = "inpRefin_IdPropertyType" })*@
+            @*@Html.ValidationMessageFor(model => model.IdPropertyType, "", new { @class = "text-danger" })*@
+        <!--</div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <div class="control-label">Direccion de la Propiedad:</div>-->
+            @*@Html.TextAreaFor(model => model.Address, 3, 12, new { @class = "form-control", @id = "inpRefin_Address" })*@
+                @*@Html.TextArea("inpRefin_Address", Model.Address, 3, 12, new { @class = "form-control", @id = "inpRefin_Address" })*@
+                @*@Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })*@
+        <!--</div>
+    </div>
+</div>-->
+
+<div class="row">
+    <!--<div class="col-md-4">
+        <div class="form-group">
+            <div class="control-label">Valor Estimado de la Propiedad:</div>-->
+            @*@Html.TextBoxFor(model => model.EstimatedValue, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00", @id = "inpRefin_EstimatedValue" })*@
+            @*@Html.ValidationMessageFor(model => model.EstimatedValue, "", new { @class = "text-danger" })*@
+        <!--</div>
+    </div>-->
+    <div class="col-md-4">
+        <div class="form-group">
+            <div class="control-label">Loan Amount:</div>
+            @Html.TextBoxFor(model => model.LoanAmount, new { @class = "form-control text-right", @placeholder = "0.00" })
+            @Html.ValidationMessageFor(model => model.LoanAmount, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <div class="control-label">Deuda Actual de la Hipoteca:</div>
+            @Html.TextBoxFor(model => model.CurrentDebt, new { @class = "form-control text-right", @placeholder = "0.00" })
+            @Html.ValidationMessageFor(model => model.CurrentDebt, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+
+<!--<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            <div class="control-label">Ingreso Promedio:</div>-->
+            @*@Html.TextBoxFor(model => model.MonthlyIncome, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00", @id = "inpRefin_MonthlyIncome" })*@
+            @*@Html.ValidationMessageFor(model => model.MonthlyIncome, "", new { @class = "text-danger" })*@
+        <!--</div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <div class="control-label">Deudas/Pagos Promedio:</div>-->
+            @*@Html.TextBoxFor(model => model.DebtPayment, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00", @id = "inpRefin_DebtPayment" })*@
+            @*@Html.ValidationMessageFor(model => model.DebtPayment, "", new { @class = "text-danger" })*@
+        <!--</div>
+    </div>
+</div>-->
+
+<!--<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            <div class="control-label">PITI:</div>-->
+            @*@Html.TextBoxFor(model => model.Piti, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00", @id = "inpRefin_Piti" })*@
+            @*@Html.ValidationMessageFor(model => model.Piti, "", new { @class = "text-danger" })*@
+        <!--</div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <div class="control-label">RATIOS:</div>-->
+            @*@Html.TextBoxFor(model => model.Ratios, "{0:N2}", new { @class = "form-control text-right input-decimal", @placeholder = "0.00", @id = "inpRefin_Ratios" })*@
+            @*@Html.ValidationMessageFor(model => model.Ratios, "", new { @class = "text-danger" })*@
+        <!--</div>
+    </div>
+</div>-->
+
+@*@section Scripts {
+
+    <script>
+
+        $(document).ready(function () {
+
+
+        });
+
+    </script>
+}*@

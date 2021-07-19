@@ -1,0 +1,153 @@
+﻿@*@model IEnumerable<CustomerSupport.Models.MPerson>*@
+
+@{
+    ViewBag.Title = "Listado de Personas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">@ViewBag.Title</h3>
+    </div>
+    <div class="card-body">
+
+        <form>
+
+            <div class="row text-right">
+                <div class="col-md-12">
+                    <div class="text-right">
+                        @*<button class="btn boton_personalizado" onclick="location.href='@Url.Action("Create", "User")';return false;"><i class="fas fa-user-plus"></i> Agregar</button>*@
+                        @*<a href="location.href='@Url.Action("Create", "Person")';return false;" class="white_btn">Agregar</a>*@
+                        <button class="white_btn" onclick="location.href='@Url.Action("AddPerson", "Person")';return false;">Agregar</button>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <div class="container">
+                    <table id="TPerson" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Codigo</th>
+                                <th>Tipo</th>
+                                <th>Nombres</th>
+                                <th>Apellidos</th>
+                                <th>Tipo de Identif.</th>
+                                <th>Nro. de Identif.</th>
+                                <th>Estado</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+
+    <script src="~/Content/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+    <script>
+
+    var table = $('#TPerson').DataTable({
+
+            'ajax': {
+                'url': '@Url.Action("GetListPerson", "Person")',
+                'type': 'GET',
+                'dataType': 'json',
+                'dataSrc': ''
+            },
+            'columns':
+                [
+                    { 'data': 'IdPerson', 'autowidth': true },
+                    { 'data': 'PersonType', 'autowidth': true },
+                    { 'data': 'Name', 'autowidth': true },
+                    { 'data': 'LastName', 'autowidth': true },
+                    { 'data': 'IdentificationType', 'autowidth': true },
+                    { 'data': 'NumIdentification', 'autowidth': true },
+                    { 'data': 'Status', 'autowidth': true },
+                    {'data': null, render: function (data, type, row) {
+                            //debugger;
+                            if (data != null) {
+                                if (row.IdPerson == null) {
+                                    return '';
+                                } else {
+                                    return '<a class="btn"><i class="fas fa-edit"></i></a>';
+                                }
+                            }
+                        }, 'autowidth': true
+                    },
+                    {
+                        'data': null, render: function (data, type, row) {
+                            //debugger;
+                            if (data != null) {
+                                if (row.IdPerson == null) {
+                                    return '';
+                                } else {
+                                    return '<a class="btn"><i class="fas fa-search"></i></a>';
+                                }
+                            }
+                        }, 'autowidth': true
+                    },
+                    {
+                        'data': null, render: function (data, type, row) {
+                            //debugger;
+                            if (data != null) {
+                                if (row.IdPerson == null) {
+                                    return '';
+                                } else {
+                                    return '<a class="btn"><i class="far fa-trash-alt"></i></a>';
+                                }
+                            }
+                        }, 'autowidth': true
+                    }
+                ],
+            "columnDefs": [{
+                "targets": 0,
+                "orderable": false
+                }],
+            "bAutoWidth": false,
+            "bInfo": false,
+            "language": {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "No existen Registros",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Último",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            }
+
+    });
+
+    </script>
+}
