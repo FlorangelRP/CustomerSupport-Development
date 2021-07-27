@@ -19,8 +19,8 @@ namespace CustomerSupport
 
             //// Utilice la versión de desarrollo de Modernizr para desarrollar y obtener información. De este modo, estará
             //// para la producción, use la herramienta de compilación disponible en https://modernizr.com para seleccionar solo las pruebas que necesite.
-            //bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
-            //            "~/Scripts/modernizr-*"));
+            bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
+                        "~/Scripts/modernizr-*"));
             //"~/Content/assets/js/jquery.min.js",
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
@@ -32,8 +32,7 @@ namespace CustomerSupport
                     "~/Content/assets/js/isotope.pkgd.min.js",
                     "~/Content/assets/js/swiper.min.js",
                     "~/Content/assets/js/wow.min.js",
-                    "~/Content/assets/js/script.js",
-                    "~/Content/assets/plugins/summernote/summernote-bs4.min.js"));
+                    "~/Content/assets/js/script.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                     "~/Content/assets/css/bootstrap.min.css",
@@ -45,7 +44,6 @@ namespace CustomerSupport
                     "~/Content/assets/css/bootstrap.css",
                      "~/Content/assets/css/dataTables/demo_table.css",
                     "~/Content/assets/css/dataTables/demo_table_jui.css",
-                    "~/Content/assets/plugins/summernote/summernote-bs4.min.css",
                     "~/Content/assets/css/style.css",
                     "~/Content/assets/plugins/select2/css/select2.min.css",
                     "~/Content/assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css"
