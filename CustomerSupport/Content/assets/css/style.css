@@ -200,9 +200,12 @@ h3.ss_h3_center:before {
 .ss_index_two .ss_banner_right img{
 	width:85%;
 }
-.ss_index_one, .ss_index_two, .ss_index_three{
+.ss_index_one{
 	background-repeat:no-repeat;
-	overflow: hidden;	
+}
+.ss_index_two, .ss_index_three {
+	background-repeat: no-repeat;
+	overflow: hidden;
 }
 
 .ss_header .ss_menu li{
