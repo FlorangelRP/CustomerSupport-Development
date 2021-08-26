@@ -1,0 +1,288 @@
+﻿@using CustomerSupport.Models
+@model CustomerSupport.Models.MUser
+
+@{
+    ViewBag.Title = "Calendario de Actividades";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">@ViewBag.Title</h3>
+    </div>
+    <div class="card-body">
+
+        @{
+            MUserAcces perm = null;
+            if (Session["Usuario"] != null)
+            {
+                perm = (((MUser)Session["Usuario"])).UserAcces.Where(X => X.Action == @ViewBag.Action).FirstOrDefault();
+            }
+        }
+
+        <div class="card card-primary card-outline">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="control-label">Responsable:</div>
+                        <select class="form-control select2 " onchange="filtrarPersona(this.value)" id="filtropersona" data-placeholder="Seleccione" name="IdPerson"></select>
+                        @Html.HiddenFor(model => model.PersonEmployee.IdPerson, new { @id = "IdPersonEmployee," })
+                        @Html.ValidationMessageFor(model => model.PersonEmployee.IdPerson, "", new { @class = "text-danger" })
+
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <br />
+                            @*<button class="white_btn small-btn" onclick="FiltrarTicket()" ;return false;">Aceptar</button>*@
+                            <div class="btn_option pt-0" style=" vertical-align: bottom"><button class="searchRow border-0" data-toggle="tooltip" data-placement="top" title="Filtrar" onclick="funtionelimnar()" ;return false;"><i class="fas fa-filter"></i></button></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <br />
+        <div class="card card-primary card-outline">
+            <div class="card-body">
+                <div class="m-0 row justify-content-center">
+                    <div class="form-horizontal col-md-10">
+                        @*@using (Html.BeginForm("EditTask", "Task"))
+                        {*@
+
+
+                            @Html.AntiForgeryToken()
+                            
+
+                            <br />
+                            <div class="row">
+                                <div class="col-xs-9 col-xs-push-2">
+                                    @*<div class="box box-primary">*@
+                                    <div class="no-padding">
+                                        <div id="calendar"></div>
+                                    </div>
+                                    @*</div>*@
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-10 text-center">
+                                    @*<span class="text-success">@ViewBag.SuccessSave</span>*@
+                                    @*<span class="text-danger">@ViewBag.ErrorSave</span>*@
+                                </div>
+                            </div>
+                       @* }*@
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                @Html.ActionLink("Regresar a la Lista", "ListTask", "Task")
+            </div>
+
+
+        </div>
+    </div>
+</div>
+@section Scripts {
+
+    <script src="~/Content/assets/js/jquery.min.js"></script>
+    @*<script src="~/Content/assets/js/jquery.inputpicker.js?v3"></script>*@
+    <script src="@Url.Content("~/Content/assets/plugins/select2/js/select2.full.min.js") "></script>
+    <script src="~/Content/assets/js/moment.min.js"></script>
+    <script src="~/Content/assets/js/jquery.qtip.min.js"></script>
+    <script src="~/Content/assets/js/fullcalendar.min.js"></script>
+
+    <script>
+        var ListPersons = [];
+     /*   debugger;*/
+
+        @*var Permis = @Html.Raw(Json.Encode(perm));
+        Buscar = Permis.Search;
+        Editar = Permis.Edit;*@
+
+
+       function ObtenerPersonas() {
+           /*debugger;*/
+            ListPersons = $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("GetListPerson", "Person")?idPersonType=2',
+                        data: "{}",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        global: false,
+                        async: false,
+                        success: function (data) {
+                            var itemArray = {};
+                            itemArray.IdPerson = "";
+                            itemArray.LastName = "";
+                            itemArray.Name = "";
+                            itemArray.NumIdentification = "";
+                            data.push(itemArray);
+                            data.reverse();
+                            return data;
+                        }
+            }).responseJSON;
+
+
+
+        var persona = $("#filtropersona")[0];
+        //debugger;
+        var option = $(document.createElement('option'));
+        option.text("Seleccione");
+        option.val("0");
+        $("#filtropersona").append(option);
+
+        for (i = 0; i < ListPersons.length; i++) {
+
+            if (ListPersons[i].IdPerson != "" && ListPersons[i].LastName != "") {
+                var Name = " ";
+                if (ListPersons[i].Name != "")
+                {
+                    Name = " "+ListPersons[i].Name;
+                }
+
+                persona[i + 1] = new Option(ListPersons[i].NumIdentification + " - " + ListPersons[i].LastName + Name , ListPersons[i].IdPerson, "", "");
+
+            }
+
+            }
+            @*persona.value = "@Model.IdPersonEmployee";
+            filtrarPersona( "@Model.IdPersonEmployee");*@
+
+
+        }
+
+        ObtenerPersonas();
+        function  funtionelimnar()
+        {
+            $('#calendar').fullCalendar('destroy');
+            FiltrarCalender();
+        }
+
+       /* debugger;*/
+        function FiltrarCalender() {
+
+
+            /*debugger;*/
+            var intIdResponsable = $("#filtropersona").val();
+
+            var datos = {
+                id: intIdResponsable
+            };
+
+            $('#calendar').fullCalendar({
+                header:
+                {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                buttonText: {
+                    today: 'today',
+                    month: 'month',
+                    week: 'week',
+                    day: 'day'
+                },
+
+                events: function (start, end, timezone, callback) {
+                    $.ajax({
+                        url: '/Calendar/GetCalendarData',
+                        type: "GET",
+                        dataType: "JSON",
+                        'data': datos,
+                        'dataSrc': '',
+                        success: function (result) {
+
+                            var events = [];
+                            
+                            $.each(result, function (i, data) {
+                                
+                                var strbackgroundColor;
+                                var strborderColor;
+                                var status = data.StatusTask;
+
+                                if (status === "Nuevo") {
+                                    strbackgroundColor= '#00a65a';
+                                    strborderColor= '#00a65a';
+                                }
+
+                                if(status === "En Proceso")
+                                {
+                                    strbackgroundColor= '#3c8dbc';
+                                    strborderColor= '#3c8dbc';
+                                }
+
+                                if (status === "Finalizado") {
+                                    strbackgroundColor= '#00c0ef';
+                                    strborderColor = '#00c0ef';
+                                }
+
+                                if (status === "En Espera de Feedback") {
+                                    strbackgroundColor = '#f56954';
+                                    strborderColor = '#f56954';
+                                }
+
+                                if (status === "En Espera de Feedback") {
+                                    strbackgroundColor = '#f56954';
+                                    strborderColor = '#f56954';
+                                }
+
+                                if (status === "Listo para Cerrar") {
+                                    strbackgroundColor = '#f39c12';
+                                    strborderColor = '#f39c12';
+                                }
+
+                                events.push(
+                                    {
+                                        title: data.Tittle,
+                                        description: data.Activity,
+                                        start: moment(data.DateIni).format('YYYY-MM-DD'),
+                                        end: moment(data.DateEnd).format('YYYY-MM-DD'),
+                                        backgroundColor: strbackgroundColor,
+                                        borderColor: strborderColor,
+                                        textColor: 'white'
+                                    });
+                            });
+
+                            callback(events);
+                        }
+                    });
+                },
+
+                eventRender: function (event, element,view) {
+                    element.qtip(
+                        {
+                            content: event.description
+                        });
+                },
+
+                editable: false
+            });
+        }
+        FiltrarCalender();
+
+        function cargarDataPerson(IdPerson, lstPersons) {
+            if (IdPerson == "" || IdPerson == "0") { return false; }
+            //debugger;
+            var objPerson = lstPersons.find((m) => m.IdPerson == IdPerson);
+            var fecha = new Date();
+        }
+
+        function filtrarPersona(person) {
+            /*debugger;*/
+            var SelecCodeValue = person.trim();
+            cargarDataPerson(SelecCodeValue, ListPersons);
+        }
+
+        
+        $(document).ready(function () {
+
+            $('.select2').select2();
+
+            $('#filtropersona').on('change', function () {
+                $('calendar').fullCalendar('destroy');
+                FiltrarCalender();
+            });
+        });
+    </script>
+}

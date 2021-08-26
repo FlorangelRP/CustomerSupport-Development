@@ -492,6 +492,7 @@
                                                         <div id="collapseCardCita" class="collapse" aria-labelledby="headingCita" data-parent="#accordionCita">
 
                                                             <div class="card-body">
+
                                                                 <div class="col-md-12">
                                                                     <label class="font-weight-bold">Representante:</label><br>
 
@@ -510,11 +511,35 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+
+                                                                <div class="row">
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group">
+                                                                            <div class="control-label font-weight-bold">Prioridad:</div>
+                                                                            @Html.DisplayFor(model => model.listTask[0].PriorityTask)
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group">
+                                                                            <div class="control-label font-weight-bold">Tipo:</div>
+                                                                            @Html.DisplayFor(model => model.listTask[0].TypeTask)
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group">
+                                                                            <div class="control-label font-weight-bold">Estado:</div>
+                                                                            @Html.DisplayFor(model => model.listTask[0].Status)
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
                                                                 <div class="row">
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
                                                                             <div class="control-label font-weight-bold">Actividad a realizar:</div>
-                                                                            @Html.DisplayFor(model => model.listTask[0].Activity)
+                                                                            @Html.DisplayFor(model => model.listTask[0].Tittle)
                                                                         </div>
                                                                     </div>
                                                                 </div>

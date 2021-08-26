@@ -2892,13 +2892,13 @@ tr.hide-table-padding td {
 	  background: white;
   }
 
-
 /* ===Button small add,del,edit,search=== */
 .btn_option i {
 	color: white;
 	width: 15px;
 	height: 15px;
 	fill: #e3bf09;
+	
 }
 
 .btn_option a, .btn_option button {
@@ -3089,6 +3089,87 @@ tr.hide-table-padding td {
 		opacity: 1;
 	}*/
 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+.btn-flotante {
+	position: fixed;
+	bottom: 5px;
+	right: 40px;
+	transition: all 300ms ease 0ms;
+	box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+	z-index: 99;
+}
+
+	.btn-flotante:hover {
+		box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.3);
+		transform: translateY(-7px);
+	}
+
+.comment-widgets {
+	position: relative;
+	margin-bottom: 10px
+}
+
+	.comment-widgets .comment-row {
+		border-bottom: 1px solid transparent;
+		padding: 14px;
+		display: -webkit-box;
+		display: -ms-flexbox;
+		display: flex;
+		margin: 10px 0
+	}
+
+.p-2 {
+	padding: 0.5rem !important
+}
+
+.comment-text {
+	padding-left: 15px
+}
+
+.w-100 {
+	width: 100% !important
+}
+
+.m-b-15 {
+	margin-bottom: 15px
+}
+
+.btn-sm {
+	padding: 0.25rem 0.5rem;
+	font-size: 0.76563rem;
+	line-height: 1.5;
+	border-radius: 1px
+}
+
+.btn-cyan {
+	color: #fff;
+	background-color: #27a9e3;
+	border-color: #27a9e3
+}
+
+	.btn-cyan:hover {
+		color: #fff;
+		background-color: #1a93ca;
+		border-color: #198bbe
+	}
+
+.comment-widgets .comment-row:hover {
+	background: rgba(0, 0, 0, 0.05)
+}
+@media only screen and (max-width: 600px) {
+	.btn-flotante {
+		font-size: 14px;
+		padding: 12px 20px;
+		bottom: 20px;
+		right: 20px;
+	}
+} 
+
 
 /* ===responsive css=== */
 @media screen and (min-width: 1921px) {
@@ -3138,7 +3219,6 @@ tr.hide-table-padding td {
 		position: inherit;
 	}
 }
-
 @media screen and (max-width: 1549px){
 	.ss_wchoose_us .ss_box_bg {
 		margin: 0px 0px 100px;
@@ -3600,7 +3680,6 @@ tr.hide-table-padding td {
 		overflow: auto;
     } 
  }
-
 @media (max-width: 992px) and (min-width: 767px){
 	.ss_pv_left .ss_box_bg{
 		width:90%;

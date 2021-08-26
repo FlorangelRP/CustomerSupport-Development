@@ -32,7 +32,8 @@ namespace CustomerSupport
                     "~/Content/assets/js/isotope.pkgd.min.js",
                     "~/Content/assets/js/swiper.min.js",
                     "~/Content/assets/js/wow.min.js",
-                    "~/Content/assets/js/script.js"));
+                    "~/Content/assets/js/script.js",
+                    "~/Content/assets/js/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                     "~/Content/assets/css/bootstrap.min.css",
@@ -48,18 +49,6 @@ namespace CustomerSupport
                     "~/Content/assets/plugins/select2/css/select2.min.css",
                     "~/Content/assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css"
                     ));
-
-            //"~/Content/assets/plugins/select2/css/select2.css",
-            //        "~/Content/assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css",
-
-                    
-
-            // "~/Content/assets/css/dataTables.bootstrap4.min.css",
-            //"~/Content/assets/css/dataTables/demo_page.css",
-            //         "~/Content/assets/css/dataTables/demo_table.css",
-            //         "~/Content/assets/css/dataTables/demo_table_jui.css",
-            //         "~/Content/assets/css/themes/base/jquery-ui.css",
-            //         "~/Content/assets/css/themes/smoothness/jquery-ui-1.7.2.custom.css"
         }
     }
 }

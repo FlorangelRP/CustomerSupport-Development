@@ -180,7 +180,8 @@ namespace CustomerSupport.Controllers
                                                                           IdPosition = result2.IdPosition,
                                                                           Position = result2.Position,
                                                                           ClientPermission = result2.ClientPermission,
-                                                                          Status = result2.Status
+                                                                          Status = result2.Status,
+                              
                                                                       }).ToList().First(),
                                            UserAcces = (from result3 in db.GNListUserAcces(result.IdUser, null).ToList()
                                                         select new MUserAcces

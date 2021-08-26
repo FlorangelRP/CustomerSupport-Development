@@ -1,0 +1,553 @@
+﻿@using CustomerSupport.Models
+@model CustomerSupport.Models.MTask
+@{
+    ViewBag.Title = "Listado de Actividades";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Action = "ListTask";
+
+
+}
+
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">@ViewBag.Title</h3>
+    </div>
+    <div class="card-body">
+
+        @{
+            MUserAcces perm = null;
+            if (Session["Usuario"] != null)
+            {
+                perm = (((MUser)Session["Usuario"])).UserAcces.Where(X => X.Action == @ViewBag.Action).FirstOrDefault();
+            }
+        }
+
+        @if (perm != null)
+        {
+            if (perm.Create == true)
+            {
+            <div class="row">
+                <div class=" col-2">
+
+                    <div class="btn_option pt-0" style=" vertical-align: central"><button class="searchRow border-0" data-toggle="tooltip" data-placement="top" title="Ver calendario" onclick="location.href='@Url.Action("ListCalendar", "Calendar")';return false;"><i class="far fa-calendar-alt"></i></button></div>
+                </div>
+                <div class="col-md-10  text-right">
+                    <div class="text-right">
+
+                        <button class="white_btn" onclick="location.href='@Url.Action("AddTask", "Task")';return false;">Agregar</button>
+                    </div>
+                </div>
+            </div>
+                <br />
+            }
+        }
+        <div class="card card-primary card-outline">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="control-label">Número:</div>
+                            @Html.TextBoxFor(model => model.IdTask, new { @type ="number",@class = "input-numeric inputLostFocus form-control rounded-0", @id = "inIdTask",  @Value = "" })
+                            @Html.ValidationMessageFor(model => model.IdTask, "", new { @maxlength = "15", @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="control-label">Fecha Inicio:</div>
+                            @Html.HiddenFor(model => model.DateIni, new { @id = "dttDateIni", @type = "date", @class = "form-control float-right" })
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="control-label">Fecha Fin:</div>
+                            @Html.HiddenFor(model => model.DateEnd, new { @id = "dttDateEnd", @type = "date", @class = "form-control float-right" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="control-label">Título:</div>
+                            @Html.TextBoxFor(model => model.Tittle, new { @id = "strTittle", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Tittle, "", new { @maxlength = "500", @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="control-label">Tipo:</div>
+                            <select id="lst_IdTypeTask" class="form-control select2" style="width: 100%;">
+                            </select>
+                            @Html.HiddenFor(model => model.IdTypeTask, new { @id = "inIdTypeTask" })
+                            @Html.ValidationMessageFor(model => model.IdTypeTask, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="control-label">Prioridad:</div>
+                            <select id="lst_Priority" class="form-control select2" style="width: 100%;">
+                            </select>
+                            @Html.HiddenFor(model => model.IdPriority, new { @id = "inIdPriority" })
+                            @Html.ValidationMessageFor(model => model.IdPriority, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="control-label">Estado:</div>
+                            <select id="lst_IdStatus" class="form-control select2" style="width: 100%;">
+                            </select>
+                            @Html.HiddenFor(model => model.IdStatus, new { @id = "inIdStatus" })
+                            @Html.ValidationMessageFor(model => model.IdStatus, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="control-label">Responsable:</div>
+                            <select class="form-control select2 " onchange="filtrarPersona(this.value)" id="filtropersona" data-placeholder="Seleccione" name="IdPerson"></select>
+                            @Html.HiddenFor(model => model.IdPersonEmployee, new { @id = "IdPersonEmployee," })
+                            @Html.ValidationMessageFor(model => model.IdPersonEmployee, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+
+
+
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="control-label"># Servicio:</div>
+                            @Html.TextBoxFor(model => model.IdServiceRequest, new { @id = "IdServiceRequest", @class = "input-numeric inputLostFocus form-control rounded-0" })
+                            @Html.ValidationMessageFor(model => model.IdServiceRequest, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="control-label"># Padre:</div>
+                            @Html.TextBoxFor(model => model.IdFatherTask, new { @id = "IdFatherTask", @class = "input-numeric inputLostFocus form-control rounded-0" })
+                            @Html.ValidationMessageFor(model => model.IdFatherTask, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <br />
+                            @*<button class="white_btn small-btn" onclick="FiltrarTicket()" ;return false;">Aceptar</button>*@
+                            <div class="btn_option pt-0" style=" vertical-align: bottom"><button class="searchRow border-0" data-toggle="tooltip" data-placement="top" title="Filtrar" onclick="FiltrarTicket()" ;return false;"><i class="fas fa-filter"></i></button></div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+
+
+
+                </div>
+            </div>
+        </div>
+
+        <br />
+        @using (Html.BeginForm("ListTask", "Task", FormMethod.Post))
+        {
+            <div class="table-responsive">
+                <div class="container">
+                    <table id="TTask" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nro</th>
+                                <th>Tipo</th>
+                                <th>Prioridad</th>
+                                <th>Título</th>
+                                <th>Estado</th>
+                                <th>Responsable</th>
+                                @if (perm != null)
+                                {
+                                    if (perm.Search == true || perm.Edit == true)
+                                    {
+                                        <th class="text-center" colspan="2">Opciones</th>
+                                    }
+                                }
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            @Html.HiddenFor(model => model.IdTask, new { @id = "hidd_IdTask" })
+            @Html.Hidden("submit")
+        }
+
+    </div>
+</div>
+
+@section Scripts {
+
+    <script src="~/Content/assets/js/jquery.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="~/Content/assets/js/jquery.inputpicker.js?v3"></script>
+    <script src="@Url.Content("~/Content/assets/plugins/select2/js/select2.full.min.js") "></script>
+
+    <script>
+        var ListPersons = [];
+      /*  debugger;*/
+
+        var Permis = @Html.Raw(Json.Encode(perm));
+        Buscar = Permis.Search;
+        Editar = Permis.Edit;
+
+        function FiltrarTicket() {
+            @*var meses = Array.from(@Html.Raw(Json.Encode(Model.LisMonth)));*@
+            var intIdTask = $("#inIdTask").val();
+            var DateI = $("#dttDateIni").val();
+            var DateE = $("#dttDateEnd").val();
+            var strIdTypeTask = $("#lst_IdTypeTask").val();
+            var strIdPriority = $("#lst_Priority").val();
+            var strTitt = $("#strTittle").val();
+            var intIdStatus = $("#lst_IdStatus").val();
+            var intIdResponsable = $("#filtropersona").val();
+            var intIdServiceRequest = $("#IdServiceRequest").val();
+            var intIdFatherTask = $("#IdFatherTask").val();
+
+            var datos = {
+                IdTask: intIdTask,
+                DateIni: DateI,
+                DateEnd: DateE,
+                IdTypeTask: strIdTypeTask,
+                IdPriority: strIdPriority,
+                IdStatus: intIdStatus,
+                Tittle: strTitt,
+                IdPersonEmployee: intIdResponsable,
+                IdServiceRequest:intIdServiceRequest,
+                IdFatherTask:intIdFatherTask 
+
+            };
+
+            table = $('#TTask').DataTable({
+                'ajax': {
+                    'url': '@Url.Action("GetListTask", "Task")' ,
+                    'type': 'GET',
+                    'dataType': 'json',
+                    'data': datos,
+                    'dataSrc': ''
+                },
+                'columns':
+                    [
+                        { 'data': 'IdTask', 'autowidth': true },
+                        { 'data': 'TypeTask', 'autowidth': true },
+                        { 'data': 'PriorityTask', 'autowidth': true },
+                        { 'data': 'Tittle', 'autowidth': true },
+                        { 'data': 'Status', 'autowidth': true },
+                        {
+                            'data': null, render: function (data, type, row)
+                            {
+                                if (data != null) {
+                                    if (row.PersonEmployeeName == null && row.PersonEmployeeLastName == null) {
+                                        return '';
+                                    } else {
+                                        var name = row.PersonEmployeeName + '  ' + row.PersonEmployeeLastName;
+                                        return name;
+                                    }
+                                } else
+                                    return '';
+                            }
+                        },
+                        {
+                            'data': null, render: function (data, type, row) {
+                                if (data != null) {
+                                    if (row.IdTask == null) {
+                                        return '';
+                                    } else {
+                                        //return '<div class="btn_option pt-0"><a class="editRow"><i class="fas fa-edit"></i></a></div>';
+                                        var link = '<div class="btn_option pt-0"><button class="editRow border-0" name="linkEdit_&"><i class="fas fa-edit"></i></button></div>';
+                                        link = link.replace("&", row.IdTask);
+                                        return link;
+                                    }
+                                }
+                            }, 'autowidth': true
+                        },
+                        {
+                            'data': null, render: function (data, type, row) {
+                                if (data != null) {
+                                    if (row.IdTask == null) {
+                                        return '';
+                                    } else {
+                                        //return '<div class="btn_option pt-0"><a class="searchRow"><i class="fas fa-search"></i></a></div>';
+                                        var link = '<div class="btn_option pt-0"><button class="searchRow border-0" name="linkSearch_&"><i class="fas fa-search"></i></button></div>';
+                                        link = link.replace("&", row.IdTask);
+                                        return link;
+                                    }
+                                }
+                            }, 'autowidth': true
+                        },
+                    ],
+                "columnDefs": [
+                    { "targets": 0, "orderable": false },
+                    { "targets": 6, "bVisible": Editar },
+                    { "targets": 7, "bVisible": Buscar }
+                ],
+                "bAutoWidth": false,
+                "bInfo": false,
+                "bDestroy": true,
+                "language": {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "No existen Pedidos Registrados",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                }
+
+            });
+
+
+        }
+
+        function ObtenerPersonas() {
+
+            ListPersons = $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("GetListPerson", "Person")?idPersonType=2',
+                        data: "{}",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        global: false,
+                        async: false,
+                        success: function (data) {
+                            var itemArray = {};
+                            itemArray.IdPerson = "";
+                            itemArray.LastName = "";
+                            itemArray.Name = "";
+                            itemArray.NumIdentification = "";
+                            data.push(itemArray);
+                            data.reverse();
+                            return data;
+                        }
+            }).responseJSON;
+
+
+
+        var persona = $("#filtropersona")[0];
+        //debugger;
+        var option = $(document.createElement('option'));
+        option.text("Seleccione");
+        option.val("0");
+        $("#filtropersona").append(option);
+
+        for (i = 0; i < ListPersons.length; i++) {
+
+            if (ListPersons[i].IdPerson != "" && ListPersons[i].LastName != "") {
+                var Name = " ";
+                if (ListPersons[i].Name != "")
+                {
+                    Name = " "+ListPersons[i].Name;
+                }
+
+                persona[i + 1] = new Option(ListPersons[i].NumIdentification + " - " + ListPersons[i].LastName + Name , ListPersons[i].IdPerson, "", "");
+
+            }
+
+            }
+            @*persona.value = "@Model.IdPersonEmployee";
+            filtrarPersona( "@Model.IdPersonEmployee");*@
+
+
+        }
+        ObtenerPersonas();
+        FiltrarTicket();
+        function cargarDataPerson(IdPerson, lstPersons) {
+            if (IdPerson == "" || IdPerson == "0") { return false; }
+            //debugger;
+            var objPerson = lstPersons.find((m) => m.IdPerson == IdPerson);
+            var fecha = new Date();
+        }
+
+        function filtrarPersona(person) {
+            /*debugger;*/
+            var SelecCodeValue = person.trim();
+            cargarDataPerson(SelecCodeValue, ListPersons);
+        }
+
+        $('#TTask').on("click", "button.editRow", function () {
+            var data = table.row($(this).parents("tr")).data();
+            $("#hidd_IdTask").val(data.IdTask);
+            $("#submit").val("editRow");
+            location.href = '@Url.Action("ListTask", "Task")';
+        });
+
+        $('#TTask').on("click", "button.searchRow", function () {
+            var data = table.row($(this).parents("tr")).data();
+            $("#hidd_IdTask").val(data.IdTask);
+            $("#submit").val("searchRow");
+            location.href = '@Url.Action("ListTask", "Task")';
+        });
+
+        $(document).ready(function () {
+
+            $('.select2').select2();
+
+            $("#lst_Priority").on('change', function () {
+                var selectValue = $(this).val();
+                //$("#inpIdIdentificationType").val(selectValue);
+                changeCodeInputHiddenList("lst_Priority", "inIdPriority", selectValue);
+            });
+
+            $("#lst_IdStatus").on('change', function () {
+                var selectValue = $(this).val();
+                //$("#inpIdIdentificationType").val(selectValue);
+                changeCodeInputHiddenList("lst_IdStatus", "inIdStatus", selectValue);
+            });
+
+            $("#lst_IdTypeTask").on('change', function () {
+                var selectValue = $(this).val();
+                //$("#inpIdIdentificationType").val(selectValue);
+                changeCodeInputHiddenList("lst_IdTypeTask", "inIdTypeTask", selectValue);
+            });
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' +"PRIORITYTASK",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+
+                    var option = $(document.createElement('option'));
+                    option.text("Seleccione");
+                    option.val("0");
+                    $("#lst_Priority").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+
+                        option.text(this.DetailDesc);
+                        option.val(this.IdCatalogDetail); //Identity
+
+                        $("#lst_Priority").append(option);
+                    });
+
+                    document.getElementById('lst_Priority').value = "0";
+
+                    changeCodeInputHiddenList("lst_Priority", "inIdPriority", "");
+
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de prioridad");
+                }
+
+            });
+
+            $.ajax({
+                type: "GET",
+                 url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' +"STATETASK",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+
+                    var option = $(document.createElement('option'));
+                    option.text("Seleccione");
+                    option.val("0");
+                    $("#lst_IdStatus").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+
+                        option.text(this.DetailDesc);
+                        option.val(this.IdCatalogDetail); //Identity
+
+                        $("#lst_IdStatus").append(option);
+                    });
+
+                    document.getElementById('lst_IdStatus').value = "0";
+
+                    changeCodeInputHiddenList("lst_IdStatus", "inIdStatus", "");
+
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de Estado");
+                }
+
+            });
+
+            $.ajax({
+                type: "GET",
+                 url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' +"TYPETASK",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+
+                    var option = $(document.createElement('option'));
+                    option.text("Seleccione");
+                    option.val("0");
+                    $("#lst_IdTypeTask").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+
+                        option.text(this.DetailDesc);
+                        option.val(this.IdCatalogDetail); //Identity
+
+                        $("#lst_IdTypeTask").append(option);
+                    });
+
+                    document.getElementById('lst_IdTypeTask').value = "0";
+
+                    changeCodeInputHiddenList("lst_IdTypeTask", "inIdTypeTask", "");
+
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de Tipos de tarea");
+                }
+
+            });
+
+            function changeCodeInputHiddenList(idDropDownList, idInputHidden, valCode) {
+                //debugger;
+                if (valCode === "") {
+
+                    var CodeAntSelected = document.getElementById(idInputHidden).value;
+
+                    if (CodeAntSelected != "") {
+                        $("#" + idDropDownList + " option[value='" + CodeAntSelected + "']").attr("selected", true);
+                        $("#" + idInputHidden).val(CodeAntSelected);
+                    }
+                    else {
+                        var CodeActual = $("#" + idDropDownList).val();
+                        $("#" + idInputHidden).val(CodeActual);
+                    }
+
+                }
+                else {
+                    $("#" + idInputHidden).val(valCode);
+                }
+
+            }
+        });
+
+    </script>
+}

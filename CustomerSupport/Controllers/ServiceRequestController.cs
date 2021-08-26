@@ -369,26 +369,37 @@ namespace CustomerSupport.Controllers
                                                                         IdConstructionOption=co.IdConstructionOption,
                                                                         ConstructionOption=co.ConstructionOption
                                                                     }).ToList(),
-                                        listTask = (List<MTask>)(from tsk in db.GNListTask("SS",null,d.IdServiceRequest,null,null).ToList()
+                                        listTask = (List<MTask>)(from tsk in db.GNListTask(null,null,null,null,"",null,null,null,d.IdServiceRequest,null,null).ToList()
                                                     select new MTask
                                                     {
-                                                        IdTask=tsk.IdTask,
-                                                        IdUser=tsk.IdUser,
-                                                        UserName=tsk.UserName,
-                                                        UserLastName=tsk.UserLastName,
-                                                        Activity=tsk.Activity,
-                                                        DateIni=tsk.DateIni,
-                                                        DateEnd=tsk.DateEnd,
-                                                        HourIni=tsk.HourIni,
-                                                        HourEnd=tsk.HourEnd,
-                                                        Place=tsk.Place,
-                                                        Status=tsk.Status,
-                                                        listTaskPerson=(List<MTaskPerson>)(from tp in db.GNListPersonTask(tsk.IdTask, null).ToList()
+                                                        IdTask = tsk.IdTask,
+                                                        IdUser = tsk.IdUser,
+                                                        UserName = tsk.UserName,
+                                                        UserLastName = tsk.UserLastName,
+                                                        DateIni = tsk.DateIni,
+                                                        DateEnd = tsk.DateEnd,
+                                                        HourIni = tsk.HourIni,
+                                                        HourEnd = tsk.HourEnd,
+                                                        Place = tsk.Place,
+                                                        Status = tsk.Status,
+                                                        IdStatus = tsk.IdStatus,
+                                                        IdFatherTask = tsk.IdFatherTask,
+                                                        Tittle = tsk.Tittle,
+                                                        IdServiceRequest = tsk.IdServiceRequest,
+                                                        IdTypeTask = tsk.IdTypeTask,
+                                                        TypeTask = tsk.TypeTask,
+                                                        IdPriority = tsk.IdPriority,
+                                                        PriorityTask = tsk.PriorityTask,
+                                                        IdPersonEmployee = tsk.IdResponsable,
+                                                        PersonEmployeeName = tsk.Name,
+                                                        PersonEmployeeLastName = tsk.LastName,
+                                                        listTaskPerson =(List<MTaskPerson>)(from tp in db.GNListPersonTask(tsk.IdTask, null).ToList()
                                                                         select new MTaskPerson
                                                                         {
                                                                             IdPersonEmployee=tp.IdPersonEmployee,
                                                                             PersonEmployeeName=tp.PersonEmployeeName,
-                                                                            PersonEmployeeLastName=tp.PersonEmployeeLastName
+                                                                            PersonEmployeeLastName=tp.PersonEmployeeLastName,
+                                                                            NumIdentification = tp.NumIdentification
                                                                         }).ToList()
                                                     }).ToList()
                                     }).ToList();
@@ -604,6 +615,7 @@ namespace CustomerSupport.Controllers
                     paramWish.Value = DBNull.Value;
                 }
                 SqlParameter paramNote = new SqlParameter();
+
                 paramNote.ParameterName = "@Note";
                 if (objServiceRequest.Note != null)
                 {
@@ -688,7 +700,7 @@ namespace CustomerSupport.Controllers
                     {
                         if (objServiceRequest.listTask.Count()>0)
                         {
-                            int IdTask;
+                            int IdTask=0;
 
                             //INVOLUCRADOS EN LA TASK
                             //Si esta actualizando, elimina los involucrados para volver a insertar (Por ahora 1 Solo)
@@ -707,67 +719,17 @@ namespace CustomerSupport.Controllers
                             //(Inserta/Actualiza) las actividades del Servicio
                             foreach (var item in objServiceRequest.listTask)
                             {
-                                SqlParameter paramOutIdTask = new SqlParameter();
-                                paramOutIdTask.ParameterName = "@IdTask";
-                                paramOutIdTask.SqlDbType = System.Data.SqlDbType.Int;
-                                paramOutIdTask.Direction = System.Data.ParameterDirection.InputOutput;
-                                paramOutIdTask.Value = item.IdTask;
+                                if(item.IdServiceRequest==null)
+                                item.IdServiceRequest = IdServiceRequest;
+                                item.DateEnd = item.DateIni;
+                                item.HourEnd = item.HourIni;
+                                if(item.IdUser==0)
+                                item.IdUser = objServiceRequest.IdUser;
+                                int intresul =   TaskController.fnGNTranTask(item, TransactionType, ref IdTask, ref Mensaje);
 
-                                SqlParameter paramTransactionType = new SqlParameter();
-                                paramTransactionType.ParameterName = "@TransactionType";
-                                if (item.IdTask == 0 && TransactionType=="U")
+                                if(intresul==0)
                                 {
-                                    //la task no existe, debe ser creada.
-                                    paramTransactionType.Value = "I";
-                                }
-                                else
-                                {
-                                    paramTransactionType.Value = TransactionType;
-                                }
-
-                                SqlResult = db.Database.ExecuteSqlCommand("GNTranTask @TransactionType, @IdTask OUT, @IdUser, @Activity " +
-                                                                        " ,@DateIni, @DateEnd, @HourIni, @HourEnd, @Place, @Status ",
-                                    new SqlParameter[]{
-                                        paramTransactionType,
-                                        paramOutIdTask,
-                                        new SqlParameter("@IdUser", objServiceRequest.IdUser), //Debe ser item.IdUser si se graba desde otra vista
-                                        new SqlParameter("@Activity", item.Activity),
-                                        new SqlParameter("@DateIni", item.DateIni),
-                                        new SqlParameter("@DateEnd", item.DateIni), //Debe ser item.DateEnd cuando el campo en la vista esta habilitado
-                                        new SqlParameter("@HourIni", item.HourIni),
-                                        new SqlParameter("@HourEnd", item.HourIni), //Debe ser item.HourEnd cuando el campo en la vista esta habilitado
-                                        new SqlParameter("@Place", item.Place),
-                                        new SqlParameter("@Status", true) //Debe ser item.Status cuando el campo en la vista esta habilitado
-                                    }
-                                );
-
-                                IdTask = Int32.Parse(paramOutIdTask.Value.ToString());
-
-
-                                if (IdTask != 0)
-                                {
-                                    //Se asocia la actividad con el servicio si esta insertando
-                                    if (paramTransactionType.Value.ToString() == "I") //TransactionType == "I"
-                                    {
-                                        SqlResult = db.Database.ExecuteSqlCommand("GNTranServiceRequestTask @TransactionType, @IdTask, @IdServiceRequest ",
-                                            new SqlParameter[]{
-                                                new SqlParameter("@TransactionType", paramTransactionType.Value.ToString()), //TransactionType
-                                                new SqlParameter("@IdTask", IdTask),
-                                                new SqlParameter("@IdServiceRequest", IdServiceRequest)
-                                            }
-                                        );
-                                    }
-
-                                    //INVOLUCRADOS EN LA TASK                                
-                                    //Inserta los involucarados
-                                    SqlResult = db.Database.ExecuteSqlCommand("GNTranPersonTask @TransactionType, @IdTask, @IdPerson ",
-                                        new SqlParameter[]{
-                                            new SqlParameter("@TransactionType", "I"),
-                                            new SqlParameter("@IdTask", IdTask),
-                                            new SqlParameter("@IdPerson", item.IdPersonEmployee)
-                                        }
-                                    );
-
+                                    return intresul;
                                 }
                             }
                         }
