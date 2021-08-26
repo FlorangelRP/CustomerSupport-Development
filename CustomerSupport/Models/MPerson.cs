@@ -60,6 +60,10 @@ namespace CustomerSupport.Models
         public bool Status { get; set; }
         public string StatusDesc { get; set; } //descripcion del estado (Activo/Inactivo)
 
+        [Min(1, ErrorMessage = "*Requerido")]
+        public int? IdDepartment { get; set; } //Nullable<int>
+        public string Department { get; set; } //descripcion del departamento, solo si es tipo de persona Empleado
+
         public List<MPersonContact> listPersonContact { get; set; } //Numeros de telefono de contacto de la persona
     }
 }

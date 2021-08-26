@@ -30,5 +30,7 @@ namespace CustomerSupport.BDContext
         public string Position { get; set; }
         public bool ClientPermission { get; set; }
         public bool Status { get; set; }
+        public Nullable<int> IdDepartment { get; set; }
+        public string Department { get; set; }
     }
 }

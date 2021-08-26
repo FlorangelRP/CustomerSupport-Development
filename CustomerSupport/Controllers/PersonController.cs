@@ -3,6 +3,7 @@ using CustomerSupport.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -25,20 +26,20 @@ namespace CustomerSupport.Controllers
         public ActionResult GetListPerson(int? IdPersonType = null, bool? PersonStatus = null)
         {
             List<MPerson> ListPerson = new List<MPerson>();
-            ListPerson = fnListPerson(null, IdPersonType, PersonStatus); 
+            ListPerson = fnListPerson(null, IdPersonType, null, PersonStatus); 
 
             return Json(ListPerson, JsonRequestBehavior.AllowGet); 
         }
 
 
-        public static List<MPerson> fnListPerson(int? idPerson, int? PersonType, bool? PersonStatus=null)
+        public static List<MPerson> fnListPerson(int? idPerson, int? PersonType, int? Department=null, bool? PersonStatus=null)
         {
             List<MPerson> ListPerson = new List<MPerson>();
             MMEnterprisesEntities db = new MMEnterprisesEntities();
 
             MUser objUser = new MUser();
 
-            ListPerson = (from result in db.GNListPerson(idPerson, PersonType, PersonStatus).ToList()
+            ListPerson = (from result in db.GNListPerson(idPerson, PersonType, PersonStatus, Department).ToList()
                           select new MPerson
                           {
                               IdPerson = result.IdPerson,
@@ -59,6 +60,8 @@ namespace CustomerSupport.Controllers
                               ClientPermission = result.ClientPermission,
                               Status = result.Status,
                               StatusDesc = result.Status == true ? "Activo" : "Inactivo",
+                              IdDepartment=result.IdDepartment,
+                              Department=result.Department,
                               listPersonContact = (List<MPersonContact>)(from result2 in db.GNListPersonContact(result.IdPerson, result.IdPersonType, null).ToList()
                                                                          select new MPersonContact
                                                                          {
@@ -84,6 +87,8 @@ namespace CustomerSupport.Controllers
         {
             try
             {
+                TextInfo ti = CultureInfo.CurrentCulture.TextInfo; //para capitalizar textos
+
                 MMEnterprisesEntities db = new MMEnterprisesEntities();
 
                 int IdPerson;
@@ -125,26 +130,41 @@ namespace CustomerSupport.Controllers
                     paramIdPosition.Value = DBNull.Value;
                 }
 
+                SqlParameter paramIdDepartment = new SqlParameter();
+                paramIdDepartment.ParameterName = "@IdDepartment";
+                paramIdDepartment.SqlDbType = System.Data.SqlDbType.Int;
+                paramIdDepartment.Direction = System.Data.ParameterDirection.Input;
+                paramIdDepartment.IsNullable = true;
+                if (objPerson.IdDepartment != null)
+                {
+                    paramIdDepartment.Value = objPerson.IdDepartment;
+                }
+                else
+                {
+                    paramIdDepartment.Value = DBNull.Value;
+                }
+
                 MUser objUser = new MUser();
 
                 SqlResultPerson = db.Database.ExecuteSqlCommand("GNTranPerson @TransactionType, @IdPerson OUT, @IdPersonType " +
                                                         ", @IdIdentificationType, @strNumIdentification, @strName, @strLastName, @dttBirthday " +
-                                                        ", @strAddress, @strEmail, @IdContactType, @IdPosition, @btClientPermission, @btStatus ",
+                                                        ", @strAddress, @strEmail, @IdContactType, @IdPosition, @btClientPermission, @btStatus, @IdDepartment ",
                         new SqlParameter[]{
                             new SqlParameter("@TransactionType", TransactionType),
                             paramOutIdPerson,
                             new SqlParameter("@IdPersonType", objPerson.IdPersonType),
                             new SqlParameter("@IdIdentificationType", objPerson.IdIdentificationType),
                             new SqlParameter("@strNumIdentification",objUser.Encriptar(objPerson.NumIdentification)),
-                            new SqlParameter("@strName", objPerson.Name),
-                            new SqlParameter("@strLastName", objPerson.LastName),
+                            new SqlParameter("@strName", ti.ToTitleCase(objPerson.Name)),
+                            new SqlParameter("@strLastName", ti.ToTitleCase(objPerson.LastName)),
                             new SqlParameter("@dttBirthday", objPerson.Birthday),
                             new SqlParameter("@strAddress", objUser.Encriptar(objPerson.Address)),
                             new SqlParameter("@strEmail", objPerson.Email),
                             paramIdContactType,
                             paramIdPosition,
                             new SqlParameter("@btClientPermission", objPerson.ClientPermission),
-                            new SqlParameter("@btStatus", objPerson.Status)
+                            new SqlParameter("@btStatus", objPerson.Status),
+                            paramIdDepartment
                         }
                     );
 

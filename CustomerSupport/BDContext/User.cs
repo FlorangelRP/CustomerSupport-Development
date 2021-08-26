@@ -20,6 +20,7 @@ namespace CustomerSupport.BDContext
             this.ServiceRequest = new HashSet<ServiceRequest>();
             this.Task = new HashSet<Task>();
             this.UserAcces = new HashSet<UserAcces>();
+            this.Role = new HashSet<Role>();
         }
     
         public int IdUser { get; set; }
@@ -35,5 +36,7 @@ namespace CustomerSupport.BDContext
         public virtual ICollection<Task> Task { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserAcces> UserAcces { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Role> Role { get; set; }
     }
 }

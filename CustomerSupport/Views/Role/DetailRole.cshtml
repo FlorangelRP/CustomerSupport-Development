@@ -1,9 +1,7 @@
-﻿@using CustomerSupport.Models
-@using CustomerSupport.Controllers
-@model CustomerSupport.Models.MUser
+﻿@model CustomerSupport.Models.MRole
 
 @{
-    ViewBag.Title = "Detalle Usuario";
+    ViewBag.Title = "Detalle Rol de Acceso";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -15,55 +13,29 @@
     <div class="card-body">
 
         <div class="m-0 row justify-content-center">
-            <div class="form-horizontal col-md-10">
+            <div class="form-horizontal col-md-12">
 
                 <div class="row">
                     <div class="col-md-2">
                         <div class="form-group">
                             <div class="control-label font-weight-bold">Codigo:</div>
-                            @Html.DisplayFor(model => model.IdUser)
-                            @Html.HiddenFor(model => model.IdUser, new { @id = "IdUser" })
+                            @Html.DisplayFor(model => model.IdRole)
+                            @Html.HiddenFor(model => model.IdRole, new { @id = "IdRole" })
                         </div>
                     </div>
                 </div>
                 <hr>
 
-                <div class="row shadow-sm p-3 mb-5 bg-white rounded">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <div class="control-label font-weight-bold">Nombres:</div>
-                            <div class="">
-                                @Html.DisplayFor(model => model.PersonEmployee.Name)
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <div class="control-label font-weight-bold">Apellidos:</div>
-                            <div class="">
-                                @Html.DisplayFor(model => model.PersonEmployee.LastName)
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <div class="control-label font-weight-bold">Cargo:</div>
-                            <div class="">
-                                @Html.DisplayFor(model => model.PersonEmployee.Position)
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
 
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-5">
                         <div class="form-group">
-                            <div class="control-label font-weight-bold">Login:</div>
-                            <div class="">
-                                @Html.DisplayFor(model => model.Login)
-                            </div>
+                            <label class="control-label font-weight-bold">Rol: </label>
+                            @Html.DisplayFor(model => model.NameRole)
                         </div>
                     </div>
+
                     <div class="col-md-4">
                         <div class="form-group">
                             <label class="control-label font-weight-bold">Estado: </label>
@@ -73,78 +45,45 @@
                 </div>
 
                 <br />
-                <div class="row mt-2 mb-2">
-                    <div class="col-md-12 align-self-center">
+                <div class="row">
+                    <div class="col-md-10">
+                        <div id="demo">
+                            <div class="table-responsive">
+                                <div class="container">
+                                    <table id="TMenuOptions" class="display table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>
+                                                    Opción
+                                                </th>
+                                            </tr>
+                                        </thead>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="control-label font-weight-bold">Permisos por Roles:</div>
-                            </div>
-                        </div>
-                        <div class="row shadow-sm p-3 m-1 bg-white rounded">
-                            @{ string listIdRoles = ""; }
-                            @if (Model.Roles != null && Model.Roles.Count() > 0)
-                            {
-                                for (int i = 0; i < Model.Roles.Count(); i++)
-                                {
-                                    <div class="col-md-3 s_Checkbox mt-0 mb-0">
-                                        @Html.CheckBox("chkRole" + Model.Roles[i].IdRole.ToString(), true, new { @disabled = "disabled" })
-                                        @Html.Label("chkRole" + Model.Roles[i].IdRole, Model.Roles[i].NameRole)
-                                    </div>
-                                }
-                                listIdRoles = String.Join(",", Model.Roles.Select(c => c.IdRole).ToList());
-                            }
-                            @Html.Hidden("listIdRoles", listIdRoles)
-                        </div>
-                    </div>
-                </div>
-                <br />
-                <div class="row mt-2 mb-2">
-                    <div class="col-md-12 align-self-center">
+                                        @foreach (var item in Model.RoleAccesPadre)
+                                        {
+                                            <tr>
+                                                <td><img src="/Content/assets/images/details_open.png" alt="expand/collapse" rel="@item.IdOption" /></td>
+                                                <td>
+                                                    @item.OptionName
+                                                </td>
+                                            </tr>
+                                        }
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="control-label font-weight-bold">Permisos por Usuario:</div>
-                            </div>
-                        </div>
-                        <div class="row shadow-sm p-3 m-1 bg-white rounded">
-                            <div class="col-md-10">
-                                <div id="demo">
-                                    <div class="table-responsive">
-                                        <div class="container">
-                                            <table id="TMenuOptions" class="display table table-bordered table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th></th>
-                                                        <th>Opción</th>
-                                                    </tr>
-                                                </thead>
-
-                                                @foreach (var item in Model.UserAccesPadre)
-                                                {
-                                                    <tr>
-                                                        <td><img src="/Content/assets/images/details_open.png" alt="expand/collapse" rel="@item.IdOption" /></td>
-                                                        <td>@item.OptionName</td>
-                                                    </tr>
-                                                }
-                                            </table>
-                                        </div>
-                                    </div>
-
+                                    </table>
                                 </div>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
                 </div>
-               
             </div>
-
+           
         </div>
-
         <div>
-            @Html.ActionLink("Regresar a la Lista", "ListUser")
+            @Html.ActionLink("Regresar a la Lista", "ListRole")
         </div>
+
 
     </div>
 </div>
@@ -182,22 +121,15 @@
                     /* Open this row */
                     this.src = "/Content/assets/images/details_close.png";
                     var OptionId = $(this).attr("rel");
-                    var IdUser = $("#IdUser").val();
-
-                    //---Lista de Roles
-                    var strRoles = $("#listIdRoles").val();
-			        alert(strRoles);
-			        //-----------------
-
+                    var IdRole = $("#IdRole").val();
                     var existe = 0;
                     var params = {
-                        IdUser: IdUser,
-                        IdAssociated: OptionId,
-                        lsRoles: strRoles
+                        IdRole: IdRole,
+                        IdAssociated: OptionId
                     };
                     $.ajax({
                         type: 'GET',
-                        url: '@Url.Action("DetailMenuOption", "User")',
+                        url: '@Url.Action("DetailMenuOption", "Role")',
                         data: params,
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
@@ -248,7 +180,7 @@
                                 objtable += "</table>";
                             else
                                 objtable = "";
-
+                         
                             oTable.fnOpen(nTr, objtable, 'details');
 
                         }

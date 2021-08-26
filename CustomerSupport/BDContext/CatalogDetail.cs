@@ -21,6 +21,7 @@ namespace CustomerSupport.BDContext
             this.Person1 = new HashSet<Person>();
             this.Person2 = new HashSet<Person>();
             this.Person3 = new HashSet<Person>();
+            this.Person4 = new HashSet<Person>();
             this.PersonContact = new HashSet<PersonContact>();
             this.ServiceRequest = new HashSet<ServiceRequest>();
             this.ServiceRequest1 = new HashSet<ServiceRequest>();
@@ -44,6 +45,8 @@ namespace CustomerSupport.BDContext
         public virtual ICollection<Person> Person2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Person> Person3 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Person> Person4 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PersonContact> PersonContact { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

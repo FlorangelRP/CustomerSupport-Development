@@ -316,7 +316,7 @@ namespace CustomerSupport.Controllers
                                         IdServiceStatus = d.IdServiceStatus,
                                         ServiceStatus = d.ServiceStatus,
                                         IdPerson = d.IdPerson,
-                                        PersonClient = (MPerson)(from result2 in db.GNListPerson(d.IdPerson, null, null).ToList()
+                                        PersonClient = (MPerson)(from result2 in db.GNListPerson(d.IdPerson, null, null, null).ToList()
                                                         select new MPerson
                                                         {
                                                             IdPerson = result2.IdPerson,

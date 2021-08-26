@@ -12,30 +12,22 @@ namespace CustomerSupport.BDContext
     using System;
     using System.Collections.Generic;
     
-    public partial class OptionMenu
+    public partial class Role
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public OptionMenu()
+        public Role()
         {
-            this.OptionMenu1 = new HashSet<OptionMenu>();
             this.RoleAcces = new HashSet<RoleAcces>();
-            this.UserAcces = new HashSet<UserAcces>();
+            this.User = new HashSet<User>();
         }
     
-        public int IdOption { get; set; }
-        public string OptionName { get; set; }
-        public Nullable<int> IdAssociated { get; set; }
-        public string AssociatedName { get; set; }
+        public int IdRole { get; set; }
+        public string NameRole { get; set; }
         public bool Status { get; set; }
-        public string Action { get; set; }
-        public string Controller { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OptionMenu> OptionMenu1 { get; set; }
-        public virtual OptionMenu OptionMenu2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RoleAcces> RoleAcces { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserAcces> UserAcces { get; set; }
+        public virtual ICollection<User> User { get; set; }
     }
 }

@@ -33,6 +33,8 @@ namespace CustomerSupport.BDContext
         public virtual DbSet<OptionMenu> OptionMenu { get; set; }
         public virtual DbSet<Person> Person { get; set; }
         public virtual DbSet<PersonContact> PersonContact { get; set; }
+        public virtual DbSet<Role> Role { get; set; }
+        public virtual DbSet<RoleAcces> RoleAcces { get; set; }
         public virtual DbSet<ServiceRequest> ServiceRequest { get; set; }
         public virtual DbSet<Task> Task { get; set; }
         public virtual DbSet<User> User { get; set; }
@@ -65,7 +67,7 @@ namespace CustomerSupport.BDContext
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListCountry_Result>("GNListCountry", idCountryParameter, idIsoCountryParameter);
         }
     
-        public virtual ObjectResult<GNListPerson_Result> GNListPerson(Nullable<int> idPerson, Nullable<int> idPersonType, Nullable<bool> status)
+        public virtual ObjectResult<GNListPerson_Result> GNListPerson(Nullable<int> idPerson, Nullable<int> idPersonType, Nullable<bool> status, Nullable<int> idDepartment)
         {
             var idPersonParameter = idPerson.HasValue ?
                 new ObjectParameter("IdPerson", idPerson) :
@@ -79,7 +81,11 @@ namespace CustomerSupport.BDContext
                 new ObjectParameter("Status", status) :
                 new ObjectParameter("Status", typeof(bool));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListPerson_Result>("GNListPerson", idPersonParameter, idPersonTypeParameter, statusParameter);
+            var idDepartmentParameter = idDepartment.HasValue ?
+                new ObjectParameter("IdDepartment", idDepartment) :
+                new ObjectParameter("IdDepartment", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListPerson_Result>("GNListPerson", idPersonParameter, idPersonTypeParameter, statusParameter, idDepartmentParameter);
         }
     
         public virtual ObjectResult<GNListPersonContact_Result> GNListPersonContact(Nullable<int> idPerson, Nullable<int> idPersonType, Nullable<int> idContact)
@@ -97,6 +103,58 @@ namespace CustomerSupport.BDContext
                 new ObjectParameter("IdContact", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListPersonContact_Result>("GNListPersonContact", idPersonParameter, idPersonTypeParameter, idContactParameter);
+        }
+    
+        public virtual ObjectResult<GNListPersonTask_Result> GNListPersonTask(Nullable<int> idTask, Nullable<int> idPerson)
+        {
+            var idTaskParameter = idTask.HasValue ?
+                new ObjectParameter("IdTask", idTask) :
+                new ObjectParameter("IdTask", typeof(int));
+    
+            var idPersonParameter = idPerson.HasValue ?
+                new ObjectParameter("IdPerson", idPerson) :
+                new ObjectParameter("IdPerson", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListPersonTask_Result>("GNListPersonTask", idTaskParameter, idPersonParameter);
+        }
+    
+        public virtual ObjectResult<GNListRole_Result> GNListRole(Nullable<int> idRole, Nullable<bool> status)
+        {
+            var idRoleParameter = idRole.HasValue ?
+                new ObjectParameter("IdRole", idRole) :
+                new ObjectParameter("IdRole", typeof(int));
+    
+            var statusParameter = status.HasValue ?
+                new ObjectParameter("Status", status) :
+                new ObjectParameter("Status", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListRole_Result>("GNListRole", idRoleParameter, statusParameter);
+        }
+    
+        public virtual ObjectResult<GNListRoleAcces_Result> GNListRoleAcces(Nullable<int> idRole, Nullable<int> idAssociated)
+        {
+            var idRoleParameter = idRole.HasValue ?
+                new ObjectParameter("IdRole", idRole) :
+                new ObjectParameter("IdRole", typeof(int));
+    
+            var idAssociatedParameter = idAssociated.HasValue ?
+                new ObjectParameter("IdAssociated", idAssociated) :
+                new ObjectParameter("IdAssociated", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListRoleAcces_Result>("GNListRoleAcces", idRoleParameter, idAssociatedParameter);
+        }
+    
+        public virtual ObjectResult<GNListRoleUserPermission_Result> GNListRoleUserPermission(Nullable<int> idUser, Nullable<int> idAssociated)
+        {
+            var idUserParameter = idUser.HasValue ?
+                new ObjectParameter("IdUser", idUser) :
+                new ObjectParameter("IdUser", typeof(int));
+    
+            var idAssociatedParameter = idAssociated.HasValue ?
+                new ObjectParameter("IdAssociated", idAssociated) :
+                new ObjectParameter("IdAssociated", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListRoleUserPermission_Result>("GNListRoleUserPermission", idUserParameter, idAssociatedParameter);
         }
     
         public virtual ObjectResult<GNListServiceConstructionOption_Result> GNListServiceConstructionOption(Nullable<int> idServiceRequest, Nullable<int> idConstructionOption)
@@ -162,16 +220,24 @@ namespace CustomerSupport.BDContext
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListTask_Result>("GNListTask", selectTypeParameter, idTaskParameter, idServiceRequestParameter, idUserParameter, statusParameter);
         }
     
-        public virtual ObjectResult<GNListUser_Result> GNListUser(Nullable<int> idUser)
+        public virtual ObjectResult<GNListUser_Result> GNListUser(Nullable<int> idUser, Nullable<bool> status, Nullable<int> idPerson)
         {
             var idUserParameter = idUser.HasValue ?
                 new ObjectParameter("IdUser", idUser) :
                 new ObjectParameter("IdUser", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListUser_Result>("GNListUser", idUserParameter);
+            var statusParameter = status.HasValue ?
+                new ObjectParameter("Status", status) :
+                new ObjectParameter("Status", typeof(bool));
+    
+            var idPersonParameter = idPerson.HasValue ?
+                new ObjectParameter("IdPerson", idPerson) :
+                new ObjectParameter("IdPerson", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListUser_Result>("GNListUser", idUserParameter, statusParameter, idPersonParameter);
         }
     
-        public virtual ObjectResult<GNListUserAcces_Result> GNListUserAcces(Nullable<int> idUser, Nullable<int> idAssociated)
+        public virtual ObjectResult<GNListUserAcces_Result> GNListUserAcces(Nullable<int> idUser, Nullable<int> idAssociated, string roles)
         {
             var idUserParameter = idUser.HasValue ?
                 new ObjectParameter("IdUser", idUser) :
@@ -181,10 +247,27 @@ namespace CustomerSupport.BDContext
                 new ObjectParameter("IdAssociated", idAssociated) :
                 new ObjectParameter("IdAssociated", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListUserAcces_Result>("GNListUserAcces", idUserParameter, idAssociatedParameter);
+            var rolesParameter = roles != null ?
+                new ObjectParameter("Roles", roles) :
+                new ObjectParameter("Roles", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListUserAcces_Result>("GNListUserAcces", idUserParameter, idAssociatedParameter, rolesParameter);
         }
     
-        public virtual int GNTranPerson(string transactionType, ObjectParameter idPerson, Nullable<int> idPersonType, Nullable<int> idIdentificationType, string strNumIdentification, string strName, string strLastName, Nullable<System.DateTime> dttBirthday, string strAddress, string strEmail, Nullable<int> idContactType, Nullable<int> idPosition, Nullable<bool> btClientPermission, Nullable<bool> btStatus)
+        public virtual ObjectResult<GNListUserRole_Result> GNListUserRole(Nullable<int> idRole, Nullable<int> idUser)
+        {
+            var idRoleParameter = idRole.HasValue ?
+                new ObjectParameter("IdRole", idRole) :
+                new ObjectParameter("IdRole", typeof(int));
+    
+            var idUserParameter = idUser.HasValue ?
+                new ObjectParameter("IdUser", idUser) :
+                new ObjectParameter("IdUser", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListUserRole_Result>("GNListUserRole", idRoleParameter, idUserParameter);
+        }
+    
+        public virtual int GNTranPerson(string transactionType, ObjectParameter idPerson, Nullable<int> idPersonType, Nullable<int> idIdentificationType, string strNumIdentification, string strName, string strLastName, Nullable<System.DateTime> dttBirthday, string strAddress, string strEmail, Nullable<int> idContactType, Nullable<int> idPosition, Nullable<bool> btClientPermission, Nullable<bool> btStatus, Nullable<int> idDepartment)
         {
             var transactionTypeParameter = transactionType != null ?
                 new ObjectParameter("TransactionType", transactionType) :
@@ -238,7 +321,11 @@ namespace CustomerSupport.BDContext
                 new ObjectParameter("btStatus", btStatus) :
                 new ObjectParameter("btStatus", typeof(bool));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranPerson", transactionTypeParameter, idPerson, idPersonTypeParameter, idIdentificationTypeParameter, strNumIdentificationParameter, strNameParameter, strLastNameParameter, dttBirthdayParameter, strAddressParameter, strEmailParameter, idContactTypeParameter, idPositionParameter, btClientPermissionParameter, btStatusParameter);
+            var idDepartmentParameter = idDepartment.HasValue ?
+                new ObjectParameter("IdDepartment", idDepartment) :
+                new ObjectParameter("IdDepartment", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranPerson", transactionTypeParameter, idPerson, idPersonTypeParameter, idIdentificationTypeParameter, strNumIdentificationParameter, strNameParameter, strLastNameParameter, dttBirthdayParameter, strAddressParameter, strEmailParameter, idContactTypeParameter, idPositionParameter, btClientPermissionParameter, btStatusParameter, idDepartmentParameter);
         }
     
         public virtual int GNTranPersonContact(string transactionType, ObjectParameter idContact, Nullable<int> idPerson, Nullable<int> idPhoneNumberType, string strIdIsoCountry, string strPhoneNumber, Nullable<bool> btStatus)
@@ -285,6 +372,56 @@ namespace CustomerSupport.BDContext
                 new ObjectParameter("IdPerson", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranPersonTask", transactionTypeParameter, idTaskParameter, idPersonParameter);
+        }
+    
+        public virtual int GNTranRole(string transactionType, ObjectParameter idRole, string nameRole, Nullable<bool> status)
+        {
+            var transactionTypeParameter = transactionType != null ?
+                new ObjectParameter("TransactionType", transactionType) :
+                new ObjectParameter("TransactionType", typeof(string));
+    
+            var nameRoleParameter = nameRole != null ?
+                new ObjectParameter("NameRole", nameRole) :
+                new ObjectParameter("NameRole", typeof(string));
+    
+            var statusParameter = status.HasValue ?
+                new ObjectParameter("Status", status) :
+                new ObjectParameter("Status", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranRole", transactionTypeParameter, idRole, nameRoleParameter, statusParameter);
+        }
+    
+        public virtual int GNTranRoleAcces(Nullable<int> idRole, Nullable<int> idOption, Nullable<int> blnVisible, Nullable<int> blnCreate, Nullable<int> blnSearch, Nullable<int> blnEdit, Nullable<int> blnDelete)
+        {
+            var idRoleParameter = idRole.HasValue ?
+                new ObjectParameter("IdRole", idRole) :
+                new ObjectParameter("IdRole", typeof(int));
+    
+            var idOptionParameter = idOption.HasValue ?
+                new ObjectParameter("IdOption", idOption) :
+                new ObjectParameter("IdOption", typeof(int));
+    
+            var blnVisibleParameter = blnVisible.HasValue ?
+                new ObjectParameter("blnVisible", blnVisible) :
+                new ObjectParameter("blnVisible", typeof(int));
+    
+            var blnCreateParameter = blnCreate.HasValue ?
+                new ObjectParameter("blnCreate", blnCreate) :
+                new ObjectParameter("blnCreate", typeof(int));
+    
+            var blnSearchParameter = blnSearch.HasValue ?
+                new ObjectParameter("blnSearch", blnSearch) :
+                new ObjectParameter("blnSearch", typeof(int));
+    
+            var blnEditParameter = blnEdit.HasValue ?
+                new ObjectParameter("blnEdit", blnEdit) :
+                new ObjectParameter("blnEdit", typeof(int));
+    
+            var blnDeleteParameter = blnDelete.HasValue ?
+                new ObjectParameter("blnDelete", blnDelete) :
+                new ObjectParameter("blnDelete", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranRoleAcces", idRoleParameter, idOptionParameter, blnVisibleParameter, blnCreateParameter, blnSearchParameter, blnEditParameter, blnDeleteParameter);
         }
     
         public virtual int GNTranServiceConstructionOption(string transactionType, Nullable<int> idServiceRequest, Nullable<int> idConstructionOption)
@@ -525,17 +662,21 @@ namespace CustomerSupport.BDContext
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranUserAcces", idUserParameter, idOptionParameter, blnVisibleParameter, blnCreateParameter, blnSearchParameter, blnEditParameter, blnDeleteParameter);
         }
     
-        public virtual ObjectResult<GNListPersonTask_Result> GNListPersonTask(Nullable<int> idTask, Nullable<int> idPerson)
+        public virtual int GNTranUserRole(string transactionType, Nullable<int> idUser, Nullable<int> idRole)
         {
-            var idTaskParameter = idTask.HasValue ?
-                new ObjectParameter("IdTask", idTask) :
-                new ObjectParameter("IdTask", typeof(int));
+            var transactionTypeParameter = transactionType != null ?
+                new ObjectParameter("TransactionType", transactionType) :
+                new ObjectParameter("TransactionType", typeof(string));
     
-            var idPersonParameter = idPerson.HasValue ?
-                new ObjectParameter("IdPerson", idPerson) :
-                new ObjectParameter("IdPerson", typeof(int));
+            var idUserParameter = idUser.HasValue ?
+                new ObjectParameter("IdUser", idUser) :
+                new ObjectParameter("IdUser", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListPersonTask_Result>("GNListPersonTask", idTaskParameter, idPersonParameter);
+            var idRoleParameter = idRole.HasValue ?
+                new ObjectParameter("IdRole", idRole) :
+                new ObjectParameter("IdRole", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranUserRole", transactionTypeParameter, idUserParameter, idRoleParameter);
         }
     }
 }
