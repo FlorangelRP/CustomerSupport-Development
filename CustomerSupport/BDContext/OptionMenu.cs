@@ -18,6 +18,7 @@ namespace CustomerSupport.BDContext
         public OptionMenu()
         {
             this.OptionMenu1 = new HashSet<OptionMenu>();
+            this.RoleAcces = new HashSet<RoleAcces>();
             this.UserAcces = new HashSet<UserAcces>();
         }
     
@@ -32,6 +33,8 @@ namespace CustomerSupport.BDContext
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OptionMenu> OptionMenu1 { get; set; }
         public virtual OptionMenu OptionMenu2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RoleAcces> RoleAcces { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserAcces> UserAcces { get; set; }
     }

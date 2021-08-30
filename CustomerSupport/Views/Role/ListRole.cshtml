@@ -1,10 +1,10 @@
 ﻿@using CustomerSupport.Models
-@model CustomerSupport.Models.MUser
+@model CustomerSupport.Models.MRole
 
 @{
-    ViewBag.Title = "Listado de Usuario";
+    ViewBag.Title = "Listado de Roles de Acceso";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.Action = "ListUser";
+    ViewBag.Action = "ListRole";
 }
 
 <div class="card card-primary">
@@ -29,44 +29,45 @@
                 <div class="row text-right">
                     <div class="col-md-12">
                         <div class="text-right">
-                            @*<button class="btn boton_personalizado" onclick="location.href='@Url.Action("Create", "User")';return false;"><i class="fas fa-user-plus"></i> Agregar</button>*@
-                            @*<a href="location.href='@Url.Action("AddUser", "User")';return false;" class="white_btn">Agregar</a>*@
-                            <button class="white_btn" onclick="location.href='@Url.Action("AddUser", "User")';return false;">Agregar</button>
+                            <button class="white_btn" onclick="location.href='@Url.Action("AddRole", "Role")';return false;">Agregar</button>
                         </div>
                     </div>
                 </div>
             }
         }
 
-        @using (Html.BeginForm("ListUser", "User", FormMethod.Post))
+        @using (Html.BeginForm("ListRole", "Role", FormMethod.Post))
         {
+            <div class="row">
+                <div class="col-lg-2 col-md-2"></div>
+                <div class="col-lg-8 col-md-8 col-sm-12 col-12 align-self-center">
 
-            <div class="table-responsive">
-                <div class="container">
-                    <table id="TUser" class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>Codigo</th>
-                                <th>Usuario</th>
-                                <th>Nombres</th>
-                                <th>Apellidos</th>
-                                <th>Cargo</th>
-                                <th>Roles</th>
-                                <th>Estado</th>
-                                @if (perm != null)
-                                {
-                                    if (perm.Search == true || perm.Edit == true)
-                                    {
-                                        <th class="text-center" colspan="2">Opciones</th>
-                                    }
-                                }
-                            </tr>
-                        </thead>
-                    </table>
+                    <div class="table-responsive">
+                        <div class="container">
+                            <table id="TRole" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Codigo</th>
+                                        <th>Rol</th>
+                                        <th>Estado</th>
+                                        @if (perm != null)
+                                        {
+                                            if (perm.Search == true || perm.Edit == true)
+                                            {
+                                                <th class="text-center" colspan="2">Opciones</th>
+                                            }
+                                        }
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+
                 </div>
+                <div class="col-lg-2 col-md-2"></div>
             </div>
            
-            @Html.HiddenFor(model => model.IdUser, new { @id = "hidd_Iduser" })
+            @Html.HiddenFor(model => model.IdRole, new { @id = "hidd_IdRole" })
             @Html.Hidden("submit")
 
         }
@@ -96,56 +97,52 @@
         Buscar = Permis.Search;
         Editar = Permis.Edit;
 
-        var table = $('#TUser').DataTable({
+        var table = $('#TRole').DataTable({
 
             'ajax': {
-                'url': '@Url.Action("GetListUser", "User")',
+                'url': '@Url.Action("GetListRole", "Role")',
                 'type': 'GET',
                 'dataType': 'json',
                 'dataSrc': ''
             },
             'columns':
                 [
-                    { 'data': 'IdUser', 'autowidth': true },
-                    { 'data': 'Login', 'autowidth': true },
-                    { 'data': 'PersonEmployee.Name', 'autowidth': true },
-                    { 'data': 'PersonEmployee.LastName', 'autowidth': true },
-                    { 'data': 'PersonEmployee.Position', 'autowidth': true },
-                    { 'data': 'UserRolesNames', 'autowidth': true },
-                    { 'data': 'StatusDesc', 'autowidth': true },
+                    { 'data': 'IdRole' },
+                    { 'data': 'NameRole' },
+                    { 'data': 'StatusDesc' },
                     {
                         'data': null, render: function (data, type, row) {
                             if (data != null) {
-                                if (row.IdUser == null) {
+                                if (row.IdRole == null) {
                                     return '';
                                 } else {
                                     ////return '<div class="btn_option pt-0"><a class="editRow"><i class="fas fa-edit"></i></a></div>';                                    
                                     var link = '<div class="btn_option pt-0"><button class="editRow border-0" name="linkEdit_&"><i class="fas fa-edit"></i></button></div>';
-                                    link = link.replace("&", row.IdUser);
+                                    link = link.replace("&", row.IdRole);
                                     return link;
                                 }
                             }
-                        }, 'autowidth': true
+                        }
                     },
                     {
                         'data': null, render: function (data, type, row) {
                             if (data != null) {
-                                if (row.IdUser == null ) {
+                                if (row.IdRole == null ) {
                                     return '';
                                 } else {
                                     ////return '<div class="btn_option pt-0"><a class="searchRow"><i class="fas fa-search"></i></a></div>';                                    
                                     var link = '<div class="btn_option pt-0"><button class="searchRow border-0" name="linkSearch_&"><i class="fas fa-search"></i></button></div>';
-                                    link = link.replace("&", row.IdUser);
+                                    link = link.replace("&", row.IdRole);
                                     return link;
                                 }
                             }
-                        }, 'autowidth': true
+                        }
                     },
                     //{
                     //    'data': null, render: function (data, type, row) {
                     //        //debugger;
                     //        if (data != null) {
-                    //            if (row.IdUser == null) {
+                    //            if (row.IdRole == null) {
                     //                return '';
                     //            } else
                     //                return '<div class="btn_option pt-0"><a class="deleteRow"><i class="far fa-trash-alt"></i></a></div>';
@@ -156,9 +153,11 @@
                 ],
         "columnDefs":
             [
-                { "targets": 0, "bVisible": false, "orderable": false },
-                { "targets": 7, "bVisible": Editar },
-                { "targets": 8, "bVisible": Buscar }
+                { "targets": 0, "width": "10%", "bVisible": false, "orderable": false },
+                { "targets": 1, "width": "60%" },
+                { "targets": 2, "width": "20%" },
+                { "targets": 3, "bVisible": Editar, "width": "5%" },
+                { "targets": 4, "bVisible": Buscar, "width": "5%" }
             ],
             "bAutoWidth": false,
             "bInfo": false,
@@ -189,20 +188,20 @@
 
         });
 
-        $('#TUser').on("click", "button.searchRow", function () {
+        $('#TRole').on("click", "button.searchRow", function () {
             var data = table.row($(this).parents("tr")).data();
-            $("#hidd_Iduser").val(data.IdUser);
+            $("#hidd_IdRole").val(data.IdRole);
             $("#submit").val("searchRow");
-            location.href = '@Url.Action("ListUser", "User")';
-            ////$(".searchRow").attr("href", 'Url.Action("DetailUser", "User")?id=' + data.IdUser);
+            location.href = '@Url.Action("ListRole", "Role")';
+            ////$(".searchRow").attr("href", 'Url.Action("DetailRole", "Role")?id=' + data.IdRole);
         });
 
-        $('#TUser').on("click", "button.editRow", function () {
+        $('#TRole').on("click", "button.editRow", function () {
             var data = table.row($(this).parents("tr")).data();
-            $("#hidd_Iduser").val(data.IdUser);
+            $("#hidd_IdRole").val(data.IdRole);
             $("#submit").val("editRow");
-            location.href = '@Url.Action("ListUser", "User")';
-            ////$(".editRow").attr("href", 'Url.Action("EditUser", "User")?id=' + data.IdUser);
+            location.href = '@Url.Action("ListRole", "Role")';
+            ////$(".editRow").attr("href", 'Url.Action("EditRole", "Role")?id=' + data.IdRole);
         });
 
     </script>

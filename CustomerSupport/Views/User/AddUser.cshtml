@@ -1,4 +1,5 @@
 ﻿@using CustomerSupport.Models
+@using CustomerSupport.Controllers
 @model CustomerSupport.Models.MUser
 @{
     ViewBag.Title = "Crear Usuario";
@@ -26,19 +27,20 @@
                             <div class="form-group">
                                 @*<div class="control-label">Codigo:</div>*@
                                 @Html.HiddenFor(model => model.IdUser, new { @class = "form-control", @disabled = "disabled" })
-                                @Html.ValidationMessageFor(model => model.IdUser, "", new { @class = "text-danger" })
 
+                                @Html.HiddenFor(model => model.PersonEmployee.IdIdentificationType, new { @id = "IdIdentificationType" })
+                                @Html.HiddenFor(model => model.PersonEmployee.NumIdentification, new { @id = "NumIdentification" })
                                 @Html.HiddenFor(model => model.PersonEmployee.LastName, new { @id = "LastName" })
                                 @Html.HiddenFor(model => model.PersonEmployee.Name, new { @id = "Name" })
-                                @Html.HiddenFor(model => model.PersonEmployee.NumIdentification, new { @id = "NumIdentification" })
                                 @Html.HiddenFor(model => model.PersonEmployee.Birthday, new { @value = DateTime.Now, @id = "Birthday" })
-                                @Html.HiddenFor(model => model.PersonEmployee.IdContactType, new { @id = "IdContactType" })
-                                @Html.HiddenFor(model => model.PersonEmployee.IdPosition, new { @id = "IdPosition" })
-                                @Html.HiddenFor(model => model.PersonEmployee.ClientPermission, new { @id = "ClientPermission" })
-                                @Html.HiddenFor(model => model.PersonEmployee.IdPersonType, new { @id = "IdPersonType" })
                                 @Html.HiddenFor(model => model.PersonEmployee.Address, new { @id = "Address" })
                                 @Html.HiddenFor(model => model.PersonEmployee.Email, new { @id = "Email" })
-                                @Html.HiddenFor(model => model.PersonEmployee.IdIdentificationType, new { @id = "IdIdentificationType" })
+                                @Html.HiddenFor(model => model.PersonEmployee.IdContactType, new { @id = "IdContactType" })
+                                @Html.HiddenFor(model => model.PersonEmployee.IdPosition, new { @id = "IdPosition" })
+
+                                @*@Html.HiddenFor(model => model.PersonEmployee.ClientPermission, new { @id = "ClientPermission" })*@
+                                @*@Html.HiddenFor(model => model.PersonEmployee.IdPersonType, new { @id = "IdPersonType" })*@
+
                             </div>
                         </div>
                     </div>
@@ -47,13 +49,12 @@
                         <div class="col-md-10">
                             <div class="form-group">
                                 <label>Empleado</label><br>
-                                <select class="form-control select2 " onchange="filtrarPersona(this.value)" id="filtropersona" data-placeholder="Seleccionar" name="IdPerson"></select>
+                                <select class="form-control select2" onchange="filtrarPersona(this.value)" id="filtropersona" data-placeholder="Seleccionar" name="IdPerson"></select>
                                 @*@Html.TextBoxFor(m => m.IdPerson, new { @id = "searchPerson", @name = "IdPerson", @class = "form-control", @placeholder = "Seleccione", @value = "" })*@
                                 @Html.ValidationMessageFor(model => model.IdPerson, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
-
 
                     <div class="row">
                         <div class="col-md-5">
@@ -75,52 +76,130 @@
                     </div>
 
                     <br />
+                    <div class="row mt-2 mb-2">
+                        <div class="col-md-10 align-self-center">
 
-                    <div class="row">
-                        <div class="col-md-10">
-                            <div id="demo">
-                                <div class="table-responsive">
-                                    <div class="container">
-                                        <table id="TMenuOptions" class="display table table-bordered table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <th style="display:none;">colHid_indexCell</th>
-                                                    <th style="display:none;">colHid_IdOption</th>
-                                                    <th style="display:none;">colHid_OptionName</th>
-                                                    <th>
-                                                        Opción
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            @if (Model != null)
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="control-label">Permisos por Roles:</div>
+                                </div>
+                            </div>
+                            <div class="row shadow-sm p-3 m-1 bg-white rounded">
+                                @{List<MRole> LstRole = new List<MRole>();
+                                    LstRole = RoleController.fnListRole(null, true);}
+                                @if (LstRole != null)
+                                {
+                                    for (int i = 0; i < LstRole.Count(); i++)
+                                    {
+                                        bool chkValue = false;
+                                        if (Model.Roles != null && Model.Roles.Count() > 0)
+                                        {
+                                            chkValue = (Model.Roles.Where(c => c.IdRole == LstRole[i].IdRole).Count() == 1) ? true : false;
+                                        }
+
+                                        <div class="col-md-3 s_Checkbox mt-0 mb-0">
+                                            @Html.CheckBox("chkRole" + LstRole[i].IdRole.ToString(), chkValue, new { @id = "chkRole" + LstRole[i].IdRole, @onclick = "AddRole(this)", @rel = LstRole[i].IdRole })                                            
+                                            @Html.Label("chkRole" + LstRole[i].IdRole, LstRole[i].NameRole, new { @id = "lblRole" + LstRole[i].IdRole })
+                                        </div>
+                                    }
+                                }
+                            </div>
+
+                            <div class="row">
+                                <table id="TUserRoles" style="display:none;">
+                                    <thead>
+                                        <tr>
+                                            <td style="display:none;">colHid_indexCell</td>
+                                            <td style="display:none;">colHid_IdRole</td>
+                                            <td style="display:none;">colHid_NameRole</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="BodyUserRoles">
+                                        @if (Model != null)
+                                        {
+                                            if (Model.Roles != null)
                                             {
-                                                if (Model.UserAccesPadre != null)
-                                                {
+                                                string idRow;
+                                                string nameCol_IdRole;
+                                                string nameCol_NameRole;
 
-                                                    for (var i = 0; i < Model.UserAccesPadre.Count; i++)
-                                                    {
-                                                        <tr>
-                                                            <td><img src="/Content/assets/images/details_open.png" alt="expand/collapse" rel="@Model.UserAccesPadre[i].IdOption" /></td>
-                                                            <td style="display:none;"><input name="UserAccesPadre.Index" type="hidden" value="'@i'" /></td>
-                                                            <td style="display:none;"><input id="UserAccesPadre_'@i'" name="UserAccesPadre['@i'].IdOption" type="hidden" value='@Model.UserAccesPadre[i].IdOption' /></td>
-                                                            <td style="display:none;"><input id="UserAccesPadre_'@i'" name="UserAccesPadre['@i'].OptionName" type="hidden" value='@Model.UserAccesPadre[i].OptionName' /></td>
-                                                            <td>@Model.UserAccesPadre[i].OptionName</td>
-                                                        </tr>
-                                                    }
+                                                for (var i = 0; i < Model.Roles.Count; i++)
+                                                {
+                                                    idRow = "trRole" + Model.Roles[i].IdRole.ToString();
+                                                    nameCol_IdRole = "Roles[" + i.ToString() + "].IdRole";
+                                                    nameCol_NameRole = "Roles[" + i.ToString() + "].NameRole";
+
+                                                    <tr id='@idRow'>
+                                                        <td style="display:none;"><input name="Roles.Index" type="hidden" value='@i' /></td>
+                                                        <td style="display:none;"><input id="IdRole" name='@nameCol_IdRole' type="hidden" value='@Model.Roles[i].IdRole' /></td>
+                                                        <td style="display:none;"><input id="NameRole" name='@nameCol_NameRole' type="hidden" value='@Model.Roles[i].NameRole' /></td>
+                                                    </tr>
                                                 }
                                             }
-                                        </table>
-                                        @Html.ValidationMessageFor(model => model.UserAcces, "", new { @class = "text-danger" })
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row mt-2 mb-2">
+                        <div class="col-md-10 align-self-center">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="control-label">Permisos por Usuario:</div>
+                                </div>
+                            </div>
+                            <div class="row shadow-sm p-3 m-1 bg-white rounded">
+                                <div class="col-md-10">
+                                    <div id="demo">
+                                        <div class="table-responsive">
+                                            <div class="container">
+                                                <table id="TMenuOptions" class="display table table-bordered table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th style="display:none;">colHid_indexCell</th>
+                                                            <th style="display:none;">colHid_IdOption</th>
+                                                            <th style="display:none;">colHid_OptionName</th>
+                                                            <th>
+                                                                Opción
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="BodyMenuOptions">
+                                                        @if (Model != null)
+                                                        {
+                                                            if (Model.UserAccesPadre != null)
+                                                            {
+
+                                                                for (var i = 0; i < Model.UserAccesPadre.Count; i++)
+                                                                {
+                                                                    <tr>
+                                                                        <td><img src="/Content/assets/images/details_open.png" alt="expand/collapse" rel="@Model.UserAccesPadre[i].IdOption" /></td>
+                                                                        <td style="display:none;"><input name="UserAccesPadre.Index" type="hidden" value="'@i'" /></td>
+                                                                        <td style="display:none;"><input id="UserAccesPadre_IdOption_'@i'" name="UserAccesPadre['@i'].IdOption" type="hidden" value='@Model.UserAccesPadre[i].IdOption' /></td>
+                                                                        <td style="display:none;"><input id="UserAccesPadre_OptionName_'@i'" name="UserAccesPadre['@i'].OptionName" type="hidden" value='@Model.UserAccesPadre[i].OptionName' /></td>
+                                                                        <td>@Model.UserAccesPadre[i].OptionName</td>
+                                                                    </tr>
+                                                                }
+                                                            }
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                                @Html.ValidationMessageFor(model => model.UserAcces, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-
                             </div>
+
                         </div>
                     </div>
 
                     <br />
-
                     <div class="row">
                         <div class="col-md-offset-2 col-md-10">
                             <div class="form-group">
@@ -171,6 +250,36 @@
         var Item = 0;
         var ListPersons = [];
 
+        function AddRole(source) {
+
+            var intIdRole = $(source).attr('rel');
+            var strNameRole = document.getElementById('lblRole'+intIdRole).innerHTML;
+            var isSelected = $(source).is(":checked");
+
+            if (isSelected) {
+
+                @{
+                    Model.Roles.Add(new MRole());
+                }
+
+                var index = document.getElementById('TUserRoles').rows.length;
+                var colHid_indexCell = "<td style='display:none'><input name='Roles.Index' type = 'hidden' value = '" + index + "' /></td > ";
+                var colHid_IdRole = "<td style='display:none'><input id='IdRole' name = 'Roles[" + index + "].IdRole' type = 'hidden' value='" + intIdRole + "' /></td> ";
+                var colHid_NameRole = "<td style='display:none'><input id='NameRole' name = 'Roles[" + index + "].NameRole' type = 'hidden' value = '" + strNameRole + "' /></td> ";
+
+                //insertamos los valores en la tabla
+                var newRow = "<tr id='trRole" + intIdRole + "'>" + colHid_indexCell + colHid_IdRole + colHid_NameRole + "</tr>";
+                $("#TUserRoles").append(newRow);
+            }
+            else {
+                var controlToBeRemoved = "#trRole" + intIdRole;
+                $(controlToBeRemoved).remove();
+            }
+
+            UpdateAcces();
+
+        }
+
         function Chk(source) {
 
             var isSelected = $(source).is(":checked");
@@ -213,7 +322,7 @@
 
             ListPersons = $.ajax({
                         type: "GET",
-                        url: '@Url.Action("GetListPerson", "Person")?idPersonType=2',
+                        url: '@Url.Action("GetListPersonWithoutUser", "User")', 
                         data: "{}",
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
@@ -231,30 +340,29 @@
                         }
             }).responseJSON;
 
-        //debugger;
-        //if ($("#searchPerson").val() != "") {
-        //    cargarDataPerson($("#searchPerson").val(), ListPersons)
-        //}
+
+            //if ($("#searchPerson").val() != "") {
+            //    cargarDataPerson($("#searchPerson").val(), ListPersons)
+            //}
 
             var persona = $("#filtropersona")[0];
-        //debugger;
-        for (i = 0; i < ListPersons.length; i++) {
 
-            if (ListPersons[i].IdPerson != "" && ListPersons[i].LastName != "") {
-                var Name = " ";
-                if (ListPersons[i].Name != "")
-                {
-                    Name = " "+ListPersons[i].Name;
+            for (i = 0; i < ListPersons.length; i++) {
+
+                if (ListPersons[i].IdPerson != "" && ListPersons[i].LastName != "") {
+                    var Name = " ";
+                    if (ListPersons[i].Name != "")
+                    {
+                        Name = " "+ListPersons[i].Name;
+                    }
+
+                    persona[i + 1] = new Option(ListPersons[i].NumIdentification + " - " + ListPersons[i].LastName + Name , ListPersons[i].IdPerson, "", "");
+
                 }
 
-                persona[i + 1] = new Option(ListPersons[i].NumIdentification + " - " + ListPersons[i].LastName + Name , ListPersons[i].IdPerson, "", "");
-
             }
-
-        }
-        persona.value = "@Model.IdPerson";
-        filtrarPersona( "@Model.IdPerson");
-
+            persona.value = "@Model.IdPerson";
+            filtrarPersona( "@Model.IdPerson");
 
         }
 
@@ -270,24 +378,186 @@
             var objPerson = lstPersons.find((m) => m.IdPerson == IdPerson);
             var fecha = new Date();
 
-            $("#Birthday").val(fecha.toLocaleDateString("en-US")); //hidden del modelo*/
-            $("#IdContactType").val(1); //hidden del modelo
-            $("#IdPosition").val(objPerson.IdPosition); //hidden del modelo
-            $("#ClientPermission").val(objPerson.ClientPermission); //hidden del modelo
-            $("#IdPersonType").val(objPerson.IdPersonType); //hidden del modelo
+            $("#IdIdentificationType").val(objPerson.IdIdentificationType); //hidden del modelo
             $("#NumIdentification").val(objPerson.NumIdentification); //hidden del modelo
-            $("#LastName").val(objPerson.LastName); //hidden del modelo
             $("#Name").val(objPerson.Name); //hidden del modelo
+            $("#LastName").val(objPerson.LastName); //hidden del modelo
+            $("#Birthday").val(fecha.toLocaleDateString("en-US")); //hidden del modelo*/
             $("#Address").val(objPerson.Address); //hidden del modelo
             $("#Email").val(objPerson.Email); //hidden del modelo
-            $("#IdIdentificationType").val(objPerson.IdIdentificationType); //hidden del modelo
+            $("#IdContactType").val(1); //hidden del modelo
+            $("#IdPosition").val(objPerson.IdPosition); //hidden del modelo
+
+            //$("#ClientPermission").val(objPerson.ClientPermission); //hidden del modelo
+            //$("#IdPersonType").val(objPerson.IdPersonType); //hidden del modelo
         }
 
         function filtrarPersona(person) {
-            /*debugger;*/
             var SelecCodeValue = person.trim();
             cargarDataPerson(SelecCodeValue, ListPersons);
         }
+
+        function doTableColumnsToString(tableName, colName) {
+            var arrIfoTable = Array.prototype.map.call(document.querySelectorAll('#' + tableName + ' tbody tr'), function (tr) {
+                return Array.prototype.map.call(tr.querySelectorAll('td #' + colName), function (td) {
+                    var colValue = td.value;
+                    return colValue;
+                });
+            });
+            var strValue = arrIfoTable.join()
+            return strValue;
+        }
+
+        function UpdateAcces() {
+
+            //---Lista de Roles
+            var strRoles = doTableColumnsToString('TUserRoles', 'IdRole');
+			//alert(strRoles);
+			//-----------------
+
+            //const tMenu = $('#TMenuOptions tbody tr td img');
+            //for (var i = 0; i < tMenu.length; i++) {
+            //}
+
+            $('#TMenuOptions tbody tr td img').each(function(){
+
+                var OptionId = $(this).attr("rel"); //tMenu[i].attributes.rel.value;
+
+                //if (tMenu[i].src.match('details_close')) {
+                if (this.src.match('details_close')) {
+
+					oTable.fnClose(nTr);
+
+					var IdUser = $("#IdUser").val();
+					var existe = 0;
+					var params = {
+						IdUser: IdUser,
+						IdAssociated: OptionId,
+						lsRoles: strRoles
+					};
+
+                    var nTr = this.parentNode.parentNode; //tMenu[i].parentNode.parentNode;
+					var objtable = "<table id='TMenuOptionsDetail" + OptionId + "' class='padre display table table-bordered table - striped' > ";
+					objtable += "<thead> ";
+					objtable += "<tr> ";
+					objtable += "<td style='display: none; '>colHid_indexCell</td>";
+					objtable += "<td style='display: none; '>colHid_IdOption</td>";
+					objtable += "<td style='display: none; '>colHid_OptionName</td>";
+					objtable += "<th>Opcion</th> ";
+					objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,1)' /> Visible </th> ";
+					objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,2)' /> Crear </th> ";
+					objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,3)' /> Buscar </th> ";
+					objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,4)' /> Editar </th> ";
+					//objtable += "<th> <input type='checkbox' rel='" + OptionId + "' onclick='toggle(this,5)' /> Eliminar </th> ";
+					objtable += "</tr> ";
+					objtable += "</thead> ";
+					nro = 0;
+
+					/* Open this row */
+                    var _this = $(this);
+
+					$.ajax({
+						type: 'GET',
+						url: '@Url.Action("DetailMenuOption", "User")',
+						data: params,
+						contentType: "application/json; charset=utf-8",
+						dataType: "json",
+						dataSrc: '',
+						success: function (data) {
+
+							$.each(data, function (index, item) {
+
+								@if(Model!=null)
+								{
+
+									if (Model.UserAccesPadre != null)
+									{
+										Model.UserAcces.Add(new MUserAcces());
+									}
+								}
+
+								/*  Item = index + 1;*/
+
+								objtable += "<tbody><tr  id='trMenuOptionsDetail" + item.IdOption + ">";
+								objtable += "<td style='display:none'><input name='UserAcces.Index' type = 'hidden' value = '" + item.IdOption + "' /></td > ";
+								objtable += "<td style='display:none'><input id='UserAcces_IdOption_" + item.IdOption + "' name='UserAcces[" + item.IdOption + "].IdOption' type='hidden' value=" + item.IdOption + " /></td> ";
+								objtable += "<td style='display:none'><input id='UserAcces_OptionName_" + item.IdOption + "' name='UserAcces[" + item.IdOption + "].OptionName' type='hidden' value=" + item.OptionName + " /></td> ";
+								objtable += "<td>" + item.OptionName + "</td> ";
+
+								var modelo = @Html.Raw(Json.Encode(Model.UserAcces));
+                                var Array = modelo.filter(word => word.IdOption == item.IdOption);
+
+								var visible = false;
+								var crear = false;
+								var buscar = false;
+								var Editar = false;
+								var Eliminar = false;
+
+								if (Array.length == 1) {
+									visible = Array[0].Visible;
+									crear = Array[0].Create;
+									buscar = Array[0].Search;
+									Editar = Array[0].Edit;
+									Eliminar = Array[0].Delete;
+								}
+
+								if (visible == true) {
+									objtable += "<td><input id='UserAcces_Vis_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemV" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Visible' value=true></td>";
+								}
+								else {
+									objtable += "<td><input id='UserAcces_Vis_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemV" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Visible' value=false ></td>";
+								}
+
+								if (crear == true) {
+									objtable += "<td><input id='UserAcces_Cre_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemC" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Create' value=true></td>";
+								}
+								else {
+									objtable += "<td><input id='UserAcces_Cre_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemC" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Create' value=false></td>";
+								}
+
+								if (buscar== true) {
+									objtable += "<td><input id='UserAcces_Bus_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemB" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Search' value=true></td>";
+								}
+								else {
+									objtable += "<td><input id='UserAcces_Bus_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemB" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Search' value=false></td>";
+								}
+
+								if (Editar == true) {
+									objtable += "<td><input id='UserAcces_Edi_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemE" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Edit' value=true></td>";
+								}
+								else {
+									objtable += "<td><input id='UserAcces_Edi_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemE" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Edit' value=false></td>";
+								}
+
+								//if (Eliminar== true) {
+								//    objtable += "<td><input id='UserAcces_Eli_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemD" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Delete' value=true></td>";
+								//}
+								//else {
+								//    objtable += "<td><input id='UserAcces_Eli_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemD" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Delete' value=false></td>";
+								//}
+
+								existe = 1;
+							});
+
+                            if (existe == 1) {
+                                objtable += "</tbody></table>";
+                            }
+                            else {
+                                objtable = "";
+
+                                _this.attr("src", "/Content/assets/images/details_open.png");
+                            }
+
+                            oTable.fnOpen(nTr, objtable, 'details');
+                            ////alert($('#TMenuOptionsDetail' + OptionId + ' tbody tr').length + ' ROWS IN DETAIL' + OptionId);
+						}
+                    });
+
+                }
+            });
+
+        }
+
 
         $(document).ready(function () {
 
@@ -342,11 +612,17 @@
                     OptionId = $(this).attr("rel");
                     this.src = "/Content/assets/images/details_close.png";
 
+                    //---Lista de Roles
+                    var strRoles = doTableColumnsToString('TUserRoles', 'IdRole');
+                    //alert(strRoles);
+                    //-----------------
+
                     var IdUser = $("#IdUser").val();
                     var existe = 0;
                     var params = {
                         IdUser: IdUser,
-                        IdAssociated: OptionId
+                        IdAssociated: OptionId,
+                        lsRoles: strRoles
                     };
 
                     var nTr = this.parentNode.parentNode;
@@ -377,7 +653,6 @@
                         dataSrc: '',
                         success: function (data) {
 
-
                             $.each(data, function (index, item) {
 
                                 @if(Model!=null)
@@ -389,28 +664,22 @@
                                     }
                                 }
 
-
                                 /*  Item = index + 1;*/
 
                                 objtable += "<tbody><tr  id='trMenuOptionsDetail" + item.IdOption + ">";
                                 objtable += "<td style='display:none'><input name='UserAcces.Index' type = 'hidden' value = '" + item.IdOption + "' /></td > ";
-                                objtable += "<td style='display:none'><input id='UserAcces_" + item.IdOption + "' name='UserAcces[" + item.IdOption + "].IdOption' type='hidden' value=" + item.IdOption + " /></td> ";
-                                objtable += "<td style='display:none'><input id='UserAcces_" + item.IdOption + "' name='UserAcces[" + item.IdOption + "].OptionName' type='hidden' value=" + item.OptionName + " /></td> ";;
+                                objtable += "<td style='display:none'><input id='UserAcces_IdOption_" + item.IdOption + "' name='UserAcces[" + item.IdOption + "].IdOption' type='hidden' value=" + item.IdOption + " /></td> ";
+                                objtable += "<td style='display:none'><input id='UserAcces_OptionName_" + item.IdOption + "' name='UserAcces[" + item.IdOption + "].OptionName' type='hidden' value=" + item.OptionName + " /></td> ";
                                 objtable += "<td>" + item.OptionName + "</td> ";
 
-                                //objtable += "<td>" + item.OptionName + "</td>";
-
-
                                 var modelo = @Html.Raw(Json.Encode(Model.UserAcces));
-
-                                var Array = modelo.filter(word => word.IdOption == item.IdOption)
+                                var Array = modelo.filter(word => word.IdOption == item.IdOption);
 
                                 var visible = false;
                                 var crear = false;
                                 var buscar = false;
                                 var Editar = false;
                                 var Eliminar = false;
-
 
                                 if (Array.length == 1) {
                                     visible = Array[0].Visible;
@@ -421,40 +690,38 @@
                                 }
 
                                 if (visible == true) {
-                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemV" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Visible' value=true></td>";
+                                    objtable += "<td><input id='UserAcces_Vis_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemV" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Visible' value=true></td>";
                                 }
                                 else {
-                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemV" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Visible' value=false ></td>";
+                                    objtable += "<td><input id='UserAcces_Vis_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemV" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Visible' value=false ></td>";
                                 }
 
                                 if (crear == true) {
-                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemC" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Create' value=true></td>";
+                                    objtable += "<td><input id='UserAcces_Cre_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemC" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Create' value=true></td>";
                                 }
                                 else {
-                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemC" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Create' value=false></td>";
+                                    objtable += "<td><input id='UserAcces_Cre_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemC" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Create' value=false></td>";
                                 }
 
                                 if (buscar== true) {
-                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemB" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Search' value=true></td>";
+                                    objtable += "<td><input id='UserAcces_Bus_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemB" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Search' value=true></td>";
                                 }
                                 else {
-                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemB" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Search' value=false></td>";
+                                    objtable += "<td><input id='UserAcces_Bus_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemB" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Search' value=false></td>";
                                 }
-
 
                                 if (Editar == true) {
-                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemE" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Edit' value=true></td>";
+                                    objtable += "<td><input id='UserAcces_Edi_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemE" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Edit' value=true></td>";
                                 }
                                 else {
-                                    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemE" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Edit' value=false></td>";
+                                    objtable += "<td><input id='UserAcces_Edi_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemE" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Edit' value=false></td>";
                                 }
 
-
                                 //if (Eliminar== true) {
-                                //    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemD" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Delete' value=true></td>";
+                                //    objtable += "<td><input id='UserAcces_Eli_" + item.IdOption + "' onclick='Chk(this)' type=checkbox checked=checked class='itemD" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Delete' value=true></td>";
                                 //}
                                 //else {
-                                //    objtable += "<td><input id='UserAcces_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemD" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Delete' value=false></td>";
+                                //    objtable += "<td><input id='UserAcces_Eli_" + item.IdOption + "' onclick='Chk(this)' type=checkbox class='itemD" + OptionId + "[]' name='UserAcces[" + item.IdOption + "].Delete' value=false></td>";
                                 //}
 
                                 existe = 1;

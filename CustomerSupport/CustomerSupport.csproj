@@ -139,19 +139,7 @@
     <Compile Include="BDContext\CatalogDetail.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
-    <Compile Include="BDContext\CommentTask.cs">
-      <DependentUpon>MMEnterprises.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BDContext\ConfigurationParameter.cs">
-      <DependentUpon>MMEnterprises.tt</DependentUpon>
-    </Compile>
     <Compile Include="BDContext\Country.cs">
-      <DependentUpon>MMEnterprises.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BDContext\GNListBitacora_Result.cs">
-      <DependentUpon>MMEnterprises.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BDContext\GNListCommentTask_Result.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\GNListCountry_Result.cs">
@@ -166,6 +154,15 @@
     <Compile Include="BDContext\GNListPerson_Result.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
+    <Compile Include="BDContext\GNListRoleAcces_Result.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BDContext\GNListRoleUserPermission_Result.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BDContext\GNListRole_Result.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
     <Compile Include="BDContext\GNListServiceConstructionOption_Result.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
@@ -176,6 +173,9 @@
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\GNListUserAcces_Result.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BDContext\GNListUserRole_Result.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\GNListUser_Result.cs">
@@ -205,16 +205,13 @@
     <Compile Include="BDContext\PersonContact.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
+    <Compile Include="BDContext\Role.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BDContext\RoleAcces.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
     <Compile Include="BDContext\ServiceRequest.cs">
-      <DependentUpon>MMEnterprises.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BDContext\sp_helpdiagramdefinition_Result.cs">
-      <DependentUpon>MMEnterprises.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BDContext\sp_helpdiagrams_Result.cs">
-      <DependentUpon>MMEnterprises.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BDContext\sysdiagrams.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\Task.cs">
@@ -226,13 +223,10 @@
     <Compile Include="BDContext\UserAcces.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
-    <Compile Include="BDContext\UserAcces_resp.cs">
-      <DependentUpon>MMEnterprises.tt</DependentUpon>
-    </Compile>
     <Compile Include="BDContext\VWListCatalog.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\CalendarController.cs" />
+    <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\CountryController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -240,14 +234,13 @@
     <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Controllers\ServiceRequestController.cs" />
     <Compile Include="Controllers\TableCatalogController.cs" />
-    <Compile Include="Controllers\TaskController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\MCalendar.cs" />
     <Compile Include="Models\MCatalog.cs" />
     <Compile Include="Models\MCatalogDetail.cs" />
+    <Compile Include="Models\MRole.cs" />
     <Compile Include="Models\MServiceConstructionOption.cs" />
     <Compile Include="Models\MStatistics.cs" />
     <Compile Include="Models\MTask.cs" />
@@ -256,6 +249,7 @@
     <Compile Include="Models\MServiceRequest.cs" />
     <Compile Include="Models\MCountry.cs" />
     <Compile Include="Models\MUser.cs" />
+    <Compile Include="Models\MRoleAcces.cs" />
     <Compile Include="Models\MUserAcces.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -357,16 +351,11 @@
     <Content Include="Content\assets\images\svg\white_logo.svg" />
     <Content Include="Content\assets\images\wave.png" />
     <Content Include="Content\assets\js\bootstrap.min.js" />
-    <Content Include="Content\assets\js\fullcalendar.min.js" />
     <Content Include="Content\assets\js\isotope.pkgd.min.js" />
     <Content Include="Content\assets\js\jquery.flot.min.js" />
     <Content Include="Content\assets\js\jquery.inputpicker.js" />
     <Content Include="Content\assets\js\jquery.magnific-popup.min.js" />
     <Content Include="Content\assets\js\jquery.min.js" />
-    <Content Include="Content\assets\js\jquery.qtip.min.js" />
-    <Content Include="Content\assets\js\moment.min.js" />
-    <Content Include="Content\assets\js\respond.js" />
-    <Content Include="Content\assets\js\respond.min.js" />
     <Content Include="Content\assets\js\script.js" />
     <Content Include="Content\assets\js\swiper.min.js" />
     <Content Include="Content\assets\js\wow.min.js" />
@@ -621,7 +610,6 @@
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
     <Content Include="favicon.ico" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\assets\webfonts\fa-brands-400.eot" />
     <Content Include="Content\assets\webfonts\fa-brands-400.ttf" />
@@ -673,6 +661,8 @@
     <Content Include="Content\assets\popper.js.1.16.1\umd\popper.js.flow" />
     <Content Include="Content\assets\popper.js.1.16.1\umd\popper.js.map" />
     <Content Include="Content\assets\popper.js.1.16.1\umd\popper.min.js.map" />
+    <Content Include="Content\toastr.scss" />
+    <Content Include="Content\toastr.less" />
     <EntityDeploy Include="BDContext\MMEnterprises.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MMEnterprises.Designer.cs</LastGenOutput>
@@ -680,11 +670,6 @@
     <Content Include="BDContext\MMEnterprises.edmx.diagram">
       <DependentUpon>MMEnterprises.edmx</DependentUpon>
     </Content>
-    <Content Include="Content\toastr.scss" />
-    <Content Include="Content\toastr.less" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\inputmask\bindings\inputmask.binding.js" />
     <Content Include="Scripts\inputmask\inputmask.js" />
@@ -824,11 +809,10 @@
     <Content Include="Views\Client\EditClient.cshtml" />
     <Content Include="Views\ServiceRequest\DetailServiceRequest.cshtml" />
     <Content Include="Views\ServiceRequest\EditServiceRequest.cshtml" />
-    <Content Include="Views\Task\ListTask.cshtml" />
-    <Content Include="Views\Task\AddTask.cshtml" />
-    <Content Include="Views\Task\EditTask.cshtml" />
-    <Content Include="Views\Task\DetailTask.cshtml" />
-    <Content Include="Views\Calendar\ListCalendar.cshtml" />
+    <Content Include="Views\Role\ListRole.cshtml" />
+    <Content Include="Views\Role\AddRole.cshtml" />
+    <Content Include="Views\Role\EditRole.cshtml" />
+    <Content Include="Views\Role\DetailRole.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

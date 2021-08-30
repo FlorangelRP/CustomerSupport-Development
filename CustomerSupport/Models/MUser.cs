@@ -10,6 +10,13 @@ namespace CustomerSupport.Models
 {
     public class MUser
     {
+        public MUser()
+        {
+            UserAccesPadre = new List<MUserAcces>();
+            UserAcces = new List<MUserAcces>();
+            Roles = new List<MRole>();
+        }
+
         public int IdUser { get; set; }
 
         [Required(ErrorMessage = "Debe indicar la Persona.")]
@@ -32,6 +39,9 @@ namespace CustomerSupport.Models
         public List<MUserAcces> UserAccesPadre { get; set; }
 
         public List<MUserAcces> UserAcces { get; set; }
+
+        public List<MRole> Roles { get; set; }
+        public string UserRolesNames { get; set; } //opcional, para convertir la lista de roles del usuario en un string de nombres de roles. 
 
         public string Encriptar(string input)
         {
