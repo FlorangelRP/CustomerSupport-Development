@@ -29,6 +29,8 @@ namespace CustomerSupport.BDContext
     
         public virtual DbSet<Catalog> Catalog { get; set; }
         public virtual DbSet<CatalogDetail> CatalogDetail { get; set; }
+        public virtual DbSet<CommentTask> CommentTask { get; set; }
+        public virtual DbSet<ConfigurationParameter> ConfigurationParameter { get; set; }
         public virtual DbSet<Country> Country { get; set; }
         public virtual DbSet<OptionMenu> OptionMenu { get; set; }
         public virtual DbSet<Person> Person { get; set; }
@@ -52,6 +54,73 @@ namespace CustomerSupport.BDContext
                 new ObjectParameter("strPassword", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNAuthenticationUser", strLoginParameter, strPasswordParameter, idUser);
+        }
+    
+        public virtual ObjectResult<GNLisChart_Result> GNLisChart(Nullable<bool> byEmployee, Nullable<int> idEmployee, Nullable<bool> byDepartment, Nullable<int> idDepartment, Nullable<bool> byMonth, Nullable<int> year, Nullable<bool> xYear, Nullable<int> yearInicio, Nullable<int> yearFin, Nullable<bool> xDate, Nullable<System.DateTime> dateIni, Nullable<System.DateTime> dateEnd)
+        {
+            var byEmployeeParameter = byEmployee.HasValue ?
+                new ObjectParameter("ByEmployee", byEmployee) :
+                new ObjectParameter("ByEmployee", typeof(bool));
+    
+            var idEmployeeParameter = idEmployee.HasValue ?
+                new ObjectParameter("IdEmployee", idEmployee) :
+                new ObjectParameter("IdEmployee", typeof(int));
+    
+            var byDepartmentParameter = byDepartment.HasValue ?
+                new ObjectParameter("ByDepartment", byDepartment) :
+                new ObjectParameter("ByDepartment", typeof(bool));
+    
+            var idDepartmentParameter = idDepartment.HasValue ?
+                new ObjectParameter("IdDepartment", idDepartment) :
+                new ObjectParameter("IdDepartment", typeof(int));
+    
+            var byMonthParameter = byMonth.HasValue ?
+                new ObjectParameter("ByMonth", byMonth) :
+                new ObjectParameter("ByMonth", typeof(bool));
+    
+            var yearParameter = year.HasValue ?
+                new ObjectParameter("Year", year) :
+                new ObjectParameter("Year", typeof(int));
+    
+            var xYearParameter = xYear.HasValue ?
+                new ObjectParameter("XYear", xYear) :
+                new ObjectParameter("XYear", typeof(bool));
+    
+            var yearInicioParameter = yearInicio.HasValue ?
+                new ObjectParameter("YearInicio", yearInicio) :
+                new ObjectParameter("YearInicio", typeof(int));
+    
+            var yearFinParameter = yearFin.HasValue ?
+                new ObjectParameter("YearFin", yearFin) :
+                new ObjectParameter("YearFin", typeof(int));
+    
+            var xDateParameter = xDate.HasValue ?
+                new ObjectParameter("XDate", xDate) :
+                new ObjectParameter("XDate", typeof(bool));
+    
+            var dateIniParameter = dateIni.HasValue ?
+                new ObjectParameter("DateIni", dateIni) :
+                new ObjectParameter("DateIni", typeof(System.DateTime));
+    
+            var dateEndParameter = dateEnd.HasValue ?
+                new ObjectParameter("DateEnd", dateEnd) :
+                new ObjectParameter("DateEnd", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNLisChart_Result>("GNLisChart", byEmployeeParameter, idEmployeeParameter, byDepartmentParameter, idDepartmentParameter, byMonthParameter, yearParameter, xYearParameter, yearInicioParameter, yearFinParameter, xDateParameter, dateIniParameter, dateEndParameter);
+        }
+    
+        public virtual ObjectResult<GNLisColor_Result> GNLisColor()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNLisColor_Result>("GNLisColor");
+        }
+    
+        public virtual ObjectResult<GNListBitacora_Result> GNListBitacora(Nullable<int> idTask)
+        {
+            var idTaskParameter = idTask.HasValue ?
+                new ObjectParameter("IdTask", idTask) :
+                new ObjectParameter("IdTask", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListBitacora_Result>("GNListBitacora", idTaskParameter);
         }
     
         public virtual ObjectResult<GNListCatalog_Result> GNListCatalog(Nullable<int> idCatalog, string idTable)
@@ -90,6 +159,19 @@ namespace CustomerSupport.BDContext
                 new ObjectParameter("Status", typeof(bool));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListCatalogDetail_Result>("GNListCatalogDetail", idCatalogParameter, idTableParameter, idCatalogDetailParameter, idTableDetailParameter, statusParameter);
+        }
+    
+        public virtual ObjectResult<GNListCommentTask_Result> GNListCommentTask(Nullable<int> idTask, Nullable<int> idComment)
+        {
+            var idTaskParameter = idTask.HasValue ?
+                new ObjectParameter("IdTask", idTask) :
+                new ObjectParameter("IdTask", typeof(int));
+    
+            var idCommentParameter = idComment.HasValue ?
+                new ObjectParameter("IdComment", idComment) :
+                new ObjectParameter("IdComment", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListCommentTask_Result>("GNListCommentTask", idTaskParameter, idCommentParameter);
         }
     
         public virtual ObjectResult<GNListCountry_Result> GNListCountry(Nullable<int> idCountry, string idIsoCountry)
@@ -233,15 +315,39 @@ namespace CustomerSupport.BDContext
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListServiceRequest_Result>("GNListServiceRequest", idServiceRequestParameter, idServiceTypeParameter, idServiceStatusParameter, idPersonParameter, idUserParameter);
         }
     
-        public virtual ObjectResult<GNListTask_Result> GNListTask(string selectType, Nullable<int> idTask, Nullable<int> idServiceRequest, Nullable<int> idUser, Nullable<bool> status)
+        public virtual ObjectResult<GNListTask_Result> GNListTask(Nullable<int> idTask, Nullable<System.DateTime> dttDateIni, Nullable<System.DateTime> dttDateEnd, Nullable<int> idResponsable, string strTittle, Nullable<int> idPriority, Nullable<int> idStatus, Nullable<int> idTypeTask, Nullable<int> idServiceRequest, Nullable<int> idUser, Nullable<int> idFatherTask)
         {
-            var selectTypeParameter = selectType != null ?
-                new ObjectParameter("SelectType", selectType) :
-                new ObjectParameter("SelectType", typeof(string));
-    
             var idTaskParameter = idTask.HasValue ?
                 new ObjectParameter("IdTask", idTask) :
                 new ObjectParameter("IdTask", typeof(int));
+    
+            var dttDateIniParameter = dttDateIni.HasValue ?
+                new ObjectParameter("dttDateIni", dttDateIni) :
+                new ObjectParameter("dttDateIni", typeof(System.DateTime));
+    
+            var dttDateEndParameter = dttDateEnd.HasValue ?
+                new ObjectParameter("dttDateEnd", dttDateEnd) :
+                new ObjectParameter("dttDateEnd", typeof(System.DateTime));
+    
+            var idResponsableParameter = idResponsable.HasValue ?
+                new ObjectParameter("IdResponsable", idResponsable) :
+                new ObjectParameter("IdResponsable", typeof(int));
+    
+            var strTittleParameter = strTittle != null ?
+                new ObjectParameter("strTittle", strTittle) :
+                new ObjectParameter("strTittle", typeof(string));
+    
+            var idPriorityParameter = idPriority.HasValue ?
+                new ObjectParameter("IdPriority", idPriority) :
+                new ObjectParameter("IdPriority", typeof(int));
+    
+            var idStatusParameter = idStatus.HasValue ?
+                new ObjectParameter("IdStatus", idStatus) :
+                new ObjectParameter("IdStatus", typeof(int));
+    
+            var idTypeTaskParameter = idTypeTask.HasValue ?
+                new ObjectParameter("IdTypeTask", idTypeTask) :
+                new ObjectParameter("IdTypeTask", typeof(int));
     
             var idServiceRequestParameter = idServiceRequest.HasValue ?
                 new ObjectParameter("IdServiceRequest", idServiceRequest) :
@@ -251,11 +357,11 @@ namespace CustomerSupport.BDContext
                 new ObjectParameter("IdUser", idUser) :
                 new ObjectParameter("IdUser", typeof(int));
     
-            var statusParameter = status.HasValue ?
-                new ObjectParameter("Status", status) :
-                new ObjectParameter("Status", typeof(bool));
+            var idFatherTaskParameter = idFatherTask.HasValue ?
+                new ObjectParameter("IdFatherTask", idFatherTask) :
+                new ObjectParameter("IdFatherTask", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListTask_Result>("GNListTask", selectTypeParameter, idTaskParameter, idServiceRequestParameter, idUserParameter, statusParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListTask_Result>("GNListTask", idTaskParameter, dttDateIniParameter, dttDateEndParameter, idResponsableParameter, strTittleParameter, idPriorityParameter, idStatusParameter, idTypeTaskParameter, idServiceRequestParameter, idUserParameter, idFatherTaskParameter);
         }
     
         public virtual ObjectResult<GNListUser_Result> GNListUser(Nullable<int> idUser, Nullable<bool> status, Nullable<int> idPerson)
@@ -345,6 +451,31 @@ namespace CustomerSupport.BDContext
                 new ObjectParameter("Status", typeof(bool));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranCatalogDetail", transactionTypeParameter, idCatalogDetail, idTableDetailParameter, idCatalogParameter, descriptionParameter, statusParameter);
+        }
+    
+        public virtual int GNTranCommentTask(string transactionType, ObjectParameter idComment, Nullable<int> idTask, string strComment, Nullable<int> idUser, Nullable<System.DateTime> dttDate)
+        {
+            var transactionTypeParameter = transactionType != null ?
+                new ObjectParameter("TransactionType", transactionType) :
+                new ObjectParameter("TransactionType", typeof(string));
+    
+            var idTaskParameter = idTask.HasValue ?
+                new ObjectParameter("IdTask", idTask) :
+                new ObjectParameter("IdTask", typeof(int));
+    
+            var strCommentParameter = strComment != null ?
+                new ObjectParameter("strComment", strComment) :
+                new ObjectParameter("strComment", typeof(string));
+    
+            var idUserParameter = idUser.HasValue ?
+                new ObjectParameter("IdUser", idUser) :
+                new ObjectParameter("IdUser", typeof(int));
+    
+            var dttDateParameter = dttDate.HasValue ?
+                new ObjectParameter("dttDate", dttDate) :
+                new ObjectParameter("dttDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranCommentTask", transactionTypeParameter, idComment, idTaskParameter, strCommentParameter, idUserParameter, dttDateParameter);
         }
     
         public virtual int GNTranPerson(string transactionType, ObjectParameter idPerson, Nullable<int> idPersonType, Nullable<int> idIdentificationType, string strNumIdentification, string strName, string strLastName, Nullable<System.DateTime> dttBirthday, string strAddress, string strEmail, Nullable<int> idContactType, Nullable<int> idPosition, Nullable<bool> btClientPermission, Nullable<bool> btStatus, Nullable<int> idDepartment)
@@ -643,7 +774,7 @@ namespace CustomerSupport.BDContext
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranServiceRequestTask", transactionTypeParameter, idTaskParameter, idServiceRequestParameter);
         }
     
-        public virtual int GNTranTask(string transactionType, ObjectParameter idTask, Nullable<int> idUser, string activity, Nullable<System.DateTime> dateIni, Nullable<System.DateTime> dateEnd, Nullable<System.TimeSpan> hourIni, Nullable<System.TimeSpan> hourEnd, string place, Nullable<bool> status)
+        public virtual int GNTranTask(string transactionType, ObjectParameter idTask, Nullable<int> idUser, Nullable<System.DateTime> dttDateIni, Nullable<System.DateTime> dttDateEnd, Nullable<System.TimeSpan> tHourIni, Nullable<System.TimeSpan> tHourEnd, string strPlace, Nullable<int> idFatherTask, Nullable<int> idResponsable, string strTittle, Nullable<int> idPriority, Nullable<int> idStatus, Nullable<int> idTypeTask, string strActivity)
         {
             var transactionTypeParameter = transactionType != null ?
                 new ObjectParameter("TransactionType", transactionType) :
@@ -653,35 +784,55 @@ namespace CustomerSupport.BDContext
                 new ObjectParameter("IdUser", idUser) :
                 new ObjectParameter("IdUser", typeof(int));
     
-            var activityParameter = activity != null ?
-                new ObjectParameter("Activity", activity) :
-                new ObjectParameter("Activity", typeof(string));
+            var dttDateIniParameter = dttDateIni.HasValue ?
+                new ObjectParameter("dttDateIni", dttDateIni) :
+                new ObjectParameter("dttDateIni", typeof(System.DateTime));
     
-            var dateIniParameter = dateIni.HasValue ?
-                new ObjectParameter("DateIni", dateIni) :
-                new ObjectParameter("DateIni", typeof(System.DateTime));
+            var dttDateEndParameter = dttDateEnd.HasValue ?
+                new ObjectParameter("dttDateEnd", dttDateEnd) :
+                new ObjectParameter("dttDateEnd", typeof(System.DateTime));
     
-            var dateEndParameter = dateEnd.HasValue ?
-                new ObjectParameter("DateEnd", dateEnd) :
-                new ObjectParameter("DateEnd", typeof(System.DateTime));
+            var tHourIniParameter = tHourIni.HasValue ?
+                new ObjectParameter("tHourIni", tHourIni) :
+                new ObjectParameter("tHourIni", typeof(System.TimeSpan));
     
-            var hourIniParameter = hourIni.HasValue ?
-                new ObjectParameter("HourIni", hourIni) :
-                new ObjectParameter("HourIni", typeof(System.TimeSpan));
+            var tHourEndParameter = tHourEnd.HasValue ?
+                new ObjectParameter("tHourEnd", tHourEnd) :
+                new ObjectParameter("tHourEnd", typeof(System.TimeSpan));
     
-            var hourEndParameter = hourEnd.HasValue ?
-                new ObjectParameter("HourEnd", hourEnd) :
-                new ObjectParameter("HourEnd", typeof(System.TimeSpan));
+            var strPlaceParameter = strPlace != null ?
+                new ObjectParameter("strPlace", strPlace) :
+                new ObjectParameter("strPlace", typeof(string));
     
-            var placeParameter = place != null ?
-                new ObjectParameter("Place", place) :
-                new ObjectParameter("Place", typeof(string));
+            var idFatherTaskParameter = idFatherTask.HasValue ?
+                new ObjectParameter("IdFatherTask", idFatherTask) :
+                new ObjectParameter("IdFatherTask", typeof(int));
     
-            var statusParameter = status.HasValue ?
-                new ObjectParameter("Status", status) :
-                new ObjectParameter("Status", typeof(bool));
+            var idResponsableParameter = idResponsable.HasValue ?
+                new ObjectParameter("IdResponsable", idResponsable) :
+                new ObjectParameter("IdResponsable", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranTask", transactionTypeParameter, idTask, idUserParameter, activityParameter, dateIniParameter, dateEndParameter, hourIniParameter, hourEndParameter, placeParameter, statusParameter);
+            var strTittleParameter = strTittle != null ?
+                new ObjectParameter("strTittle", strTittle) :
+                new ObjectParameter("strTittle", typeof(string));
+    
+            var idPriorityParameter = idPriority.HasValue ?
+                new ObjectParameter("IdPriority", idPriority) :
+                new ObjectParameter("IdPriority", typeof(int));
+    
+            var idStatusParameter = idStatus.HasValue ?
+                new ObjectParameter("IdStatus", idStatus) :
+                new ObjectParameter("IdStatus", typeof(int));
+    
+            var idTypeTaskParameter = idTypeTask.HasValue ?
+                new ObjectParameter("IdTypeTask", idTypeTask) :
+                new ObjectParameter("IdTypeTask", typeof(int));
+    
+            var strActivityParameter = strActivity != null ?
+                new ObjectParameter("strActivity", strActivity) :
+                new ObjectParameter("strActivity", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranTask", transactionTypeParameter, idTask, idUserParameter, dttDateIniParameter, dttDateEndParameter, tHourIniParameter, tHourEndParameter, strPlaceParameter, idFatherTaskParameter, idResponsableParameter, strTittleParameter, idPriorityParameter, idStatusParameter, idTypeTaskParameter, strActivityParameter);
         }
     
         public virtual int GNTranUser(Nullable<int> idPerson, string strLogin, string strPassword, string transactionType, ObjectParameter idUser, Nullable<bool> btStatus)

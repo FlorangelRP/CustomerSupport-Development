@@ -139,13 +139,31 @@
     <Compile Include="BDContext\CatalogDetail.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
+    <Compile Include="BDContext\CommentTask.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BDContext\ConfigurationParameter.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
     <Compile Include="BDContext\Country.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BDContext\GNLisChart_Result.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BDContext\GNLisColor_Result.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BDContext\GNListBitacora_Result.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\GNListCatalogDetail_Result.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\GNListCatalog_Result.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BDContext\GNListCommentTask_Result.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\GNListCountry_Result.cs">
@@ -232,6 +250,8 @@
     <Compile Include="BDContext\VWListCatalog.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\CalendarController.cs" />
+    <Compile Include="Controllers\PerformanceController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\CountryController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
@@ -240,12 +260,15 @@
     <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Controllers\ServiceRequestController.cs" />
     <Compile Include="Controllers\TableCatalogController.cs" />
+    <Compile Include="Controllers\TaskController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\MCalendar.cs" />
     <Compile Include="Models\MCatalog.cs" />
     <Compile Include="Models\MCatalogDetail.cs" />
+    <Compile Include="Models\MPerformance.cs" />
     <Compile Include="Models\MRole.cs" />
     <Compile Include="Models\MServiceConstructionOption.cs" />
     <Compile Include="Models\MStatistics.cs" />
@@ -279,8 +302,11 @@
     <Content Include="Content\assets\css\dataTables.bootstrap4.min.css" />
     <Content Include="Content\assets\css\fontawesome.min.css" />
     <Content Include="Content\assets\css\fonts.css" />
+    <Content Include="Content\assets\css\fullcalendar.min.css" />
+    <Content Include="Content\assets\css\fullcalendar.print.css" />
     <Content Include="Content\assets\css\graph.css" />
     <Content Include="Content\assets\css\jquery.inputpicker.css" />
+    <Content Include="Content\assets\css\jquery.qtip.min.css" />
     <Content Include="Content\assets\css\magnific-popup.css" />
     <Content Include="Content\assets\css\style.css" />
     <Content Include="Content\assets\css\swiper.min.css" />
@@ -357,15 +383,31 @@
     <Content Include="Content\assets\images\svg\white_logo.svg" />
     <Content Include="Content\assets\images\wave.png" />
     <Content Include="Content\assets\js\bootstrap.min.js" />
+    <Content Include="Content\assets\js\fullcalendar.min.js" />
     <Content Include="Content\assets\js\isotope.pkgd.min.js" />
     <Content Include="Content\assets\js\jquery.flot.min.js" />
     <Content Include="Content\assets\js\jquery.inputpicker.js" />
     <Content Include="Content\assets\js\jquery.magnific-popup.min.js" />
     <Content Include="Content\assets\js\jquery.min.js" />
+    <Content Include="Content\assets\js\jquery.qtip.min.js" />
+    <Content Include="Content\assets\js\jszip\jszip.js" />
+    <Content Include="Content\assets\js\jszip\jszip.min.js" />
+    <Content Include="Content\assets\js\moment.min.js" />
+    <Content Include="Content\assets\js\pdfmake\pdfmake.js" />
+    <Content Include="Content\assets\js\pdfmake\pdfmake.min.js" />
+    <Content Include="Content\assets\js\pdfmake\vfs_fonts.js" />
+    <Content Include="Content\assets\js\respond.js" />
+    <Content Include="Content\assets\js\respond.min.js" />
     <Content Include="Content\assets\js\script.js" />
     <Content Include="Content\assets\js\swiper.min.js" />
     <Content Include="Content\assets\js\wow.min.js" />
     <Content Include="Content\assets\php\ajaxmail.php" />
+    <Content Include="Content\assets\plugins\chart.js\Chart.bundle.js" />
+    <Content Include="Content\assets\plugins\chart.js\Chart.bundle.min.js" />
+    <Content Include="Content\assets\plugins\chart.js\Chart.css" />
+    <Content Include="Content\assets\plugins\chart.js\Chart.js" />
+    <Content Include="Content\assets\plugins\chart.js\Chart.min.css" />
+    <Content Include="Content\assets\plugins\chart.js\Chart.min.js" />
     <Content Include="Content\assets\plugins\datatables-autofill\css\autoFill.bootstrap4.css" />
     <Content Include="Content\assets\plugins\datatables-autofill\css\autoFill.bootstrap4.min.css" />
     <Content Include="Content\assets\plugins\datatables-autofill\js\autoFill.bootstrap4.js" />
@@ -669,6 +711,8 @@
     <Content Include="Content\assets\popper.js.1.16.1\umd\popper.min.js.map" />
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
+    <Content Include="Content\assets\js\pdfmake\pdfmake.js.map" />
+    <Content Include="Content\assets\js\pdfmake\pdfmake.min.js.map" />
     <EntityDeploy Include="BDContext\MMEnterprises.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MMEnterprises.Designer.cs</LastGenOutput>
@@ -823,6 +867,12 @@
     <Content Include="Views\TableCatalog\AddTableCatalog.cshtml" />
     <Content Include="Views\TableCatalog\EditTableCatalog.cshtml" />
     <Content Include="Views\TableCatalog\DetailTableCatalog.cshtml" />
+    <Content Include="Views\Calendar\ListCalendar.cshtml" />
+    <Content Include="Views\Performance\ListPerformance.cshtml" />
+    <Content Include="Views\Task\AddTask.cshtml" />
+    <Content Include="Views\Task\DetailTask.cshtml" />
+    <Content Include="Views\Task\EditTask.cshtml" />
+    <Content Include="Views\Task\ListTask.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
