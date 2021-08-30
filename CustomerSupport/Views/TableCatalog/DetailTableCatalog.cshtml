@@ -1,0 +1,171 @@
+﻿@using CustomerSupport.Models
+@model CustomerSupport.Models.MCatalog
+
+@{
+    ViewBag.Title = "Detalle de Tabla Catalogo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">@ViewBag.Title</h3>
+    </div>
+    <div class="card-body">
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="m-0 row justify-content-center">
+                <div class="form-horizontal col-md-10">
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <div class="control-label font-weight-bold">Codigo:</div>
+                                @Html.DisplayFor(model => model.IdCatalog)
+                                @Html.HiddenFor(model => model.IdCatalog)
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="control-label font-weight-bold">Nombre de Tabla:</div>
+                                @Html.DisplayFor(model => model.IdTable)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="control-label font-weight-bold">Descripcion:</div>
+                                @Html.DisplayFor(model => model.Description)
+                            </div>
+                        </div>
+                    </div>
+
+                    <br />
+                    <div class="row mt-2 mb-2">
+                        <div class="col-md-12 align-self-center">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="control-label font-weight-bold">Detalle de Tabla:</div>
+                                </div>
+                            </div>
+                            <div class="row shadow-sm p-3 m-1 bg-white rounded">
+                
+                                <div class="col-12">
+                                    <div class="row pt-3">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <div class="table-responsive">
+                                                    <div class="container">
+
+                                                        <table id="TDetail" class="table table-bordered table-striped">
+                                                            <thead class="font-weight-bold">
+                                                                <tr>
+                                                                    <td style="width: 20%;">Codigo</td>
+                                                                    <td style="width: 60%;">Descripcion</td>
+                                                                    <td style="width: 10%;">Estado</td>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="BodyDetail">
+                                                                @if (Model != null)
+                                                                {
+                                                                    if (Model.TableDetails != null && Model.TableDetails.Count() > 0)
+                                                                    {
+
+                                                                        for (var i = 0; i < Model.TableDetails.Count; i++)
+                                                                        {
+                                                                            <tr>
+                                                                                <td>@Model.TableDetails[i].IdTableDetail</td>
+                                                                                <td>@Model.TableDetails[i].Description</td>
+                                                                                <td>@Model.TableDetails[i].StatusDesc</td>                                                                                
+                                                                            </tr>
+                                                                        }
+                                                                    }
+                                                                }
+                                                            </tbody>
+                                                        </table>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-offset-2 col-md-10">
+                            <div class="form-group">
+                                <div class="text-center">
+                                    <button class="white_btn" type="submit">Grabar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-10 text-center">
+                            @*<span class="text-success">@ViewBag.SuccessSave</span>*@
+                            @*<span class="text-danger">@ViewBag.ErrorSave</span>*@
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+
+        <div>
+            @Html.ActionLink("Regresar a la Lista", "ListTableCatalog")
+        </div>
+
+
+    </div>
+</div>
+@section Scripts {
+
+    <script src="~/Content/assets/js/jquery.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="~/Content/assets/js/jquery.inputpicker.js?v3"></script>
+    @*<script src="@Url.Content("~/Content/assets/plugins/select2/js/select2.full.min.js") "></script>*@
+
+<script type="text/javascript">
+
+        $(document).ready(function () {
+
+            //Mensaje de confirmacion--------------------
+            if ("@ViewBag.SuccessSave"!=""){
+                toastr.success("@ViewBag.SuccessSave");
+            }
+            if ("@ViewBag.ErrorSave" != ""){
+                toastr.error("@ViewBag.ErrorSave");
+            }
+            //-------------------------------------------
+
+        });
+
+</script>
+}

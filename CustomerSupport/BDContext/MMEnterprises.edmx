@@ -581,6 +581,17 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Parameter Name="strPassword" Type="varchar" Mode="In" />
           <Parameter Name="IdUser" Type="int" Mode="InOut" />
         </Function>
+        <Function Name="GNListCatalog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdCatalog" Type="int" Mode="In" />
+          <Parameter Name="IdTable" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="GNListCatalogDetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdCatalog" Type="int" Mode="In" />
+          <Parameter Name="IdTable" Type="varchar" Mode="In" />
+          <Parameter Name="IdCatalogDetail" Type="int" Mode="In" />
+          <Parameter Name="IdTableDetail" Type="varchar" Mode="In" />
+          <Parameter Name="Status" Type="bit" Mode="In" />
+        </Function>
         <Function Name="GNListCountry" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdCountry" Type="int" Mode="In" />
           <Parameter Name="IdIsoCountry" Type="varchar" Mode="In" />
@@ -643,6 +654,20 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
         <Function Name="GNListUserRole" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdRole" Type="int" Mode="In" />
           <Parameter Name="IdUser" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GNTranCatalog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TransactionType" Type="char" Mode="In" />
+          <Parameter Name="IdCatalog" Type="int" Mode="InOut" />
+          <Parameter Name="IdTable" Type="varchar" Mode="In" />
+          <Parameter Name="Description" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="GNTranCatalogDetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TransactionType" Type="char" Mode="In" />
+          <Parameter Name="IdCatalogDetail" Type="int" Mode="InOut" />
+          <Parameter Name="IdTableDetail" Type="varchar" Mode="In" />
+          <Parameter Name="IdCatalog" Type="int" Mode="In" />
+          <Parameter Name="Description" Type="varchar" Mode="In" />
+          <Parameter Name="Status" Type="bit" Mode="In" />
         </Function>
         <Function Name="GNTranPerson" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="TransactionType" Type="char" Mode="In" />
@@ -749,6 +774,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Parameter Name="btStatus" Type="bit" Mode="In" />
         </Function>
         <Function Name="GNTranUserAcces" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TransactionType" Type="char" Mode="In" />
           <Parameter Name="IdUser" Type="int" Mode="In" />
           <Parameter Name="IdOption" Type="int" Mode="In" />
           <Parameter Name="blnVisible" Type="int" Mode="In" />
@@ -1548,6 +1574,17 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             <Parameter Name="strPassword" Mode="In" Type="String" />
             <Parameter Name="IdUser" Mode="InOut" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="GNListCatalog" ReturnType="Collection(MMEnterprisesModel.GNListCatalog_Result)">
+            <Parameter Name="IdCatalog" Mode="In" Type="Int32" />
+            <Parameter Name="IdTable" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GNListCatalogDetail" ReturnType="Collection(MMEnterprisesModel.GNListCatalogDetail_Result)">
+            <Parameter Name="IdCatalog" Mode="In" Type="Int32" />
+            <Parameter Name="IdTable" Mode="In" Type="String" />
+            <Parameter Name="IdCatalogDetail" Mode="In" Type="Int32" />
+            <Parameter Name="IdTableDetail" Mode="In" Type="String" />
+            <Parameter Name="Status" Mode="In" Type="Boolean" />
+          </FunctionImport>
           <FunctionImport Name="GNListCountry" ReturnType="Collection(MMEnterprisesModel.GNListCountry_Result)">
             <Parameter Name="IdCountry" Mode="In" Type="Int32" />
             <Parameter Name="IdIsoCountry" Mode="In" Type="String" />
@@ -1610,6 +1647,20 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <FunctionImport Name="GNListUserRole" ReturnType="Collection(MMEnterprisesModel.GNListUserRole_Result)">
             <Parameter Name="IdRole" Mode="In" Type="Int32" />
             <Parameter Name="IdUser" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNTranCatalog">
+            <Parameter Name="TransactionType" Mode="In" Type="String" />
+            <Parameter Name="IdCatalog" Mode="InOut" Type="Int32" />
+            <Parameter Name="IdTable" Mode="In" Type="String" />
+            <Parameter Name="Description" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GNTranCatalogDetail">
+            <Parameter Name="TransactionType" Mode="In" Type="String" />
+            <Parameter Name="IdCatalogDetail" Mode="InOut" Type="Int32" />
+            <Parameter Name="IdTableDetail" Mode="In" Type="String" />
+            <Parameter Name="IdCatalog" Mode="In" Type="Int32" />
+            <Parameter Name="Description" Mode="In" Type="String" />
+            <Parameter Name="Status" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="GNTranPerson">
             <Parameter Name="TransactionType" Mode="In" Type="String" />
@@ -1716,6 +1767,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             <Parameter Name="btStatus" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="GNTranUserAcces">
+            <Parameter Name="TransactionType" Mode="In" Type="String" />
             <Parameter Name="IdUser" Mode="In" Type="Int32" />
             <Parameter Name="IdOption" Mode="In" Type="Int32" />
             <Parameter Name="blnVisible" Mode="In" Type="Int32" />
@@ -1730,6 +1782,20 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             <Parameter Name="IdRole" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="GNListCatalog_Result">
+          <Property Type="Int32" Name="IdCatalog" Nullable="false" />
+          <Property Type="String" Name="IdTable" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="200" />
+        </ComplexType>
+        <ComplexType Name="GNListCatalogDetail_Result">
+          <Property Type="Int32" Name="IdCatalog" Nullable="false" />
+          <Property Type="String" Name="IdTable" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="TableDesc" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="IdCatalogDetail" Nullable="false" />
+          <Property Type="String" Name="IdTableDetail" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="DetailDesc" Nullable="false" MaxLength="200" />
+          <Property Type="Boolean" Name="DetailStatus" Nullable="false" />
+        </ComplexType>
         <ComplexType Name="GNListCountry_Result">
           <Property Type="Int32" Name="IdCountry" Nullable="false" />
           <Property Type="String" Name="IdIsoCountry" Nullable="false" MaxLength="6" />
@@ -2103,6 +2169,28 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             </EndProperty>
           </AssociationSetMapping>
           <FunctionImportMapping FunctionImportName="GNAuthenticationUser" FunctionName="MMEnterprisesModel.Store.GNAuthenticationUser" />
+          <FunctionImportMapping FunctionImportName="GNListCatalog" FunctionName="MMEnterprisesModel.Store.GNListCatalog">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListCatalog_Result">
+                <ScalarProperty Name="IdCatalog" ColumnName="IdCatalog" />
+                <ScalarProperty Name="IdTable" ColumnName="IdTable" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNListCatalogDetail" FunctionName="MMEnterprisesModel.Store.GNListCatalogDetail">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListCatalogDetail_Result">
+                <ScalarProperty Name="IdCatalog" ColumnName="IdCatalog" />
+                <ScalarProperty Name="IdTable" ColumnName="IdTable" />
+                <ScalarProperty Name="TableDesc" ColumnName="TableDesc" />
+                <ScalarProperty Name="IdCatalogDetail" ColumnName="IdCatalogDetail" />
+                <ScalarProperty Name="IdTableDetail" ColumnName="IdTableDetail" />
+                <ScalarProperty Name="DetailDesc" ColumnName="DetailDesc" />
+                <ScalarProperty Name="DetailStatus" ColumnName="DetailStatus" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GNListCountry" FunctionName="MMEnterprisesModel.Store.GNListCountry">
             <ResultMapping>
               <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListCountry_Result">
@@ -2306,6 +2394,8 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNTranCatalog" FunctionName="MMEnterprisesModel.Store.GNTranCatalog" />
+          <FunctionImportMapping FunctionImportName="GNTranCatalogDetail" FunctionName="MMEnterprisesModel.Store.GNTranCatalogDetail" />
           <FunctionImportMapping FunctionImportName="GNTranPerson" FunctionName="MMEnterprisesModel.Store.GNTranPerson" />
           <FunctionImportMapping FunctionImportName="GNTranPersonContact" FunctionName="MMEnterprisesModel.Store.GNTranPersonContact" />
           <FunctionImportMapping FunctionImportName="GNTranPersonTask" FunctionName="MMEnterprisesModel.Store.GNTranPersonTask" />

@@ -1,0 +1,317 @@
+﻿@using CustomerSupport.Models
+@model CustomerSupport.Models.MCatalog
+
+@{
+    ViewBag.Title = "Crear Tabla Catalogo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">@ViewBag.Title</h3>
+    </div>
+    <div class="card-body">
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="m-0 row justify-content-center">
+                <div class="form-horizontal col-md-10">
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                @Html.HiddenFor(model => model.IdCatalog)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="control-label">Nombre de Tabla:</div>
+                                @Html.TextBoxFor(model => model.IdTable, new { @maxlength = "50", @class = "form-control text-uppercase input-alphabet" })
+                                @Html.ValidationMessageFor(model => model.IdTable, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="control-label">Descripcion:</div>
+                                @Html.TextAreaFor(model => model.Description, 2, 6, new { @maxlength = "50", @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <br />
+                    <div class="row mt-2 mb-2">
+                        <div class="col-md-12 align-self-center">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="control-label">Detalle de Tabla:</div>
+                                </div>
+                            </div>
+                            <div class="row shadow-sm p-3 m-1 bg-white rounded">
+
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <div class="control-label">Codigo:</div>
+                                                @Html.TextBox("inpIdTableDetail", "", new { @class = "form-control text-uppercase" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="form-group">
+                                                <div class="control-label">Descripcion:</div>
+                                                @Html.TextArea("txtDetailDesc", "", 1, 10, new { @maxlength = "200", @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <div class="btn_option"><a onclick="addRow();"><i class="fas fa-plus"></i></a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="row pt-3">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <div class="table-responsive">
+                                                    <div class="container">
+
+                                                        <table id="TDetail" class="table table-bordered table-striped">
+                                                            <thead class="font-weight-bold">
+                                                                <tr>
+                                                                    <td style="display:none;">colHid_indexCell</td>
+                                                                    <td style="display:none;">colHid_IdCatalog</td>
+                                                                    <td style="display:none;">colHid_IdCatalogDetail</td>
+                                                                    <td style="display:none;">colHid_Status</td>
+
+                                                                    <td style="width: 30%;">Codigo</td>
+                                                                    <td style="width: 60%;">Descripcion</td>
+
+                                                                    <td style="width: 10%;">Opciones</td>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="BodyDetail">
+                                                                @if (Model != null)
+                                                                {
+                                                                    if (Model.TableDetails != null && Model.TableDetails.Count() > 0)
+                                                                    {
+                                                                        string idRow;
+                                                                        string nameCol_IdCatalogDetail;
+                                                                        string nameCol_IdTableDetail;
+                                                                        string nameCol_IdCatalog;
+                                                                        string nameCol_Description;
+                                                                        string nameCol_Status;
+
+                                                                        for (var i = 0; i < Model.TableDetails.Count; i++)
+                                                                        {
+                                                                            idRow = "trDetail" + i.ToString();
+                                                                            nameCol_IdCatalog = "TableDetails[" + i.ToString() + "].IdCatalog";
+                                                                            nameCol_IdCatalogDetail = "TableDetails[" + i.ToString() + "].IdCatalogDetail";
+                                                                            nameCol_IdTableDetail = "TableDetails[" + i.ToString() + "].IdTableDetail";
+                                                                            nameCol_Description = "TableDetails[" + i.ToString() + "].Description";
+                                                                            nameCol_Status = "TableDetails[" + i.ToString() + "].Status";
+
+                                                                            <tr id='@idRow'>
+                                                                                <td style="display:none;"><input name="TableDetails.Index" type="hidden" value='@i' /></td>
+                                                                                <td style="display:none;"><input id='@nameCol_IdCatalog' name='@nameCol_IdCatalog' type="hidden" value='@Model.TableDetails[i].IdCatalog' /></td>
+                                                                                <td style="display:none;"><input id='@nameCol_IdCatalogDetail' name='@nameCol_IdCatalogDetail' type="hidden" value='@Model.TableDetails[i].IdCatalogDetail' /></td>                                                                                
+                                                                                <td style="display:none;"><input id='@nameCol_Status' name='@nameCol_Status' type="hidden" value='@Model.TableDetails[i].Status.ToString().ToLower()' /></td>
+
+                                                                                <td><input id='@nameCol_IdTableDetail' name='@nameCol_IdTableDetail' class="border-0 p-0 bg-transparent" value='@Model.TableDetails[i].IdTableDetail' /></td>
+                                                                                <td><input id='@nameCol_Description' name='@nameCol_Description' class="border-0 p-0 bg-transparent" value='@Model.TableDetails[i].Description' /></td>                                                                                                                                                                
+
+                                                                                <td><div class="btn_option pt-0"><a class="deleteRow" onclick="deleteRow('@i');"><i class="far fa-trash-alt"></i></a></div></td>
+                                                                            </tr>
+                                                                        }
+                                                                    }
+                                                                }
+                                                            </tbody>
+                                                        </table>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                               
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-offset-2 col-md-10">
+                            <div class="form-group">
+                                <div class="text-center">
+                                    <button class="white_btn" type="submit">Grabar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-10 text-center">
+                            @*<span class="text-success">@ViewBag.SuccessSave</span>*@
+                            @*<span class="text-danger">@ViewBag.ErrorSave</span>*@
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+
+        <div>
+            @Html.ActionLink("Regresar a la Lista", "ListTableCatalog")
+        </div>
+
+
+    </div>
+</div>
+@section Scripts {
+
+    <script src="~/Content/assets/js/jquery.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="~/Content/assets/js/jquery.inputpicker.js?v3"></script>
+    @*<script src="@Url.Content("~/Content/assets/plugins/select2/js/select2.full.min.js") "></script>*@
+
+<script type="text/javascript">
+
+        function deleteRow(id) {
+            var controlToBeRemoved = "#trDetail" + id;
+            $(controlToBeRemoved).remove();
+        }
+
+        function addRow() {
+
+            @{
+                Model.TableDetails.Add(new MCatalogDetail());
+            }
+
+            //obtenemos los valores a insertar
+            var strIdCatalog = $("#IdCatalog").val();
+            var strIdCatalogDetail = "0";
+            var strStatus = "true";
+            var strIdTableDetail = $("#inpIdTableDetail").val();
+            var strDescription = $("#txtDetailDesc").val();            
+                      
+            if (strDescription != "") {
+
+                //Si la descripcion ya existe no debe insertar
+                var isFound = doSearchDuplicate('TDetail', strDescription, 'Description');
+
+                if (isFound) {
+                    toastr.warning("Descripcion ya existe, por favor verifique.");
+                    return false;
+                }
+
+                //Si el codigo es String y ya existe no debe insertar
+                if (strIdTableDetail != "" && !esEntero(strIdTableDetail)) {
+                    isFound = doSearchDuplicate('TDetail', strIdTableDetail, 'IdTableDetail');
+                    if (isFound) {
+                        toastr.warning("Codigo ya existe, por favor verifique.");
+                        return false;
+                    }
+                }
+
+
+                //-------------------------
+                var index = document.getElementById('TDetail').rows.length;
+
+                var colHid_indexCell = "<td style='display:none'><input name='TableDetails.Index' type = 'hidden' value = '" + index + "' /></td > ";
+                var colHid_IdCatalog = "<td style='display:none'><input id='TableDetails_" + index + "' name = 'TableDetails[" + index + "].IdCatalog' type = 'hidden' value = '" + strIdCatalog + "' /></td> ";
+                var colHid_IdCatalogDetail = "<td style='display:none'><input id='TableDetails_" + index + "' name = 'TableDetails[" + index + "].IdCatalogDetail' type='hidden' value='" + strIdCatalogDetail + "' /></td> ";
+                var colHid_Status = "<td style='display:none'><input id='TableDetails_" + index + "' name = 'TableDetails[" + index + "].Status' type = 'hidden' value = '" + strStatus + "' /></td> ";
+
+                var colIdTableDetail = "<td><input id='TableDetails_" + index + "' name = 'TableDetails[" + index + "].IdTableDetail' class = 'border-0 p-0 bg-transparent' value = '" + strIdTableDetail + "' /></td> ";
+                var colDescription = "<td><input id='TableDetails_" + index + "' name = 'TableDetails[" + index + "].Description' class = 'border-0 p-0 bg-transparent' value = '" + strDescription + "' /></td> ";
+                
+                var colDelete = "<td><div class='btn_option pt-0'><a class='deleteRow' onclick='deleteRow(" + index + ");'><i class='far fa-trash-alt'></i></a></div></td> ";
+
+                //insertamos los valores en la tabla
+                var newRow = "<tr id='trDetail" + index + "'>" +
+                    colHid_indexCell + colHid_IdCatalog + colHid_IdCatalogDetail + colHid_Status +
+                    colIdTableDetail + colDescription +
+                    colDelete + "</tr>";
+                $("#TDetail").append(newRow);
+                //--------------------------
+
+                //limpiamos los valores ya agregados
+                document.getElementById('txtDetailDesc').value = "";
+                document.getElementById('inpIdTableDetail').value = "";
+            }
+
+        }
+
+        function esEntero(x) {
+            var y = parseInt(x);
+            if (isNaN(y))
+                return false;
+            return x == y && x.toString() == y.toString();
+        }
+
+        function doSearchDuplicate(tableName,searchText, colName) {
+
+            const tableReg = document.getElementById('' + tableName + '');
+            let position = 0;
+            let found = false;
+
+            // Recorremos todas las filas con contenido de la tabla
+            for (let i = 1; i < tableReg.rows.length; i++) {
+                     
+                const cellsOfRow = tableReg.rows[i];  
+                const cell = cellsOfRow.querySelector("input[name*=" + '' + colName + '' + "]");
+                const compareWith = cell.value.toLowerCase();
+
+                // Buscamos el texto en el contenido de la celda y capturamos la posicion de la fila
+                if (compareWith.indexOf(searchText.toLowerCase()) > -1) {
+                    found = true;
+                    position = i;
+                    break;
+                }
+
+            }
+
+            return found;
+        }
+
+
+        $(document).ready(function () {
+
+            //Mensaje de confirmacion--------------------
+            if ("@ViewBag.SuccessSave"!=""){
+                toastr.success("@ViewBag.SuccessSave");
+            }
+            if ("@ViewBag.ErrorSave" != ""){
+                toastr.error("@ViewBag.ErrorSave");
+            }
+            //-------------------------------------------
+
+        });
+
+</script>
+}

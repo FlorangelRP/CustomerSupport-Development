@@ -1,0 +1,208 @@
+﻿@using CustomerSupport.Models
+@model CustomerSupport.Models.MCatalog
+
+@{
+    ViewBag.Title = "Listado de Opciones Catalogo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Action = "ListTableCatalog";
+}
+
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">@ViewBag.Title</h3>
+    </div>
+    <div class="card-body">
+
+        @*<form>*@
+        @{
+            MUserAcces perm = null;
+            if (Session["Usuario"] != null)
+            {
+                perm = (((MUser)Session["Usuario"])).UserAcces.Where(X => X.Action == @ViewBag.Action).FirstOrDefault();
+            }
+        }
+
+        @if (perm != null)
+        {
+            if (perm.Create == true)
+            {
+                <div class="row text-right">
+                    <div class="col-md-12">
+                        <div class="text-right">
+                            <button class="white_btn" onclick="location.href='@Url.Action("AddTableCatalog", "TableCatalog")';return false;">Agregar</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+
+        @using (Html.BeginForm("ListTableCatalog", "TableCatalog", FormMethod.Post))
+        {
+            <div class="row">
+                <div class="col-lg-1 col-md-1"></div>
+                <div class="col-lg-10 col-md-10 col-sm-12 col-12 align-self-center">
+
+                    <div class="table-responsive">
+                        <div class="container">
+                            <table id="TTableCatalog" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Codigo</th>
+                                        <th>Tabla</th>
+                                        <th>Descripcion</th>
+                                        @if (perm != null)
+                                        {
+                                            if (perm.Search == true || perm.Edit == true)
+                                            {
+                                                <th class="text-center" colspan="2">Opciones</th>
+                                            }
+                                        }
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-lg-1 col-md-1"></div>
+            </div>
+
+            @Html.HiddenFor(model => model.IdCatalog, new { @id = "hidd_IdCatalog" })
+            @Html.Hidden("submit")
+
+        }
+
+        @*</form>*@
+
+    </div>
+</div>
+
+
+@section Scripts {
+
+    <script src="~/Content/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+    <script>
+
+        var Permis = @Html.Raw(Json.Encode(perm));
+        Buscar = Permis.Search;
+        Editar = Permis.Edit;
+
+        var table = $('#TTableCatalog').DataTable({
+
+            'ajax': {
+                'url': '@Url.Action("GetListTableCatalog", "TableCatalog")',
+                'type': 'GET',
+                'dataType': 'json',
+                'dataSrc': ''
+            },
+            'columns':
+                [
+                    { 'data': 'IdCatalog' },
+                    { 'data': 'IdTable' },
+                    { 'data': 'Description' },
+                    {
+                        'data': null, render: function (data, type, row) {
+                            if (data != null) {
+                                if (row.IdCatalog == null) {
+                                    return '';
+                                } else {
+                                    ////return '<div class="btn_option pt-0"><a class="editRow"><i class="fas fa-edit"></i></a></div>';
+                                    var link = '<div class="btn_option pt-0"><button class="editRow border-0" name="linkEdit_&"><i class="fas fa-edit"></i></button></div>';
+                                    link = link.replace("&", row.IdCatalog);
+                                    return link;
+                                }
+                            }
+                        }
+                    },
+                    {
+                        'data': null, render: function (data, type, row) {
+                            if (data != null) {
+                                if (row.IdCatalog == null ) {
+                                    return '';
+                                } else {
+                                    ////return '<div class="btn_option pt-0"><a class="searchRow"><i class="fas fa-search"></i></a></div>';
+                                    var link = '<div class="btn_option pt-0"><button class="searchRow border-0" name="linkSearch_&"><i class="fas fa-search"></i></button></div>';
+                                    link = link.replace("&", row.IdCatalog);
+                                    return link;
+                                }
+                            }
+                        }
+                    },
+                    //{
+                    //    'data': null, render: function (data, type, row) {
+                    //        //debugger;
+                    //        if (data != null) {
+                    //            if (row.IdCatalog == null) {
+                    //                return '';
+                    //            } else
+                    //                return '<div class="btn_option pt-0"><a class="deleteRow"><i class="far fa-trash-alt"></i></a></div>';
+                    //            }
+                    //        }
+                    //    }, 'autowidth': true
+                    //}
+                ],
+        "columnDefs":
+            [
+                { "targets": 0, "width": "10%", "bVisible": false, "orderable": false },
+                { "targets": 1, "width": "30%" },
+                { "targets": 2, "width": "50%" },
+                { "targets": 3, "bVisible": Editar, "width": "5%" },
+                { "targets": 4, "bVisible": Buscar, "width": "5%" }
+            ],
+            "bAutoWidth": false,
+            "bInfo": false,
+            "language": {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "No existen Registros",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Último",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            }
+
+        });
+
+        $('#TTableCatalog').on("click", "button.searchRow", function () {
+            var data = table.row($(this).parents("tr")).data();
+            $("#hidd_IdCatalog").val(data.IdCatalog);
+            $("#submit").val("searchRow");
+            location.href = '@Url.Action("ListTableCatalog", "TableCatalog")';
+            ////$(".searchRow").attr("href", 'Url.Action("DetailTableCatalog", "TableCatalog")?id=' + data.IdCatalog);
+        });
+
+        $('#TTableCatalog').on("click", "button.editRow", function () {
+            var data = table.row($(this).parents("tr")).data();
+            $("#hidd_IdCatalog").val(data.IdCatalog);
+            $("#submit").val("editRow");
+            location.href = '@Url.Action("ListTableCatalog", "TableCatalog")';
+            ////$(".editRow").attr("href", 'Url.Action("EditTableCatalog", "TableCatalog")?id=' + data.IdCatalog);
+        });
+
+    </script>
+}

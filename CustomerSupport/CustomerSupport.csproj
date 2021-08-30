@@ -142,6 +142,12 @@
     <Compile Include="BDContext\Country.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
+    <Compile Include="BDContext\GNListCatalogDetail_Result.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BDContext\GNListCatalog_Result.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
     <Compile Include="BDContext\GNListCountry_Result.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
@@ -813,6 +819,10 @@
     <Content Include="Views\Role\AddRole.cshtml" />
     <Content Include="Views\Role\EditRole.cshtml" />
     <Content Include="Views\Role\DetailRole.cshtml" />
+    <Content Include="Views\TableCatalog\ListTableCatalog.cshtml" />
+    <Content Include="Views\TableCatalog\AddTableCatalog.cshtml" />
+    <Content Include="Views\TableCatalog\EditTableCatalog.cshtml" />
+    <Content Include="Views\TableCatalog\DetailTableCatalog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -54,6 +54,44 @@ namespace CustomerSupport.BDContext
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNAuthenticationUser", strLoginParameter, strPasswordParameter, idUser);
         }
     
+        public virtual ObjectResult<GNListCatalog_Result> GNListCatalog(Nullable<int> idCatalog, string idTable)
+        {
+            var idCatalogParameter = idCatalog.HasValue ?
+                new ObjectParameter("IdCatalog", idCatalog) :
+                new ObjectParameter("IdCatalog", typeof(int));
+    
+            var idTableParameter = idTable != null ?
+                new ObjectParameter("IdTable", idTable) :
+                new ObjectParameter("IdTable", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListCatalog_Result>("GNListCatalog", idCatalogParameter, idTableParameter);
+        }
+    
+        public virtual ObjectResult<GNListCatalogDetail_Result> GNListCatalogDetail(Nullable<int> idCatalog, string idTable, Nullable<int> idCatalogDetail, string idTableDetail, Nullable<bool> status)
+        {
+            var idCatalogParameter = idCatalog.HasValue ?
+                new ObjectParameter("IdCatalog", idCatalog) :
+                new ObjectParameter("IdCatalog", typeof(int));
+    
+            var idTableParameter = idTable != null ?
+                new ObjectParameter("IdTable", idTable) :
+                new ObjectParameter("IdTable", typeof(string));
+    
+            var idCatalogDetailParameter = idCatalogDetail.HasValue ?
+                new ObjectParameter("IdCatalogDetail", idCatalogDetail) :
+                new ObjectParameter("IdCatalogDetail", typeof(int));
+    
+            var idTableDetailParameter = idTableDetail != null ?
+                new ObjectParameter("IdTableDetail", idTableDetail) :
+                new ObjectParameter("IdTableDetail", typeof(string));
+    
+            var statusParameter = status.HasValue ?
+                new ObjectParameter("Status", status) :
+                new ObjectParameter("Status", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListCatalogDetail_Result>("GNListCatalogDetail", idCatalogParameter, idTableParameter, idCatalogDetailParameter, idTableDetailParameter, statusParameter);
+        }
+    
         public virtual ObjectResult<GNListCountry_Result> GNListCountry(Nullable<int> idCountry, string idIsoCountry)
         {
             var idCountryParameter = idCountry.HasValue ?
@@ -265,6 +303,48 @@ namespace CustomerSupport.BDContext
                 new ObjectParameter("IdUser", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListUserRole_Result>("GNListUserRole", idRoleParameter, idUserParameter);
+        }
+    
+        public virtual int GNTranCatalog(string transactionType, ObjectParameter idCatalog, string idTable, string description)
+        {
+            var transactionTypeParameter = transactionType != null ?
+                new ObjectParameter("TransactionType", transactionType) :
+                new ObjectParameter("TransactionType", typeof(string));
+    
+            var idTableParameter = idTable != null ?
+                new ObjectParameter("IdTable", idTable) :
+                new ObjectParameter("IdTable", typeof(string));
+    
+            var descriptionParameter = description != null ?
+                new ObjectParameter("Description", description) :
+                new ObjectParameter("Description", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranCatalog", transactionTypeParameter, idCatalog, idTableParameter, descriptionParameter);
+        }
+    
+        public virtual int GNTranCatalogDetail(string transactionType, ObjectParameter idCatalogDetail, string idTableDetail, Nullable<int> idCatalog, string description, Nullable<bool> status)
+        {
+            var transactionTypeParameter = transactionType != null ?
+                new ObjectParameter("TransactionType", transactionType) :
+                new ObjectParameter("TransactionType", typeof(string));
+    
+            var idTableDetailParameter = idTableDetail != null ?
+                new ObjectParameter("IdTableDetail", idTableDetail) :
+                new ObjectParameter("IdTableDetail", typeof(string));
+    
+            var idCatalogParameter = idCatalog.HasValue ?
+                new ObjectParameter("IdCatalog", idCatalog) :
+                new ObjectParameter("IdCatalog", typeof(int));
+    
+            var descriptionParameter = description != null ?
+                new ObjectParameter("Description", description) :
+                new ObjectParameter("Description", typeof(string));
+    
+            var statusParameter = status.HasValue ?
+                new ObjectParameter("Status", status) :
+                new ObjectParameter("Status", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranCatalogDetail", transactionTypeParameter, idCatalogDetail, idTableDetailParameter, idCatalogParameter, descriptionParameter, statusParameter);
         }
     
         public virtual int GNTranPerson(string transactionType, ObjectParameter idPerson, Nullable<int> idPersonType, Nullable<int> idIdentificationType, string strNumIdentification, string strName, string strLastName, Nullable<System.DateTime> dttBirthday, string strAddress, string strEmail, Nullable<int> idContactType, Nullable<int> idPosition, Nullable<bool> btClientPermission, Nullable<bool> btStatus, Nullable<int> idDepartment)
@@ -629,8 +709,12 @@ namespace CustomerSupport.BDContext
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranUser", idPersonParameter, strLoginParameter, strPasswordParameter, transactionTypeParameter, idUser, btStatusParameter);
         }
     
-        public virtual int GNTranUserAcces(Nullable<int> idUser, Nullable<int> idOption, Nullable<int> blnVisible, Nullable<int> blnCreate, Nullable<int> blnSearch, Nullable<int> blnEdit, Nullable<int> blnDelete)
+        public virtual int GNTranUserAcces(string transactionType, Nullable<int> idUser, Nullable<int> idOption, Nullable<int> blnVisible, Nullable<int> blnCreate, Nullable<int> blnSearch, Nullable<int> blnEdit, Nullable<int> blnDelete)
         {
+            var transactionTypeParameter = transactionType != null ?
+                new ObjectParameter("TransactionType", transactionType) :
+                new ObjectParameter("TransactionType", typeof(string));
+    
             var idUserParameter = idUser.HasValue ?
                 new ObjectParameter("IdUser", idUser) :
                 new ObjectParameter("IdUser", typeof(int));
@@ -659,7 +743,7 @@ namespace CustomerSupport.BDContext
                 new ObjectParameter("blnDelete", blnDelete) :
                 new ObjectParameter("blnDelete", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranUserAcces", idUserParameter, idOptionParameter, blnVisibleParameter, blnCreateParameter, blnSearchParameter, blnEditParameter, blnDeleteParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranUserAcces", transactionTypeParameter, idUserParameter, idOptionParameter, blnVisibleParameter, blnCreateParameter, blnSearchParameter, blnEditParameter, blnDeleteParameter);
         }
     
         public virtual int GNTranUserRole(string transactionType, Nullable<int> idUser, Nullable<int> idRole)
