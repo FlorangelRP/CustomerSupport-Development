@@ -27,6 +27,8 @@ namespace CustomerSupport
                     "~/Content/assets/popper.js.1.16.1/umd/popper.js",
                     //"~/Content/assets/popper.js.1.16.1/umd/popper.min.js",
                     //"~/Content/assets/js/bootstrap.min.js",
+                    "~/Scripts/bootstrap.bundle.min.js",
+                    "~/Content/assets/plugins/chart.js/Chart.min.js",
                     "~/Scripts/bootstrap.min.js",
                     "~/Content/assets/js/jquery.magnific-popup.min.js",
                     "~/Content/assets/js/isotope.pkgd.min.js",
@@ -36,6 +38,7 @@ namespace CustomerSupport
                     "~/Content/assets/js/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
+                    "~/Content/assets/css/c3.css",
                     "~/Content/assets/css/bootstrap.min.css",
                     "~/Content/assets/css/fonts.css",
                     "~/Content/assets/css/fontawesome.min.css",

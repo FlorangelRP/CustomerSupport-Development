@@ -534,6 +534,13 @@ h3.ss_h3_center:before {
 .ss_header .ss_menu{
 	text-align:right;
 }
+.dot {
+	height: 25px;
+	width: 25px;
+	background-color: #bbb;
+	border-radius: 50%;
+	display: inline-block;
+}
 
 /* ===scrollbar-track start=== */
 .ss_cart_list::-webkit-scrollbar-track, .ss_menu.ss_toggle ul::-webkit-scrollbar-track, .table-responsive::-webkit-scrollbar-track{
