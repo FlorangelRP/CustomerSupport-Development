@@ -268,8 +268,42 @@
                                                                     @* @Html.Partial("_PartialDetailTask")*@
 
                                                                     @*@{
-                                                                            Model.listTask.Add(new MTask());
-                                                                        }*@
+            Model.listTask.Add(new MTask());
+        }*@
+
+                                                                    <div class="row">
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group">
+                                                                                <div class="control-label">Prioridad:</div>
+                                                                                <select id="lst_Priority" class="form-control select2" style="width: 100%;">
+                                                                                </select>
+                                                                                @Html.HiddenFor(model => model.listTask[0].IdPriority, new { @id = "inIdPriority" })
+                                                                                @Html.ValidationMessageFor(model => model.listTask[0].IdPriority, "", new { @class = "text-danger" })
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group">
+                                                                                <div class="control-label">Tipo:</div>
+                                                                                <select id="lst_IdTypeTask" class="form-control select2" style="width: 100%;">
+                                                                                </select>
+                                                                                @Html.HiddenFor(model => model.listTask[0].IdTypeTask, new { @id = "inIdTypeTask" })
+                                                                                @Html.ValidationMessageFor(model => model.listTask[0].IdTypeTask, "", new { @class = "text-danger" })
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group">
+                                                                                <div class="control-label">Estado:</div>
+                                                                                <select id="lst_IdStatus" class="form-control select2" style="width: 100%;">
+                                                                                </select>
+                                                                                @Html.HiddenFor(model => model.listTask[0].IdStatus, new { @id = "inIdStatus" })
+                                                                                @Html.ValidationMessageFor(model => model.listTask[0].IdStatus, "", new { @class = "text-danger" })
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+
                                                                     <div class="row">
                                                                         <div class="col-md-3">
                                                                             <div class="form-group">
@@ -299,8 +333,8 @@
                                                                         <div class="col-md-3">
                                                                             <div class="form-group">
                                                                                 <div class="control-label">Actividad a realizar:</div>
-                                                                                @Html.TextAreaFor(model => model.listTask[0].Activity, new { @class = "form-control", @rows = 3, @cols = 10 })
-                                                                                @Html.ValidationMessageFor(model => model.listTask[0].Activity, "", new { @class = "text-danger" })
+                                                                                @Html.TextAreaFor(model => model.listTask[0].Tittle, new { @class = "form-control", @rows = 3, @cols = 10 })
+                                                                                @Html.ValidationMessageFor(model => model.listTask[0].Tittle, "", new { @class = "text-danger" })
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -751,7 +785,7 @@
 
                 var colHid_indexCell = "<td style='display:none'><input name='listConstructionOption.Index' type = 'hidden' value = '" + index + "' /></td > ";
                 var colHid_IdConstructionOption = "<td style='display:none'><input id='listConstructionOption_" + index + "' name = 'listConstructionOption[" + index + "].IdConstructionOption' type='hidden' value='" + strIdConstructionOption + "' /></td> ";
-                var colHid_ConstructionOption = "<td style='display:none'><input id='listConstructionOption_" + index + "' name = 'listConstructionOption[" + index + "].ConstructionOption' type = 'hidden' value = '" + strConstructionOption +IdPersonEmployee +"' /></td> ";
+                var colHid_ConstructionOption = "<td style='display:none'><input id='listConstructionOption_" + index + "' name = 'listConstructionOption[" + index + "].ConstructionOption' type = 'hidden' value = '" + strConstructionOption  +"' /></td> ";
 
                 var colIdConstructionOption = "<td>" + strIdConstructionOption + "</td> ";
                 var colConstructionOption = "<td name='ConstOption'>" + strConstructionOption + "</td> ";
@@ -1073,6 +1107,145 @@
 
             });
 
+
+             $("#lst_Priority").on('change', function () {
+                var selectValue = $(this).val();
+                //$("#inpIdIdentificationType").val(selectValue);
+                changeCodeInputHiddenList("lst_Priority", "inIdPriority", selectValue);
+            });
+
+            $("#lst_IdStatus").on('change', function () {
+                var selectValue = $(this).val();
+                //$("#inpIdIdentificationType").val(selectValue);
+                changeCodeInputHiddenList("lst_IdStatus", "inIdStatus", selectValue);
+            });
+
+            $("#lst_IdTypeTask").on('change', function () {
+                var selectValue = $(this).val();
+                //$("#inpIdIdentificationType").val(selectValue);
+                changeCodeInputHiddenList("lst_IdTypeTask", "inIdTypeTask", selectValue);
+            });
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' +"PRIORITYTASK",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+
+                    var option = $(document.createElement('option'));
+                    option.text("Seleccione");
+                    option.val("0");
+                    $("#lst_Priority").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+
+                        option.text(this.DetailDesc);
+                        option.val(this.IdCatalogDetail); //Identity
+
+                        $("#lst_Priority").append(option);
+                    });
+
+                    document.getElementById('lst_Priority').value = "0";
+
+                    changeCodeInputHiddenList("lst_Priority", "inIdPriority", "");
+
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de prioridad");
+                }
+
+            });
+
+            $.ajax({
+                type: "GET",
+                 url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' +"STATETASK",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+
+                    var option = $(document.createElement('option'));
+                    option.text("Seleccione");
+                    option.val("0");
+                    $("#lst_IdStatus").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+
+                        option.text(this.DetailDesc);
+                        option.val(this.IdCatalogDetail); //Identity
+
+                        $("#lst_IdStatus").append(option);
+                    });
+
+                    document.getElementById('lst_IdStatus').value = "0";
+
+                    changeCodeInputHiddenList("lst_IdStatus", "inIdStatus", "");
+
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de Estado");
+                }
+
+            });
+
+            $.ajax({
+                type: "GET",
+                 url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' +"TYPETASK",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+
+                    var option = $(document.createElement('option'));
+                    option.text("Seleccione");
+                    option.val("0");
+                    $("#lst_IdTypeTask").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+
+                        option.text(this.DetailDesc);
+                        option.val(this.IdCatalogDetail); //Identity
+
+                        $("#lst_IdTypeTask").append(option);
+                    });
+
+                    document.getElementById('lst_IdTypeTask').value = "0";
+
+                    changeCodeInputHiddenList("lst_IdTypeTask", "inIdTypeTask", "");
+
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de Tipos de tarea");
+                }
+
+            });
+
+            function changeCodeInputHiddenList(idDropDownList, idInputHidden, valCode) {
+                //debugger;
+                if (valCode === "") {
+
+                    var CodeAntSelected = document.getElementById(idInputHidden).value;
+
+                    if (CodeAntSelected != "") {
+                        $("#" + idDropDownList + " option[value='" + CodeAntSelected + "']").attr("selected", true);
+                        $("#" + idInputHidden).val(CodeAntSelected);
+                    }
+                    else {
+                        var CodeActual = $("#" + idDropDownList).val();
+                        $("#" + idInputHidden).val(CodeActual);
+                    }
+
+                }
+                else {
+                    $("#" + idInputHidden).val(valCode);
+                }
+
+            }
 
         });
 

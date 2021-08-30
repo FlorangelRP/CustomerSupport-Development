@@ -23,10 +23,10 @@ namespace CustomerSupport.Controllers
             return View();
         }
 
-        public ActionResult GetListPerson(int? IdPersonType = null, bool? PersonStatus = null)
+        public ActionResult GetListPerson(int? IdPersonType = null, bool? PersonStatus = null,int? IdDepartment =null)
         {
             List<MPerson> ListPerson = new List<MPerson>();
-            ListPerson = fnListPerson(null, IdPersonType, null, PersonStatus); 
+            ListPerson = fnListPerson(null, IdPersonType, IdDepartment, PersonStatus); 
 
             return Json(ListPerson, JsonRequestBehavior.AllowGet); 
         }

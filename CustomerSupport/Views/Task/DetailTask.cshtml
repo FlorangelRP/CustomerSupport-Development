@@ -1,0 +1,384 @@
+﻿@model CustomerSupport.Models.MTask
+
+@{
+    ViewBag.Title = "DetailTask";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">@ViewBag.Title</h3>
+    </div>
+    <div class="card-body">
+
+        <div class="m-0 row justify-content-center">
+            <div class="form-horizontal col-md-10">
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <div class="control-label font-weight-bold">Número de Asignación de Actividad:</div>
+                            @Html.DisplayFor(model => model.IdTask)
+                        </div>
+                    </div>
+                </div>
+                <hr>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="control-label font-weight-bold">Prioridad:</div>
+                            @Html.DisplayFor(model => model.PriorityTask)
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="control-label font-weight-bold">Tipo:</div>
+                            @Html.DisplayFor(model => model.TypeTask)
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="control-label font-weight-bold">Estado:</div>
+                            @Html.DisplayFor(model => model.Status)
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="control-label font-weight-bold">Título:</div>
+                            @Html.DisplayFor(model => model.Tittle)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <div class="control-label font-weight-bold">Lugar:</div>
+                            @Html.DisplayFor(model => model.Place)
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="control-label font-weight-bold"># Servicio:</div>
+                            @Html.DisplayFor(model => model.IdServiceRequest)
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="control-label font-weight-bold"># Padre:</div>
+                            @Html.DisplayFor(model => model.IdFatherTask)
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="control-label font-weight-bold">Descripción:</div>
+                            @Html.DisplayFor(model => model.Activity)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="control-label font-weight-bold">Fecha Inicio:</div>
+                            @Html.DisplayFor(model => model.DateIni, "{0:d}")
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="control-label font-weight-bold">Fecha Fin:</div>
+                            @Html.DisplayFor(model => model.DateEnd, "{0:d}")
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="control-label font-weight-bold">Hora Inicio:</div>
+                            @Html.DisplayFor(model => model.HourIni, new { @type = "time" })
+
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="control-label font-weight-bold">Hora Fin:</div>
+                            @Html.DisplayFor(model => model.HourEnd, new { @type = "time" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <div class="control-label font-weight-bold">Responsable:</div>
+
+                            @{var NameRespo = " ";
+                                if (@Model.PersonEmployeeName != "")
+                                {
+                                    NameRespo = " " + @Model.PersonEmployeeName;
+                                }
+
+                                string strNombreResponsable = @Model.PersonEmployeeLastName + @NameRespo;
+                            }
+
+                            @Html.DisplayFor(x => strNombreResponsable)
+
+                        </div>
+                    </div>
+
+
+                </div>
+                    
+                <div class="row pt-2 pb-3">
+
+                            <div class="col-md-12">
+
+                                <div class="accordion border" id="accordionTaskPerson">
+                                    <div class="card collapsed-card">
+                                        <div class="card-header" id="headingPerson">
+                                            <h2 class="mb-0">
+                                                <button class="btn btn-link text-decoration-none" type="button" data-toggle="collapse" data-target="#collapseCardTaskPerson" aria-expanded="false" aria-controls="collapseTaskPerson">
+                                                    Colaboradores/Seguidores
+                                                </button>
+                                            </h2>
+                                        </div>
+
+                                        <div id="collapseCardTaskPerson" class="collapse" aria-labelledby="headingTaskPerson" data-parent="#accordionTaskPerson">
+
+                                            <div class="card-body">
+                                                <div class="row pt-3">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="table-responsive">
+                                                                <div class="container">
+
+                                                                    <table id="TTaskPerson" class="table table-bordered table-striped">
+                                                                        <thead class="font-weight-bold">
+                                                                            <tr>
+                                                                                <td style="display:none;">colHid_indexCell</td>
+                                                                                <td style="display:none;">colHid_IdPersonEmployee</td>
+                                                                                <td style="display:none;">colHid_PersonEmployeeName</td>
+                                                                                <td>Nombre</td>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody id="BodyPersonEmployee">
+                                                                            @if (Model != null)
+                                                                            {
+                                                                                if (Model.listTaskPerson != null)
+                                                                                {
+                                                                                    string idRow;
+                                                                                    string idCol;
+                                                                                    string nameCol_IdPersonEmploye;
+                                                                                    string nameCol_PersonEmployeeName;
+                                                                                    string nameCol_PersonEmployeeLastName;
+                                                                                    string nameCol_NumIdentification;
+
+                                                                                    for (var i = 0; i < Model.listTaskPerson.Count; i++)
+                                                                                    {
+                                                                                        idRow = "trTaskPerson" + i.ToString();
+                                                                                        idCol = "listTaskPerson_" + i.ToString();
+                                                                                        nameCol_NumIdentification = "listTaskPerson[" + i.ToString() + "].NumIdentification";
+                                                                                        nameCol_IdPersonEmploye = "listTaskPerson[" + i.ToString() + "].IdPersonEmployee";
+                                                                                        nameCol_PersonEmployeeName = "listTaskPerson[" + i.ToString() + "].PersonEmployeeName";
+                                                                                        nameCol_PersonEmployeeLastName = "listTaskPerson[" + i.ToString() + "].PersonEmployeeLastName";
+
+                                                                                        var Name = " ";
+                                                                                        if (@Model.listTaskPerson[i].PersonEmployeeName != "")
+                                                                                        {
+                                                                                            Name = " " + @Model.listTaskPerson[i].PersonEmployeeName;
+                                                                                        }
+
+                                                                                        string strNombre = @Model.listTaskPerson[i].NumIdentification + " - " + @Model.listTaskPerson[i].PersonEmployeeLastName + @Name;
+
+                                                                                        <tr id='@idRow'>
+                                                                                            <td style="display:none;"><input name="listPersonContact.Index" type="hidden" value='@i' /></td>
+                                                                                            <td style="display:none;"><input id='@idCol' name='@nameCol_NumIdentification' type="hidden" value='@Model.listTaskPerson[i].NumIdentification' /></td>
+                                                                                            <td style="display:none;"><input id='@idCol' name='@nameCol_IdPersonEmploye' type="hidden" value='@Model.listTaskPerson[i].IdPersonEmployee' /></td>
+                                                                                            <td style="display:none;"><input id='@idCol' name='@nameCol_PersonEmployeeName' type="hidden" value='@Model.listTaskPerson[i].PersonEmployeeName' /></td>
+                                                                                            <td style="display:none;"><input id='@idCol' name='@nameCol_PersonEmployeeLastName' type="hidden" value='@Model.listTaskPerson[i].PersonEmployeeLastName' /></td>
+                                                                                            <td name="PersonEmploye">@strNombre </td>
+                                                                                        </tr>
+
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    
+                        @if (Model != null)
+                        {
+                            int cant = Model.listMTaskComment.Count - 1;
+                        }
+
+                        @if (Model != null)
+                        {
+                            if (Model.listMTaskComment != null)
+                            {
+                                if (Model.listMTaskComment.Count > 0)
+                                {
+                                    <div class="row pt-2 pb-3">
+
+                                        <div class="col-md-12">
+
+                                            <div class="accordion border" id="accordionBitacora">
+                                                <div class="card collapsed-card">
+                                                    <div class="card-header" id="headingBitacora">
+                                                        <h2 class="mb-0">
+                                                            <button class="btn btn-link text-decoration-none" type="button" data-toggle="collapse" data-target="#collapseCardBitacora" aria-expanded="false" aria-controls="collapseBitacora">
+                                                                Ver Bitácora
+                                                            </button>
+                                                        </h2>
+                                                    </div>
+
+                                                    <div id="collapseCardBitacora" class="collapse" aria-labelledby="headingBitacora" data-parent="#accordionBitacora">
+
+                                                        <div class="card-body">
+                                                            <div class="row d-flex justify-content-center mt-100 mb-100">
+                                                                <div class="col-lg-12">
+                                                                    <div class="card">
+
+                                                                        @{
+                                                                            var lisBitacora = Model.listMTaskComment.Where(t => t.IdComment != 0).GroupBy(x => new
+                                                                            {
+                                                                                x.DateOperation,
+                                                                                IdUser = x.IdUser == null ? -1 : x.IdUser
+                                                                            }).Select(g => new { g.Key.IdUser, g.Key.DateOperation });
+                                                                            bool blnComent = false;
+                                                                            int counter = 0;
+
+                                                                        }
+
+                                                                        <div class="comment-widgets">
+                                                                            @foreach (var item in lisBitacora)
+                                                                            {
+
+
+                                                                                blnComent = false;
+
+                                                                                var ListaFiltrada = Model.listMTaskComment.Where(X => X.DateOperation == item.DateOperation && X.IdUser == item.IdUser).ToList();
+
+                                                                                <div class="d-flex flex-row comment-row m-t-0">
+                                                                                    <div class="comment-text w-100">
+                                                                                        <div class="row  m-b-12 d-block">
+                                                                                            <h6 class="font-medium">@ListaFiltrada[0].UserName</h6><span class="text-muted float-right">@item.DateOperation</span>
+                                                                                        </div>
+                                                                                        @*<span class="m-b-15 d-block">*@
+
+
+
+                                                                                        @foreach (var item2 in ListaFiltrada)
+                                                                                        {
+                                                                                            <div class="row m-b-12 d-block">
+                                                                                                <ul class="fa-ul">
+                                                                                                    <li>
+                                                                                                        <input name="listMTaskComment.Index" type="hidden" value="'@counter'" />
+                                                                                                        <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].IdComment" type="hidden" value='@Model.listMTaskComment[counter].IdComment' />
+                                                                                                        <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].IdTask" type="hidden" value='@Model.listMTaskComment[counter].IdTask' />
+                                                                                                        <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].Date" type="hidden" value='@Model.listMTaskComment[counter].Date' />
+                                                                                                        <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].UserName" type="hidden" value='@Model.listMTaskComment[counter].UserName' />
+                                                                                                        <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].IdUser" type="hidden" value='@Model.listMTaskComment[counter].IdUser' />
+                                                                                                        <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].DateOperation" type="hidden" value='@Model.listMTaskComment[counter].DateOperation' />
+
+
+                                                                                                        @if (item2.IdComment != null)
+                                                                                                        {
+                                                                                                            if (blnComent == false)
+                                                                                                            {
+                                                                                                                blnComent = true;
+                                                                                                            }
+                                                                                                            <div id="Mostrado_'@item2.IdComment'"><span class="fa-li"><i class="fas fa-check-square"></i></span>@item2.Comment</div>
+                                                                                                            <div id="Ocultable_'@item2.IdComment'" class="row" style="display:none">
+                                                                                                                <div class="col-md-11">
+                                                                                                                    <div class="form-group">
+                                                                                                                        <div class="control-label">Comentario:</div>
+                                                                                                                        @Html.TextAreaFor(model => item2.Comment, new { @id = "listMTaskComment_'" + counter + "'", @Name = "listMTaskComment['" + counter + "'].Comment", @class = "form-control", @rows = 3, @cols = 10 })
+                                                                                                                        @Html.ValidationMessageFor(model => item2.Comment, "", new { @class = "text-danger" })
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            counter = counter + 1;
+                                                                                                        }
+                                                                                                        else
+                                                                                                        {
+                                                                                                            <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].Comment" type="hidden" value='@Model.listMTaskComment[counter].Comment' />
+                                                                                                            <span class="fa-li"><i class="fas fa-check-square"></i></span>@item2.Comment
+
+                                                                                                            counter = counter + 1;
+                                                                                                        }
+
+                                                                                                    </li>
+                                                                                                </ul>
+                                                                                                @if (blnComent == true)
+                                                                                                {
+                                                                                                    @*<div class="comment-footer">
+                                                                                                        <div id="Editar_'@item2.IdComment'" class="btn_option pt-0"><button type="button" class="border-0" data-toggle="tooltip" data-placement="top" title="Editar" onclick="mostrarOcultar(@item2.IdComment, this);"><i class="fas fa-edit"></i></button></div>
+                                                                                                        <div id="Grabar_'@item2.IdComment'" class="btn_option pt-0" style="display: none;"><button type="button" class="border-0" data-toggle="tooltip" data-placement="top" title="Grabar Comentario" onclick="mostrarOcultar(@item2.IdComment, this);"><i class="fas fa-save"></i></button></div>
+                                                                                                        <div id="Cancelar_'@item2.IdComment'" class="btn_option pt-0" style="display: none;"><button type="button" class="border-0" data-toggle="tooltip" data-placement="top" title="Cancelar" onclick="mostrarOcultar(@item2.IdComment, this);"><i class="fas fa-times-circle"></i></button></div>
+                                                                                                    </div>*@
+                                                                                                }
+                                                                                            </div>
+                                                                                        }
+
+
+                                                                                        @*</span>*@
+                                                                                    </div>
+                                                                                </div> <!-- Comment Row -->
+                                                                            }
+
+                                                                        </div> <!-- Card -->
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                }
+
+                            }
+
+
+                        }
+                        <div class="row">
+                            <div class="col-md-10 text-center">
+                                @*<span class="text-success">@ViewBag.SuccessSave</span>*@
+                                @*<span class="text-danger">@ViewBag.ErrorSave</span>*@
+                            </div>
+                        </div>
+                    </div>
+        </div>
+
+            <div>
+                @Html.ActionLink("Regresar a la Lista", "ListTask")
+            </div>
+
+    </div>
+</div>
