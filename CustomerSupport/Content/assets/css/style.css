@@ -3175,8 +3175,20 @@ input[type=number]::-webkit-outer-spin-button {
 		bottom: 20px;
 		right: 20px;
 	}
-} 
+}
 
+/* ===inputs dentro de celdas de tabla css=== */
+td.cell-Input input {
+	width: 100%;
+	background-color:transparent;
+	padding: 0px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+td.cell-Label label {
+	display:normal;
+}
 
 /* ===responsive css=== */
 @media screen and (min-width: 1921px) {
@@ -3197,6 +3209,9 @@ input[type=number]::-webkit-outer-spin-button {
 	}
 	.ss_search_input.ss_open_search {
 		width: 790px;
+	}
+	td.cell-Label {
+		display: none;
 	}
 }
 @media screen and (max-width: 1599px){
@@ -3504,7 +3519,6 @@ input[type=number]::-webkit-outer-spin-button {
 		font-size: 14px;
 		vertical-align: top;
 	}
-
 }
 @media (max-width: 1199px) and (min-width: 992px){
 	

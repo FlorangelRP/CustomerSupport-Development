@@ -8,7 +8,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <div class="control-label">Tipo de Propiedad:</div>
-                <select id="lstLiv_PropertyType" class="form-control select2" style="width: 100%;">
+                <select id="lstLiv_PropertyType" class="form-control" style="width: 100%;">
                 </select>
                 @Html.HiddenFor(model => model.IdPropertyType, new { @id = "inpLiv_IdPropertyType" })
                 @Html.ValidationMessageFor(model => model.IdPropertyType, "", new { @class = "text-danger" })

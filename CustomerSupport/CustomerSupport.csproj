@@ -655,8 +655,8 @@
     <Content Include="Content\assets\css\dataTables\demo_page.css" />
     <Content Include="Content\assets\css\dataTables\demo_table.css" />
     <Content Include="Content\assets\css\dataTables\demo_table_jui.css" />
-    <Content Include="Content\toastr.css" />
-    <Content Include="Content\toastr.min.css" />
+    <Content Include="Content\assets\plugins\toastr\css\toastr.css" />
+    <Content Include="Content\assets\plugins\toastr\css\toastr.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\assets\webfonts\fa-brands-400.eot" />
@@ -709,8 +709,8 @@
     <Content Include="Content\assets\popper.js.1.16.1\umd\popper.js.flow" />
     <Content Include="Content\assets\popper.js.1.16.1\umd\popper.js.map" />
     <Content Include="Content\assets\popper.js.1.16.1\umd\popper.min.js.map" />
-    <Content Include="Content\toastr.scss" />
-    <Content Include="Content\toastr.less" />
+    <Content Include="Content\assets\plugins\toastr\css\toastr.scss" />
+    <Content Include="Content\assets\plugins\toastr\css\toastr.less" />
     <Content Include="Content\assets\js\pdfmake\pdfmake.js.map" />
     <Content Include="Content\assets\js\pdfmake\pdfmake.min.js.map" />
     <EntityDeploy Include="BDContext\MMEnterprises.edmx">
@@ -803,8 +803,8 @@
     <Content Include="Scripts\src\utils\setAttributes.js" />
     <Content Include="Scripts\src\utils\setStyles.js" />
     <Content Include="Scripts\src\utils\setupEventListeners.js" />
-    <Content Include="Scripts\toastr.js" />
-    <Content Include="Scripts\toastr.min.js" />
+    <Content Include="Content\assets\plugins\toastr\js\toastr.js" />
+    <Content Include="Content\assets\plugins\toastr\js\toastr.min.js" />
     <Content Include="Scripts\umd\popper-utils.js" />
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />

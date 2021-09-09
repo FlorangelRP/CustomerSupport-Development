@@ -44,7 +44,7 @@
                                                 <div class="col-md-10">
                                                     <div class="form-group">
                                                         <label>Cliente:</label><br>
-                                                        <select class="form-control select2 " onchange="filtrarPersona(this.value)" id="filtropersona" data-placeholder="Seleccionar" name="IdPerson"></select>
+                                                        <select class="select2" onchange="filtrarPersona(this.value)" id="filtropersona" data-placeholder="Seleccionar" name="IdPerson"></select>
                                                         @*@Html.TextBoxFor(model => model.IdPerson, new { @id = "searchPerson", @name = "IdPerson", @class = "form-control", @placeholder = "Seleccione" })*@
                                                         @Html.ValidationMessageFor(model => model.IdPerson, "", new { @class = "text-danger" })
 
@@ -132,7 +132,7 @@
                                                 <div class="col-md-5">
                                                     <div class="form-group">
                                                         <div class="control-label">Tipo de Servicio:</div>
-                                                        <select id="lst_ServiceType" class="form-control select2" style="width: 100%;">
+                                                        <select id="lst_ServiceType" class="form-control" style="width: 100%;">
                                                         </select>
                                                         @Html.HiddenFor(model => model.IdServiceType, new { @id = "inpIdServiceType" })
                                                         @Html.ValidationMessageFor(model => model.IdServiceType, "", new { @class = "text-danger" })
@@ -141,7 +141,7 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <div class="control-label">Estado del Servicio:</div>
-                                                        <select id="lst_ServiceStatus" class="form-control select2" style="width: 100%;">
+                                                        <select id="lst_ServiceStatus" class="form-control" style="width: 100%;">
                                                         </select>
                                                         @Html.HiddenFor(model => model.IdServiceStatus, new { @id = "inpIdServiceStatus" })
                                                         @Html.ValidationMessageFor(model => model.IdServiceStatus, "", new { @class = "text-danger" })
@@ -162,7 +162,7 @@
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                             <div class="control-label">Tipo de Propiedad:</div>
-                                                            <select id="lst_PropertyType" class="form-control select2" style="width: 100%;">
+                                                            <select id="lst_PropertyType" class="form-control" style="width: 100%;">
                                                             </select>
                                                             @Html.HiddenFor(model => model.IdPropertyType, new { @id = "inpIdPropertyType" })
                                                             @Html.ValidationMessageFor(model => model.IdPropertyType, "", new { @class = "text-danger" })
@@ -231,7 +231,7 @@
                                                 <div class="col-md-5">
                                                     <div class="form-group">
                                                         <div class="control-label">Via de Contacto:</div>
-                                                        <select id="lst_ContactType" class="form-control select2" style="width: 100%;">
+                                                        <select id="lst_ContactType" class="form-control" style="width: 100%;">
                                                         </select>
                                                         @Html.HiddenFor(model => model.IdContactType, new { @id = "inpIdContactType" })
                                                         @Html.ValidationMessageFor(model => model.IdContactType, "", new { @class = "text-danger" })
@@ -275,7 +275,7 @@
                                                                         <div class="col-md-4">
                                                                             <div class="form-group">
                                                                                 <div class="control-label">Prioridad:</div>
-                                                                                <select id="lst_Priority" class="form-control select2" style="width: 100%;">
+                                                                                <select id="lst_Priority" class="form-control" style="width: 100%;">
                                                                                 </select>
                                                                                 @Html.HiddenFor(model => model.listTask[0].IdPriority, new { @id = "inIdPriority" })
                                                                                 @Html.ValidationMessageFor(model => model.listTask[0].IdPriority, "", new { @class = "text-danger" })
@@ -285,7 +285,7 @@
                                                                         <div class="col-md-4">
                                                                             <div class="form-group">
                                                                                 <div class="control-label">Tipo:</div>
-                                                                                <select id="lst_IdTypeTask" class="form-control select2" style="width: 100%;">
+                                                                                <select id="lst_IdTypeTask" class="form-control" style="width: 100%;">
                                                                                 </select>
                                                                                 @Html.HiddenFor(model => model.listTask[0].IdTypeTask, new { @id = "inIdTypeTask" })
                                                                                 @Html.ValidationMessageFor(model => model.listTask[0].IdTypeTask, "", new { @class = "text-danger" })
@@ -295,7 +295,7 @@
                                                                         <div class="col-md-4">
                                                                             <div class="form-group">
                                                                                 <div class="control-label">Estado:</div>
-                                                                                <select id="lst_IdStatus" class="form-control select2" style="width: 100%;">
+                                                                                <select id="lst_IdStatus" class="form-control" style="width: 100%;">
                                                                                 </select>
                                                                                 @Html.HiddenFor(model => model.listTask[0].IdStatus, new { @id = "inIdStatus" })
                                                                                 @Html.ValidationMessageFor(model => model.listTask[0].IdStatus, "", new { @class = "text-danger" })
@@ -310,7 +310,7 @@
                                                                                 <label>Representante:</label><br>
                                                                                 @*@Html.TextBoxFor(model => model.listTask[0].IdPersonEmployee, new { @id = "searchEmployee", @name = "listTask[0].IdPersonEmployee", @class = "form-control", @placeholder = "Seleccione" })*@
 
-                                                                                <select class="form-control select2 " onchange="filtrarEmployee(this.value)" id="filtroEmployee" data-placeholder="Seleccionar" name="listTask[0].IdPersonEmployee"></select>
+                                                                                <select class="select2" onchange="filtrarEmployee(this.value)" id="filtroEmployee" data-placeholder="Seleccionar" name="listTask[0].IdPersonEmployee"></select>
                                                                                 @*@Html.ValidationMessageFor(model => model.listTask[0].IdPersonEmployee, "", new { @class = "text-danger" })*@
                                                                             </div>
                                                                         </div>

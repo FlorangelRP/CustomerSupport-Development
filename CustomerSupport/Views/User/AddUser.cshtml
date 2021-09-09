@@ -49,7 +49,7 @@
                         <div class="col-md-10">
                             <div class="form-group">
                                 <label>Empleado</label><br>
-                                <select class="form-control select2" onchange="filtrarPersona(this.value)" id="filtropersona" data-placeholder="Seleccionar" name="IdPerson"></select>
+                                <select class="select2" onchange="filtrarPersona(this.value)" id="filtropersona" data-placeholder="Seleccionar" name="IdPerson"></select>
                                 @*@Html.TextBoxFor(m => m.IdPerson, new { @id = "searchPerson", @name = "IdPerson", @class = "form-control", @placeholder = "Seleccione", @value = "" })*@
                                 @Html.ValidationMessageFor(model => model.IdPerson, "", new { @class = "text-danger" })
                             </div>
@@ -241,7 +241,7 @@
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-    <script src="~/Content/assets/js/jquery.inputpicker.js?v3"></script>
+    @*<script src="~/Content/assets/js/jquery.inputpicker.js?v3"></script>*@
     <script src="@Url.Content("~/Content/assets/plugins/select2/js/select2.full.min.js") "></script>
 
     <script type="text/javascript">

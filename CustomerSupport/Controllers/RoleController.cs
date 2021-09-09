@@ -139,7 +139,7 @@ namespace CustomerSupport.Controllers
                                           Search = result3.Search == null ? false : (bool)result3.Search,
                                           Edit = result3.Edit == null ? false : (bool)result3.Edit,
                                           Delete = result3.Edit == null ? false : (bool)result3.Delete,
-                                          IdAssociated = result3.IdAssociated,
+                                          IdAssociated = result3.IdAssociated
                                       }).ToList();
 
             objRole.RoleAcces = new List<MRoleAcces>();
@@ -261,8 +261,6 @@ namespace CustomerSupport.Controllers
                         TempData["DataRole"] = objMRole;
                         return RedirectToAction("EditRole");
                         //---------------------------------------------------
-
-                        //return RedirectToAction("EditRole", new { id = objRole.IdRole });
                     }
                     else
                     {
@@ -301,7 +299,7 @@ namespace CustomerSupport.Controllers
                            Search = result3.Search == null ? false : (bool)result3.Search,
                            Edit = result3.Edit == null ? false : (bool)result3.Edit,
                            Delete = result3.Edit == null ? false : (bool)result3.Delete,
-                           IdAssociated = result3.IdAssociated,
+                           IdAssociated = result3.IdAssociated
                        }).ToList();
 
             return Json(ObjRoleAcces, JsonRequestBehavior.AllowGet);
@@ -332,7 +330,7 @@ namespace CustomerSupport.Controllers
                                                Delete = result3.Edit == null ? false : (bool)result3.Delete,
                                                IdAssociated = result3.IdAssociated,
                                                Action = result3.Action,
-                                               Controller = result3.Controller,
+                                               Controller = result3.Controller
                                            }).ToList(),
                               RoleAccesPadre = (from result3 in db.GNListRoleAcces(null, null).ToList()
                                                 select new MRoleAcces
@@ -346,7 +344,7 @@ namespace CustomerSupport.Controllers
                                                     Delete = result3.Edit == null ? false : (bool)result3.Delete,
                                                     IdAssociated = result3.IdAssociated,
                                                     Action = result3.Action,
-                                                    Controller = result3.Controller,
+                                                    Controller = result3.Controller
                                                 }).ToList()
                         }).ToList();
 
