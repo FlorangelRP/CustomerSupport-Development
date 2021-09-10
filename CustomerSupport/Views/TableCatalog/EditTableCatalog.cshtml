@@ -45,7 +45,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <div class="control-label">Descripcion:</div>
-                                @Html.TextAreaFor(model => model.Description, 2, 6, new { @maxlength = "50", @class = "form-control" })
+                                @Html.TextAreaFor(model => model.Description, 2, 6, new { @maxlength = "200", @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -241,7 +241,7 @@
             var strIdTableDetail = $("#inpIdTableDetail").val();
             var strDescription = $("#txtDetailDesc").val();
 
-            if (strDescription != "") {
+            if (strDescription.trim() != "") {
 
                 //Si la descripcion ya existe no debe insertar
                 var isFound = doSearchDuplicate('TDetail', strDescription, 'Description');
@@ -312,8 +312,9 @@
                 const compareWith = cell.value.toLowerCase();
 
                 // Buscamos el texto en el contenido de la celda y capturamos la posicion de la fila
-                if (compareWith.indexOf(searchText.toLowerCase()) > -1) {
-                    found = true;                   
+                // if (compareWith.indexOf(searchText.toLowerCase()) > -1) {
+                if (compareWith.trim() === searchText.toLowerCase().trim()) {
+                    found = true;
                     break;
                 }
 
@@ -335,7 +336,7 @@
                 const compareWith = cell.value.toLowerCase();
 
                 // Buscamos el texto en el contenido de la celda y capturamos la posicion de la fila
-                if (compareWith.indexOf(searchText.toLowerCase()) > -1) {                    
+                if (compareWith.trim() === searchText.toLowerCase().trim()) {
                     ++intCount;
                 }
 
@@ -355,8 +356,7 @@
             }
             //-------------------------------------------
 
-            $(".inputLostFocus").on('blur', function () {
-                
+            $("#TDetail").on('blur', '.inputLostFocus', function () {
                 var strValue = $(this).val();
                 var strName = $(this).attr('name');
 
@@ -365,15 +365,27 @@
                 var EndPos = strName.length;
                 var strCol = strName.substring(BeginPos, EndPos);
 
-                //Si la descripcion ya existe no debe insertar
-                var countDupli = doSearchCountDuplicate('TDetail', strValue, strCol);
-
-                if (countDupli>1) {
-                    toastr.warning("Valor ya existe, por favor verifique.");
-                    return false;
+                if (strValue.trim() === "") {
+                    if (strCol.trim() === "Description") {
+                        toastr.warning("Por favor introduzca una descripcion.");
+                        $(this).focus();
+                        return false;
+                    }
                 }
+                else {
+                    //Si la descripcion ya existe no debe insertar
+                    var countDupli = doSearchCountDuplicate('TDetail', strValue, strCol);
 
+                    if (countDupli > 1) {
+                        toastr.warning("Valor ya existe, por favor verifique.");
+                        $(this).focus();
+                        return false;
+                    }
+                }
             });
+
+            //$(".inputLostFocus").on('blur',function(){
+            //});
 
         });
 

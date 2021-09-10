@@ -354,6 +354,17 @@ namespace CustomerSupport.Controllers
                             paramOutIdCatalogDetail.Direction = System.Data.ParameterDirection.InputOutput;
                             paramOutIdCatalogDetail.Value = item.IdCatalogDetail;
 
+                            SqlParameter paramDescription = new SqlParameter();
+                            paramDescription.ParameterName = "@Description";
+                            if (item.Description != null)
+                            {
+                                paramDescription.Value = item.Description;
+                            }
+                            else
+                            {
+                                paramDescription.Value = DBNull.Value;
+                            }
+
                             SqlParameter paramIdTableDetail = new SqlParameter();
                             paramIdTableDetail.ParameterName = "@IdTableDetail";
                             //paramIdTableDetail.SqlDbType = System.Data.SqlDbType.Int;
@@ -378,7 +389,7 @@ namespace CustomerSupport.Controllers
                                     paramOutIdCatalogDetail,
                                     paramIdTableDetail,
                                     new SqlParameter("@IdCatalog", intIdCatalog),
-                                    new SqlParameter("@Description", item.Description),
+                                    paramDescription,
                                     new SqlParameter("@Status", blStatus)
                                 }
                             );

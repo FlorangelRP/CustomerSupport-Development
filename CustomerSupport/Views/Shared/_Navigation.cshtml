@@ -43,7 +43,7 @@
                                     if (Lis.Count > 0)
                                     {
                                         <li class="ss_menuP">
-                                            @mOptionPadre.OptionName
+                                            <a href="#">@mOptionPadre.OptionName</a>                                            
 
                                             <ul class="ss_subMenu">
                                                 @foreach (var mOptionAso in Lis)
@@ -61,8 +61,8 @@
                             }
 
 
-                            <li class="ss_menuP">
-                                <div class="ss_UserInfo">@objUser.Login.ToString()</div>
+                            <li class="ss_menuP">                                
+                                <div class="ss_UserInfo"><a href="#">@objUser.Login.ToString()</a></div>
                                 
                                 <ul class="ss_subMenu">
                                     <li><a href='@Url.Action("Close", "User")' class="">Salir</a></li>
