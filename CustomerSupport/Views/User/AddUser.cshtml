@@ -49,7 +49,7 @@
                         <div class="col-md-10">
                             <div class="form-group">
                                 <label>Empleado</label><br>
-                                <select class="form-control select2" onchange="filtrarPersona(this.value)" id="filtropersona" data-placeholder="Seleccionar" name="IdPerson"></select>
+                                <select class="select2" onchange="filtrarPersona(this.value)" id="filtropersona" data-placeholder="Seleccionar" name="IdPerson"></select>
                                 @*@Html.TextBoxFor(m => m.IdPerson, new { @id = "searchPerson", @name = "IdPerson", @class = "form-control", @placeholder = "Seleccione", @value = "" })*@
                                 @Html.ValidationMessageFor(model => model.IdPerson, "", new { @class = "text-danger" })
                             </div>
@@ -230,7 +230,6 @@
 </div>
 @section Scripts {
 
-    <script src="~/Content/assets/js/jquery.min.js"></script>
     <script src="~/Content/assets/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
@@ -241,7 +240,7 @@
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-    <script src="~/Content/assets/js/jquery.inputpicker.js?v3"></script>
+    @*<script src="~/Content/assets/js/jquery.inputpicker.js?v3"></script>*@
     <script src="@Url.Content("~/Content/assets/plugins/select2/js/select2.full.min.js") "></script>
 
     <script type="text/javascript">
@@ -337,7 +336,7 @@
                     data.push(itemArray);
                     data.reverse();
                     ListPersons = data;
-                    
+
                     if (ListPersons.length > 0)
                     {
                         var persona = $("#filtropersona")[0];
@@ -363,12 +362,11 @@
                 }
             });
         }
+        ObtenerPersonas();
 
         function jsonToDate(date, format) {
             return moment(date).format(format);
-        }
-
-        ObtenerPersonas();
+    }
 
         function cargarDataPerson(IdPerson, lstPersons) {
             if (IdPerson == "" || IdPerson == "0") { return false; }
@@ -574,7 +572,7 @@
             //    cargarDataPerson(IdPerson, ListPersons)
             //});
 
-    		$('.select2').select2();
+            $('.select2').select2({ width: '100%' });
 
             // If the checkbox is checked, display the output text
             if ($("#chkStatus").checked == true) {

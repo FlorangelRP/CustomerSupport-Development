@@ -40,10 +40,6 @@ namespace CustomerSupport.Controllers
         [HttpPost]
         public ActionResult ListUser(string submit, MUser objMUser)
         {
-            //var m = new MUser { IdUser = objMUser.IdUser };
-            //var mp = new { m, id="" };
-            //var objParameter = new MParameterUrl { Id = objMUser.IdUser };
-
             if (objMUser==null || objMUser.IdUser==0) 
             {
                 return View();
@@ -54,12 +50,8 @@ namespace CustomerSupport.Controllers
             switch (submit)
             {
                 case "searchRow":
-                    //return (DetailUser(objMUser));//RedirectToAction("DetailUser");                    
-                    //return RedirectToAction("DetailUser", objParameter);
                     return RedirectToAction("DetailUser", "User");
                 case "editRow":
-                    //return (EditUser(objMUser,"")); //RedirectToAction("EditUser");
-                    //return RedirectToAction("EditUser", objParameter);
                     return RedirectToAction("EditUser", "User");
                 default:
                     return View();
@@ -228,7 +220,7 @@ namespace CustomerSupport.Controllers
                                               Search = result3.Search == null ? false : (bool)result3.Search,
                                               Edit = result3.Edit == null ? false : (bool)result3.Edit,
                                               Delete = result3.Edit == null ? false : (bool)result3.Delete,
-                                              IdAssociated = result3.IdAssociated,
+                                              IdAssociated = result3.IdAssociated
                                           }).ToList();
 
                 ObjUser.UserAcces = new List<MUserAcces>();
@@ -358,12 +350,9 @@ namespace CustomerSupport.Controllers
                         TempData["DataUser"] = objMUser;
                         return RedirectToAction("EditUser");
                         //---------------------------------------------------
-
-                        //return RedirectToAction("EditUser", new { id = objUser.IdUser });
                     }
                     else
                     {
-
                         ViewBag.ErrorSave = "Error al grabar datos del Usuario " + (mensaje == "" ? "" : ": " + mensaje);
                         return View(objUser);
                     }
@@ -378,9 +367,6 @@ namespace CustomerSupport.Controllers
             }
             catch (SqlException ex)
             {
-                //throw;
-                //string msg= "Error al grabar datos del Usuario: " + ex.Message;
-                //ModelState.AddModelError("ErrorSave", msg);
                 ViewBag.ErrorSave = "Error al grabar datos del Usuario: " + ex.Message;
                 return View(objUser);
             }
@@ -424,7 +410,7 @@ namespace CustomerSupport.Controllers
                                                            //IdContactType = result2.IdContactType,
                                                            //ContactType = result2.ContactType,
                                                            //IdPosition = result2.IdPosition,
-                                                           Position = result2.Position,
+                                                           Position = result2.Position //,
                                                            //ClientPermission = result2.ClientPermission,
                                                            //Status = result2.Status
                                                        }).ToList().First(),
@@ -497,7 +483,7 @@ namespace CustomerSupport.Controllers
                                              Delete = result3.Edit == null ? false : (bool)result3.Delete,
                                              IdAssociated = result3.IdAssociated,
                                              Action = result3.Action,
-                                             Controller = result3.Controller,
+                                             Controller = result3.Controller
                                          }).ToList(),
 
                             UserAccesPadre = (from result3 in db.GNListUserAcces(null, null, null).ToList()
@@ -512,7 +498,7 @@ namespace CustomerSupport.Controllers
                                                   Delete = result3.Edit == null ? false : (bool)result3.Delete,
                                                   IdAssociated = result3.IdAssociated,
                                                   Action = result3.Action,
-                                                  Controller = result3.Controller,
+                                                  Controller = result3.Controller
                                               }).ToList()
                         }).First();
 
@@ -556,7 +542,7 @@ namespace CustomerSupport.Controllers
                                              Delete = result3.Edit == null ? false : (bool)result3.Delete,
                                              IdAssociated = result3.IdAssociated,
                                              Action = result3.Action,
-                                             Controller = result3.Controller,
+                                             Controller = result3.Controller
                                          }).ToList(),
 
                             UserAccesPadre = (from result3 in db.GNListRoleUserPermission(null, null).ToList()
@@ -571,7 +557,7 @@ namespace CustomerSupport.Controllers
                                                   Delete = result3.Edit == null ? false : (bool)result3.Delete,
                                                   IdAssociated = result3.IdAssociated,
                                                   Action = result3.Action,
-                                                  Controller = result3.Controller,
+                                                  Controller = result3.Controller
                                               }).ToList()
                         }).First();
 
@@ -601,7 +587,7 @@ namespace CustomerSupport.Controllers
                            Search = result3.Search == null ? false : (bool)result3.Search,
                            Edit = result3.Edit == null ? false : (bool)result3.Edit,
                            Delete = result3.Edit == null ? false : (bool)result3.Delete,
-                           IdAssociated = result3.IdAssociated,
+                           IdAssociated = result3.IdAssociated
                        }).ToList();
 
           return   Json(ObjUser, JsonRequestBehavior.AllowGet);
@@ -623,8 +609,6 @@ namespace CustomerSupport.Controllers
                 paramOutIdUsuario.Direction = System.Data.ParameterDirection.InputOutput;
                 paramOutIdUsuario.Value = objUser.IdUser;
 
-
-
                 SqlResult = db.Database.ExecuteSqlCommand("GNTranUser @IdPerson, @strLogin , @strPassword, @TransactionType, @IdUser OUT, @btStatus ",
                        new SqlParameter[]{
                                 new SqlParameter("@TransactionType", TransactionType),
@@ -639,7 +623,6 @@ namespace CustomerSupport.Controllers
                 IdUser = Int32.Parse(paramOutIdUsuario.Value.ToString());
                 if (IdUser != 0)
                 {
-
                     //Accesos por usuario
                     if (objUser.UserAcces != null && objUser.UserAcces.Count() > 0) 
                     {
@@ -678,7 +661,6 @@ namespace CustomerSupport.Controllers
                             );
                         }
                     }
-
 
                     //Roles del usuario
                     if (objUser.Roles != null && objUser.Roles.Count() > 0) 

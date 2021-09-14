@@ -1371,15 +1371,15 @@ h2.ss_foot_head {
 } */
 
 .s_login {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-	background-image:url(../images/banner1.png),linear-gradient( -180deg, rgb(6,23,54) 0%, rgb(51,61,96) 100%);
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-image: url(../images/banner1.png),linear-gradient( -180deg, rgb(6,23,54) 0%, rgb(51,61,96) 100%);
 }
 
 .s_login .ss_box_bg{
@@ -3174,8 +3174,20 @@ input[type=number]::-webkit-outer-spin-button {
 		bottom: 20px;
 		right: 20px;
 	}
-} 
+}
 
+/* ===inputs dentro de celdas de tabla css=== */
+td.cell-Input input {
+	width: 100%;
+	background-color:transparent;
+	padding: 0px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+td.cell-Label label {
+	display:normal;
+}
 
 /* ===responsive css=== */
 @media screen and (min-width: 1921px) {
@@ -3196,6 +3208,9 @@ input[type=number]::-webkit-outer-spin-button {
 	}
 	.ss_search_input.ss_open_search {
 		width: 790px;
+	}
+	td.cell-Label {
+		display: none;
 	}
 }
 @media screen and (max-width: 1599px){
@@ -3503,7 +3518,6 @@ input[type=number]::-webkit-outer-spin-button {
 		font-size: 14px;
 		vertical-align: top;
 	}
-
 }
 @media (max-width: 1199px) and (min-width: 992px){
 	

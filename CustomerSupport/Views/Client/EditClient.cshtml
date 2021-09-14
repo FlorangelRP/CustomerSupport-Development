@@ -40,7 +40,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <div class="control-label">Tipo de Identificacion:</div>
-                                <select id="lst_IdentificationType" class="form-control select2" style="width: 100%;">
+                                <select id="lst_IdentificationType" class="form-control" style="width: 100%;">
                                 </select>
                                 @Html.HiddenFor(model => model.IdIdentificationType, new { @id = "inpIdIdentificationType" })
                                 @Html.ValidationMessageFor(model => model.IdIdentificationType, "", new { @class = "text-danger" })
@@ -101,14 +101,14 @@
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <div class="control-label">Tipo:</div>
-                                                        <select id="lst_PhoneNumberType" class="form-control select2" style="width: 100%;">
+                                                        <select id="lst_PhoneNumberType" class="form-control" style="width: 100%;">
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <div class="control-label">Código de Area:</div>
-                                                        <select id="lst_CountryAreaCode" class="form-control select2" style="width: 100%;">
+                                                        <select id="lst_CountryAreaCode" class="form-control" style="width: 100%;">
                                                         </select>
                                                     </div>
                                                 </div>
@@ -238,7 +238,7 @@
                         <div class="col-md-5">
                             <div class="form-group">
                                 <div class="control-label">Via de Contacto:</div>
-                                <select id="lst_ContactType" class="form-control select2" style="width: 100%;">
+                                <select id="lst_ContactType" class="form-control" style="width: 100%;">
                                 </select>
                                 @Html.HiddenFor(model => model.IdContactType, new { @id = "inpIdContactType" })
                                 @Html.ValidationMessageFor(model => model.IdContactType, "", new { @class = "text-danger" })
