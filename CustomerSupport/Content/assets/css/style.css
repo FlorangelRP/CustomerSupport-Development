@@ -535,9 +535,8 @@ h3.ss_h3_center:before {
 	text-align:right;
 }
 .dot {
-	height: 25px;
-	width: 25px;
-	background-color: #bbb;
+	height: 10px;
+	width: 10px;
 	border-radius: 50%;
 	display: inline-block;
 }

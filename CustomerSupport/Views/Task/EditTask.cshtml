@@ -13,259 +13,317 @@
     </div>
     <div class="card-body">
 
-            <div class="m-0 row justify-content-center">
-                <div class="form-horizontal col-md-10">
-                    @using (Html.BeginForm("EditTask", "Task"))
-                    {
+        <div class="m-0 row justify-content-center">
+            <div class="form-horizontal col-md-10">
+                @using (Html.BeginForm("EditTask", "Task"))
+                {
 
-                        @Html.AntiForgeryToken()
-                        <div class="row">
-                            <div class="col-md-offset-2 col-md-10">
-                                <div class="form-group">
-                                    <div class="text-center">
-                                        @*<a href="location.href='@Url.Action("Create", "Client")';return false;" class="white_btn">Grabar</a>*@
-                                        <button class="btn btn-flotante white_btn" type="submit">Grabar</button>
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+                        <div class="col-md-offset-2 col-md-10">
+                            <div class="form-group">
+                                <div class="text-center">
+                                    @*<a href="location.href='@Url.Action("Create", "Client")';return false;" class="white_btn">Grabar</a>*@
+                                    <button class="btn btn-flotante white_btn" type="submit">Grabar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <div class="control-label">Número de Asignación de Actividad:</div>
+                                @Html.DisplayFor(model => model.IdTask)
+                                @Html.HiddenFor(model => model.IdTask)
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="control-label">Prioridad:</div>
+                                <select id="lst_Priority" class="form-control select2" style="width: 100%;">
+                                </select>
+                                @Html.HiddenFor(model => model.IdPriority, new { @id = "inIdPriority" })
+                                @Html.ValidationMessageFor(model => model.IdPriority, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="control-label">Tipo:</div>
+                                <select id="lst_IdTypeTask" class="form-control select2" style="width: 100%;">
+                                </select>
+                                @Html.HiddenFor(model => model.IdTypeTask, new { @id = "inIdTypeTask" })
+                                @Html.ValidationMessageFor(model => model.IdTypeTask, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="control-label">Estado:</div>
+                                <select id="lst_IdStatus" class="form-control select2" style="width: 100%;">
+                                </select>
+                                @Html.HiddenFor(model => model.IdStatus, new { @id = "inIdStatus" })
+                                @Html.ValidationMessageFor(model => model.IdStatus, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="control-label">Título:</div>
+                                @Html.TextBoxFor(model => model.Tittle, new { @id = "strTittle", @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Tittle, "", new { @maxlength = "500", @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <div class="control-label">Lugar:</div>
+                                @Html.TextBoxFor(model => model.Place, new { @id = "strPlace", @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Place, "", new { @maxlength = "500", @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <div class="control-label"># Servicio:</div>
+                                @Html.TextBoxFor(model => model.IdServiceRequest, new { @id = "IdServiceRequest", @class = "input-numeric inputLostFocus form-control rounded-0" })
+                                @Html.ValidationMessageFor(model => model.IdServiceRequest, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <div class="control-label"># Padre:</div>
+                                @Html.TextBoxFor(model => model.IdFatherTask, new { @id = "IdFatherTask", @class = "input-numeric inputLostFocus form-control rounded-0" })
+                                @Html.ValidationMessageFor(model => model.IdFatherTask, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="control-label">Descripción:</div>
+                                @Html.TextAreaFor(model => model.Activity, new { @class = "form-control", @rows = 3, @cols = 10 })
+                                @Html.ValidationMessageFor(model => model.Activity, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="control-label">Fecha Inicio:</div>
+                                @Html.TextBoxFor(model => model.DateIni, "{0:d}", new { @class = "form-control", @type = "date", @id = "dttDateIni" })
+                                @Html.ValidationMessageFor(model => model.DateIni, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="control-label">Fecha Fin:</div>
+                                @Html.TextBoxFor(model => model.DateEnd, "{0:d}", new { @class = "form-control", @type = "date", @id = "dttDateEnd" })
+                                @Html.ValidationMessageFor(model => model.DateEnd, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="control-label">Hora Inicio:</div>
+                                @Html.TextBoxFor(model => model.HourIni, new { @class = "form-control", @type = "time" })
+                                @Html.ValidationMessageFor(model => model.HourIni, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="control-label">Hora Fin:</div>
+                                @Html.TextBoxFor(model => model.HourEnd, new { @class = "form-control", @type = "time" })
+                                @Html.ValidationMessageFor(model => model.HourEnd, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <div class="control-label">Responsable:</div>
+                                <select class="form-control select2 " onchange="filtrarPersona(this.value)" id="filtropersona" data-placeholder="Seleccione" name="IdPersonEmployee"></select>
+                                @Html.HiddenFor(model => model.IdPersonEmployee, new { @id = "IdPersonEmployee," })
+                                @Html.ValidationMessageFor(model => model.IdPersonEmployee, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="row pt-2 pb-3">
+
+                        <div class="col-md-12">
+
+                            <div class="accordion border" id="accordionTaskPerson">
+                                <div class="card collapsed-card">
+                                    <div class="card-header" id="headingPerson">
+                                        <h2 class="mb-0">
+                                            <button class="btn btn-link text-decoration-none" type="button" data-toggle="collapse" data-target="#collapseCardTaskPerson" aria-expanded="false" aria-controls="collapseTaskPerson">
+                                                Colaboradores/Seguidores
+                                            </button>
+                                        </h2>
+                                    </div>
+
+                                    <div id="collapseCardTaskPerson" class="collapse" aria-labelledby="headingTaskPerson" data-parent="#accordionTaskPerson">
+
+                                        <div class="card-body">
+
+
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        <div class="control-label">Colaborador:</div>
+                                                        <select class="form-control select2 " onchange="filtrarColaborador(this.value)" id="filtroColaborador" data-placeholder="Seleccione"></select>
+                                                        @*@Html.HiddenFor(model => model.IdPersonEmployee, new { @id = "IdPersonColaborador," })
+                                                            @Html.ValidationMessageFor(model => model.IdPersonEmployee, "", new { @class = "text-danger" })*@
+
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        @*<div class="btn_option"><a id="addRow"><i class="fas fa-plus"></i></a></div>*@
+                                                        <div class="btn_option"><a onclick="addRow();"><i class="fas fa-plus"></i></a></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @*<hr>*@
+                                            <div class="row pt-3">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <div class="table-responsive">
+                                                            <div class="container">
+
+                                                                <table id="TTaskPerson" class="table table-bordered table-striped">
+                                                                    <thead class="font-weight-bold">
+                                                                        <tr>
+                                                                            <td style="display:none;">colHid_indexCell</td>
+                                                                            <td style="display:none;">colHid_IdPersonEmployee</td>
+                                                                            <td style="display:none;">colHid_PersonEmployeeName</td>
+                                                                            <td>Nombre</td>
+                                                                            <td>Opciones</td>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="BodyPersonEmployee">
+                                                                        @if (Model != null)
+                                                                        {
+                                                                            if (Model.listTaskPerson != null)
+                                                                            {
+                                                                                string idRow;
+                                                                                string idCol;
+                                                                                string nameCol_IdPersonEmploye;
+                                                                                string nameCol_PersonEmployeeName;
+                                                                                string nameCol_PersonEmployeeLastName;
+                                                                                string nameCol_NumIdentification;
+
+                                                                                for (var i = 0; i < Model.listTaskPerson.Count; i++)
+                                                                                {
+                                                                                    idRow = "trTaskPerson" + i.ToString();
+                                                                                    idCol = "listTaskPerson_" + i.ToString();
+                                                                                    nameCol_NumIdentification = "listTaskPerson[" + i.ToString() + "].NumIdentification";
+                                                                                    nameCol_IdPersonEmploye = "listTaskPerson[" + i.ToString() + "].IdPersonEmployee";
+                                                                                    nameCol_PersonEmployeeName = "listTaskPerson[" + i.ToString() + "].PersonEmployeeName";
+                                                                                    nameCol_PersonEmployeeLastName = "listTaskPerson[" + i.ToString() + "].PersonEmployeeLastName";
+
+                                                                                    var Name = " ";
+                                                                                    if (@Model.listTaskPerson[i].PersonEmployeeName != "")
+                                                                                    {
+                                                                                        Name = " " + @Model.listTaskPerson[i].PersonEmployeeName;
+                                                                                    }
+
+                                                                                    string strNombre = @Model.listTaskPerson[i].NumIdentification + " - " + @Model.listTaskPerson[i].PersonEmployeeLastName + @Name;
+
+                                                                                    <tr id='@idRow'>
+                                                                                        <td style="display:none;"><input name="listTaskPerson.Index" type="hidden" value='@i' /></td>
+                                                                                        <td style="display:none;"><input id='@idCol' name='@nameCol_NumIdentification' type="hidden" value='@Model.listTaskPerson[i].NumIdentification' /></td>
+                                                                                        <td style="display:none;"><input id='@idCol' name='@nameCol_IdPersonEmploye' type="hidden" value='@Model.listTaskPerson[i].IdPersonEmployee' /></td>
+                                                                                        <td style="display:none;"><input id='@idCol' name='@nameCol_PersonEmployeeName' type="hidden" value='@Model.listTaskPerson[i].PersonEmployeeName' /></td>
+                                                                                        <td style="display:none;"><input id='@idCol' name='@nameCol_PersonEmployeeLastName' type="hidden" value='@Model.listTaskPerson[i].PersonEmployeeLastName' /></td>
+                                                                                        <td name="PersonEmploye">@strNombre </td>
+                                                                                        <td><div class="btn_option pt-0"><a class="deleteRow" onclick="deleteRow('@i');"><i class="far fa-trash-alt"></i></a></div></td>
+                                                                                    </tr>
+
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    </tbody>
+                                                                </table>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="form-group">
-                                    <div class="control-label">Número de Asignación de Actividad:</div>
-                                    @Html.DisplayFor(model => model.IdTask)
-                                    @Html.HiddenFor(model => model.IdTask)
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <div class="control-label">Prioridad:</div>
-                                    <select id="lst_Priority" class="form-control select2" style="width: 100%;">
-                                    </select>
-                                    @Html.HiddenFor(model => model.IdPriority, new { @id = "inIdPriority" })
-                                    @Html.ValidationMessageFor(model => model.IdPriority, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <div class="control-label">Tipo:</div>
-                                    <select id="lst_IdTypeTask" class="form-control select2" style="width: 100%;">
-                                    </select>
-                                    @Html.HiddenFor(model => model.IdTypeTask, new { @id = "inIdTypeTask" })
-                                    @Html.ValidationMessageFor(model => model.IdTypeTask, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <div class="control-label">Estado:</div>
-                                    <select id="lst_IdStatus" class="form-control select2" style="width: 100%;">
-                                    </select>
-                                    @Html.HiddenFor(model => model.IdStatus, new { @id = "inIdStatus" })
-                                    @Html.ValidationMessageFor(model => model.IdStatus, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
 
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <div class="control-label">Título:</div>
-                                    @Html.TextBoxFor(model => model.Tittle, new { @id = "strTittle", @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.Tittle, "", new { @maxlength = "500", @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
+                    </div>
 
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="form-group">
-                                    <div class="control-label">Lugar:</div>
-                                    @Html.TextBoxFor(model => model.Place, new { @id = "strPlace", @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.Place, "", new { @maxlength = "500", @class = "text-danger" })
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <div class="control-label"># Servicio:</div>
-                                    @Html.TextBoxFor(model => model.IdServiceRequest, new { @id = "IdServiceRequest", @class = "input-numeric inputLostFocus form-control rounded-0" })
-                                    @Html.ValidationMessageFor(model => model.IdServiceRequest, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <div class="control-label"># Padre:</div>
-                                    @Html.TextBoxFor(model => model.IdFatherTask, new { @id = "IdFatherTask", @class = "input-numeric inputLostFocus form-control rounded-0" })
-                                    @Html.ValidationMessageFor(model => model.IdFatherTask, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <div class="control-label">Descripción:</div>
-                                    @Html.TextAreaFor(model => model.Activity, new { @class = "form-control", @rows = 3, @cols = 10 })
-                                    @Html.ValidationMessageFor(model => model.Activity, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <div class="control-label">Fecha Inicio:</div>
-                                    @Html.TextBoxFor(model => model.DateIni, "{0:d}", new { @class = "form-control", @type = "date", @id = "dttDateIni" })
-                                    @Html.ValidationMessageFor(model => model.DateIni, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <div class="control-label">Fecha Fin:</div>
-                                    @Html.TextBoxFor(model => model.DateEnd, "{0:d}", new { @class = "form-control", @type = "date", @id = "dttDateEnd" })
-                                    @Html.ValidationMessageFor(model => model.DateEnd, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <div class="control-label">Hora Inicio:</div>
-                                    @Html.TextBoxFor(model => model.HourIni, new { @class = "form-control", @type = "time" })
-                                    @Html.ValidationMessageFor(model => model.HourIni, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <div class="control-label">Hora Fin:</div>
-                                    @Html.TextBoxFor(model => model.HourEnd, new { @class = "form-control", @type = "time" })
-                                    @Html.ValidationMessageFor(model => model.HourEnd, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="form-group">
-                                    <div class="control-label">Responsable:</div>
-                                    <select class="form-control select2 " onchange="filtrarPersona(this.value)" id="filtropersona" data-placeholder="Seleccione" name="IdPersonEmployee"></select>
-                                    @Html.HiddenFor(model => model.IdPersonEmployee, new { @id = "IdPersonEmployee," })
-                                    @Html.ValidationMessageFor(model => model.IdPersonEmployee, "", new { @class = "text-danger" })
-
-                                </div>
-                            </div>
-
-
-                        </div>
+                    if (Model != null)
+                    {
+                        MTaskComment objComent = new MTaskComment();
+                        objComent.IdTask = Model.IdTask;
+                        objComent.Date = DateTime.Now;
+                        objComent.IdUser = ((MUser)Session["Usuario"]).IdUser;
+                        objComent.IdComment = 0;
+                        Model.listMTaskComment.Add(objComent);
+                        int cant = Model.listMTaskComment.Count - 1;
+                        //for (var i = 0; i < Model.listMTaskComment.Count; i++)
+                        //{
                         <div class="row pt-2 pb-3">
 
                             <div class="col-md-12">
 
-                                <div class="accordion border" id="accordionTaskPerson">
+                                <div class="accordion border" id="accordionComment">
                                     <div class="card collapsed-card">
-                                        <div class="card-header" id="headingPerson">
+                                        <div class="card-header" id="headingComment">
                                             <h2 class="mb-0">
-                                                <button class="btn btn-link text-decoration-none" type="button" data-toggle="collapse" data-target="#collapseCardTaskPerson" aria-expanded="false" aria-controls="collapseTaskPerson">
-                                                    Colaboradores/Seguidores
+                                                <button class="btn btn-link text-decoration-none" type="button" data-toggle="collapse" data-target="#collapseCardComment" aria-expanded="false" aria-controls="collapseComment">
+                                                    Agregar Comentario
                                                 </button>
                                             </h2>
                                         </div>
 
-                                        <div id="collapseCardTaskPerson" class="collapse" aria-labelledby="headingTaskPerson" data-parent="#accordionTaskPerson">
+                                        <div id="collapseCardComment" class="collapse" aria-labelledby="headingComment" data-parent="#accordionComment">
 
                                             <div class="card-body">
-
-
                                                 <div class="row">
-                                                    <div class="col-md-8">
-                                                        <div class="form-group">
-                                                            <div class="control-label">Colaborador:</div>
-                                                            <select class="form-control select2 " onchange="filtrarColaborador(this.value)" id="filtroColaborador" data-placeholder="Seleccione"></select>
-                                                            @*@Html.HiddenFor(model => model.IdPersonEmployee, new { @id = "IdPersonColaborador," })
-                                                @Html.ValidationMessageFor(model => model.IdPersonEmployee, "", new { @class = "text-danger" })*@
-
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div class="col-md-3">
-                                                        <div class="form-group">
-                                                            @*<div class="btn_option"><a id="addRow"><i class="fas fa-plus"></i></a></div>*@
-                                                            <div class="btn_option"><a onclick="addRow();"><i class="fas fa-plus"></i></a></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                @*<hr>*@
-                                                <div class="row pt-3">
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <div class="table-responsive">
-                                                                <div class="container">
-
-                                                                    <table id="TTaskPerson" class="table table-bordered table-striped">
-                                                                        <thead class="font-weight-bold">
-                                                                            <tr>
-                                                                                <td style="display:none;">colHid_indexCell</td>
-                                                                                <td style="display:none;">colHid_IdPersonEmployee</td>
-                                                                                <td style="display:none;">colHid_PersonEmployeeName</td>
-                                                                                <td>Nombre</td>
-                                                                                <td>Opciones</td>
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody id="BodyPersonEmployee">
-                                                                            @if (Model != null)
-                                                                            {
-                                                                                if (Model.listTaskPerson != null)
-                                                                                {
-                                                                                    string idRow;
-                                                                                    string idCol;
-                                                                                    string nameCol_IdPersonEmploye;
-                                                                                    string nameCol_PersonEmployeeName;
-                                                                                    string nameCol_PersonEmployeeLastName;
-                                                                                    string nameCol_NumIdentification;
-
-                                                                                    for (var i = 0; i < Model.listTaskPerson.Count; i++)
-                                                                                    {
-                                                                                        idRow = "trTaskPerson" + i.ToString();
-                                                                                        idCol = "listTaskPerson_" + i.ToString();
-                                                                                        nameCol_NumIdentification = "listTaskPerson[" + i.ToString() + "].NumIdentification";
-                                                                                        nameCol_IdPersonEmploye = "listTaskPerson[" + i.ToString() + "].IdPersonEmployee";
-                                                                                        nameCol_PersonEmployeeName = "listTaskPerson[" + i.ToString() + "].PersonEmployeeName";
-                                                                                        nameCol_PersonEmployeeLastName = "listTaskPerson[" + i.ToString() + "].PersonEmployeeLastName";
-
-                                                                                        var Name = " ";
-                                                                                        if (@Model.listTaskPerson[i].PersonEmployeeName != "")
-                                                                                        {
-                                                                                            Name = " " + @Model.listTaskPerson[i].PersonEmployeeName;
-                                                                                        }
-
-                                                                                        string strNombre = @Model.listTaskPerson[i].NumIdentification + " - " + @Model.listTaskPerson[i].PersonEmployeeLastName + @Name;
-
-                                                                            <tr id='@idRow'>
-                                                                                <td style="display:none;"><input name="listTaskPerson.Index" type="hidden" value='@i' /></td>
-                                                                                <td style="display:none;"><input id='@idCol' name='@nameCol_NumIdentification' type="hidden" value='@Model.listTaskPerson[i].NumIdentification' /></td>
-                                                                                <td style="display:none;"><input id='@idCol' name='@nameCol_IdPersonEmploye' type="hidden" value='@Model.listTaskPerson[i].IdPersonEmployee' /></td>
-                                                                                <td style="display:none;"><input id='@idCol' name='@nameCol_PersonEmployeeName' type="hidden" value='@Model.listTaskPerson[i].PersonEmployeeName' /></td>
-                                                                                <td style="display:none;"><input id='@idCol' name='@nameCol_PersonEmployeeLastName' type="hidden" value='@Model.listTaskPerson[i].PersonEmployeeLastName' /></td>
-                                                                                <td name="PersonEmploye">@strNombre </td>
-                                                                                <td><div class="btn_option pt-0"><a class="deleteRow" onclick="deleteRow('@i');"><i class="far fa-trash-alt"></i></a></div></td>
-                                                                            </tr>
-
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        </tbody>
-                                                                    </table>
-
-                                                                </div>
+                                                            <div class="control-label">Comentario:</div>
+                                                            <input name="listMTaskComment.Index" type="hidden" value="'@cant'" />
+                                                            <input id="listMTaskComment_'@cant'" name="listMTaskComment['@cant'].IdComment" type="hidden" value='@Model.listMTaskComment[cant].IdComment' />
+                                                            <input id="listMTaskComment_'@cant'" name="listMTaskComment['@cant'].IdTask" type="hidden" value='@Model.listMTaskComment[cant].IdTask' />
+                                                            <input id="listMTaskComment_'@cant'" name="listMTaskComment['@cant'].Date" type="hidden" value='@Model.listMTaskComment[cant].Date' />
+                                                            <input id="listMTaskComment_'@cant'" name="listMTaskComment['@cant'].UserName" type="hidden" value='@Model.listMTaskComment[cant].UserName' />
+                                                            <input id="listMTaskComment_'@cant'" name="listMTaskComment['@cant'].IdUser" type="hidden" value='@Model.listMTaskComment[cant].IdUser' />
+                                                            <input id="listMTaskComment_'@cant'" name="listMTaskComment['@cant'].DateOperation" type="hidden" value='@Model.listMTaskComment[cant].DateOperation' />
+                                                            @*@Html.TextAreaFor(model => model.listMTaskComment[cant].Comment, new { @id = "listMTaskComment_'" + cant + "'", @Name = "listMTaskComment['" + cant + "'].Comment", @class = "form-control", @rows = 3, @cols = 10 })*@
+                                                            <div class="input-group">
+                                                                @Html.TextAreaFor(model => model.listMTaskComment[cant].Comment, new { @id = "listMTaskComment_'" + cant + "'", @Name = "listMTaskComment['" + cant + "'].Comment", rows = "20", cols = "10", style = "resize:none;width:700px;", @class = "form-control input-lg textarea-editor" })
                                                             </div>
+                                                            @Html.ValidationMessageFor(model => model.listMTaskComment[cant].Comment, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -279,219 +337,174 @@
                             </div>
 
                         </div>
+                        //}
+                    }
 
-                        if (Model != null)
+
+
+                    if (Model != null)
+                    {
+                        if (Model.listMTaskComment != null)
                         {
-                            MTaskComment objComent = new MTaskComment();
-                            objComent.IdTask = Model.IdTask;
-                            objComent.Date = DateTime.Now;
-                            objComent.IdUser = ((MUser)Session["Usuario"]).IdUser;
-                            objComent.IdComment = 0;
-                            Model.listMTaskComment.Add(objComent);
-                            int cant = Model.listMTaskComment.Count-1;
-                            //for (var i = 0; i < Model.listMTaskComment.Count; i++)
-                            //{
-                            <div class="row pt-2 pb-3">
+                            if (Model.listMTaskComment.Count > 0)
+                            {
+                                <div class="row pt-2 pb-3">
 
-                                <div class="col-md-12">
+                                    <div class="col-md-12">
 
-                                    <div class="accordion border" id="accordionComment">
-                                        <div class="card collapsed-card">
-                                            <div class="card-header" id="headingComment">
-                                                <h2 class="mb-0">
-                                                    <button class="btn btn-link text-decoration-none" type="button" data-toggle="collapse" data-target="#collapseCardComment" aria-expanded="false" aria-controls="collapseComment">
-                                                        Agregar Comentario
-                                                    </button>
-                                                </h2>
-                                            </div>
-
-                                            <div id="collapseCardComment" class="collapse" aria-labelledby="headingComment" data-parent="#accordionComment">
-
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                <div class="control-label">Comentario:</div>
-                                                                <input name="listMTaskComment.Index" type="hidden" value="'@cant'" />
-                                                                <input id="listMTaskComment_'@cant'" name="listMTaskComment['@cant'].IdComment" type="hidden" value='@Model.listMTaskComment[cant].IdComment' />
-                                                                <input id="listMTaskComment_'@cant'" name="listMTaskComment['@cant'].IdTask" type="hidden" value='@Model.listMTaskComment[cant].IdTask' />
-                                                                <input id="listMTaskComment_'@cant'" name="listMTaskComment['@cant'].Date" type="hidden" value='@Model.listMTaskComment[cant].Date' />
-                                                                <input id="listMTaskComment_'@cant'" name="listMTaskComment['@cant'].UserName" type="hidden" value='@Model.listMTaskComment[cant].UserName' />
-                                                                <input id="listMTaskComment_'@cant'" name="listMTaskComment['@cant'].IdUser" type="hidden" value='@Model.listMTaskComment[cant].IdUser' />
-                                                                <input id="listMTaskComment_'@cant'" name="listMTaskComment['@cant'].DateOperation" type="hidden" value='@Model.listMTaskComment[cant].DateOperation' />
-                                                                @Html.TextAreaFor(model => model.listMTaskComment[cant].Comment, new { @id = "listMTaskComment_'" + cant + "'", @Name = "listMTaskComment['" + cant + "'].Comment", @class = "form-control", @rows = 3, @cols = 10 })
-                                                                @Html.ValidationMessageFor(model => model.listMTaskComment[cant].Comment, "", new { @class = "text-danger" })
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
+                                        <div class="accordion border" id="accordionBitacora">
+                                            <div class="card collapsed-card">
+                                                <div class="card-header" id="headingBitacora">
+                                                    <h2 class="mb-0">
+                                                        <button class="btn btn-link text-decoration-none" type="button" data-toggle="collapse" data-target="#collapseCardBitacora" aria-expanded="false" aria-controls="collapseBitacora">
+                                                            Ver Bitácora
+                                                        </button>
+                                                    </h2>
                                                 </div>
 
-                                            </div>
-                                        </div>
-                                    </div>
+                                                <div id="collapseCardBitacora" class="collapse" aria-labelledby="headingBitacora" data-parent="#accordionBitacora">
 
-                                </div>
+                                                    <div class="card-body">
+                                                        <div class="row d-flex justify-content-center mt-100 mb-100">
+                                                            <div class="col-lg-12">
+                                                                <div class="card">
 
-                            </div>
-                            //}
-                        }
+                                                                    @{
+                                                                        var lisBitacora = Model.listMTaskComment.Where(t => t.IdComment != 0).GroupBy(x => new
+                                                                        {
+                                                                            x.DateOperation,
+                                                                            IdUser = x.IdUser == null ? -1 : x.IdUser
+                                                                        }).Select(g => new { g.Key.IdUser, g.Key.DateOperation });
+                                                                        bool blnComent = false;
+                                                                        int counter = 0;
 
+                                                                    }
 
-
-                        if (Model != null)
-                        {
-                            if (Model.listMTaskComment != null)
-                            {
-                                if (Model.listMTaskComment.Count > 0)
-                                {
-                                    <div class="row pt-2 pb-3">
-
-                                        <div class="col-md-12">
-
-                                            <div class="accordion border" id="accordionBitacora">
-                                                <div class="card collapsed-card">
-                                                    <div class="card-header" id="headingBitacora">
-                                                        <h2 class="mb-0">
-                                                            <button class="btn btn-link text-decoration-none" type="button" data-toggle="collapse" data-target="#collapseCardBitacora" aria-expanded="false" aria-controls="collapseBitacora">
-                                                                Ver Bitácora
-                                                            </button>
-                                                        </h2>
-                                                    </div>
-
-                                                    <div id="collapseCardBitacora" class="collapse" aria-labelledby="headingBitacora" data-parent="#accordionBitacora">
-
-                                                        <div class="card-body">
-                                                            <div class="row d-flex justify-content-center mt-100 mb-100">
-                                                                <div class="col-lg-12">
-                                                                    <div class="card">
-
-                                                                        @{
-                                                                            var lisBitacora = Model.listMTaskComment.Where(t=> t.IdComment!=0).GroupBy(x => new
-                                                                            {
-                                                                                x.DateOperation,
-                                                                                IdUser = x.IdUser == null ? -1 : x.IdUser
-                                                                            }).Select(g => new { g.Key.IdUser, g.Key.DateOperation });
-                                                                            bool blnComent = false;
-                                                                            int counter = 0;
-
-                                                                        }
-                                                                        
-                                                                        <div class="comment-widgets">
-                                                                            @foreach (var item in lisBitacora)
-                                                                            {
-
-                      
-                                                                                blnComent = false;
-
-                                                                                var ListaFiltrada = Model.listMTaskComment.Where(X => X.DateOperation == item.DateOperation && X.IdUser == item.IdUser).ToList();
-
-                                                                                <div class="d-flex flex-row comment-row m-t-0">
-                                                                                    <div class="comment-text w-100">
-                                                                                        <div class="row  m-b-12 d-block">
-                                                                                            <h6 class="font-medium">@ListaFiltrada[0].UserName</h6><span class="text-muted float-right">@item.DateOperation</span>
-                                                                                        </div>
-                                                                                        @*<span class="m-b-15 d-block">*@
+                                                                    <div class="comment-widgets">
+                                                                        @foreach (var item in lisBitacora)
+                                                                        {
 
 
+                                                                            blnComent = false;
 
-                                                                                        @foreach (var item2 in ListaFiltrada)
-                                                                                        {
-                                                                                            <div class="row m-b-12 d-block">
-                                                                                                <ul class="fa-ul">
-                                                                                                    <li>
-                                                                                                        <input name="listMTaskComment.Index" type="hidden" value="'@counter'" />
-                                                                                                        <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].IdComment" type="hidden" value='@Model.listMTaskComment[counter].IdComment' />
-                                                                                                        <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].IdTask" type="hidden" value='@Model.listMTaskComment[counter].IdTask' />
-                                                                                                        <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].Date" type="hidden" value='@Model.listMTaskComment[counter].Date' />
-                                                                                                        <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].UserName" type="hidden" value='@Model.listMTaskComment[counter].UserName' />
-                                                                                                        <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].IdUser" type="hidden" value='@Model.listMTaskComment[counter].IdUser' />
-                                                                                                        <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].DateOperation" type="hidden" value='@Model.listMTaskComment[counter].DateOperation' />
+                                                                            var ListaFiltrada = Model.listMTaskComment.Where(X => X.DateOperation == item.DateOperation && X.IdUser == item.IdUser).ToList();
 
-
-                                                                                                        @if (item2.IdComment != null)
-                                                                                                        {
-                                                                                                            if (blnComent == false)
-                                                                                                            {
-                                                                                                                blnComent = true;
-                                                                                                            }
-                                                                                                            <div id="Mostrado_'@item2.IdComment'"><span class="fa-li"><i class="fas fa-check-square"></i></span>@item2.Comment</div>
-                                                                                                            <div id="Ocultable_'@item2.IdComment'" class="row" style="display:none">
-                                                                                                                <div class="col-md-11">
-                                                                                                                    <div class="form-group">
-                                                                                                                        <div class="control-label">Comentario:</div>
-                                                                                                                        @Html.TextAreaFor(model => item2.Comment, new { @id = "listMTaskComment_'" + counter + "'", @Name = "listMTaskComment['" + counter + "'].Comment", @class = "form-control", @rows = 3, @cols = 10 })
-                                                                                                                        @Html.ValidationMessageFor(model => item2.Comment, "", new { @class = "text-danger" })
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                            counter = counter + 1;
-                                                                                                        }
-                                                                                                        else
-                                                                                                        {
-                                                                                                            <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].Comment" type="hidden" value='@Model.listMTaskComment[counter].Comment' />
-                                                                                                            <span class="fa-li"><i class="fas fa-check-square"></i></span>@item2.Comment
-
-                                                                                                            counter = counter + 1;
-                                                                                                        }
-
-                                                                                                    </li>
-                                                                                                </ul>
-                                                                                                @if (blnComent == true)
-                                                                                                {
-                                                                                                    <div class="comment-footer">
-                                                                                                        <div id="Editar_'@item2.IdComment'" class="btn_option pt-0"><button type="button" class="border-0" data-toggle="tooltip" data-placement="top" title="Editar" onclick="mostrarOcultar(@item2.IdComment, this);"><i class="fas fa-edit"></i></button></div>
-                                                                                                        <div id="Grabar_'@item2.IdComment'" class="btn_option pt-0" style="display: none;"><button type="button" class="border-0" data-toggle="tooltip" data-placement="top" title="Grabar Comentario" onclick="mostrarOcultar(@item2.IdComment, this);"><i class="fas fa-save"></i></button></div>
-                                                                                                        <div id="Cancelar_'@item2.IdComment'" class="btn_option pt-0" style="display: none;"><button type="button" class="border-0" data-toggle="tooltip" data-placement="top" title="Cancelar" onclick="mostrarOcultar(@item2.IdComment, this);"><i class="fas fa-times-circle"></i></button></div>
-                                                                                                    </div>
-                                                                                                }
-                                                                                            </div>
-                                                                                        }
-
-
-                                                                                        @*</span>*@
+                                                                            <div class="d-flex flex-row comment-row m-t-0">
+                                                                                <div class="comment-text w-100">
+                                                                                    <div class="row  m-b-12 d-block">
+                                                                                        <h6 class="font-medium">@ListaFiltrada[0].UserName</h6><span class="text-muted float-right">@item.DateOperation</span>
                                                                                     </div>
-                                                                                </div> <!-- Comment Row -->
-                                                                            }
+                                                                                    @foreach (var item2 in ListaFiltrada)
+                                                                                    {
+                                                                                        <div class="row m-b-12 d-block">
+                                                                                            <ul class="fa-ul details">
+                                                                                                <li>
+                                                                                                    <input name="listMTaskComment.Index" type="hidden" value="'@counter'" />
+                                                                                                    <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].IdComment" type="hidden" value='@Model.listMTaskComment[counter].IdComment' />
+                                                                                                    <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].IdTask" type="hidden" value='@Model.listMTaskComment[counter].IdTask' />
+                                                                                                    <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].Date" type="hidden" value='@Model.listMTaskComment[counter].Date' />
+                                                                                                    <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].UserName" type="hidden" value='@Model.listMTaskComment[counter].UserName' />
+                                                                                                    <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].IdUser" type="hidden" value='@Model.listMTaskComment[counter].IdUser' />
+                                                                                                    <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].DateOperation" type="hidden" value='@Model.listMTaskComment[counter].DateOperation' />
 
-                                                                        </div> <!-- Card -->
-                                                                    </div>
+                                                                                                    <br />
+                                                                                                    @if (item2.IdComment != null)
+                                                                                                    {
+                                                                                                        if (blnComent == false)
+                                                                                                        {
+                                                                                                            blnComent = true;
+                                                                                                        }
+                                                                                                        <div class="control-label"><b>Comentario:</b></div>
+                                                                                                        <div style="text-align:right;border-top:outset; border-block-color:#e3bf09">
+                                                                                                            <div id="Editar_'@item2.IdComment'" class="pt-0"><button type="button" class="border-0 bg-transparent" data-toggle="tooltip" data-placement="top" title="Editar" onclick="mostrarOcultar(@item2.IdComment, this);"><i class="fas fa-edit"></i></button></div>
+                                                                                                            <div id="Cancelar_'@item2.IdComment'" class="pt-0" style="display: none;"><button type="button" class="border-0  bg-transparent" data-toggle="tooltip" data-placement="top" title="Cancelar" onclick="mostrarOcultar(@item2.IdComment, this);"><i class="fas fa-times-circle"></i></button></div>
+                                                                                                        </div>
+
+                                                                                                        <div id="Mostrado_'@item2.IdComment'"><span class="fa-li"></span>@Html.Raw(item2.Comment)</div>
+                                                                                                        <div id="Ocultable_'@item2.IdComment'" class="row" style="display:none">
+                                                                                                            <div class="col-md-12">
+                                                                                                                <div class="form-group">
+                                                                                                                    @*@Html.TextAreaFor(model => item2.Comment, new { @id = "listMTaskComment_'" + counter + "'", @Name = "listMTaskComment['" + counter + "'].Comment", @class = "form-control", @rows = 3, @cols = 10 })*@
+                                                                                                                    <div class="input-group">
+                                                                                                                        @Html.TextAreaFor(model => item2.Comment, new { @id = "listMTaskComment_'" + counter + "'", @Name = "listMTaskComment['" + counter + "'].Comment", rows = "20", cols = "10", style = "resize:none;width:700px;", @class = "form-control input-lg textarea-editor" })
+                                                                                                                    </div>
+                                                                                                                    @Html.ValidationMessageFor(model => item2.Comment, "", new { @class = "text-danger" })
+                                                                                                                </div>
+
+                                                                                                            </div>
+                                                                                                        </div>
+
+                                                                                                        counter = counter + 1;
+                                                                                                    }
+                                                                                                    else
+                                                                                                    {
+                                                                                                        <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].Comment" type="hidden" value='@Model.listMTaskComment[counter].Comment' />
+                                                                                                        <span class="fa-li"><i class="fas fa-check-square"></i></span>@item2.Comment
+
+                                                                                                        counter = counter + 1;
+                                                                                                    }
+
+                                                                                                </li>
+                                                                                            </ul>
+                                                                                            @if (blnComent == true)
+                                                                                            {
+
+                                                                                                <div class="comment-footer">
+
+                                                                                                    @*<div id="Editar_'@item2.IdComment'" class="btn_option pt-0"><button type="button" class="border-0" data-toggle="tooltip" data-placement="top" title="Editar" onclick="mostrarOcultar(@item2.IdComment, this);"><i class="fas fa-edit"></i></button></div>
+                                                                                                        <div id="Grabar_'@item2.IdComment'" class="btn_option pt-0" style="display: none;"><button type="button" class="border-0" data-toggle="tooltip" data-placement="top" title="Grabar Comentario" onclick="mostrarOcultar(@item2.IdComment, this);"><i class="fas fa-save"></i></button></div>
+                                                                                                        <div id="Cancelar_'@item2.IdComment'" class="btn_option pt-0" style="display: none;"><button type="button" class="border-0" data-toggle="tooltip" data-placement="top" title="Cancelar" onclick="mostrarOcultar(@item2.IdComment, this);"><i class="fas fa-times-circle"></i></button></div>*@
+                                                                                                </div>
+                                                                                            }
+                                                                                        </div>
+                                                                                    }
+
+
+                                                                                    @*</span>*@
+                                                                                </div>
+                                                                            </div> <!-- Comment Row -->
+                                                                        }
+
+                                                                    </div> <!-- Card -->
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </div>
 
                                     </div>
 
-                                }
+                                </div>
 
                             }
 
-
                         }
-                        <div class="row">
-                            <div class="col-md-10 text-center">
-                                @*<span class="text-success">@ViewBag.SuccessSave</span>*@
-                                @*<span class="text-danger">@ViewBag.ErrorSave</span>*@
-                            </div>
+
+
+                    }
+                    <div class="row">
+                        <div class="col-md-10 text-center">
+                            @*<span class="text-success">@ViewBag.SuccessSave</span>*@
+                            @*<span class="text-danger">@ViewBag.ErrorSave</span>*@
                         </div>
-                  }
-                </div>
+                    </div>
+                }
             </div>
-        
+        </div>
+
         <div>
             @Html.ActionLink("Regresar a la Lista", "ListTask")
         </div>
 
+
     </div>
 </div>
-@section Scripts {
 
-    <script src="~/Content/assets/js/jquery.min.js"></script>
+
+@section Scripts {
+    <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Content/assets/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
@@ -502,8 +515,10 @@
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-    <script src="~/Content/assets/js/jquery.inputpicker.js?v3"></script>
-    <script src="@Url.Content("~/Content/assets/plugins/select2/js/select2.full.min.js") "></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+    <script src="~/Content/assets/plugins/select2/js/select2.full.min.js"></script>
 
     <script>
         var ListPersons = [];
@@ -518,6 +533,7 @@
                 toastr.error("@ViewBag.ErrorSave");
             }
             //-------------------------------------------
+
 
         ////oculto por defecto
         //element = document.getElementById('ocultable');
@@ -556,72 +572,73 @@
 
         function ObtenerPersonas() {
 
-            ListPersons = $.ajax({
-                        type: "GET",
-                        url: '@Url.Action("GetListPerson", "Person")?idPersonType=2',
-                        data: "{}",
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        global: false,
-                        async: false,
-                        success: function (data) {
-                            var itemArray = {};
-                            itemArray.IdPerson = "";
-                            itemArray.LastName = "";
-                            itemArray.Name = "";
-                            itemArray.NumIdentification = "";
-                            data.push(itemArray);
-                            data.reverse();
-                            return data;
-                        }
-            }).responseJSON;
+             $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetListPerson", "Person")?idPersonType=2',
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                //global: false,
+                //async: false,
+                success: function (data) {
+                    var itemArray = {};
+                    itemArray.IdPerson = "";
+                    itemArray.LastName = "";
+                    itemArray.Name = "";
+                    itemArray.NumIdentification = "";
+                    data.push(itemArray);
+                    data.reverse();
+                    ListPersons = data;
+                    if (ListPersons.length > 0) {
 
-            var persona = $("#filtropersona")[0];
-            var option = $(document.createElement('option'));
-            option.text("Seleccione");
-            option.val("0");
-            $("#filtropersona").append(option);
-            for (i = 0; i < ListPersons.length; i++)
-                {
+                        var persona = $("#filtropersona")[0];
+                        var option = $(document.createElement('option'));
+                        option.text("Seleccione");
+                        option.val("0");
+                        $("#filtropersona").append(option);
 
-                    if (ListPersons[i].IdPerson != "" && ListPersons[i].LastName != "") {
-                        var Name = " ";
-                        if (ListPersons[i].Name != "")
+                        for (i = 0; i < ListPersons.length; i++)
                         {
-                            Name = " "+ListPersons[i].Name;
+
+                            if (ListPersons[i].IdPerson != "" && ListPersons[i].LastName != "") {
+                            var Name = " ";
+                            if (ListPersons[i].Name != "")
+                            {
+                                Name = " "+ListPersons[i].Name;
+                            }
+
+                            persona[i + 1] = new Option(ListPersons[i].NumIdentification + " - " + ListPersons[i].LastName + Name , ListPersons[i].IdPerson, "", "");
+
                         }
 
-                        persona[i + 1] = new Option(ListPersons[i].NumIdentification + " - " + ListPersons[i].LastName + Name , ListPersons[i].IdPerson, "", "");
+                        }
 
+                        persona.value = "@Model.IdPersonEmployee";
+                        filtrarPersona("@Model.IdPersonEmployee");
+
+                        var Colaborador = $("#filtroColaborador")[0];
+                        var option = $(document.createElement('option'));
+                        option.text("Seleccione");
+                        option.val("0");
+                        $("#filtroColaborador").append(option);
+
+                        for (i = 0; i < ListPersons.length; i++) {
+
+                            if (ListPersons[i].IdPerson != "" && ListPersons[i].LastName != "") {
+                                var Name = " ";
+                                if (ListPersons[i].Name != "") {
+                                    Name = " " + ListPersons[i].Name;
+                                }
+
+                                Colaborador[i + 1] = new Option(ListPersons[i].NumIdentification + " - " + ListPersons[i].LastName + Name, ListPersons[i].IdPerson, "", "");
+
+                            }
+
+                        }
                     }
 
                 }
-
-            persona.value = "@Model.IdPersonEmployee";
-            filtrarPersona("@Model.IdPersonEmployee");
-
-            var Colaborador = $("#filtroColaborador")[0];
-            var option = $(document.createElement('option'));
-            option.text("Seleccione");
-            option.val("0");
-            $("#filtroColaborador").append(option);
-
-            for (i = 0; i < ListPersons.length; i++) {
-
-                if (ListPersons[i].IdPerson != "" && ListPersons[i].LastName != "") {
-                    var Name = " ";
-                    if (ListPersons[i].Name != "") {
-                        Name = " " + ListPersons[i].Name;
-                    }
-
-                    Colaborador[i + 1] = new Option(ListPersons[i].NumIdentification + " - " + ListPersons[i].LastName + Name, ListPersons[i].IdPerson, "", "");
-
-                }
-
-            }
-
-
-
+            });
         }
 
         ObtenerPersonas();
@@ -700,7 +717,7 @@
 
             $.ajax({
                 type: "GET",
-                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' +"PRIORITYTASK",
+                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' + "PRIORITYTASK",
                 data: "{}",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -733,7 +750,7 @@
 
             $.ajax({
                 type: "GET",
-                 url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' +"STATETASK",
+                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' + "STATETASK",
                 data: "{}",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -766,7 +783,7 @@
 
             $.ajax({
                 type: "GET",
-                 url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' +"TYPETASK",
+                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' + "TYPETASK",
                 data: "{}",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -818,6 +835,70 @@
                 }
 
             }
+
+            $('.textarea-editor').summernote(
+                {
+                    height: 300,                 // set editor height
+                    minHeight: null,             // set minimum height of editor
+                    maxHeight: null,             // set maximum height of editor
+                    focus: true                  // set focus to editable area after initializing summernote
+                }
+            );
+
+            $("#dttDateIni").change(function () {
+                var startDate = new Date($('#dttDateIni').val());
+                var endDate = new Date($('#dttDateEnd').val());
+
+
+                if (startDate > endDate) {
+                    $('#dttDateEnd').val($('#dttDateIni').val());
+                    toastr.error("La fecha inicial No puede ser Mayor a la fecha Final");
+                    return;
+                }
+            });
+
+            $("#dttDateEnd").change(function () {
+                var startDate = new Date($('#dttDateIni').val());
+                var endDate = new Date($('#dttDateEnd').val());
+
+                if (startDate > endDate) {
+
+                    $('#dttDateIni').val($('#dttDateEnd').val());
+
+                    toastr.error("La fecha inicial No puede ser Mayor a la fecha Final");
+                    return;
+                }
+            });
+
+            $("#HourIni").change(function () {
+                var startDate = new Date($('#dttDateIni').val());
+                var endDate = new Date($('#dttDateEnd').val());
+                var IniHour = new Date($('#HourIni').val());
+                var IniEnd = new Date($('#HourEnd').val());
+
+                if (startDate = endDate && IniHour > IniEnd) {
+
+                    $('#HourIni').val($('#HourEnd').val());
+
+                    toastr.error("La Hora inicial No puede ser Mayor a la Hora Final");
+                    return;
+                }
+            });
+
+            $("#HourEnd").change(function () {
+                var startDate = new Date($('#dttDateIni').val());
+                var endDate = new Date($('#dttDateEnd').val());
+                var IniHour = new Date($('#HourIni').val());
+                var IniEnd = new Date($('#HourEnd').val());
+
+                if (startDate = endDate && IniHour > IniEnd) {
+
+                    $('#HourIni').val($('#HourEnd').val());
+
+                    toastr.error("La Hora inicial No puede ser Mayor a la Hora Final");
+                    return;
+                }
+            });
         });
 
         function deleteRow(id) {
@@ -827,7 +908,7 @@
 
         function addRow() {
 
-            
+
             @{
                 Model.listTaskPerson.Add(new MTaskPerson());
             }
@@ -854,7 +935,7 @@
                 var colPersonEmployeeName = "<td name ='PersonEmploye'>" + strPerson + "</td> ";
                 var colDelete = "<td><div class='btn_option pt-0'><a class='deleteRow' onclick='deleteRow(" + index + ");'><i class='far fa-trash-alt'></i></a></div></td> ";
 
-                
+
                 //Si el numero a insertar ya existe lo elimina para luego volver a insertarlo y asi evitar duplicados
                 var isFound = doSearchForDelete(strPerson, "PersonEmploye");
                 //alert(isFound);

@@ -309,6 +309,7 @@
     <Content Include="Content\assets\css\jquery.qtip.min.css" />
     <Content Include="Content\assets\css\magnific-popup.css" />
     <Content Include="Content\assets\css\style.css" />
+    <Content Include="Content\assets\css\summernote.css" />
     <Content Include="Content\assets\css\swiper.min.css" />
     <Content Include="Content\assets\css\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\assets\css\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -387,6 +388,7 @@
     <Content Include="Content\assets\js\isotope.pkgd.min.js" />
     <Content Include="Content\assets\js\jquery.flot.min.js" />
     <Content Include="Content\assets\js\jquery.inputpicker.js" />
+    <Content Include="Content\assets\js\jquery.js" />
     <Content Include="Content\assets\js\jquery.magnific-popup.min.js" />
     <Content Include="Content\assets\js\jquery.min.js" />
     <Content Include="Content\assets\js\jquery.qtip.min.js" />
@@ -399,6 +401,7 @@
     <Content Include="Content\assets\js\respond.js" />
     <Content Include="Content\assets\js\respond.min.js" />
     <Content Include="Content\assets\js\script.js" />
+    <Content Include="Content\assets\js\summernote.js" />
     <Content Include="Content\assets\js\swiper.min.js" />
     <Content Include="Content\assets\js\wow.min.js" />
     <Content Include="Content\assets\php\ajaxmail.php" />
@@ -658,6 +661,7 @@
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
     <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\assets\webfonts\fa-brands-400.eot" />
     <Content Include="Content\assets\webfonts\fa-brands-400.ttf" />
@@ -720,6 +724,13 @@
     <Content Include="BDContext\MMEnterprises.edmx.diagram">
       <DependentUpon>MMEnterprises.edmx</DependentUpon>
     </Content>
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\summernote.eot" />
+    <Content Include="fonts\summernote.ttf" />
+    <Content Include="fonts\summernote.woff" />
+    <Content Include="fonts\summernote.woff2" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\inputmask\bindings\inputmask.binding.js" />
     <Content Include="Scripts\inputmask\inputmask.js" />
@@ -740,6 +751,7 @@
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\script-custom-editor.js" />
     <Content Include="Scripts\src\index.js" />
     <Content Include="Scripts\src\methods\defaults.js" />
     <Content Include="Scripts\src\methods\destroy.js" />

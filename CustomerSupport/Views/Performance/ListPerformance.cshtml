@@ -20,7 +20,7 @@
                 }
             }*@
 
-        <div class="card card-primary card-outline">
+        <div class="row shadow-sm p-3 m-1 bg-white rounded">
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
@@ -158,7 +158,7 @@
             </div>
         </div>
         <br />
-        <div class="card card-primary card-outline">
+        <div class="row shadow-sm p-3 m-1 bg-white rounded">
             <div class="card-body">
                 <div class="chart">
                     <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
@@ -214,7 +214,7 @@
 
         function FiltrarTicket() {
 
-           /* debugger;*/
+            //debugger;
             var oEmployee = $('#btnRadioXEmployee').is(":checked");
 
             var idDepartament = 0;
@@ -239,6 +239,7 @@
                 intYearIni = $("#YearIni").val();
                 intYearEnd = $("#YearEnd").val();
             }
+
             intYear=0
             var oMonth = $('#btnRadioXMonth').is(":checked");
             if (oMonth == true) {
@@ -267,9 +268,9 @@
             oLista = [];
             oLabel = [];
 
-            var canvas = document.getElementById("barChart");
-            var context = canvas.getContext('2d');
-            context.clearRect(0, 0, canvas.width, canvas.height);
+            //var canvas = document.getElementById("barChart");
+            //var context = canvas.getContext('2d');
+            //context.clearRect(0, 0, canvas.width, canvas.height);
 
             $.ajax({
                 type: "GET",
@@ -278,6 +279,11 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (aData) {
+                    if (myLineChart != undefined) {
+                        alert('hols');
+                        myLineChart.destroy();
+
+                    }
                     //debugger;
                     var miArray = aData[0];
                     var bg = aData[1];
@@ -299,12 +305,18 @@
                         oLista.push(itemArray)
                     });
 
-                    console.log(oLista);
-
                     var areaChartData = {
                         labels: oLabel,
                         datasets: oLista
                     }
+
+                    //var canvas = document.getElementById("barChart");
+                    //var context = canvas.getContext('2d');
+                    //context.barChart.destroy();
+                    //let chartStatus = Chart.getChart("barChart"); // <canvas> id
+                    //if (chartStatus != undefined) {
+                    //    barChart.destroy;
+                    //}
 
                     var barChartCanvas = $('#barChart').get(0).getContext('2d')
                     var barChartData = $.extend(true, {}, areaChartData)
@@ -318,13 +330,14 @@
                         maintainAspectRatio: false,
                         datasetFill: false
                     }
-
-                    new Chart(barChartCanvas, {
+                   
+                    var myLineChart = new Chart(barChartCanvas, {
                         type: 'bar',
                         data: barChartData,
                         options: barChartOptions
                     })
 
+                    
                 }
             });
         }
@@ -342,50 +355,47 @@
                 var strrDepartment = "";
             }
   
-          
-            ListPersons = $.ajax({
-                        type: "GET",
+            $.ajax({
+                type: "GET",
                 url: '@Url.Action("GetListPerson", "Person")?idPersonType=2& PersonStatus=null' + strrDepartment,
-                        data: "{}",
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        global: false,
-                        async: false,
-                        success: function (data) {
-                            var itemArray = {};
-                            itemArray.IdPerson = "";
-                            itemArray.LastName = "";
-                            itemArray.Name = "";
-                            itemArray.NumIdentification = "";
-                            data.push(itemArray);
-                            data.reverse();
-                            return data;
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                //global: false,
+                //async: false,
+                success: function (data) {
+                    var itemArray = {};
+                    itemArray.IdPerson = "";
+                    itemArray.LastName = "";
+                    itemArray.Name = "";
+                    itemArray.NumIdentification = "";
+                    data.push(itemArray);
+                    data.reverse();
+                    ListPersons = data;
+                    if (ListPersons.length>0) {
+                        var persona = $("#filtropersona")[0];
+                        //debugger;
+                        var option = $(document.createElement('option'));
+                        option.text("Todos");
+                        option.val("0");
+                        $("#filtropersona").append(option);
+
+                        for (i = 0; i < ListPersons.length; i++) {
+
+                            if (ListPersons[i].IdPerson != "" && ListPersons[i].LastName != "") {
+                                var Name = " ";
+                                if (ListPersons[i].Name != "") {
+                                    Name = " " + ListPersons[i].Name;
+                                }
+
+                                persona[i + 1] = new Option(ListPersons[i].NumIdentification + " - " + ListPersons[i].LastName + Name, ListPersons[i].IdPerson, "", "");
+
+                            }
+
                         }
-            }).responseJSON;
-
-            var persona = $("#filtropersona")[0];
-            //debugger;
-            var option = $(document.createElement('option'));
-            option.text("Todos");
-            option.val("0");
-            $("#filtropersona").append(option);
-
-            for (i = 0; i < ListPersons.length; i++) {
-
-                if (ListPersons[i].IdPerson != "" && ListPersons[i].LastName != "") {
-                    var Name = " ";
-                    if (ListPersons[i].Name != "") {
-                        Name = " " + ListPersons[i].Name;
                     }
-
-                    persona[i + 1] = new Option(ListPersons[i].NumIdentification + " - " + ListPersons[i].LastName + Name, ListPersons[i].IdPerson, "", "");
-
                 }
-
-            }
-            //console.log(persona);
-            // persona.value = "0";
-            //filtrarPersona("0");
+            });
         }
 
         function cargarDataPerson(IdPerson, lstPersons) {

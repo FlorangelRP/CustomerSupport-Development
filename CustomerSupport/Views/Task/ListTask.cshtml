@@ -26,44 +26,49 @@
         {
             if (perm.Create == true)
             {
-            <div class="row">
-                <div class=" col-2">
+                <div class="row">
+                    <div class=" col-2">
 
-                    <div class="btn_option pt-0" style=" vertical-align: central"><button class="searchRow border-0" data-toggle="tooltip" data-placement="top" title="Ver calendario" onclick="location.href='@Url.Action("ListCalendar", "Calendar")';return false;"><i class="far fa-calendar-alt"></i></button></div>
-                </div>
-                <div class="col-md-10  text-right">
-                    <div class="text-right">
+                        <div class="btn_option pt-0" style=" vertical-align: central"><button class="searchRow border-0" data-toggle="tooltip" data-placement="top" title="Ver calendario" onclick="location.href='@Url.Action("ListCalendar", "Calendar")';return false;"><i class="far fa-calendar-alt"></i></button></div>
+                    </div>
+                    <div class="col-md-10  text-right">
+                        <div class="text-right">
 
-                        <button class="white_btn" onclick="location.href='@Url.Action("AddTask", "Task")';return false;">Agregar</button>
+                            <button class="white_btn" onclick="location.href='@Url.Action("AddTask", "Task")';return false;">Agregar</button>
+                        </div>
                     </div>
                 </div>
-            </div>
                 <br />
             }
         }
-        <div class="card card-primary card-outline">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="control-label">Opciones de Filtro:</div>
+            </div>
+        </div>
+        <div class="row shadow-sm p-3 m-1 bg-white rounded">
             <div class="card-body">
-                <div class="row">
+                <div class="row ">
                     <div class="col-md-2">
                         <div class="form-group">
                             <div class="control-label">Número:</div>
-                            @Html.TextBoxFor(model => model.IdTask, new { @type ="number",@class = "input-numeric inputLostFocus form-control rounded-0", @id = "inIdTask",  @Value = "" })
+                            @Html.TextBoxFor(model => model.IdTask, new { @type = "number", @class = "input-numeric inputLostFocus form-control rounded-0", @id = "inIdTask", @Value = "" })
                             @Html.ValidationMessageFor(model => model.IdTask, "", new { @maxlength = "15", @class = "text-danger" })
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <div class="control-label">Fecha Inicio:</div>
                             @Html.HiddenFor(model => model.DateIni, new { @id = "dttDateIni", @type = "date", @class = "form-control float-right" })
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <div class="control-label">Fecha Fin:</div>
                             @Html.HiddenFor(model => model.DateEnd, new { @id = "dttDateEnd", @type = "date", @class = "form-control float-right" })
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <div class="control-label">Título:</div>
                             @Html.TextBoxFor(model => model.Tittle, new { @id = "strTittle", @class = "form-control" })
@@ -181,7 +186,6 @@
 
 @section Scripts {
 
-    <script src="~/Content/assets/js/jquery.min.js"></script>
     <script src="~/Content/assets/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
@@ -192,12 +196,12 @@
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-    <script src="~/Content/assets/js/jquery.inputpicker.js?v3"></script>
     <script src="@Url.Content("~/Content/assets/plugins/select2/js/select2.full.min.js") "></script>
+
 
     <script>
         var ListPersons = [];
-      /*  debugger;*/
+        //debugger;
 
         var Permis = @Html.Raw(Json.Encode(perm));
         Buscar = Permis.Search;
@@ -205,6 +209,15 @@
 
         function FiltrarTicket()
         {
+            //debugger;
+            var startDate = new Date($('#dttDateIni').val());
+            var endDate = new Date($('#dttDateEnd').val());
+
+            if (startDate > endDate) {
+                toastr.error("La fecha inicial No puede ser Mayor a la fecha Final");
+                return;
+            }
+
             @*var meses = Array.from(@Html.Raw(Json.Encode(Model.LisMonth)));*@
             var intIdTask = $("#inIdTask").val();
             var DateI = $("#dttDateIni").val();
@@ -227,7 +240,7 @@
                 Tittle: strTitt,
                 IdPersonEmployee: intIdResponsable,
                 IdServiceRequest:intIdServiceRequest,
-                IdFatherTask:intIdFatherTask 
+                IdFatherTask:intIdFatherTask
 
             };
 
@@ -329,57 +342,59 @@
 
         function ObtenerPersonas() {
 
-            ListPersons = $.ajax({
-                        type: "GET",
-                        url: '@Url.Action("GetListPerson", "Person")?idPersonType=2',
-                        data: "{}",
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        global: false,
-                        async: false,
-                        success: function (data) {
-                            var itemArray = {};
-                            itemArray.IdPerson = "";
-                            itemArray.LastName = "";
-                            itemArray.Name = "";
-                            itemArray.NumIdentification = "";
-                            data.push(itemArray);
-                            data.reverse();
-                            return data;
+            //debugger;
+             $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetListPerson", "Person")?idPersonType=2',
+                    data: "{}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    //global: false,
+                    //async: false,
+                    success: function (data) {
+                        var itemArray = {};
+                        itemArray.IdPerson = "";
+                        itemArray.LastName = "";
+                        itemArray.Name = "";
+                        itemArray.NumIdentification = "";
+                        data.push(itemArray);
+                        data.reverse();
+                        ListPersons = data;
+                        if (ListPersons.length > 0) {
+
+                            var persona = $("#filtropersona")[0];
+                            //debugger;
+                            var option = $(document.createElement('option'));
+                            option.text("Seleccione");
+                            option.val("0");
+                            $("#filtropersona").append(option);
+
+                            for (i = 0; i < ListPersons.length; i++) {
+
+                                if (ListPersons[i].IdPerson != "" && ListPersons[i].LastName != "") {
+                                    var Name = " ";
+                                    if (ListPersons[i].Name != "") {
+                                        Name = " " + ListPersons[i].Name;
+                                    }
+
+                                    persona[i + 1] = new Option(ListPersons[i].NumIdentification + " - " + ListPersons[i].LastName + Name, ListPersons[i].IdPerson, "", "");
+
+                                }
+
+                            }
+
                         }
-            }).responseJSON;
 
+                    }
+            });
 
-
-        var persona = $("#filtropersona")[0];
-        //debugger;
-        var option = $(document.createElement('option'));
-        option.text("Seleccione");
-        option.val("0");
-        $("#filtropersona").append(option);
-
-        for (i = 0; i < ListPersons.length; i++) {
-
-            if (ListPersons[i].IdPerson != "" && ListPersons[i].LastName != "") {
-                var Name = " ";
-                if (ListPersons[i].Name != "")
-                {
-                    Name = " "+ListPersons[i].Name;
-                }
-
-                persona[i + 1] = new Option(ListPersons[i].NumIdentification + " - " + ListPersons[i].LastName + Name , ListPersons[i].IdPerson, "", "");
-
-            }
-
-            }
-            @*persona.value = "@Model.IdPersonEmployee";
-            filtrarPersona( "@Model.IdPersonEmployee");*@
 
 
         }
         ObtenerPersonas();
         FiltrarTicket();
         function cargarDataPerson(IdPerson, lstPersons) {
+            //debugger;
             if (IdPerson == "" || IdPerson == "0") { return false; }
             //debugger;
             var objPerson = lstPersons.find((m) => m.IdPerson == IdPerson);
@@ -387,12 +402,13 @@
         }
 
         function filtrarPersona(person) {
-            /*debugger;*/
+            //debugger;
             var SelecCodeValue = person.trim();
             cargarDataPerson(SelecCodeValue, ListPersons);
         }
 
         $('#TTask').on("click", "button.editRow", function () {
+            //debugger;
             var data = table.row($(this).parents("tr")).data();
             $("#hidd_IdTask").val(data.IdTask);
             $("#submit").val("editRow");
@@ -400,6 +416,7 @@
         });
 
         $('#TTask').on("click", "button.searchRow", function () {
+            //debugger;
             var data = table.row($(this).parents("tr")).data();
             $("#hidd_IdTask").val(data.IdTask);
             $("#submit").val("searchRow");
@@ -408,21 +425,25 @@
 
         $(document).ready(function () {
 
+            //debugger;
             $('.select2').select2();
 
             $("#lst_Priority").on('change', function () {
+                //debugger;
                 var selectValue = $(this).val();
                 //$("#inpIdIdentificationType").val(selectValue);
                 changeCodeInputHiddenList("lst_Priority", "inIdPriority", selectValue);
             });
 
             $("#lst_IdStatus").on('change', function () {
+                //debugger;
                 var selectValue = $(this).val();
                 //$("#inpIdIdentificationType").val(selectValue);
                 changeCodeInputHiddenList("lst_IdStatus", "inIdStatus", selectValue);
             });
 
             $("#lst_IdTypeTask").on('change', function () {
+                //debugger;
                 var selectValue = $(this).val();
                 //$("#inpIdIdentificationType").val(selectValue);
                 changeCodeInputHiddenList("lst_IdTypeTask", "inIdTypeTask", selectValue);

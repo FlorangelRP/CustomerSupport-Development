@@ -18,6 +18,7 @@ namespace CustomerSupport.Controllers
             }
             else
             {
+
                 MStatistics objStatistics = new MStatistics();
 
                 int intEmployee = PersonController.fnListPerson(null, 2).Count(); //2-empleado

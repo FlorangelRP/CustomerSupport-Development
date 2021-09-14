@@ -320,55 +320,53 @@
 
         function ObtenerPersonas() {
 
-            ListPersons = $.ajax({
-                        type: "GET",
-                        url: '@Url.Action("GetListPersonWithoutUser", "User")', 
-                        data: "{}",
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        global: false,
-                        async: false,
-                        success: function (data) {
-                            var itemArray = {};
-                            itemArray.IdPerson = "";
-                            itemArray.LastName = "";
-                            itemArray.Name = "";
-                            itemArray.NumIdentification = "";
-                            data.push(itemArray);
-                            data.reverse();
-                            return data;
-                        }
-            }).responseJSON;
-
-
-            //if ($("#searchPerson").val() != "") {
-            //    cargarDataPerson($("#searchPerson").val(), ListPersons)
-            //}
-
-            var persona = $("#filtropersona")[0];
-
-            for (i = 0; i < ListPersons.length; i++) {
-
-                if (ListPersons[i].IdPerson != "" && ListPersons[i].LastName != "") {
-                    var Name = " ";
-                    if (ListPersons[i].Name != "")
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetListPersonWithoutUser", "User")',
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                //global: false,
+                //async: false,
+                success: function (data) {
+                    var itemArray = {};
+                    itemArray.IdPerson = "";
+                    itemArray.LastName = "";
+                    itemArray.Name = "";
+                    itemArray.NumIdentification = "";
+                    data.push(itemArray);
+                    data.reverse();
+                    ListPersons = data;
+                    
+                    if (ListPersons.length > 0)
                     {
-                        Name = " "+ListPersons[i].Name;
+                        var persona = $("#filtropersona")[0];
+
+                        for (i = 0; i < ListPersons.length; i++) {
+
+                            if (ListPersons[i].IdPerson != "" && ListPersons[i].LastName != "") {
+                                var Name = " ";
+                                if (ListPersons[i].Name != "")
+                                {
+                                    Name = " "+ListPersons[i].Name;
+                                }
+
+                                persona[i + 1] = new Option(ListPersons[i].NumIdentification + " - " + ListPersons[i].LastName + Name , ListPersons[i].IdPerson, "", "");
+
+                            }
+
+                        }
+                        persona.value = "@Model.IdPerson";
+                        filtrarPersona("@Model.IdPerson");
                     }
 
-                    persona[i + 1] = new Option(ListPersons[i].NumIdentification + " - " + ListPersons[i].LastName + Name , ListPersons[i].IdPerson, "", "");
-
                 }
-
-            }
-            persona.value = "@Model.IdPerson";
-            filtrarPersona( "@Model.IdPerson");
-
+            });
         }
 
         function jsonToDate(date, format) {
             return moment(date).format(format);
-    }
+        }
 
         ObtenerPersonas();
 

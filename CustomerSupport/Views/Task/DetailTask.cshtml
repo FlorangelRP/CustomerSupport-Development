@@ -1,7 +1,7 @@
 ﻿@model CustomerSupport.Models.MTask
 
 @{
-    ViewBag.Title = "DetailTask";
+    ViewBag.Title = "Detalle de Asignaciòn de Actividades";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -309,7 +309,7 @@
                                                                                                             {
                                                                                                                 blnComent = true;
                                                                                                             }
-                                                                                                            <div id="Mostrado_'@item2.IdComment'"><span class="fa-li"><i class="fas fa-check-square"></i></span>@item2.Comment</div>
+                                                                                                            <div id="Mostrado_'@item2.IdComment'"><span class="fa-li"><i class="fas fa-check-square"></i></span>@Html.Raw( item2.Comment)</div>
                                                                                                             <div id="Ocultable_'@item2.IdComment'" class="row" style="display:none">
                                                                                                                 <div class="col-md-11">
                                                                                                                     <div class="form-group">

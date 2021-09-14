@@ -447,6 +447,31 @@ namespace CustomerSupport.Controllers
                     paramIdFatherTask.Value = DBNull.Value;
                 }
 
+                SqlParameter paramPlace = new SqlParameter();
+                paramPlace.ParameterName = "@strPlace";
+
+                if (objTask.Place != null)
+                {
+                    paramPlace.Value = objTask.Place;
+                }
+                else
+                {
+                    paramPlace.Value = "";
+                }
+
+                if (objTask.DateEnd == null)
+                    objTask.DateEnd = DateTime.Today;
+
+                if (objTask.DateIni == null)
+                    objTask.DateIni = DateTime.Today;
+
+
+                if (objTask.HourEnd == null)
+                    objTask.HourEnd = TimeSpan.Zero;
+
+
+                if (objTask.HourIni == null)
+                    objTask.HourIni = TimeSpan.Zero;
 
                 MUser objUser = new MUser();
 
@@ -462,7 +487,7 @@ namespace CustomerSupport.Controllers
                             new SqlParameter("@dttDateEnd", objTask.DateEnd),
                             new SqlParameter("@tHourIni",objTask.HourIni),
                             new SqlParameter("@tHourEnd", objTask.HourEnd),
-                            new SqlParameter("@strPlace", objTask.Place),
+                            paramPlace,
                             paramIdFatherTask,
                             new SqlParameter("@IdResponsable", objTask.IdPersonEmployee),
                             new SqlParameter("@strTittle", objTask.Tittle),

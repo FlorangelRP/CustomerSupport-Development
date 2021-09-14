@@ -115,14 +115,14 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <div class="control-label">Hora Inicio:</div>
-                                @Html.TextBoxFor(model => model.HourIni, new { @class = "form-control", @type = "time" })
+                                @Html.TextBoxFor(model => model.HourIni, new { @class = "form-control", @type = "time", @id = "HourIni" })
                                 @Html.ValidationMessageFor(model => model.HourIni, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <div class="control-label">Hora Fin:</div>
-                                @Html.TextBoxFor(model => model.HourEnd, new { @class = "form-control", @type = "time" })
+                                @Html.TextBoxFor(model => model.HourEnd, new { @class = "form-control", @type = "time", @id = "HourEnd" })
                                 @Html.ValidationMessageFor(model => model.HourEnd, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -314,69 +314,73 @@
             //-------------------------------------------
 
 
+
         function ObtenerPersonas() {
 
             ListPersons = $.ajax({
-                        type: "GET",
-                        url: '@Url.Action("GetListPerson", "Person")?idPersonType=2',
-                        data: "{}",
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        global: false,
-                        async: false,
-                        success: function (data) {
-                            var itemArray = {};
-                            itemArray.IdPerson = "";
-                            itemArray.LastName = "";
-                            itemArray.Name = "";
-                            itemArray.NumIdentification = "";
-                            data.push(itemArray);
-                            data.reverse();
-                            return data;
+                type: "GET",
+                url: '@Url.Action("GetListPerson", "Person")?idPersonType=2',
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                //global: false,
+                //async: false,
+                success: function (data) {
+                    var itemArray = {};
+                    itemArray.IdPerson = "";
+                    itemArray.LastName = "";
+                    itemArray.Name = "";
+                    itemArray.NumIdentification = "";
+                    data.push(itemArray);
+                    data.reverse();
+                    ListPersons = data;
+
+                    if (ListPersons.length > 0) {
+                        var persona = $("#filtropersona")[0];
+                        var option = $(document.createElement('option'));
+                        option.text("Seleccione");
+                        option.val("0");
+                        $("#filtropersona").append(option);
+
+                        for (i = 0; i < ListPersons.length; i++) {
+
+                            if (ListPersons[i].IdPerson != "" && ListPersons[i].LastName != "") {
+                                var Name = " ";
+                                if (ListPersons[i].Name != "")
+                                {
+                                    Name = " "+ListPersons[i].Name;
+                                }
+
+                                persona[i + 1] = new Option(ListPersons[i].NumIdentification + " - " + ListPersons[i].LastName + Name , ListPersons[i].IdPerson, "", "");
+
+                            }
+
                         }
-            }).responseJSON;
+                          persona.value = "@Model.IdPersonEmployee";
+                        filtrarPersona("@Model.IdPersonEmployee");
 
-        var persona = $("#filtropersona")[0];
-        var option = $(document.createElement('option'));
-        option.text("Seleccione");
-        option.val("0");
-        $("#filtropersona").append(option);
+                        var Colaborador = $("#filtroColaborador")[0];
+                        var option = $(document.createElement('option'));
+                        option.text("Seleccione");
+                        option.val("0");
+                        $("#filtroColaborador").append(option);
 
-        for (i = 0; i < ListPersons.length; i++) {
+                        for (i = 0; i < ListPersons.length; i++) {
 
-            if (ListPersons[i].IdPerson != "" && ListPersons[i].LastName != "") {
-                var Name = " ";
-                if (ListPersons[i].Name != "")
-                {
-                    Name = " "+ListPersons[i].Name;
-                }
+                            if (ListPersons[i].IdPerson != "" && ListPersons[i].LastName != "") {
+                                var Name = " ";
+                                if (ListPersons[i].Name != "") {
+                                    Name = " " + ListPersons[i].Name;
+                                }
 
-                persona[i + 1] = new Option(ListPersons[i].NumIdentification + " - " + ListPersons[i].LastName + Name , ListPersons[i].IdPerson, "", "");
+                                Colaborador[i + 1] = new Option(ListPersons[i].NumIdentification + " - " + ListPersons[i].LastName + Name, ListPersons[i].IdPerson, "", "");
 
-            }
+                            }
 
-            }
-            var Colaborador = $("#filtroColaborador")[0];
-            var option = $(document.createElement('option'));
-            option.text("Seleccione");
-            option.val("0");
-            $("#filtroColaborador").append(option);
-
-            for (i = 0; i < ListPersons.length; i++) {
-
-                if (ListPersons[i].IdPerson != "" && ListPersons[i].LastName != "") {
-                    var Name = " ";
-                    if (ListPersons[i].Name != "") {
-                        Name = " " + ListPersons[i].Name;
+                            }
                     }
-
-                    Colaborador[i + 1] = new Option(ListPersons[i].NumIdentification + " - " + ListPersons[i].LastName + Name, ListPersons[i].IdPerson, "", "");
-
                 }
-
-            }
-
-
+            });
         }
 
         ObtenerPersonas();
@@ -573,6 +577,63 @@
                 }
 
             }
+
+            $("#dttDateIni").change(function () {
+                var startDate = new Date($('#dttDateIni').val());
+                var endDate = new Date($('#dttDateEnd').val());
+
+
+                if (startDate > endDate) {
+                    $('#dttDateEnd').val($('#dttDateIni').val());
+                    toastr.error("La fecha inicial No puede ser Mayor a la fecha Final");
+                    return;
+                }
+            });
+
+            $("#dttDateEnd").change(function () {
+                debugger;
+                var startDate = new Date($('#dttDateIni').val());
+                var endDate = new Date($('#dttDateEnd').val());
+
+                if (startDate > endDate) {
+
+                    $('#dttDateIni').val($('#dttDateEnd').val());
+
+                    toastr.error("La fecha inicial No puede ser Mayor a la fecha Final");
+                    return;
+                }
+            });
+
+            $("#HourIni").change(function () {
+                var startDate = new Date($('#dttDateIni').val());
+                var endDate = new Date($('#dttDateEnd').val());
+                var IniHour = $('#HourIni').val();
+                var IniEnd = $('#HourEnd').val();
+
+                if (startDate = endDate && IniHour > IniEnd) {
+
+                    $('#HourIni').val($('#HourEnd').val());
+
+                    toastr.error("La Hora inicial No puede ser Mayor a la Hora Final");
+                    return;
+                }
+            });
+
+            $("#HourEnd").change(function () {
+
+                var startDate = new Date($('#dttDateIni').val());
+                var endDate = new Date($('#dttDateEnd').val());
+                var IniHour = $('#HourIni').val();
+                var IniEnd = $('#HourEnd').val();
+
+                if (startDate = endDate && IniHour > IniEnd) {
+
+                    $('#HourIni').val($('#HourEnd').val());
+
+                    toastr.error("La Hora inicial No puede ser Mayor a la Hora Final");
+                    return;
+                }
+            });
         });
 
         function deleteRow(id) {
@@ -604,7 +665,7 @@
                 var colHid_IdPersonNumIdentification = "<td style='display:none'><input id='listTaskPerson_" + index + "' name = 'listTaskPerson[" + index + "].NumIdentification' type='hidden' value='" + strIdPerson + "' /></td> ";
                 var colHid_PersonEmployeeName = "<td style='display:none'><input id='listTaskPerson_" + index + "' name = 'listTaskPerson[" + index + "].PersonEmployeeName' type = 'hidden' value = '" + strPerson + "' /></td> ";
 
-                debugger;
+                /*debugger;*/
                 var colPersonEmployeeName = "<td name ='PersonEmploye'>" + strPerson + "</td> ";
                 var colDelete = "<td><div class='btn_option pt-0'><a class='deleteRow' onclick='deleteRow(" + index + ");'><i class='far fa-trash-alt'></i></a></div></td> ";
 
@@ -632,7 +693,7 @@
             const tableReg = document.getElementById('TTaskPerson');
             let position = 0;
             let found = false;
-            debugger;
+            //debugger;
             // Recorremos todas las filas con contenido de la tabla
             for (let i = 1; i < tableReg.rows.length; i++) {
 

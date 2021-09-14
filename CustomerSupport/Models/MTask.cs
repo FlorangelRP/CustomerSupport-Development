@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace CustomerSupport.Models
 {
@@ -91,6 +92,9 @@ namespace CustomerSupport.Models
     {
         public int? IdComment { get; set; }
         public int? IdTask { get; set; }
+
+        [AllowHtml]
+        [Display(Name = "Comment")]
         public string Comment { get; set; }
         public int? IdUser { get; set; }
         public DateTime? Date { get; set; }
