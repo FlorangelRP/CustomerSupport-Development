@@ -69,13 +69,13 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <div class="control-label">Departamento:</div>
-                            <select id="lst_IdDepartemntEmplo" onchange="ObtenerPersonas()" class="form-control select2" style="width: 100%;"></select>
+                            <select class="form-control" id="lst_IdDepartemntEmplo" onchange="ObtenerPersonas()" style="width: 100%;"></select>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <div class="control-label">Responsable:</div>
-                            <select class="form-control select2 " onchange="filtrarPersona(this.value)" id="filtropersona" data-placeholder="Seleccione" name="IdPerson"></select>
+                            <select class="select2" id="filtropersona" onchange="filtrarPersona(this.value)" data-placeholder="Seleccione" name="IdPerson"></select>
                         </div>
                     </div>
                 </div>
@@ -117,7 +117,7 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <div class="control-label">Departamento:</div>
-                            <select id="lst_IdDepartemnt" class="form-control select2" style="width: 100%;"></select>
+                            <select id="lst_IdDepartemnt" class="form-control" style="width: 100%;"></select>
                         </div>
                     </div>
 
@@ -144,13 +144,15 @@
                     <div class="col-md-2">
                         <div class="form-group">
                             <div class="control-label">Fecha Inicio:</div>
-                            <input id="dttDateIni" type="date">
+                            @*<input id="dttDateIni" type="date" class="form-control">*@
+                            @Html.TextBox("dttDateIni", DateTime.Now.Date, "{0:d}", new { @class = "form-control", @type = "date", @id = "dttDateIni" })
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <div class="control-label">Fecha Fin:</div>
-                            <input id="dttDateEnd" type="date">
+                            @*<input id="dttDateEnd" type="date" class="form-control">*@
+                            @Html.TextBox("dttDateEnd", DateTime.Now.Date, "{0:d}", new { @class = "form-control", @type = "date", @id = "dttDateEnd" })
                         </div>
                     </div>
                 </div>
@@ -204,13 +206,9 @@
     <script src="~/Content/assets/js/pdfmake/vfs_fonts.js"></script>
     <script src="~/Scripts/Chart.min.js"></script>
     <script src="@Url.Content("~/Content/assets/plugins/select2/js/select2.full.min.js") "></script>
-    <script>
-       /* debugger;*/
-        var ListPersons = [];
-         @*var Permis = @Html.Raw(Json.Encode(perm));
-        Buscar = Permis.Search;
-        Editar = Permis.Edit;*@
+    <script type="text/javascript">
 
+        var ListPersons = [];
 
         function FiltrarTicket() {
 
@@ -415,38 +413,38 @@
         FiltrarTicket();
         $(document).ready(function () {
 
-            $('.select2').select2();
+            $('.select2').select2({ width: '100%' });
 
-              $.ajax({
-                type: "GET",
-                  url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' +"DEPARTMENT",
-                data: "{}",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
+            $.ajax({
+            type: "GET",
+                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' +"DEPARTMENT",
+            data: "{}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (msg) {
 
+                var option = $(document.createElement('option'));
+                option.text("Todos");
+                option.val("0");
+                $("#lst_IdDepartemntEmplo").append(option);
+
+                $(msg).each(function () {
                     var option = $(document.createElement('option'));
-                    option.text("Todos");
-                    option.val("0");
+
+                    option.text(this.DetailDesc);
+                    option.val(this.IdCatalogDetail); //Identity
+
                     $("#lst_IdDepartemntEmplo").append(option);
+                });
 
-                    $(msg).each(function () {
-                        var option = $(document.createElement('option'));
+                document.getElementById('lst_IdDepartemntEmplo').value = "0";
 
-                        option.text(this.DetailDesc);
-                        option.val(this.IdCatalogDetail); //Identity
+            },
+            error: function (msg) {
+                $("#error > span").text("Error al llenar lista de Departamento Empleado");
+            }
 
-                        $("#lst_IdDepartemntEmplo").append(option);
-                    });
-
-                    document.getElementById('lst_IdDepartemntEmplo').value = "0";
-
-                },
-                error: function (msg) {
-                    $("#error > span").text("Error al llenar lista de Departamento Empleado");
-                }
-
-              });
+            });
 
             $.ajax({
                 type: "GET",

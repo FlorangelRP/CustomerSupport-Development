@@ -151,7 +151,7 @@
 
 
 @section Scripts {
-    <script src="~/Content/assets/js/jquery.min.js"></script>
+
     <script src="~/Content/assets/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
@@ -163,7 +163,8 @@
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
-    <script>
+    <script type="text/javascript">
+
         $(document).ready(function () {
 
             var oTable;
@@ -185,8 +186,7 @@
                     var IdUser = $("#IdUser").val();
 
                     //---Lista de Roles
-                    var strRoles = $("#listIdRoles").val();
-			        alert(strRoles);
+                    var strRoles = $("#listIdRoles").val();			
 			        //-----------------
 
                     var existe = 0;

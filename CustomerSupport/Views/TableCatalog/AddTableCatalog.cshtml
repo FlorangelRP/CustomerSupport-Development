@@ -185,7 +185,6 @@
 </div>
 @section Scripts {
 
-    <script src="~/Content/assets/js/jquery.min.js"></script>
     <script src="~/Content/assets/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
@@ -197,172 +196,172 @@
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
-<script type="text/javascript">
-
-        function deleteRow(id){
-            var controlToBeRemoved = "#trDetail" + id;
-            $(controlToBeRemoved).remove();
-        }
-
-        function addRow(){
-
-            @{
-                Model.TableDetails.Add(new MCatalogDetail());
+    <script type="text/javascript">
+        
+            function deleteRow(id){
+                var controlToBeRemoved = "#trDetail" + id;
+                $(controlToBeRemoved).remove();
             }
 
-            //obtenemos los valores a insertar
-            var strIdCatalog = $("#IdCatalog").val();
-            var strIdCatalogDetail = "0";
-            var strStatus = "true";
-            var strIdTableDetail = $("#inpIdTableDetail").val();
-            var strDescription = $("#txtDetailDesc").val();            
-                      
-            if (strDescription.trim() != "") {
+            function addRow(){
 
-                //Si la descripcion ya existe no debe insertar
-                var isFound = doSearchDuplicate('TDetail', strDescription, 'Description');
-                //alert(isFound);
-                if (isFound) {
-                    toastr.warning("Descripcion ya existe, por favor verifique.");
-                    return false;
+                @{
+                    Model.TableDetails.Add(new MCatalogDetail());
                 }
 
-                //Si el codigo es String y ya existe no debe insertar //&& !esEntero(strIdTableDetail)
-                if (strIdTableDetail != "") {
-                    isFound = doSearchDuplicate('TDetail', strIdTableDetail, 'IdTableDetail');
+                //obtenemos los valores a insertar
+                var strIdCatalog = $("#IdCatalog").val();
+                var strIdCatalogDetail = "0";
+                var strStatus = "true";
+                var strIdTableDetail = $("#inpIdTableDetail").val();
+                var strDescription = $("#txtDetailDesc").val();            
+                      
+                if (strDescription.trim() != "") {
+
+                    //Si la descripcion ya existe no debe insertar
+                    var isFound = doSearchDuplicate('TDetail', strDescription, 'Description');
                     //alert(isFound);
                     if (isFound) {
-                        toastr.warning("Codigo ya existe, por favor verifique.");
+                        toastr.warning("Descripcion ya existe, por favor verifique.");
                         return false;
                     }
-                }
+
+                    //Si el codigo es String y ya existe no debe insertar //&& !esEntero(strIdTableDetail)
+                    if (strIdTableDetail != "") {
+                        isFound = doSearchDuplicate('TDetail', strIdTableDetail, 'IdTableDetail');
+                        //alert(isFound);
+                        if (isFound) {
+                            toastr.warning("Codigo ya existe, por favor verifique.");
+                            return false;
+                        }
+                    }
 
 
-                //-------------------------
-                var index = document.getElementById('TDetail').rows.length;
+                    //-------------------------
+                    var index = document.getElementById('TDetail').rows.length;
 
-                var colHid_indexCell = "<td style='display:none'><input name='TableDetails.Index' type = 'hidden' value = '" + index + "' /></td > ";
-                var colHid_IdCatalog = "<td style='display:none'><input id='TableDetails_" + index + "' name = 'TableDetails[" + index + "].IdCatalog' type = 'hidden' value = '" + strIdCatalog + "' /></td> ";
-                var colHid_IdCatalogDetail = "<td style='display:none'><input id='TableDetails_" + index + "' name = 'TableDetails[" + index + "].IdCatalogDetail' type='hidden' value='" + strIdCatalogDetail + "' /></td> ";
-                var colHid_Status = "<td style='display:none'><input id='TableDetails_" + index + "' name = 'TableDetails[" + index + "].Status' type = 'hidden' value = '" + strStatus + "' /></td> ";
+                    var colHid_indexCell = "<td style='display:none'><input name='TableDetails.Index' type = 'hidden' value = '" + index + "' /></td > ";
+                    var colHid_IdCatalog = "<td style='display:none'><input id='TableDetails_" + index + "' name = 'TableDetails[" + index + "].IdCatalog' type = 'hidden' value = '" + strIdCatalog + "' /></td> ";
+                    var colHid_IdCatalogDetail = "<td style='display:none'><input id='TableDetails_" + index + "' name = 'TableDetails[" + index + "].IdCatalogDetail' type='hidden' value='" + strIdCatalogDetail + "' /></td> ";
+                    var colHid_Status = "<td style='display:none'><input id='TableDetails_" + index + "' name = 'TableDetails[" + index + "].Status' type = 'hidden' value = '" + strStatus + "' /></td> ";
 
-                var colIdTableDetail = "<td><input id='TableDetails_" + index + "' name = 'TableDetails[" + index + "].IdTableDetail' class = 'cell-Input form-control text-uppercase inputLostFocus' value = '" + strIdTableDetail + "' /></td> ";
-                var colDescription = "<td><input id='TableDetails_" + index + "' name = 'TableDetails[" + index + "].Description' class = 'cell-Input form-control inputLostFocus' value = '" + strDescription + "' /></td> ";
+                    var colIdTableDetail = "<td><input id='TableDetails_" + index + "' name = 'TableDetails[" + index + "].IdTableDetail' class = 'cell-Input form-control text-uppercase inputLostFocus' value = '" + strIdTableDetail + "' /></td> ";
+                    var colDescription = "<td><input id='TableDetails_" + index + "' name = 'TableDetails[" + index + "].Description' class = 'cell-Input form-control inputLostFocus' value = '" + strDescription + "' /></td> ";
                 
-                var colDelete = "<td><div class='btn_option pt-0'><a class='deleteRow' onclick='deleteRow(" + index + ");'><i class='far fa-trash-alt'></i></a></div></td> ";
+                    var colDelete = "<td><div class='btn_option pt-0'><a class='deleteRow' onclick='deleteRow(" + index + ");'><i class='far fa-trash-alt'></i></a></div></td> ";
 
-                //insertamos los valores en la tabla
-                var newRow = "<tr id='trDetail" + index + "'>" +
-                    colHid_indexCell + colHid_IdCatalog + colHid_IdCatalogDetail + colHid_Status +
-                    colIdTableDetail + colDescription +
-                    colDelete + "</tr>";
-                $("#TDetail").append(newRow);
-                //--------------------------
+                    //insertamos los valores en la tabla
+                    var newRow = "<tr id='trDetail" + index + "'>" +
+                        colHid_indexCell + colHid_IdCatalog + colHid_IdCatalogDetail + colHid_Status +
+                        colIdTableDetail + colDescription +
+                        colDelete + "</tr>";
+                    $("#TDetail").append(newRow);
+                    //--------------------------
 
-                //limpiamos los valores ya agregados
-                document.getElementById('txtDetailDesc').value = "";
-                document.getElementById('inpIdTableDetail').value = "";
-            }
-
-        }
-
-        function esEntero(x){
-            var y = parseInt(x);
-            if (isNaN(y))
-                return false;
-            return x == y && x.toString() == y.toString();
-        }
-
-        function doSearchDuplicate(tableName, searchText, colName) {
-
-            const tableReg = document.getElementById('' + tableName + '');
-            let found = false;
-
-            // Recorremos todas las filas con contenido de la tabla
-            for (let i = 1; i < tableReg.rows.length; i++) {
-
-                const cellsOfRow = tableReg.rows[i];
-                const cell = cellsOfRow.querySelector("input[name*=" + '' + colName + '' + "]");
-                const compareWith = cell.value.toLowerCase();
-
-                // Buscamos el texto en el contenido de la celda y capturamos la posicion de la fila
-                // if (compareWith.indexOf(searchText.toLowerCase()) > -1) {
-                if (compareWith.trim() === searchText.toLowerCase().trim()) {
-                    found = true;
-                    break;
+                    //limpiamos los valores ya agregados
+                    document.getElementById('txtDetailDesc').value = "";
+                    document.getElementById('inpIdTableDetail').value = "";
                 }
 
             }
 
-            return found;
-        }
+            function esEntero(x){
+                var y = parseInt(x);
+                if (isNaN(y))
+                    return false;
+                return x == y && x.toString() == y.toString();
+            }
 
-        function doSearchCountDuplicate(tableName, searchText, colName) {
+            function doSearchDuplicate(tableName, searchText, colName) {
 
-            const tableReg = document.getElementById('' + tableName + '');
-            let intCount = 0;
+                const tableReg = document.getElementById('' + tableName + '');
+                let found = false;
 
-            // Recorremos todas las filas con contenido de la tabla
-            for (let i = 1; i < tableReg.rows.length; i++) {
+                // Recorremos todas las filas con contenido de la tabla
+                for (let i = 1; i < tableReg.rows.length; i++) {
 
-                const cellsOfRow = tableReg.rows[i];
-                const cell = cellsOfRow.querySelector("input[name*=" + '' + colName + '' + "]");
-                const compareWith = cell.value.toLowerCase();
+                    const cellsOfRow = tableReg.rows[i];
+                    const cell = cellsOfRow.querySelector("input[name*=" + '' + colName + '' + "]");
+                    const compareWith = cell.value.toLowerCase();
+
+                    // Buscamos el texto en el contenido de la celda y capturamos la posicion de la fila
+                    // if (compareWith.indexOf(searchText.toLowerCase()) > -1) {
+                    if (compareWith.trim() === searchText.toLowerCase().trim()) {
+                        found = true;
+                        break;
+                    }
+
+                }
+
+                return found;
+            }
+
+            function doSearchCountDuplicate(tableName, searchText, colName) {
+
+                const tableReg = document.getElementById('' + tableName + '');
+                let intCount = 0;
+
+                // Recorremos todas las filas con contenido de la tabla
+                for (let i = 1; i < tableReg.rows.length; i++) {
+
+                    const cellsOfRow = tableReg.rows[i];
+                    const cell = cellsOfRow.querySelector("input[name*=" + '' + colName + '' + "]");
+                    const compareWith = cell.value.toLowerCase();
  
-                // Buscamos el texto en el contenido de la celda y capturamos la posicion de la fila
-                if (compareWith.trim() === searchText.toLowerCase().trim()) {
-                    ++intCount;
+                    // Buscamos el texto en el contenido de la celda y capturamos la posicion de la fila
+                    if (compareWith.trim() === searchText.toLowerCase().trim()) {
+                        ++intCount;
+                    }
+
                 }
 
+                return intCount;
             }
 
-            return intCount;
-        }
 
+            $(document).ready(function(){
 
-        $(document).ready(function(){
+                //Mensaje de confirmacion--------------------
+                if ("@ViewBag.SuccessSave"!=""){
+                    toastr.success("@ViewBag.SuccessSave");
+                }
+                if ("@ViewBag.ErrorSave" != ""){
+                    toastr.error("@ViewBag.ErrorSave");
+                }
+                //-------------------------------------------
 
-            //Mensaje de confirmacion--------------------
-            if ("@ViewBag.SuccessSave"!=""){
-                toastr.success("@ViewBag.SuccessSave");
-            }
-            if ("@ViewBag.ErrorSave" != ""){
-                toastr.error("@ViewBag.ErrorSave");
-            }
-            //-------------------------------------------
+                $("#TDetail").on('blur', '.inputLostFocus', function(){
+                    var strValue = $(this).val();
+                    var strName = $(this).attr('name');
 
-            $("#TDetail").on('blur', '.inputLostFocus', function(){
-                var strValue = $(this).val();
-                var strName = $(this).attr('name');
-
-                var posCaracter = strName.indexOf('.');
-                var BeginPos = posCaracter + 1;
-                var EndPos = strName.length;
-                var strCol = strName.substring(BeginPos, EndPos);
+                    var posCaracter = strName.indexOf('.');
+                    var BeginPos = posCaracter + 1;
+                    var EndPos = strName.length;
+                    var strCol = strName.substring(BeginPos, EndPos);
                
-                if (strValue.trim() === "") {
-                    if (strCol.trim() === "Description") {
-                        toastr.warning("Por favor introduzca una descripcion.");
-                        $(this).focus();
-                        return false;
+                    if (strValue.trim() === "") {
+                        if (strCol.trim() === "Description") {
+                            toastr.warning("Por favor introduzca una descripcion.");
+                            $(this).focus();
+                            return false;
+                        }
                     }
-                }
-                else {
-                    //Si la descripcion ya existe no debe insertar
-                    var countDupli = doSearchCountDuplicate('TDetail', strValue, strCol);
+                    else {
+                        //Si la descripcion ya existe no debe insertar
+                        var countDupli = doSearchCountDuplicate('TDetail', strValue, strCol);
 
-                    if (countDupli > 1) {
-                        toastr.warning("Valor ya existe, por favor verifique.");
-                        $(this).focus();
-                        return false;
+                        if (countDupli > 1) {
+                            toastr.warning("Valor ya existe, por favor verifique.");
+                            $(this).focus();
+                            return false;
+                        }
                     }
-                }
+                });
+
+                //$(".inputLostFocus").on('blur',function(){
+                //});
+
             });
 
-            //$(".inputLostFocus").on('blur',function(){
-            //});
-
-        });
-
-</script>
+    </script>
 }

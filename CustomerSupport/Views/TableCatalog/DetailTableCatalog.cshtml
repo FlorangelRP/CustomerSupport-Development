@@ -127,8 +127,7 @@
     </div>
 </div>
 @section Scripts {
-
-    <script src="~/Content/assets/js/jquery.min.js"></script>
+        
     <script src="~/Content/assets/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
@@ -140,20 +139,20 @@
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
-        $(document).ready(function () {
+            $(document).ready(function () {
 
-            //Mensaje de confirmacion--------------------
-            if ("@ViewBag.SuccessSave"!=""){
-                toastr.success("@ViewBag.SuccessSave");
-            }
-            if ("@ViewBag.ErrorSave" != ""){
-                toastr.error("@ViewBag.ErrorSave");
-            }
-            //-------------------------------------------
+                //Mensaje de confirmacion--------------------
+                if ("@ViewBag.SuccessSave"!=""){
+                    toastr.success("@ViewBag.SuccessSave");
+                }
+                if ("@ViewBag.ErrorSave" != ""){
+                    toastr.error("@ViewBag.ErrorSave");
+                }
+                //-------------------------------------------
 
-        });
+            });
 
-</script>
+    </script>
 }

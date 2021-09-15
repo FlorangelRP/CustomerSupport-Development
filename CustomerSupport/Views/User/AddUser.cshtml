@@ -68,7 +68,7 @@
                         <div class="col-md-5">
                             <div class="form-group">
                                 <div class="control-label">Clave:</div>
-                                @Html.PasswordFor(model => model.Password, new { @maxlength = "15", @class = "form-control" })
+                                @Html.PasswordFor(model => model.Password, new { @maxlength = "15", @class = "form-control", @autocomplete = "off" })
                                 @Html.ValidationMessageFor(model => model.Password, "", new { @maxlength = "15", @class = "text-danger" })
                             </div>
                         </div>
