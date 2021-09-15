@@ -504,7 +504,7 @@
 
 
 @section Scripts {
-    <script src="~/Scripts/bootstrap.min.js"></script>
+    @*<script src="~/Scripts/bootstrap.min.js"></script>*@
     <script src="~/Content/assets/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
@@ -516,9 +516,8 @@
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
     <script src="~/Content/assets/plugins/select2/js/select2.full.min.js"></script>
+
 
     <script>
         var ListPersons = [];
@@ -836,14 +835,30 @@
 
             }
 
-            $('.textarea-editor').summernote(
-                {
-                    height: 300,                 // set editor height
-                    minHeight: null,             // set minimum height of editor
-                    maxHeight: null,             // set maximum height of editor
-                    focus: true                  // set focus to editable area after initializing summernote
-                }
-            );
+            //$('.textarea-editor').summernote(
+            //    {
+            //        height: 300,                 // set editor height
+            //        minHeight: null,             // set minimum height of editor
+            //        maxHeight: null,             // set maximum height of editor
+            //        focus: true                  // set focus to editable area after initializing summernote
+            //    }
+            //);
+
+            tinymce.init({
+                selector: '.textarea-editor',
+                height: 500,
+                menubar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount'
+                ],
+                toolbar: 'undo redo | formatselect | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat | help',
+                content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+            });
 
             $("#dttDateIni").change(function () {
                 var startDate = new Date($('#dttDateIni').val());

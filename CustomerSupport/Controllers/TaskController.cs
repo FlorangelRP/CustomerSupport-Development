@@ -541,6 +541,7 @@ namespace CustomerSupport.Controllers
                                 int IdComment = (int)item.IdComment;
                                 SqlParameter paramOutIdComment = new SqlParameter("@IdComment", System.Data.SqlDbType.Int);
                                 paramOutIdComment.Direction = System.Data.ParameterDirection.Output;
+                                paramOutIdComment.Value = IdComment;
 
                                 SqlResult = db.Database.ExecuteSqlCommand("GNTranCommentTask @TransactionType, @IdComment OUT, @IdTask " +
                                                                             ", @strComment,@IdUser, @dttDate ",
@@ -553,7 +554,8 @@ namespace CustomerSupport.Controllers
                                         new SqlParameter("@dttDate", item.Date),
                                     }
                                 );
-                                IdComment = Int32.Parse(paramOutIdComment.Value.ToString());
+                                    IdComment = Int32.Parse(paramOutIdComment.Value.ToString());
+                                 
                                 }
                             }
                         }

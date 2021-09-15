@@ -34,7 +34,9 @@ namespace CustomerSupport
                     "~/Content/assets/js/swiper.min.js",
                     "~/Content/assets/js/wow.min.js",
                     "~/Content/assets/js/script.js",
-                    "~/Content/assets/js/respond.js"));
+                    "~/Content/assets/js/respond.js",
+                    "~/Scripts/tinymce/tinymce.min.js",
+                    "~/Scripts/tinymce/jquery.tinymce.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                     "~/Content/assets/css/bootstrap.min.css",
@@ -46,9 +48,7 @@ namespace CustomerSupport
                     "~/Content/assets/css/dataTables/demo_table.css",
                     "~/Content/assets/css/dataTables/demo_table_jui.css",
                     "~/Content/assets/css/style.css",
-                    "~/Content/assets/plugins/select2/css/select2.css"//,select2.min.css
-                    //"~/Content/assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css"
-                    ));
+                    "~/Content/assets/plugins/select2/css/select2.css"));
         }
     }
 }
