@@ -2,22 +2,46 @@
 @model CustomerSupport.Models.MTask
 
 @{
-    ViewBag.Title = "Crear Asignación de Actividades";
+    ViewBag.Title = "Editar Asignaciòn de Actvidades";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 
 <div class="card card-primary">
     <div class="card-header">
         <h3 class="card-title">@ViewBag.Title</h3>
     </div>
     <div class="card-body">
-        @using (Html.BeginForm())
-        {
-            @Html.AntiForgeryToken()
-            <div class="m-0 row justify-content-center">
-                <div class="form-horizontal col-md-10">
+
+        <div class="m-0 row justify-content-center">
+            <div class="form-horizontal col-md-10">
+                @using (Html.BeginForm("EditTask", "Task"))
+                {
+
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+                        <div class="col-md-offset-2 col-md-10">
+                            <div class="form-group">
+                                <div class="text-center">
+                                    @*<a href="location.href='@Url.Action("Create", "Client")';return false;" class="white_btn">Grabar</a>*@
+                                    <button class="btn btn-flotante white_btn" type="submit">Grabar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <div class="control-label">Número de Asignación de Actividad:</div>
+                                @Html.DisplayFor(model => model.IdTask)
+                                @Html.HiddenFor(model => model.IdTask)
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
 
                     <div class="row">
                         <div class="col-md-4">
@@ -51,6 +75,7 @@
                         </div>
 
                     </div>
+
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -69,7 +94,6 @@
                                 @Html.ValidationMessageFor(model => model.Place, "", new { @maxlength = "500", @class = "text-danger" })
                             </div>
                         </div>
-
                         <div class="col-md-2">
                             <div class="form-group">
                                 <div class="control-label"># Servicio:</div>
@@ -77,7 +101,6 @@
                                 @Html.ValidationMessageFor(model => model.IdServiceRequest, "", new { @class = "text-danger" })
                             </div>
                         </div>
-
                         <div class="col-md-2">
                             <div class="form-group">
                                 <div class="control-label"># Padre:</div>
@@ -115,14 +138,14 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <div class="control-label">Hora Inicio:</div>
-                                @Html.TextBoxFor(model => model.HourIni, new { @class = "form-control", @type = "time", @id = "HourIni" })
+                                @Html.TextBoxFor(model => model.HourIni, new { @class = "form-control", @type = "time" })
                                 @Html.ValidationMessageFor(model => model.HourIni, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <div class="control-label">Hora Fin:</div>
-                                @Html.TextBoxFor(model => model.HourEnd, new { @class = "form-control", @type = "time", @id = "HourEnd" })
+                                @Html.TextBoxFor(model => model.HourEnd, new { @class = "form-control", @type = "time" })
                                 @Html.ValidationMessageFor(model => model.HourEnd, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -161,7 +184,7 @@
 
 
                                             <div class="row">
-                                                <div class="col-8">
+                                                <div class="col-md-8">
                                                     <div class="form-group">
                                                         <div class="control-label">Colaborador:</div>
                                                         <select class="form-control select2 " onchange="filtrarColaborador(this.value)" id="filtroColaborador" data-placeholder="Seleccione"></select>
@@ -172,7 +195,7 @@
                                                 </div>
 
 
-                                                <div class="col-md-4">
+                                                <div class="col-md-3">
                                                     <div class="form-group">
                                                         @*<div class="btn_option"><a id="addRow"><i class="fas fa-plus"></i></a></div>*@
                                                         <div class="btn_option"><a onclick="addRow();"><i class="fas fa-plus"></i></a></div>
@@ -205,6 +228,7 @@
                                                                                 string idCol;
                                                                                 string nameCol_IdPersonEmploye;
                                                                                 string nameCol_PersonEmployeeName;
+                                                                                string nameCol_PersonEmployeeLastName;
                                                                                 string nameCol_NumIdentification;
 
                                                                                 for (var i = 0; i < Model.listTaskPerson.Count; i++)
@@ -214,7 +238,7 @@
                                                                                     nameCol_NumIdentification = "listTaskPerson[" + i.ToString() + "].NumIdentification";
                                                                                     nameCol_IdPersonEmploye = "listTaskPerson[" + i.ToString() + "].IdPersonEmployee";
                                                                                     nameCol_PersonEmployeeName = "listTaskPerson[" + i.ToString() + "].PersonEmployeeName";
-
+                                                                                    nameCol_PersonEmployeeLastName = "listTaskPerson[" + i.ToString() + "].PersonEmployeeLastName";
 
                                                                                     var Name = " ";
                                                                                     if (@Model.listTaskPerson[i].PersonEmployeeName != "")
@@ -225,10 +249,11 @@
                                                                                     string strNombre = @Model.listTaskPerson[i].NumIdentification + " - " + @Model.listTaskPerson[i].PersonEmployeeLastName + @Name;
 
                                                                                     <tr id='@idRow'>
-                                                                                        <td style="display:none;"><input name="listPersonContact.Index" type="hidden" value='@i' /></td>
+                                                                                        <td style="display:none;"><input name="listTaskPerson.Index" type="hidden" value='@i' /></td>
                                                                                         <td style="display:none;"><input id='@idCol' name='@nameCol_NumIdentification' type="hidden" value='@Model.listTaskPerson[i].NumIdentification' /></td>
                                                                                         <td style="display:none;"><input id='@idCol' name='@nameCol_IdPersonEmploye' type="hidden" value='@Model.listTaskPerson[i].IdPersonEmployee' /></td>
                                                                                         <td style="display:none;"><input id='@idCol' name='@nameCol_PersonEmployeeName' type="hidden" value='@Model.listTaskPerson[i].PersonEmployeeName' /></td>
+                                                                                        <td style="display:none;"><input id='@idCol' name='@nameCol_PersonEmployeeLastName' type="hidden" value='@Model.listTaskPerson[i].PersonEmployeeLastName' /></td>
                                                                                         <td name="PersonEmploye">@strNombre </td>
                                                                                         <td><div class="btn_option pt-0"><a class="deleteRow" onclick="deleteRow('@i');"><i class="far fa-trash-alt"></i></a></div></td>
                                                                                     </tr>
@@ -255,39 +280,231 @@
 
                     </div>
 
+                    if (Model != null)
+                    {
+                        MTaskComment objComent = new MTaskComment();
+                        objComent.IdTask = Model.IdTask;
+                        objComent.Date = DateTime.Now;
+                        objComent.IdUser = ((MUser)Session["Usuario"]).IdUser;
+                        objComent.IdComment = 0;
+                        Model.listMTaskComment.Add(objComent);
+                        int cant = Model.listMTaskComment.Count - 1;
+                        //for (var i = 0; i < Model.listMTaskComment.Count; i++)
+                        //{
+                        <div class="row pt-2 pb-3">
 
-                    <div class="row">
-                        <div class="col-md-offset-2 col-md-10">
-                            <div class="form-group">
-                                <div class="text-center">
-                                    @*<a href="location.href='@Url.Action("Create", "Client")';return false;" class="white_btn">Grabar</a>*@
-                                    <button class="white_btn" type="submit">Grabar</button>
+                            <div class="col-md-12">
+
+                                <div class="accordion border" id="accordionComment">
+                                    <div class="card collapsed-card">
+                                        <div class="card-header" id="headingComment">
+                                            <h2 class="mb-0">
+                                                <button class="btn btn-link text-decoration-none" type="button" data-toggle="collapse" data-target="#collapseCardComment" aria-expanded="false" aria-controls="collapseComment">
+                                                    Agregar Comentario
+                                                </button>
+                                            </h2>
+                                        </div>
+
+                                        <div id="collapseCardComment" class="collapse" aria-labelledby="headingComment" data-parent="#accordionComment">
+
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="control-label">Comentario:</div>
+                                                            <input name="listMTaskComment.Index" type="hidden" value="'@cant'" />
+                                                            <input id="listMTaskComment_'@cant'" name="listMTaskComment['@cant'].IdComment" type="hidden" value='@Model.listMTaskComment[cant].IdComment' />
+                                                            <input id="listMTaskComment_'@cant'" name="listMTaskComment['@cant'].IdTask" type="hidden" value='@Model.listMTaskComment[cant].IdTask' />
+                                                            <input id="listMTaskComment_'@cant'" name="listMTaskComment['@cant'].Date" type="hidden" value='@Model.listMTaskComment[cant].Date' />
+                                                            <input id="listMTaskComment_'@cant'" name="listMTaskComment['@cant'].UserName" type="hidden" value='@Model.listMTaskComment[cant].UserName' />
+                                                            <input id="listMTaskComment_'@cant'" name="listMTaskComment['@cant'].IdUser" type="hidden" value='@Model.listMTaskComment[cant].IdUser' />
+                                                            <input id="listMTaskComment_'@cant'" name="listMTaskComment['@cant'].DateOperation" type="hidden" value='@Model.listMTaskComment[cant].DateOperation' />
+                                                            @*@Html.TextAreaFor(model => model.listMTaskComment[cant].Comment, new { @id = "listMTaskComment_'" + cant + "'", @Name = "listMTaskComment['" + cant + "'].Comment", @class = "form-control", @rows = 3, @cols = 10 })*@
+                                                            <div class="input-group">
+                                                                @Html.TextAreaFor(model => model.listMTaskComment[cant].Comment, new { @id = "listMTaskComment_'" + cant + "'", @Name = "listMTaskComment['" + cant + "'].Comment", rows = "20", cols = "10", style = "resize:none;width:700px;", @class = "form-control input-lg textarea-editor" })
+                                                            </div>
+                                                            @Html.ValidationMessageFor(model => model.listMTaskComment[cant].Comment, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
 
+                            </div>
+
+                        </div>
+                        //}
+                    }
+
+
+
+                    if (Model != null)
+                    {
+                        if (Model.listMTaskComment != null)
+                        {
+                            if (Model.listMTaskComment.Count > 0)
+                            {
+                                <div class="row pt-2 pb-3">
+
+                                    <div class="col-md-12">
+
+                                        <div class="accordion border" id="accordionBitacora">
+                                            <div class="card collapsed-card">
+                                                <div class="card-header" id="headingBitacora">
+                                                    <h2 class="mb-0">
+                                                        <button class="btn btn-link text-decoration-none" type="button" data-toggle="collapse" data-target="#collapseCardBitacora" aria-expanded="false" aria-controls="collapseBitacora">
+                                                            Ver Bitácora
+                                                        </button>
+                                                    </h2>
+                                                </div>
+
+                                                <div id="collapseCardBitacora" class="collapse" aria-labelledby="headingBitacora" data-parent="#accordionBitacora">
+
+                                                    <div class="card-body">
+                                                        <div class="row d-flex justify-content-center mt-100 mb-100">
+                                                            <div class="col-lg-12">
+                                                                <div class="card">
+
+                                                                    @{
+                                                                        var lisBitacora = Model.listMTaskComment.Where(t => t.IdComment != 0).GroupBy(x => new
+                                                                        {
+                                                                            x.DateOperation,
+                                                                            IdUser = x.IdUser == null ? -1 : x.IdUser
+                                                                        }).Select(g => new { g.Key.IdUser, g.Key.DateOperation });
+                                                                        bool blnComent = false;
+                                                                        int counter = 0;
+
+                                                                    }
+
+                                                                    <div class="comment-widgets">
+                                                                        @foreach (var item in lisBitacora)
+                                                                        {
+
+
+                                                                            blnComent = false;
+
+                                                                            var ListaFiltrada = Model.listMTaskComment.Where(X => X.DateOperation == item.DateOperation && X.IdUser == item.IdUser).ToList();
+
+                                                                            <div class="d-flex flex-row comment-row m-t-0">
+                                                                                <div class="comment-text w-100">
+                                                                                    <div class="row  m-b-12 d-block">
+                                                                                        <h6 class="font-medium">@ListaFiltrada[0].UserName</h6><span class="text-muted float-right">@item.DateOperation</span>
+                                                                                    </div>
+                                                                                    @foreach (var item2 in ListaFiltrada)
+                                                                                    {
+                                                                                        <div class="row m-b-12 d-block">
+                                                                                            <ul class="fa-ul details">
+                                                                                                <li>
+                                                                                                    <input name="listMTaskComment.Index" type="hidden" value="'@counter'" />
+                                                                                                    <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].IdComment" type="hidden" value='@Model.listMTaskComment[counter].IdComment' />
+                                                                                                    <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].IdTask" type="hidden" value='@Model.listMTaskComment[counter].IdTask' />
+                                                                                                    <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].Date" type="hidden" value='@Model.listMTaskComment[counter].Date' />
+                                                                                                    <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].UserName" type="hidden" value='@Model.listMTaskComment[counter].UserName' />
+                                                                                                    <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].IdUser" type="hidden" value='@Model.listMTaskComment[counter].IdUser' />
+                                                                                                    <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].DateOperation" type="hidden" value='@Model.listMTaskComment[counter].DateOperation' />
+
+                                                                                                    <br />
+                                                                                                    @if (item2.IdComment != null)
+                                                                                                    {
+                                                                                                        if (blnComent == false)
+                                                                                                        {
+                                                                                                            blnComent = true;
+                                                                                                        }
+                                                                                                        <div class="control-label"><b>Comentario:</b></div>
+                                                                                                        <div style="text-align:right;border-top:outset; border-block-color:#e3bf09">
+                                                                                                            <div id="Editar_'@item2.IdComment'" class="pt-0"><button type="button" class="border-0 bg-transparent" data-toggle="tooltip" data-placement="top" title="Editar" onclick="mostrarOcultar(@item2.IdComment, this);"><i class="fas fa-edit"></i></button></div>
+                                                                                                            <div id="Cancelar_'@item2.IdComment'" class="pt-0" style="display: none;"><button type="button" class="border-0  bg-transparent" data-toggle="tooltip" data-placement="top" title="Cancelar" onclick="mostrarOcultar(@item2.IdComment, this);"><i class="fas fa-times-circle"></i></button></div>
+                                                                                                        </div>
+
+                                                                                                        <div id="Mostrado_'@item2.IdComment'"><span class="fa-li"></span>@Html.Raw(item2.Comment)</div>
+                                                                                                        <div id="Ocultable_'@item2.IdComment'" class="row" style="display:none">
+                                                                                                            <div class="col-md-12">
+                                                                                                                <div class="form-group">
+                                                                                                                    @*@Html.TextAreaFor(model => item2.Comment, new { @id = "listMTaskComment_'" + counter + "'", @Name = "listMTaskComment['" + counter + "'].Comment", @class = "form-control", @rows = 3, @cols = 10 })*@
+                                                                                                                    <div class="input-group">
+                                                                                                                        @Html.TextAreaFor(model => item2.Comment, new { @id = "listMTaskComment_'" + counter + "'", @Name = "listMTaskComment['" + counter + "'].Comment", rows = "20", cols = "10", style = "resize:none;width:700px;", @class = "form-control input-lg textarea-editor" })
+                                                                                                                    </div>
+                                                                                                                    @Html.ValidationMessageFor(model => item2.Comment, "", new { @class = "text-danger" })
+                                                                                                                </div>
+
+                                                                                                            </div>
+                                                                                                        </div>
+
+                                                                                                        counter = counter + 1;
+                                                                                                    }
+                                                                                                    else
+                                                                                                    {
+                                                                                                        <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].Comment" type="hidden" value='@Model.listMTaskComment[counter].Comment' />
+                                                                                                        <span class="fa-li"><i class="fas fa-check-square"></i></span>@item2.Comment
+
+                                                                                                        counter = counter + 1;
+                                                                                                    }
+
+                                                                                                </li>
+                                                                                            </ul>
+                                                                                            @if (blnComent == true)
+                                                                                            {
+
+                                                                                                <div class="comment-footer">
+
+                                                                                                    @*<div id="Editar_'@item2.IdComment'" class="btn_option pt-0"><button type="button" class="border-0" data-toggle="tooltip" data-placement="top" title="Editar" onclick="mostrarOcultar(@item2.IdComment, this);"><i class="fas fa-edit"></i></button></div>
+                                                                                                        <div id="Grabar_'@item2.IdComment'" class="btn_option pt-0" style="display: none;"><button type="button" class="border-0" data-toggle="tooltip" data-placement="top" title="Grabar Comentario" onclick="mostrarOcultar(@item2.IdComment, this);"><i class="fas fa-save"></i></button></div>
+                                                                                                        <div id="Cancelar_'@item2.IdComment'" class="btn_option pt-0" style="display: none;"><button type="button" class="border-0" data-toggle="tooltip" data-placement="top" title="Cancelar" onclick="mostrarOcultar(@item2.IdComment, this);"><i class="fas fa-times-circle"></i></button></div>*@
+                                                                                                </div>
+                                                                                            }
+                                                                                        </div>
+                                                                                    }
+
+
+                                                                                    @*</span>*@
+                                                                                </div>
+                                                                            </div> <!-- Comment Row -->
+                                                                        }
+
+                                                                    </div> <!-- Card -->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            }
+
+                        }
+
+
+                    }
                     <div class="row">
                         <div class="col-md-10 text-center">
                             @*<span class="text-success">@ViewBag.SuccessSave</span>*@
                             @*<span class="text-danger">@ViewBag.ErrorSave</span>*@
                         </div>
                     </div>
-                </div>
+                }
             </div>
-        }
+        </div>
 
         <div>
             @Html.ActionLink("Regresar a la Lista", "ListTask")
         </div>
 
+
     </div>
 </div>
 
+
 @section Scripts {
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    @*<script src="~/Scripts/bootstrap.min.js"></script>*@
     <script src="~/Content/assets/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
@@ -298,13 +515,12 @@
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <script src="~/Content/assets/plugins/select2/js/select2.full.min.js"></script>
 
 
     <script>
         var ListPersons = [];
-        var ListTask = [];
-        var ListServices = [];
 
             //----------------------------------------------------------------
 
@@ -317,45 +533,45 @@
             }
             //-------------------------------------------
 
-        function ObtenerTask() {
-            /*debugger;*/
-             $.ajax({
-                type: "GET",
-                url: '@Url.Action("GetListTask", "Task")',
-                data: "{}",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                //global: false,
-                //async: false,
-                success: function (data) {
-                    $.each(data, function (idx, Tsk) {
-                        ListTask.push(Tsk.IdTask.toString());
-                    });
-                }
-            });
-        }
 
-        function ObtenerServices() {
-            /*debugger;*/
-             $.ajax({
-                type: "GET",
-                url: '@Url.Action("GetListServiceRequest", "ServiceRequest")',
-                data: "{}",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                //global: false,
-                //async: false,
-                success: function (data) {
-                    $.each(data, function (idx, Serv) {
-                        ListServices.push(Serv.IdServiceRequest.toString());
-                    });
-                }
-            });
-        }
+        ////oculto por defecto
+        //element = document.getElementById('ocultable');
+        //element.style.display = 'none';
+
+        function mostrarOcultar(index, button) {
+            ocultable = "Ocultable_'" + index + "'";
+            Montrado = "Mostrado_'" + index + "'";
+            Editar = "Editar_'" + index + "'";
+            //Grabar = "Grabar_'" + index + "'";
+            Cancelar = "Cancelar_'" + index + "'";
+
+            elementO = document.getElementById(ocultable);
+            elementM = document.getElementById(Montrado);
+            elementoEditar = document.getElementById(Editar);
+            //elementoGrabar = document.getElementById(Grabar);
+            elementoCancelar = document.getElementById(Cancelar);
+
+            if (button.title == "Editar") {
+                elementM.style.display = 'none';
+                elementO.style.display = 'block';
+                elementoEditar.style.display = 'none';
+                //elementoGrabar.style.display = 'inline-block';
+                elementoCancelar.style.display = 'inline-block';
+
+            }
+            else {
+                elementM.style.display = 'block';
+                elementO.style.display = 'none';
+                elementoEditar.style.display = 'inline-block';
+                //elementoGrabar.style.display = 'none';
+                elementoCancelar.style.display = 'none';
+            }
+
+        }//end function mostrarOcultar
 
         function ObtenerPersonas() {
 
-            ListPersons = $.ajax({
+             $.ajax({
                 type: "GET",
                 url: '@Url.Action("GetListPerson", "Person")?idPersonType=2',
                 data: "{}",
@@ -372,29 +588,31 @@
                     data.push(itemArray);
                     data.reverse();
                     ListPersons = data;
-
                     if (ListPersons.length > 0) {
+
                         var persona = $("#filtropersona")[0];
                         var option = $(document.createElement('option'));
                         option.text("Seleccione");
                         option.val("0");
                         $("#filtropersona").append(option);
 
-                        for (i = 0; i < ListPersons.length; i++) {
+                        for (i = 0; i < ListPersons.length; i++)
+                        {
 
                             if (ListPersons[i].IdPerson != "" && ListPersons[i].LastName != "") {
-                                var Name = " ";
-                                if (ListPersons[i].Name != "")
-                                {
-                                    Name = " "+ListPersons[i].Name;
-                                }
-
-                                persona[i + 1] = new Option(ListPersons[i].NumIdentification + " - " + ListPersons[i].LastName + Name , ListPersons[i].IdPerson, "", "");
-
+                            var Name = " ";
+                            if (ListPersons[i].Name != "")
+                            {
+                                Name = " "+ListPersons[i].Name;
                             }
 
+                            persona[i + 1] = new Option(ListPersons[i].NumIdentification + " - " + ListPersons[i].LastName + Name , ListPersons[i].IdPerson, "", "");
+
                         }
-                          persona.value = "@Model.IdPersonEmployee";
+
+                        }
+
+                        persona.value = "@Model.IdPersonEmployee";
                         filtrarPersona("@Model.IdPersonEmployee");
 
                         var Colaborador = $("#filtroColaborador")[0];
@@ -415,14 +633,13 @@
 
                             }
 
-                            }
+                        }
                     }
+
                 }
             });
         }
 
-        ObtenerTask();
-        ObtenerServices();
         ObtenerPersonas();
 
         function cargarDataPerson(IdPerson, lstPersons) {
@@ -433,7 +650,7 @@
         }
 
         function filtrarPersona(person) {
-            /*debugger;*/
+           /* debugger;*/
             var SelecCodeValue = person.trim();
             cargarDataPerson(SelecCodeValue, ListPersons);
         }
@@ -444,12 +661,12 @@
             cargarDataPerson(SelecCodeValue, ListPersons);
         }
 
-        $('#TTask').on("click", "button.editRow", function () {
+        @*$('#TTask').on("click", "button.editRow", function () {
             var data = table.row($(this).parents("tr")).data();
             $("#hidd_IdTask").val(data.IdTask);
             $("#submit").val("editRow");
             location.href = '@Url.Action("ListTask", "Task")';
-        });
+        });*@
 
         $('#TTask').on("click", "button.searchRow", function () {
             var data = table.row($(this).parents("tr")).data();
@@ -458,75 +675,35 @@
             location.href = '@Url.Action("ListTask", "Task")';
         });
 
+
         $(document).ready(function () {
 
-            /*debugger;*/
-
-
-            var search = $("#IdFatherTask");
-            search.on('focus', function () {
-                /*debugger;*/
-                search.autocomplete({
-                    source: ListTask //<-- pasamos un array de strings
-                });
-
-            });
-
-            var searchS = $("#IdServiceRequest");
-            searchS.on('focus', function () {
-                /*debugger;*/
-                searchS.autocomplete({
-                    source: ListServices //<-- pasamos un array de strings
-                });
-
-            });
-
-            $("#IdServiceRequest").blur(function () {
-                var valorS = document.getElementById("IdServiceRequest");
-                if (valorS.value != "") {
-                    var objLi = ListServices;
-                    var objServices = objLi.find(m => m == valorS.value);
-                    if (objServices == undefined) {
-
-                        $("#IdServiceRequest").val("");
-                        toastr.error("No existe el servicio");
-
-                    }
-
-                }
-            });
-
-            $("#IdFatherTask").blur(function () {
-                var valor = document.getElementById("IdFatherTask");
-                if (valor.value != "") {
-                    var objLi = ListTask;
-                    var objFather = objLi.find(m => m == valor.value);
-                    if (objFather == undefined) {
-
-                        $("#IdFatherTask").val("");
-                        toastr.error("No existe el ticket Padre");
-
-                    }
-
-                }
-            });
-
             //Validacion de fecha--------------------------------------------
-            var today = new Date();
-            var dd = today.getDate();
-            var mm = today.getMonth() + 1; //January is 0!
-            var yyyy = today.getFullYear();
-            if (dd < 10) {
-                dd = '0' + dd
-            }
-            if (mm < 10) {
-                mm = '0' + mm
-            }
+            //var today = new Date();
+            //var dd = today.getDate();
+            //var mm = today.getMonth() + 1; //January is 0!
+            //var yyyy = today.getFullYear();
+            //if (dd < 10) {
+            //    dd = '0' + dd
+            //}
+            //if (mm < 10) {
+            //    mm = '0' + mm
+            //}
 
-            today = yyyy + '-' + mm + '-' + dd;
-            document.getElementById("dttDateIni").setAttribute("min", today);
-            document.getElementById("dttDateEnd").setAttribute("min", today);
+            //today = yyyy + '-' + mm + '-' + dd;
+            //document.getElementById("dttDateIni").setAttribute("max", today);
+            //document.getElementById("dttDateEnd").setAttribute("max", today);
             //----------------------------------------------------------------
+
+            jQuery.event.special.touchstart = {
+                setup: function (_, ns, handle) {
+                    if (ns.includes("noPreventDefault")) {
+                        this.addEventListener("touchstart", handle, { passive: false });
+                    } else {
+                        this.addEventListener("touchstart", handle, { passive: true });
+                    }
+                }
+            };
 
             $('.select2').select2();
 
@@ -550,7 +727,7 @@
 
             $.ajax({
                 type: "GET",
-                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' +"PRIORITYTASK",
+                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' + "PRIORITYTASK",
                 data: "{}",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -583,7 +760,7 @@
 
             $.ajax({
                 type: "GET",
-                 url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' +"STATETASK",
+                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' + "STATETASK",
                 data: "{}",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -616,7 +793,7 @@
 
             $.ajax({
                 type: "GET",
-                 url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' +"TYPETASK",
+                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' + "TYPETASK",
                 data: "{}",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -669,6 +846,31 @@
 
             }
 
+            //$('.textarea-editor').summernote(
+            //    {
+            //        height: 300,                 // set editor height
+            //        minHeight: null,             // set minimum height of editor
+            //        maxHeight: null,             // set maximum height of editor
+            //        focus: true                  // set focus to editable area after initializing summernote
+            //    }
+            //);
+
+            tinymce.init({
+                selector: '.textarea-editor',
+                height: 500,
+                menubar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount'
+                ],
+                toolbar: 'undo redo | formatselect | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat | help',
+                content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+            });
+
             $("#dttDateIni").change(function () {
                 var startDate = new Date($('#dttDateIni').val());
                 var endDate = new Date($('#dttDateEnd').val());
@@ -682,7 +884,6 @@
             });
 
             $("#dttDateEnd").change(function () {
-                /*debugger;*/
                 var startDate = new Date($('#dttDateIni').val());
                 var endDate = new Date($('#dttDateEnd').val());
 
@@ -698,8 +899,8 @@
             $("#HourIni").change(function () {
                 var startDate = new Date($('#dttDateIni').val());
                 var endDate = new Date($('#dttDateEnd').val());
-                var IniHour = $('#HourIni').val();
-                var IniEnd = $('#HourEnd').val();
+                var IniHour = new Date($('#HourIni').val());
+                var IniEnd = new Date($('#HourEnd').val());
 
                 if (startDate = endDate && IniHour > IniEnd) {
 
@@ -711,11 +912,10 @@
             });
 
             $("#HourEnd").change(function () {
-
                 var startDate = new Date($('#dttDateIni').val());
                 var endDate = new Date($('#dttDateEnd').val());
-                var IniHour = $('#HourIni').val();
-                var IniEnd = $('#HourEnd').val();
+                var IniHour = new Date($('#HourIni').val());
+                var IniEnd = new Date($('#HourEnd').val());
 
                 if (startDate = endDate && IniHour > IniEnd) {
 
@@ -732,7 +932,7 @@
             $(controlToBeRemoved).remove();
         }
 
-         function addRow() {
+        function addRow() {
 
 
             @{
@@ -743,20 +943,21 @@
             var strIdPerson = $("#filtroColaborador").val();
             var strPerson = $('select[id="filtroColaborador"] option:selected').text();
 
-            //debugger;
+            /*debugger;*/
             if (strPerson != "") {
 
                 //-------------------------
 
-                var index = document.getElementById('TTaskPerson').rows.length;
+                var index = document.getElementById('TTaskPerson').rows.length-1;
                 //alert(index);
 
                 var colHid_indexCell = "<td style='display:none'><input name='listTaskPerson.Index' type = 'hidden' value = '" + index + "' /></td > ";
                 var colHid_IdPersonEmployee = "<td style='display:none'><input id='listTaskPerson_" + index + "' name = 'listTaskPerson[" + index + "].IdPersonEmployee' type='hidden' value='" + strIdPerson + "' /></td> ";
                 var colHid_IdPersonNumIdentification = "<td style='display:none'><input id='listTaskPerson_" + index + "' name = 'listTaskPerson[" + index + "].NumIdentification' type='hidden' value='" + strIdPerson + "' /></td> ";
                 var colHid_PersonEmployeeName = "<td style='display:none'><input id='listTaskPerson_" + index + "' name = 'listTaskPerson[" + index + "].PersonEmployeeName' type = 'hidden' value = '" + strPerson + "' /></td> ";
+                var colHid_PersonEmployeeLastName = "<td style='display:none'><input id='listTaskPerson_" + index + "' name = 'listTaskPerson[" + index + "].PersonEmployeeLastName' type = 'hidden' value = '" + strPerson + "' /></td> ";
 
-                /*debugger;*/
+               /* debugger;*/
                 var colPersonEmployeeName = "<td name ='PersonEmploye'>" + strPerson + "</td> ";
                 var colDelete = "<td><div class='btn_option pt-0'><a class='deleteRow' onclick='deleteRow(" + index + ");'><i class='far fa-trash-alt'></i></a></div></td> ";
 
@@ -767,9 +968,10 @@
 
                 //insertamos los valores en la tabla
                 var newRow = "<tr id='trTaskPerson" + index + "'>" +
-                    colHid_indexCell + colHid_IdPersonEmployee + colHid_IdPersonNumIdentification + colHid_PersonEmployeeName + colPersonEmployeeName + colDelete + "</tr>";
+                    colHid_indexCell + colHid_IdPersonEmployee + colHid_IdPersonNumIdentification + colHid_PersonEmployeeName + colHid_PersonEmployeeLastName + colPersonEmployeeName + colDelete + "</tr>";
                 //debugger;
                 $("#TTaskPerson").append(newRow);
+
 
                 //--------------------------
 
@@ -784,7 +986,7 @@
             const tableReg = document.getElementById('TTaskPerson');
             let position = 0;
             let found = false;
-            //debugger;
+            /*debugger;*/
             // Recorremos todas las filas con contenido de la tabla
             for (let i = 1; i < tableReg.rows.length; i++) {
 
@@ -816,3 +1018,4 @@
 
     </script>
 }
+

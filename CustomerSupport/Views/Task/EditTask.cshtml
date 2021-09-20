@@ -2,7 +2,7 @@
 @model CustomerSupport.Models.MTask
 
 @{
-    ViewBag.Title = "Editar Asignaciòn de Actvidades";
+    ViewBag.Title = "Editar Asignación de Actvidades";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -282,13 +282,34 @@
 
                     if (Model != null)
                     {
-                        MTaskComment objComent = new MTaskComment();
-                        objComent.IdTask = Model.IdTask;
-                        objComent.Date = DateTime.Now;
-                        objComent.IdUser = ((MUser)Session["Usuario"]).IdUser;
-                        objComent.IdComment = 0;
-                        Model.listMTaskComment.Add(objComent);
-                        int cant = Model.listMTaskComment.Count - 1;
+                        int cant = 0;
+
+                        if (Model.listMTaskComment.Count == 0)
+                        {
+                            MTaskComment objComent = new MTaskComment();
+                            objComent.IdTask = Model.IdTask;
+                            objComent.Date = DateTime.Now;
+                            objComent.IdUser = ((MUser)Session["Usuario"]).IdUser;
+                            objComent.IdComment = 0;
+                            objComent.New = 1;
+                            Model.listMTaskComment.Add(objComent);
+                            cant = Model.listMTaskComment.Count - 1;
+                        }
+                        else
+                        {
+                            if (Model.listMTaskComment[cant].New == 0)
+                            {
+                                MTaskComment objComent = new MTaskComment();
+                                objComent.IdTask = Model.IdTask;
+                                objComent.Date = DateTime.Now;
+                                objComent.IdUser = ((MUser)Session["Usuario"]).IdUser;
+                                objComent.IdComment = 0;
+                                objComent.New = 1;
+                                Model.listMTaskComment.Add(objComent);
+                                cant = Model.listMTaskComment.Count - 1;
+                            }
+                        }
+
                         //for (var i = 0; i < Model.listMTaskComment.Count; i++)
                         //{
                         <div class="row pt-2 pb-3">
@@ -319,6 +340,7 @@
                                                             <input id="listMTaskComment_'@cant'" name="listMTaskComment['@cant'].UserName" type="hidden" value='@Model.listMTaskComment[cant].UserName' />
                                                             <input id="listMTaskComment_'@cant'" name="listMTaskComment['@cant'].IdUser" type="hidden" value='@Model.listMTaskComment[cant].IdUser' />
                                                             <input id="listMTaskComment_'@cant'" name="listMTaskComment['@cant'].DateOperation" type="hidden" value='@Model.listMTaskComment[cant].DateOperation' />
+                                                            <input id="listMTaskComment_'@cant'" name="listMTaskComment['@cant'].New" type="hidden" value='@Model.listMTaskComment[cant].New' />
                                                             @*@Html.TextAreaFor(model => model.listMTaskComment[cant].Comment, new { @id = "listMTaskComment_'" + cant + "'", @Name = "listMTaskComment['" + cant + "'].Comment", @class = "form-control", @rows = 3, @cols = 10 })*@
                                                             <div class="input-group">
                                                                 @Html.TextAreaFor(model => model.listMTaskComment[cant].Comment, new { @id = "listMTaskComment_'" + cant + "'", @Name = "listMTaskComment['" + cant + "'].Comment", rows = "20", cols = "10", style = "resize:none;width:700px;", @class = "form-control input-lg textarea-editor" })
@@ -406,6 +428,7 @@
                                                                                                     <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].UserName" type="hidden" value='@Model.listMTaskComment[counter].UserName' />
                                                                                                     <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].IdUser" type="hidden" value='@Model.listMTaskComment[counter].IdUser' />
                                                                                                     <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].DateOperation" type="hidden" value='@Model.listMTaskComment[counter].DateOperation' />
+                                                                                                    <input id="listMTaskComment_'@counter'" name="listMTaskComment['@counter'].New" type="hidden" value='@Model.listMTaskComment[counter].New' />
 
                                                                                                     <br />
                                                                                                     @if (item2.IdComment != null)
@@ -504,7 +527,10 @@
 
 
 @section Scripts {
-    @*<script src="~/Scripts/bootstrap.min.js"></script>*@
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="~/Content/assets/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
@@ -516,12 +542,13 @@
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-    <script src="~/Content/assets/plugins/select2/js/select2.full.min.js"></script>
+    <script src="@Url.Content("~/Content/assets/plugins/select2/js/select2.full.min.js") "></script>
 
 
     <script>
         var ListPersons = [];
-
+        var ListTask = [];
+        var ListServices = [];
             //----------------------------------------------------------------
 
             //Mensaje de confirmacion--------------------
@@ -601,17 +628,18 @@
 
                             if (ListPersons[i].IdPerson != "" && ListPersons[i].LastName != "") {
                             var Name = " ";
-                            if (ListPersons[i].Name != "")
-                            {
-                                Name = " "+ListPersons[i].Name;
+                                if (ListPersons[i].Name != "")
+                                {
+                                    Name = " "+ListPersons[i].Name;
+                                }
+
+                                persona[i + 1] = new Option(ListPersons[i].NumIdentification + " - " + ListPersons[i].LastName + Name , ListPersons[i].IdPerson, "", "");
+
                             }
 
-                            persona[i + 1] = new Option(ListPersons[i].NumIdentification + " - " + ListPersons[i].LastName + Name , ListPersons[i].IdPerson, "", "");
-
                         }
 
-                        }
-
+                       /* debugger;*/
                         persona.value = "@Model.IdPersonEmployee";
                         filtrarPersona("@Model.IdPersonEmployee");
 
@@ -640,6 +668,44 @@
             });
         }
 
+                function ObtenerTask() {
+            /*debugger;*/
+             $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetListTask", "Task")',
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                //global: false,
+                //async: false,
+                success: function (data) {
+                    $.each(data, function (idx, Tsk) {
+                        ListTask.push(Tsk.IdTask.toString());
+                    });
+                }
+            });
+        }
+
+        function ObtenerServices() {
+            /*debugger;*/
+             $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetListServiceRequest", "ServiceRequest")',
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                //global: false,
+                //async: false,
+                success: function (data) {
+                    $.each(data, function (idx, Serv) {
+                        ListServices.push(Serv.IdServiceRequest.toString());
+                    });
+                }
+            });
+        }
+
+        ObtenerTask();
+        ObtenerServices();
         ObtenerPersonas();
 
         function cargarDataPerson(IdPerson, lstPersons) {
@@ -677,22 +743,72 @@
 
         $(document).ready(function () {
 
-            //Validacion de fecha--------------------------------------------
-            //var today = new Date();
-            //var dd = today.getDate();
-            //var mm = today.getMonth() + 1; //January is 0!
-            //var yyyy = today.getFullYear();
-            //if (dd < 10) {
-            //    dd = '0' + dd
-            //}
-            //if (mm < 10) {
-            //    mm = '0' + mm
-            //}
 
-            //today = yyyy + '-' + mm + '-' + dd;
-            //document.getElementById("dttDateIni").setAttribute("max", today);
-            //document.getElementById("dttDateEnd").setAttribute("max", today);
+            //Validacion de fecha--------------------------------------------
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd
+            }
+            if (mm < 10) {
+                mm = '0' + mm
+            }
+
+            today = yyyy + '-' + mm + '-' + dd;
+            document.getElementById("dttDateIni").setAttribute("min", today);
+            document.getElementById("dttDateEnd").setAttribute("min", today);
             //----------------------------------------------------------------
+
+
+            var search = $("#IdFatherTask");
+            search.on('focus', function () {
+                /*debugger;*/
+                search.autocomplete({
+                    source: ListTask //<-- pasamos un array de strings
+                });
+
+            });
+
+            var searchS = $("#IdServiceRequest");
+            searchS.on('focus', function () {
+                /*debugger;*/
+                searchS.autocomplete({
+                    source: ListServices //<-- pasamos un array de strings
+                });
+
+            });
+
+            $("#IdServiceRequest").blur(function () {
+                var valorS = document.getElementById("IdServiceRequest");
+                if (valorS.value != "") {
+                    var objLi = ListServices;
+                    var objServices = objLi.find(m => m == valorS.value);
+                    if (objServices == undefined) {
+
+                        $("#IdServiceRequest").val("");
+                        toastr.error("No existe el servicio");
+
+                    }
+
+                }
+            });
+
+            $("#IdFatherTask").blur(function () {
+                var valor = document.getElementById("IdFatherTask");
+                if (valor.value != "") {
+                    var objLi = ListTask;
+                    var objFather = objLi.find(m => m == valor.value);
+                    if (objFather == undefined) {
+
+                        $("#IdFatherTask").val("");
+                        toastr.error("No existe el ticket Padre");
+
+                    }
+
+                }
+            });
 
             $('.select2').select2();
 
@@ -873,6 +989,7 @@
             });
 
             $("#dttDateEnd").change(function () {
+                /*debugger;*/
                 var startDate = new Date($('#dttDateIni').val());
                 var endDate = new Date($('#dttDateEnd').val());
 
@@ -888,8 +1005,8 @@
             $("#HourIni").change(function () {
                 var startDate = new Date($('#dttDateIni').val());
                 var endDate = new Date($('#dttDateEnd').val());
-                var IniHour = new Date($('#HourIni').val());
-                var IniEnd = new Date($('#HourEnd').val());
+                var IniHour = $('#HourIni').val();
+                var IniEnd = $('#HourEnd').val();
 
                 if (startDate = endDate && IniHour > IniEnd) {
 
@@ -901,10 +1018,11 @@
             });
 
             $("#HourEnd").change(function () {
+
                 var startDate = new Date($('#dttDateIni').val());
                 var endDate = new Date($('#dttDateEnd').val());
-                var IniHour = new Date($('#HourIni').val());
-                var IniEnd = new Date($('#HourEnd').val());
+                var IniHour = $('#HourIni').val();
+                var IniEnd = $('#HourEnd').val();
 
                 if (startDate = endDate && IniHour > IniEnd) {
 

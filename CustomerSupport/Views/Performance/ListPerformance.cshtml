@@ -160,13 +160,14 @@
         <br />
         <div class="row shadow-sm p-3 m-1 bg-white rounded">
             <div class="card-body">
-                <div class="chart">
-                    <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                <div id="barChart_Content" class="chart">
+                  @*  <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>*@
                 </div>
                 <!--<div class="m-0 row justify-content-center">
                 <div class="form-horizontal col-md-10">-->
                 @*@using (Html.BeginForm("EditTask", "Task"))
                     {*@
+
 
 
                 <!--@Html.AntiForgeryToken()
@@ -214,7 +215,7 @@
 
         function FiltrarTicket() {
 
-            //debugger;
+           /* debugger;*/
             var oEmployee = $('#btnRadioXEmployee').is(":checked");
 
             var idDepartament = 0;
@@ -272,6 +273,13 @@
             //var context = canvas.getContext('2d');
             //context.clearRect(0, 0, canvas.width, canvas.height);
 
+            //var pChartContent = document.getElementById('barChart_Content');
+            //pChartContent.innerHTML = '&nbsp;';
+            //$('#barChart_Content').append('<canvas id="barChart" width="300" height="300"><canvas>');
+
+            document.getElementById("barChart_Content").innerHTML = '&nbsp;';
+            document.getElementById("barChart_Content").innerHTML = '<canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>';
+
             $.ajax({
                 type: "GET",
                 url: '@Url.Action("BarChart", "Performance")',
@@ -279,12 +287,9 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (aData) {
-                    if (myLineChart != undefined) {
-                        alert('hols');
-                        myLineChart.destroy();
-
-                    }
                     //debugger;
+                    /* myLineChart.destroy();*/
+
                     var miArray = aData[0];
                     var bg = aData[1];
                     var bc = aData[2];
@@ -318,7 +323,10 @@
                     //    barChart.destroy;
                     //}
 
-                    var barChartCanvas = $('#barChart').get(0).getContext('2d')
+                    let canvas = document.getElementById("barChart");
+                    var barChartCanvas = canvas.getContext("2d");
+
+                    /*var barChartCanvas = $('#barChart').get(0).getContext('2d')*/
                     var barChartData = $.extend(true, {}, areaChartData)
                     var temp0 = areaChartData.datasets[0]
                     /*   var temp1 = areaChartData.datasets[1]*/
@@ -337,7 +345,15 @@
                         options: barChartOptions
                     })
 
-                    
+
+
+                    ////canvas = document.getElementById("barChart");
+                    ////var context = canvas.getContext("2d");
+                    //barChartCanvas.clearRect(0, 0, canvas.width, canvas.height);
+                    //var w = canvas.width;
+                    //canvas.width = 1;
+                    //canvas.width = w;
+
                 }
             });
         }

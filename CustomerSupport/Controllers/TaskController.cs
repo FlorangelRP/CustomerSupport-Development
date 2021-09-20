@@ -121,6 +121,7 @@ namespace CustomerSupport.Controllers
 
         }
 
+
         public static List<MTask> fnListTask(int? IdTask = null, DateTime? dttDateIni = null, DateTime? dttDateEnd = null, int? IdResponsable = null, string strTittle = "",int? IdPriority = null,  int? IdStatus = null,int? IdTypeTask = null, int? IdServiceRequest = null, int? IdUser = null, int? IdFatherTask = null)
         {
 
@@ -175,6 +176,7 @@ namespace CustomerSupport.Controllers
                                                                                       UserName = tp.UserName,
                                                                                       DateOperation = tp.DateOperation,
                                                                                       Date = tp.Date,
+                                                                                      New = 0,
                                                                                   }).ToList()
 
                                          }).ToList();
@@ -473,6 +475,21 @@ namespace CustomerSupport.Controllers
                 if (objTask.HourIni == null)
                     objTask.HourIni = TimeSpan.Zero;
 
+                SqlParameter IdResponsable = new SqlParameter();
+                IdResponsable.ParameterName = "@IdResponsable";
+                IdResponsable.SqlDbType = System.Data.SqlDbType.Int;
+                IdResponsable.Direction = System.Data.ParameterDirection.Input;
+                IdResponsable.IsNullable = true;
+                if (objTask.IdPersonEmployee != null)
+                {
+                    IdResponsable.Value = objTask.IdPersonEmployee;
+                }
+                else
+                {
+                    IdResponsable.Value = DBNull.Value;
+                }
+
+
                 MUser objUser = new MUser();
 
 
@@ -489,7 +506,7 @@ namespace CustomerSupport.Controllers
                             new SqlParameter("@tHourEnd", objTask.HourEnd),
                             paramPlace,
                             paramIdFatherTask,
-                            new SqlParameter("@IdResponsable", objTask.IdPersonEmployee),
+                            IdResponsable,
                             new SqlParameter("@strTittle", objTask.Tittle),
                             new SqlParameter("@IdPriority", objTask.IdPriority),
                             new SqlParameter("@IdStatus", objTask.IdStatus),
@@ -540,7 +557,7 @@ namespace CustomerSupport.Controllers
 
                                 int IdComment = (int)item.IdComment;
                                 SqlParameter paramOutIdComment = new SqlParameter("@IdComment", System.Data.SqlDbType.Int);
-                                paramOutIdComment.Direction = System.Data.ParameterDirection.Output;
+                                paramOutIdComment.Direction = System.Data.ParameterDirection.InputOutput;
                                 paramOutIdComment.Value = IdComment;
 
                                 SqlResult = db.Database.ExecuteSqlCommand("GNTranCommentTask @TransactionType, @IdComment OUT, @IdTask " +
@@ -555,7 +572,7 @@ namespace CustomerSupport.Controllers
                                     }
                                 );
                                     IdComment = Int32.Parse(paramOutIdComment.Value.ToString());
-                                 
+                                    item.IdComment = IdComment;
                                 }
                             }
                         }

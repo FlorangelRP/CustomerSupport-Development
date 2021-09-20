@@ -477,7 +477,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row pt-2 pb-3">
+                                            @*<div class="row pt-2 pb-3">
 
                                                 <div class="col-md-12">
 
@@ -493,10 +493,10 @@
 
                                                             <div id="collapseCardCita" class="collapse" aria-labelledby="headingCita" data-parent="#accordionCita">
 
-                                                                <div class="card-body">
+                                                                <div class="card-body">*@
 
-                                                                    <div class="row">
-                                                                        <div class="col-md-4">
+                                                                    @*<div class="row">*@
+                                                                        @*<div class="col-md-4">
                                                                             <div class="form-group">
                                                                                 <div class="control-label">Prioridad:</div>
                                                                                 <select id="lst_Priority" class="form-control" style="width: 100%;">
@@ -504,9 +504,9 @@
                                                                                 @Html.HiddenFor(model => model.listTask[0].IdPriority, new { @id = "inIdPriority" })
                                                                                 @Html.ValidationMessageFor(model => model.listTask[0].IdPriority, "", new { @class = "text-danger" })
                                                                             </div>
-                                                                        </div>
+                                                                        </div>*@
 
-                                                                        <div class="col-md-4">
+                                                                        @*<div class="col-md-4">
                                                                             <div class="form-group">
                                                                                 <div class="control-label">Tipo:</div>
                                                                                 <select id="lst_IdTypeTask" class="form-control" style="width: 100%;">
@@ -514,9 +514,9 @@
                                                                                 @Html.HiddenFor(model => model.listTask[0].IdTypeTask, new { @id = "inIdTypeTask" })
                                                                                 @Html.ValidationMessageFor(model => model.listTask[0].IdTypeTask, "", new { @class = "text-danger" })
                                                                             </div>
-                                                                        </div>
+                                                                        </div>*@
 
-                                                                        <div class="col-md-4">
+                                                                        @*<div class="col-md-4">
                                                                             <div class="form-group">
                                                                                 <div class="control-label">Estado:</div>
                                                                                 <select id="lst_IdStatus" class="form-control" style="width: 100%;">
@@ -524,73 +524,73 @@
                                                                                 @Html.HiddenFor(model => model.listTask[0].IdStatus, new { @id = "inIdStatus" })
                                                                                 @Html.ValidationMessageFor(model => model.listTask[0].IdStatus, "", new { @class = "text-danger" })
                                                                             </div>
-                                                                        </div>
+                                                                        </div>*@
 
-                                                                    </div>
+                                                                    @*</div>*@
 
-                                                                    <div class="row">
-                                                                        <div class="col-md-3">
+                                                                    @*<div class="row">*@
+                                                                        <!--<div class="col-md-3">
                                                                             <div class="form-group">
                                                                                 <label>Representante:</label><br>
-                                                                                <select class="select2" onchange="filtrarEmployee(this.value)" id="filtroEmployee" data-placeholder="Seleccionar" name="listTask[0].IdPersonEmployee"></select>
+                                                                                <select class="select2" onchange="filtrarEmployee(this.value)" id="filtroEmployee" data-placeholder="Seleccionar" name="listTask[0].IdPersonEmployee"></select>-->
                                                                                 @*@Html.TextBoxFor(model => model.listTask[0].IdPersonEmployee, new { @id = "searchEmployee", @name = "listTask[0].IdPersonEmployee", @class = "form-control", @placeholder = "Seleccione" })*@
                                                                                 @*@Html.ValidationMessageFor(model => model.listTask[0].IdPersonEmployee, "", new { @class = "text-danger" })*@
-                                                                                @Html.HiddenFor(model => model.listTask[0].IdTask)
+                                                                                <!--@Html.HiddenFor(model => model.listTask[0].IdTask)
                                                                             </div>
-                                                                        </div>
-                                                                        <div class="col-md-3">
+                                                                        </div>-->
+                                                                        @*<div class="col-md-3">
                                                                             <div class="form-group">
                                                                                 <div class="control-label">Nombres:</div>
                                                                                 <label id="lbPersonEmployeeName"></label>
                                                                             </div>
-                                                                        </div>
-                                                                        <div class="col-md-3">
+                                                                        </div>*@
+                                                                        @*<div class="col-md-3">
                                                                             <div class="form-group">
                                                                                 <div class="control-label">Apellidos:</div>
                                                                                 <label id="lbPersonEmployeeLastName"></label>
                                                                             </div>
-                                                                        </div>
-                                                                        <div class="col-md-3">
+                                                                        </div>*@
+                                                                        @*<div class="col-md-3">
                                                                             <div class="form-group">
                                                                                 <div class="control-label">Actividad a realizar:</div>
                                                                                 @Html.TextAreaFor(model => model.listTask[0].Tittle, new { @class = "form-control", @rows = 3, @cols = 10 })
                                                                                 @Html.ValidationMessageFor(model => model.listTask[0].Tittle, "", new { @class = "text-danger" })
                                                                             </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="row">
-                                                                        <div class="col-md-3">
+                                                                        </div>*@
+                                                                    @*</div>*@
+                                                                    @*<div class="row">*@
+                                                                        @*<div class="col-md-3">
                                                                             <div class="form-group">
                                                                                 <div class="control-label">Fecha:</div>
                                                                                 @Html.TextBoxFor(model => model.listTask[0].DateIni, "{0:d}", new { @class = "form-control", @type = "date", @id = "dttDateIni" })
                                                                                 @Html.ValidationMessageFor(model => model.listTask[0].DateIni, "", new { @class = "text-danger" })
                                                                             </div>
-                                                                        </div>
-                                                                        <div class="col-md-3">
+                                                                        </div>*@
+                                                                        @*<div class="col-md-3">
                                                                             <div class="form-group">
                                                                                 <div class="control-label">Hora:</div>
                                                                                 @Html.TextBoxFor(model => model.listTask[0].HourIni, new { @class = "form-control", @type = "time" })
                                                                                 @Html.ValidationMessageFor(model => model.listTask[0].HourIni, "", new { @class = "text-danger" })
                                                                             </div>
-                                                                        </div>
-                                                                        <div class="col-md-6">
+                                                                        </div>*@
+                                                                        @*<div class="col-md-6">
                                                                             <div class="form-group">
                                                                                 <div class="control-label">Lugar:</div>
                                                                                 @Html.TextAreaFor(model => model.listTask[0].Place, new { @class = "form-control", @rows = 3, @cols = 10 })
                                                                                 @Html.ValidationMessageFor(model => model.listTask[0].Place, "", new { @class = "text-danger" })
                                                                             </div>
-                                                                        </div>
-                                                                    </div>
+                                                                        </div>*@
+                                                                    @*</div>*@
 
-                                                                </div>
+                                                                @*</div>
 
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </div>*@
 
-                                                </div>
+                                                @*</div>*@
 
-                                            </div>
+                                            @*</div>*@
 
                                         </div>
 
@@ -657,31 +657,31 @@
 
         //EMPLEADO--------------------------------------------------------------------------------
 
-        function filtrarEmployee(Employee) {
-            /*debugger;*/
-            var SelecCodeValue = Employee.trim();
-            cargarDataPersonEmployee(SelecCodeValue, ListPersonsEmployee);
-        }
+        //function filtrarEmployee(Employee) {
+        //    /*debugger;*/
+        //    var SelecCodeValue = Employee.trim();
+        //    cargarDataPersonEmployee(SelecCodeValue, ListPersonsEmployee);
+        //}
 
-        function cargarDataPersonEmployee(IdPersonEmployee, lstPersonsEmployee) {
+        //function cargarDataPersonEmployee(IdPersonEmployee, lstPersonsEmployee) {
 
-            if (IdPersonEmployee === "" || IdPersonEmployee === "0") {
-                document.getElementById('lbPersonEmployeeName').innerText = "";
-                document.getElementById('lbPersonEmployeeLastName').innerText = "";
-                return false;
-            }
+        //    if (IdPersonEmployee === "" || IdPersonEmployee === "0") {
+        //        document.getElementById('lbPersonEmployeeName').innerText = "";
+        //        document.getElementById('lbPersonEmployeeLastName').innerText = "";
+        //        return false;
+        //    }
 
-            if (IdPersonEmployee != undefined) {
-                var objPerson = lstPersonsEmployee.find((m) => m.IdPerson == IdPersonEmployee);
+        //    if (IdPersonEmployee != undefined) {
+        //        var objPerson = lstPersonsEmployee.find((m) => m.IdPerson == IdPersonEmployee);
 
-                document.getElementById('lbPersonEmployeeName').innerText = objPerson.Name;
-                document.getElementById('lbPersonEmployeeLastName').innerText = objPerson.LastName;
-            }
+        //        document.getElementById('lbPersonEmployeeName').innerText = objPerson.Name;
+        //        document.getElementById('lbPersonEmployeeLastName').innerText = objPerson.LastName;
+        //    }
 
-        }
+        //}
 
 
-        function ObtenerPersonasEmployee() {
+        @*function ObtenerPersonasEmployee() {
 
             $.ajax({
                 type: "GET",
@@ -725,7 +725,7 @@
                 }
             });
         }
-        ObtenerPersonasEmployee();
+        ObtenerPersonasEmployee();*@
 
         //$('#searchEmployee').inputpicker({
         //    data: ListPersonsEmployee,
@@ -933,19 +933,19 @@
         $(document).ready(function () {
 
             //Validacion de fecha--------------------------------------------
-            var today = new Date();
-            var dd = today.getDate();
-            var mm = today.getMonth() + 1; //January is 0!
-            var yyyy = today.getFullYear();
-            if (dd < 10) {
-                dd = '0' + dd
-            }
-            if (mm < 10) {
-                mm = '0' + mm
-            }
+            //var today = new Date();
+            //var dd = today.getDate();
+            //var mm = today.getMonth() + 1; //January is 0!
+            //var yyyy = today.getFullYear();
+            //if (dd < 10) {
+            //    dd = '0' + dd
+            //}
+            //if (mm < 10) {
+            //    mm = '0' + mm
+            //}
 
-            today = yyyy + '-' + mm + '-' + dd;
-            document.getElementById("dttDateIni").setAttribute("min", today);
+            //today = yyyy + '-' + mm + '-' + dd;
+            //document.getElementById("dttDateIni").setAttribute("min", today);
             //----------------------------------------------------------------
 
             //Mensaje de confirmacion--------------------
@@ -1115,25 +1115,25 @@
 
         //End - Eventos de vistas parciales
 
-             $("#lst_Priority").on('change', function () {
-                var selectValue = $(this).val();
-                //$("#inpIdIdentificationType").val(selectValue);
-                changeCodeInputHiddenList("lst_Priority", "inIdPriority", selectValue);
-            });
+            // $("#lst_Priority").on('change', function () {
+            //    var selectValue = $(this).val();
+            //    //$("#inpIdIdentificationType").val(selectValue);
+            //    changeCodeInputHiddenList("lst_Priority", "inIdPriority", selectValue);
+            //});
 
-            $("#lst_IdStatus").on('change', function () {
-                var selectValue = $(this).val();
-                //$("#inpIdIdentificationType").val(selectValue);
-                changeCodeInputHiddenList("lst_IdStatus", "inIdStatus", selectValue);
-            });
+            //$("#lst_IdStatus").on('change', function () {
+            //    var selectValue = $(this).val();
+            //    //$("#inpIdIdentificationType").val(selectValue);
+            //    changeCodeInputHiddenList("lst_IdStatus", "inIdStatus", selectValue);
+            //});
 
-            $("#lst_IdTypeTask").on('change', function () {
-                var selectValue = $(this).val();
-                //$("#inpIdIdentificationType").val(selectValue);
-                changeCodeInputHiddenList("lst_IdTypeTask", "inIdTypeTask", selectValue);
-            });
+            //$("#lst_IdTypeTask").on('change', function () {
+            //    var selectValue = $(this).val();
+            //    //$("#inpIdIdentificationType").val(selectValue);
+            //    changeCodeInputHiddenList("lst_IdTypeTask", "inIdTypeTask", selectValue);
+            //});
 
-            $.ajax({
+            @*$.ajax({
                 type: "GET",
                 url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' +"PRIORITYTASK",
                 data: "{}",
@@ -1164,9 +1164,9 @@
                     $("#error > span").text("Error al llenar lista de prioridad");
                 }
 
-            });
+            });*@
 
-            $.ajax({
+            @*$.ajax({
                 type: "GET",
                  url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' +"STATETASK",
                 data: "{}",
@@ -1197,9 +1197,9 @@
                     $("#error > span").text("Error al llenar lista de Estado");
                 }
 
-            });
+            });*@
 
-            $.ajax({
+            @*$.ajax({
                 type: "GET",
                  url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' +"TYPETASK",
                 data: "{}",
@@ -1230,7 +1230,7 @@
                     $("#error > span").text("Error al llenar lista de Tipos de tarea");
                 }
 
-            });
+            });*@
 
             function changeCodeInputHiddenList(idDropDownList, idInputHidden, valCode) {
                 //debugger;

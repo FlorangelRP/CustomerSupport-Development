@@ -23,7 +23,7 @@ namespace CustomerSupport.Models
         public int? Year { get; set; }
         public bool XYear { get; set; }
         public int YearIni { get; set; }
-        public int? YearEnd { get; set; }
+        public int YearEnd { get; set; }
         public bool XDate { get; set; }
         public DateTime? DateIni { get; set; }
         public DateTime? DateEnd { get; set; }

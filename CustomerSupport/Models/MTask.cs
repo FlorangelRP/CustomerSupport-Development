@@ -100,6 +100,7 @@ namespace CustomerSupport.Models
         public DateTime? Date { get; set; }
         public string DateOperation { get; set; }
         public string UserName { get; set; }
+        public int New { get; set; }
 
     }
 
