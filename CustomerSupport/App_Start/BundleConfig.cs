@@ -8,15 +8,12 @@ namespace CustomerSupport
         // Para obtener más información sobre las uniones, visite https://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
-            //"~/Scripts/jquery-{version}.js"
+            //"~/Scripts/jquery-{version}.js"     "~/Content/assets/js/jquery.js"
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                       "~/Content/assets/js/jquery.js"));
+                       "~/Scripts/jquery-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
-
-            bundles.Add(new ScriptBundle("~/bundles/inputmask").Include(
-                        "~/Scripts/inputmask/jquery.inputmask.js"));
 
             //// Utilice la versión de desarrollo de Modernizr para desarrollar y obtener información. De este modo, estará
             //// para la producción, use la herramienta de compilación disponible en https://modernizr.com para seleccionar solo las pruebas que necesite.
@@ -24,6 +21,7 @@ namespace CustomerSupport
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new Bundle("~/bundles/bootstrap").Include(
+                    "~/Scripts/jquery-ui-{version}.js",
                     "~/Scripts/umd/popper.js",
                     //"~/Content/assets/popper.js.1.16.1/umd/popper.js",
                     "~/Scripts/bootstrap.bundle.min.js",
@@ -49,6 +47,9 @@ namespace CustomerSupport
                     "~/Content/assets/css/dataTables/demo_table_jui.css",
                     "~/Content/assets/css/style.css",
                     "~/Content/assets/plugins/select2/css/select2.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/inputmask").Include(
+                        "~/Scripts/inputmask/jquery.inputmask.min.js"));
         }
     }
 }

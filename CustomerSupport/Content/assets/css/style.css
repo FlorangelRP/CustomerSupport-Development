@@ -33,6 +33,10 @@ Author: Kamleshyadav
 26. Forgot Css / .s_forgot
 27. Reset Password Css / .s_reset
 --------------------------------------------------------------------*/
+html {
+	min-height: 100%;
+	position: relative;
+}
 
 body{
 	font-size:16px;
@@ -40,6 +44,8 @@ body{
 	font-family: 'Poppins', sans-serif;
 	color:#8f979a;
 	line-height:24px;
+	margin-bottom: 25px;
+	padding-bottom: 25px;
 }
 h1,h2,h3,h4,h5,h6{
 	font-family: 'Quicksand', sans-serif;
@@ -1243,10 +1249,13 @@ h2.ss_foot_head {
     width: 100%;
 }
 .ss_copywrite {
-    /* background: #445b71; */
+	/* background: #445b71; */
 	background: #000012;
-    padding: 17px 15px 15px;
-    text-align: center;
+	padding: 17px 15px 15px;
+	text-align: center;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
 }
 .ss_copywrite p {
     color: #b9bdbf;

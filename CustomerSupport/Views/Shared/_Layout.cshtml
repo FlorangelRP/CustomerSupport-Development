@@ -7,15 +7,14 @@
     <link rel="shortcut icon" type="image/svg" href="~/Content/assets/images/svg/MM_Icon.svg">
     <title>@ViewBag.Title - M&M Enterprise</title>
 
-    <link rel="stylesheet" href="@Url.Content("~/Content/assets/css/jquery.qtip.min.css")"/>
-
-    <link rel="stylesheet" href="@Url.Content("~/Content/assets/css/fullcalendar.min.css")"/>
+    <link rel="stylesheet" href="@Url.Content("~/Content/assets/css/jquery.qtip.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/assets/css/fullcalendar.min.css")" />
     <link rel="stylesheet" href="@Url.Content("~/Content/assets/css/fullcalendar.print.css")" media="print" />
 
     @Styles.Render("~/Content/css")
-    <link rel="stylesheet" href="@Url.Content("~/Content/toastr.min.css")"/>
-    @Scripts.Render("~/bundles/modernizr")
-    @Scripts.Render("~/bundles/jquery")    
+    <link rel="stylesheet" href="@Url.Content("~/Content/toastr.min.css")" />
+
+    @Scripts.Render("~/bundles/modernizr")    
 </head>
 <body>
 
@@ -27,14 +26,11 @@
 
     @Html.Partial("_Footer")
 
-
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    @*<script src="@Url.Content("~/Content/assets/plugins/chart.js/Chart.min.js")"></script>*@
-    @*<script src="~/Content/assets/js/jquery.inputpicker.js?v3"></script>*@
+    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/inputmask")
     <script src="@Url.Content("~/Scripts/toastr.min.js")"></script>
+
     @RenderSection("Scripts", required: false)
 
 </body>
