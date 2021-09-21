@@ -47,8 +47,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <div class="control-label">Prioridad:</div>
-                                <select id="lst_Priority" class="form-control select2" style="width: 100%;">
-                                </select>
+                                <select id="lst_Priority" class="form-control" style="width: 100%;"></select>
                                 @Html.HiddenFor(model => model.IdPriority, new { @id = "inIdPriority" })
                                 @Html.ValidationMessageFor(model => model.IdPriority, "", new { @class = "text-danger" })
                             </div>
@@ -57,8 +56,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <div class="control-label">Tipo:</div>
-                                <select id="lst_IdTypeTask" class="form-control select2" style="width: 100%;">
-                                </select>
+                                <select id="lst_IdTypeTask" class="form-control" style="width: 100%;"></select>
                                 @Html.HiddenFor(model => model.IdTypeTask, new { @id = "inIdTypeTask" })
                                 @Html.ValidationMessageFor(model => model.IdTypeTask, "", new { @class = "text-danger" })
                             </div>
@@ -67,8 +65,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <div class="control-label">Estado:</div>
-                                <select id="lst_IdStatus" class="form-control select2" style="width: 100%;">
-                                </select>
+                                <select id="lst_IdStatus" class="form-control" style="width: 100%;"></select>
                                 @Html.HiddenFor(model => model.IdStatus, new { @id = "inIdStatus" })
                                 @Html.ValidationMessageFor(model => model.IdStatus, "", new { @class = "text-danger" })
                             </div>
@@ -155,7 +152,7 @@
                         <div class="col-md-8">
                             <div class="form-group">
                                 <div class="control-label">Responsable:</div>
-                                <select class="form-control select2 " onchange="filtrarPersona(this.value)" id="filtropersona" data-placeholder="Seleccione" name="IdPersonEmployee"></select>
+                                <select class="select2" onchange="filtrarPersona(this.value)" id="filtropersona" data-placeholder="Seleccione" name="IdPersonEmployee"></select>
                                 @Html.HiddenFor(model => model.IdPersonEmployee, new { @id = "IdPersonEmployee," })
                                 @Html.ValidationMessageFor(model => model.IdPersonEmployee, "", new { @class = "text-danger" })
 
@@ -187,7 +184,7 @@
                                                 <div class="col-md-8">
                                                     <div class="form-group">
                                                         <div class="control-label">Colaborador:</div>
-                                                        <select class="form-control select2 " onchange="filtrarColaborador(this.value)" id="filtroColaborador" data-placeholder="Seleccione"></select>
+                                                        <select class="select2" onchange="filtrarColaborador(this.value)" id="filtroColaborador" data-placeholder="Seleccione"></select>
                                                         @*@Html.HiddenFor(model => model.IdPersonEmployee, new { @id = "IdPersonColaborador," })
                                                             @Html.ValidationMessageFor(model => model.IdPersonEmployee, "", new { @class = "text-danger" })*@
 
@@ -527,7 +524,6 @@
 
 
 @section Scripts {
-    <script src="~/Scripts/bootstrap.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -810,7 +806,7 @@
                 }
             });
 
-            $('.select2').select2();
+            $('.select2').select2({ width: '100%' });
 
             $("#lst_Priority").on('change', function () {
                 var selectValue = $(this).val();
