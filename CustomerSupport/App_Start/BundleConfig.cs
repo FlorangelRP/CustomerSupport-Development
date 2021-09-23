@@ -46,7 +46,8 @@ namespace CustomerSupport
                     "~/Content/assets/css/dataTables/demo_table.css",
                     "~/Content/assets/css/dataTables/demo_table_jui.css",
                     "~/Content/assets/css/style.css",
-                    "~/Content/assets/plugins/select2/css/select2.css"));
+                    "~/Content/assets/plugins/select2/css/select2.css",
+                    "~/Content/assets/css/jquery-ui.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/inputmask").Include(
                         "~/Scripts/inputmask/jquery.inputmask.min.js"));

@@ -305,6 +305,7 @@
     <Content Include="Content\assets\css\fullcalendar.min.css" />
     <Content Include="Content\assets\css\fullcalendar.print.css" />
     <Content Include="Content\assets\css\graph.css" />
+    <Content Include="Content\assets\css\jquery-ui.css" />
     <Content Include="Content\assets\css\jquery.inputpicker.css" />
     <Content Include="Content\assets\css\jquery.qtip.min.css" />
     <Content Include="Content\assets\css\magnific-popup.css" />
@@ -1050,7 +1051,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties scripts_4tinymce_4tsconfig_1json__JsonSchema="" scripts_4toastr_1js_1map__JsonSchema="" />
+      <UserProperties scripts_4toastr_1js_1map__JsonSchema="" scripts_4tinymce_4tsconfig_1json__JsonSchema="" />
     </VisualStudio>
   </ProjectExtensions>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

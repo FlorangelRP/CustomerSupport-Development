@@ -23,105 +23,119 @@
         <div class="row shadow-sm p-3 m-1 bg-white rounded">
             <div class="card-body">
                 <div class="row">
+
                     <div class="col-md-6">
                         <div class="form-group">
-
                             <label class="ss_radioButton">
                                 Nro. Actividad por Empleado
                                 <input id="btnRadioXEmployee" type="radio" checked="checked" name="radio">
                                 <span class="checkmark"></span>
                             </label>
-
-
                         </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row" style="display:none" id="divEmpoyee">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <div class="control-label">Departamento:</div>
+                                            <select class="form-control" id="lst_IdDepartemntEmplo" onchange="ObtenerPersonas()" style="width: 100%;"></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <div class="control-label">Responsable:</div>
+                                            <select class="select2" id="filtropersona" onchange="filtrarPersona(this.value)" data-placeholder="Seleccione" name="IdPerson"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
+
                     <div class="col-md-6">
                         <div class="form-group">
-
                             <label class="ss_radioButton">
                                 Nro. Actividad Anual
                                 <input id="btnRadioXYear" type="radio" name="radio">
                                 <span class="checkmark"></span>
                             </label>
-
-
                         </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row" style="display:none" id="divYear">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <div class="control-label">Año Inicial:</div>
+                                            <input id="YearIni" type="number" class="input-numeric inputLostFocus form-control rounded-0">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <div class="control-label">Año Final:</div>
+                                            <input id="YearEnd" type="number" class="input-numeric inputLostFocus form-control rounded-0">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-                <div class="row" style="display:none" id="divYear">
-                    <div class="col-md-6">
 
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <div class="control-label">Año Inicial:</div>
-                            <input id="YearIni" type="number" class="input-numeric inputLostFocus form-control rounded-0">
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <div class="control-label">Año Final:</div>
-                            <input id="YearEnd" type="number" class="input-numeric inputLostFocus form-control rounded-0">
-                        </div>
-                    </div>
-                </div>
-                <div class="row" style="display:none" id="divEmpoyee">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <div class="control-label">Departamento:</div>
-                            <select class="form-control" id="lst_IdDepartemntEmplo" onchange="ObtenerPersonas()" style="width: 100%;"></select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <div class="control-label">Responsable:</div>
-                            <select class="select2" id="filtropersona" onchange="filtrarPersona(this.value)" data-placeholder="Seleccione" name="IdPerson"></select>
-                        </div>
-                    </div>
-                </div>
+
                 <br />
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-
                             <label class="ss_radioButton">
                                 Nro. Actividad por Departamento
                                 <input id="btnRadioXDepartment" type="radio" name="radio">
                                 <span class="checkmark"></span>
                             </label>
                         </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row" style="display:none" id="divDeparment">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <div class="control-label">Departamento:</div>
+                                            <select id="lst_IdDepartemnt" class="form-control" style="width: 100%;"></select>
+                                        </div>
+                                    </div>
+
+                                </div> 
+                            </div>
+                        </div>
+                        
                     </div>
+
                     <div class="col-md-6">
                         <div class="form-group">
-
                             <label class="ss_radioButton">
                                 Nro. Actividad Mensual
                                 <input id="btnRadioXMonth" type="radio" name="radio">
                                 <span class="checkmark"></span>
                             </label>
                         </div>
-                    </div>
-                </div>
-                <div class="row" style="display:none" id="divMonth">
-                    <div class="col-md-6">
-
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <div class="control-label">Año:</div>
-                            <input id="YearM" type="number" class="input-numeric inputLostFocus form-control rounded-0">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row" style="display:none" id="divMonth">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <div class="control-label">Año:</div>
+                                            <input id="YearM" type="number" class="input-numeric inputLostFocus form-control rounded-0">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="row" style="display:none" id="divDeparment">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <div class="control-label">Departamento:</div>
-                            <select id="lst_IdDepartemnt" class="form-control" style="width: 100%;"></select>
-                        </div>
-                    </div>
-
-                </div>
+                
+                
                 <br />
                 <div class="row">
                     <div class="col-md-6">
