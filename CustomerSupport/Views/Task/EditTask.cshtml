@@ -1003,9 +1003,9 @@
 
                 if (startDate = endDate && IniHour > IniEnd) {
 
-                    $('#HourIni').val($('#HourEnd').val());
+                    $('#HourEnd').val($('#HourIni').val());
 
-                    toastr.error("La Hora inicial No puede ser Mayor a la Hora Final");
+                    /* toastr.error("La Hora inicial No puede ser Mayor a la Hora Final");*/
                     return;
                 }
             });
