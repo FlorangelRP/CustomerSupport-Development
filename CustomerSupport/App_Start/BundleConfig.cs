@@ -29,24 +29,25 @@ namespace CustomerSupport
                     "~/Content/assets/js/bootstrap.min.js",
                     "~/Content/assets/js/jquery.magnific-popup.min.js",
                     "~/Content/assets/js/isotope.pkgd.min.js",
-                    "~/Content/assets/js/swiper.min.js",
+                    //"~/Content/assets/js/swiper.min.js", //Se paso al layout
                     "~/Content/assets/js/wow.min.js",
-                    "~/Content/assets/js/script.js",
-                    "~/Content/assets/js/respond.js",
-                    "~/Scripts/tinymce/tinymce.min.js",
-                    "~/Scripts/tinymce/jquery.tinymce.min.js"));
+                    //"~/Content/assets/js/script.js", //Se paso al layout
+                    "~/Content/assets/js/respond.js"
+                    //"~/Scripts/tinymce/tinymce.min.js", //Se paso al layout
+                    //"~/Scripts/tinymce/jquery.tinymce.min.js" //Se paso al layout
+                    ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                     "~/Content/assets/css/bootstrap.min.css",
                     "~/Content/assets/css/fonts.css",
                     "~/Content/assets/css/fontawesome.min.css",
                     "~/Content/assets/css/magnific-popup.css",
-                    "~/Content/assets/css/swiper.min.css",
+                    //"~/Content/assets/css/swiper.min.css", //Se paso al layout
                     "~/Content/assets/css/animate.css",                    
                     "~/Content/assets/css/dataTables/demo_table.css",
                     "~/Content/assets/css/dataTables/demo_table_jui.css",
                     "~/Content/assets/css/style.css",
-                    "~/Content/assets/plugins/select2/css/select2.css",
+                    //"~/Content/assets/plugins/select2/css/select2.css", //Se paso al layout
                     "~/Content/assets/css/jquery-ui.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/inputmask").Include(

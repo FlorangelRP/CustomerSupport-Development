@@ -12,9 +12,11 @@
     <link rel="stylesheet" href="@Url.Content("~/Content/fullcalendar.print.css")" media="print" />
 
     @Styles.Render("~/Content/css")
+    <link rel="stylesheet" href="@Url.Content("~/Content/assets/css/swiper.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/select2.min.css")" />
     <link rel="stylesheet" href="@Url.Content("~/Content/toastr.min.css")" />
 
-    @Scripts.Render("~/bundles/modernizr")    
+    @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
 
@@ -26,9 +28,15 @@
 
     @Html.Partial("_Footer")
 
+    <script src="@Url.Content("~/Content/assets/js/swiper.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/tinymce/tinymce.min.js")"></script>
+
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/inputmask")
+    <script src="@Url.Content("~/Content/assets/js/script.js")"></script>
+    @*<script src="@Url.Content("~/Content/assets/plugins/select2/js/select2.full.min.js") "></script>*@
+    <script src="@Url.Content("~/Scripts/select2.min.js") "></script>
     <script src="@Url.Content("~/Scripts/toastr.min.js")"></script>
 
     @RenderSection("Scripts", required: false)
