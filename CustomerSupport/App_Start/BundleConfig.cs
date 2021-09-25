@@ -37,7 +37,7 @@ namespace CustomerSupport
                     //"~/Scripts/tinymce/jquery.tinymce.min.js" //Se paso al layout
                     ));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
+            bundles.Add(new StyleBundle("~/bundles/css").Include(
                     "~/Content/assets/css/bootstrap.min.css",
                     "~/Content/assets/css/fonts.css",
                     "~/Content/assets/css/fontawesome.min.css",
