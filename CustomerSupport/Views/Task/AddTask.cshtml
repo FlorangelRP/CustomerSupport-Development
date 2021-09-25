@@ -98,14 +98,14 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <div class="control-label">Fecha Inicio:</div>
-                                @Html.TextBoxFor(model => model.DateIni, "{0:d}", new { @class = "form-control", @type = "date", @id = "dttDateIni" })
+                                @Html.TextBoxFor(model => model.DateIni, "{0:d}", new { @class = "form-control", @type = "date", @id = "dttDateIni", @Value = @DateTime.Now.ToShortDateString() })
                                 @Html.ValidationMessageFor(model => model.DateIni, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <div class="control-label">Fecha Fin:</div>
-                                @Html.TextBoxFor(model => model.DateEnd, "{0:d}", new { @class = "form-control", @type = "date", @id = "dttDateEnd" })
+                                @Html.TextBoxFor(model => model.DateEnd, "{0:d}", new { @class = "form-control", @type = "date", @id = "dttDateEnd" , @Value = @DateTime.Now.ToShortDateString() })
                                 @Html.ValidationMessageFor(model => model.DateEnd, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -697,9 +697,9 @@
 
                 if (startDate = endDate && IniHour > IniEnd) {
 
-                    $('#HourIni').val($('#HourEnd').val());
+                    $('#HourEnd').val($('#HourIni').val());
 
-                    toastr.error("La Hora inicial No puede ser Mayor a la Hora Final");
+                   /* toastr.error("La Hora inicial No puede ser Mayor a la Hora Final");*/
                     return;
                 }
             });
