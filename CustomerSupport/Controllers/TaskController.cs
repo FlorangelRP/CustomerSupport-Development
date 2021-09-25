@@ -375,6 +375,12 @@ namespace CustomerSupport.Controllers
             {
                 objTask.IdUser = ((MUser)Session["Usuario"]).IdUser;
 
+                if (objTask.DateEnd == objTask.DateIni && objTask.HourIni == objTask.HourEnd)
+                {
+                    ViewBag.ErrorSave = "La Hora Inicio no puede ser igual a la Hora Fin";
+                    return View(objTask);
+                }
+
                 if (ModelState.IsValid)
                 {
 
