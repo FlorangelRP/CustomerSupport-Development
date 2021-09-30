@@ -1,7 +1,7 @@
 ﻿@using CustomerSupport.Models
 @model CustomerSupport.Models.MTask
 @{
-    ViewBag.Title = "Listado de Actividades";
+    ViewBag.Title = "Listado de Tickets";
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Action = "ListTask";
 
@@ -29,7 +29,7 @@
                 <div class="row">
                     <div class=" col-2">
 
-                        <div class="btn_option pt-0" style=" vertical-align: central"><button class="searchRow border-0" data-toggle="tooltip" data-placement="top" title="Ver calendario" onclick="location.href='@Url.Action("ListCalendar", "Calendar")';return false;"><i class="far fa-calendar-alt"></i></button></div>
+                        <div class="btn_option pt-0" style=" vertical-align: central"><button class="searchRow border-0" data-toggle="tooltip" data-placement="top" title="Ver Cronograma" onclick="location.href='@Url.Action("ListCalendar", "Calendar")';return false;"><i class="far fa-calendar-alt"></i></button></div>
                     </div>
                     <div class="col-md-10  text-right">
                         <div class="text-right">

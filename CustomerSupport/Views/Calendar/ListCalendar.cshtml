@@ -2,7 +2,7 @@
 @model CustomerSupport.Models.MUser
 
 @{
-    ViewBag.Title = "Calendario de Actividades";
+    ViewBag.Title = "Cronograma";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -47,7 +47,7 @@
                 <div class="m-0 row justify-content-center">
                     <div class="form-horizontal col-md-12">
                         @*@using (Html.BeginForm("EditTask", "Task"))
-        {*@
+                    {*@
 
 
                         @Html.AntiForgeryToken()
@@ -91,12 +91,12 @@
                                             </fieldset>
 
                                             @*<div id="external-events">
-                                                <div class="external-event bg-success">Lunch</div>
-                                                <div class="external-event bg-warning">Go home</div>
-                                                <div class="external-event bg-info">Do homework</div>
-                                                <div class="external-event bg-primary">Work on UI design</div>
-                                                <div class="external-event bg-danger">Sleep tight</div>
-                                            </div>*@
+                                            <div class="external-event bg-success">Lunch</div>
+                                            <div class="external-event bg-warning">Go home</div>
+                                            <div class="external-event bg-info">Do homework</div>
+                                            <div class="external-event bg-primary">Work on UI design</div>
+                                            <div class="external-event bg-danger">Sleep tight</div>
+                                        </div>*@
                                         </div>
                                     </div>
                                 </div>
@@ -107,58 +107,57 @@
                                         <!-- THE CALENDAR -->
                                         <div id="calendar"></div>
                                     </div>
-                                   
+
                                 </div>
                             </div>
                         </div>
 
                         <!--<div class="row">
 
-                            <div class="col-md-3">
-                                <div class="sticky-top mb-3">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h4 class="card-title">Draggable Events</h4>
-                                        </div>
-                                        <div class="card-body">
-                                            <div id="external-events">
-                                                <div class="external-event bg-success">Lunch</div>
-                                                <div class="external-event bg-warning">Go home</div>
-                                                <div class="external-event bg-info">Do homework</div>
-                                                <div class="external-event bg-primary">Work on UI design</div>
-                                                <div class="external-event bg-danger">Sleep tight</div>
+                    <div class="col-md-3">
+                        <div class="sticky-top mb-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Draggable Events</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div id="external-events">
+                                        <div class="external-event bg-success">Lunch</div>
+                                        <div class="external-event bg-warning">Go home</div>
+                                        <div class="external-event bg-info">Do homework</div>
+                                        <div class="external-event bg-primary">Work on UI design</div>
+                                        <div class="external-event bg-danger">Sleep tight</div>
 
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-9">-->
-                                    @*<div class="box box-primary">*@
-                                    <!--<div class="no-padding">
-                                        <div id="calendar"></div>
-                                    </div>-->
-                                    @*</div>*@
-                                <!--</div>
-
                             </div>
+                        </div>
+                        <div class="col-md-9">-->
+                        @*<div class="box box-primary">*@
+                        <!--<div class="no-padding">
+                    <div id="calendar"></div>
+                </div>-->
+                        @*</div>*@
+                        <!--</div>
+
+                    </div>
 
 
-                        </div>-->
-
+                </div>-->
                         <!--<div class="row">
-        <div class="col-md-10 text-center">-->
+                <div class="col-md-10 text-center">-->
                         @*<span class="text-success">@ViewBag.SuccessSave</span>*@
                         @*<span class="text-danger">@ViewBag.ErrorSave</span>*@
                         <!--</div>
-    </div>-->
+                </div>-->
                         @* }*@
                     </div>
                 </div>
             </div>
 
-            @*<div>
-                @Html.ActionLink("Regresar a la Lista", "ListTask", "Task")
-            </div>*@
+            <div>
+                @Html.ActionLink("Regresar", "ListTask")
+            </div>
 
 
         </div>

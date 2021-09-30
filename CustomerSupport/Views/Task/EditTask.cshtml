@@ -2,7 +2,7 @@
 @model CustomerSupport.Models.MTask
 
 @{
-    ViewBag.Title = "Editar Asignación de Actvidades";
+    ViewBag.Title = "Editar Ticket";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -35,7 +35,7 @@
                     <div class="row">
                         <div class="col-md-8">
                             <div class="form-group">
-                                <div class="control-label">Número de Asignación de Actividad:</div>
+                                <div class="control-label">Número de Ticket:</div>
                                 @Html.DisplayFor(model => model.IdTask)
                                 @Html.HiddenFor(model => model.IdTask)
                             </div>
