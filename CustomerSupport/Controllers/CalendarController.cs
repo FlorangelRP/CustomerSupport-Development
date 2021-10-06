@@ -41,13 +41,13 @@ namespace CustomerSupport.Controllers
 
             try
             {
-                int? idtask = null;
+                int? idResponsable = null;
                 if(id!=null && id>0)
                 {
-                    idtask = id;
+                    idResponsable = id;
                 }
                 // Loading.
-                List<MCalendar> data = fnListCalendar(idtask, null, null, null, null, null, null, null, null, null,null);
+                List<MCalendar> data = fnListCalendar(null, null, null, idResponsable, null, null, null, null, null, null,null);
 
                 // Processing.
                 result = this.Json(data, JsonRequestBehavior.AllowGet);
