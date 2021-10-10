@@ -77,7 +77,7 @@
 
                         <div class="col-md-2">
                             <div class="form-group">
-                                <div class="control-label"># Padre:</div>
+                                <div class="control-label"># Ticket Asoc.:</div>
                                 @Html.TextBoxFor(model => model.IdFatherTask, new { @id = "IdFatherTask", @class = "input-numeric inputLostFocus form-control rounded-0" })
                                 @Html.ValidationMessageFor(model => model.IdFatherTask, "", new { @class = "text-danger" })
                             </div>
@@ -498,7 +498,7 @@
                     if (objFather == undefined) {
 
                         $("#IdFatherTask").val("");
-                        toastr.error("No existe el ticket Padre");
+                        toastr.error("No existe el ticket Asociado");
 
                     }
 
