@@ -38,9 +38,9 @@ namespace CustomerSupport
                     ));
 
             bundles.Add(new StyleBundle("~/bundles/css").Include(
-                    "~/Content/assets/css/bootstrap.min.css",
                     "~/Content/assets/css/fonts.css",
                     "~/Content/assets/css/fontawesome.min.css",
+                    "~/Content/assets/css/bootstrap.min.css",
                     "~/Content/assets/css/magnific-popup.css",
                     //"~/Content/assets/css/swiper.min.css", //Se paso al layout
                     "~/Content/assets/css/animate.css",                    

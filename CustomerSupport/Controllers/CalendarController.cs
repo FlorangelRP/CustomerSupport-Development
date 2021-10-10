@@ -79,9 +79,11 @@ namespace CustomerSupport.Controllers
                                          IdTask = tsk.IdTask,
                                          Tittle = tsk.Tittle,
                                          Activity = tsk.Activity,
-                                         DateIni = tsk.DateIni.ToString("yyyy-MM-dd") ,
-                                         DateEnd = tsk.DateEnd.ToString("yyyy-MM-dd") ,
-                                         StatusTask = tsk.Status,
+                                         DateIni = tsk.DateIni.ToString("yyyy-MM-dd"),
+                                         DateEnd = tsk.DateEnd.ToString("yyyy-MM-dd"),
+                                         HourIni = tsk.HourIni.ToString(),
+                                         HourEnd = tsk.HourEnd.ToString(),
+                                         StatusTask = tsk.Status
                                      }).ToList();
             return listMCalendar;
 

@@ -1289,7 +1289,7 @@ h2.ss_foot_head {
 .up_register:hover .ss_trade_btn{
 	opacity:1;
 	visibility:visible;
-	bottom: -25px;;
+	bottom: -25px;
 }
 .up_register h2 span {
     font-size: 15px;
@@ -3198,6 +3198,31 @@ td.cell-Label label {
 	display:normal;
 }
 
+/* ===responsive fullcalendar=== */
+.square-calendar {
+	position: relative !important;
+	width: 50% !important;
+}
+
+.square-calendar:after {
+	content: '' !important;
+	display: block !important;
+	padding-bottom: 100% !important;
+}
+
+.content-calendar {
+	position: absolute !important;
+	width: 100% !important;
+	height: 100% !important;
+}
+
+#calendar {
+	/*  max-width: 900px;
+  margin: 40px auto;*/
+	width: 100% !important;
+	margin: 0 auto !important;
+}
+
 /* ===responsive css=== */
 @media screen and (min-width: 1921px) {
 	.ss_index_one, .ss_index_two, .ss_index_three{
@@ -4157,7 +4182,7 @@ td.cell-Label label {
 		width: 89%;
 	}
 }
-@media screen and (min-color-index:0) and(-webkit-min-device-pixel-ratio:0){ 
+@media screen and (min-color-index:0) and (-webkit-min-device-pixel-ratio:0){ 
 	@media {
 		.ss_eight img {
 			border-radius: 10px;

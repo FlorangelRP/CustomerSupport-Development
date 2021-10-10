@@ -21,164 +21,128 @@
         }
 
         <div class="row shadow-sm p-3 m-1 bg-white rounded">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="control-label">Responsable:</div>
-                        <select class="select2" onchange="filtrarPersona(this.value)" id="filtropersona" data-placeholder="Seleccione" name="IdPerson"></select>
-                        @Html.HiddenFor(model => model.PersonEmployee.IdPerson, new { @id = "IdPersonEmployee," })
-                        @Html.ValidationMessageFor(model => model.PersonEmployee.IdPerson, "", new { @class = "text-danger" })
 
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <br />
-                            @*<button class="white_btn small-btn" onclick="FiltrarTicket()" ;return false;">Aceptar</button>*@
-                            <div class="btn_option pt-0" style=" vertical-align: bottom"><button class="searchRow border-0" data-toggle="tooltip" data-placement="top" title="Filtrar" onclick="funtionelimnar()" ;return false;"><i class="fas fa-filter"></i></button></div>
-                        </div>
-                    </div>
+            <div class="col-md-10">
+                <div class="form-group">
+                    <div class="control-label">Responsable:</div>
+                    <select class="select2" onchange="filtrarPersona(this.value)" id="filtropersona" data-placeholder="Seleccione" name="IdPerson"></select>
+                    @Html.HiddenFor(model => model.PersonEmployee.IdPerson, new { @id = "IdPersonEmployee," })
                 </div>
-
             </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="btn_option" style=" vertical-align: bottom"><button class="searchRow border-0" data-toggle="tooltip" data-placement="top" title="Filtrar" onclick="funtionelimnar()" ;return false;"><i class="fas fa-filter"></i></button></div>
+                </div>
+            </div>
+
         </div>
+
         <br />
-        <div class="row shadow-sm p-3 m-1 bg-white rounded">
-            <div class="card-body">
-                <div class="m-0 row justify-content-center">
-                    <div class="form-horizontal col-md-12">
-                        @*@using (Html.BeginForm("EditTask", "Task"))
-                    {*@
 
+        @*<div class="row shadow-sm p-3 m-1 bg-white rounded">*@
+        <div class="row">
 
-                        @Html.AntiForgeryToken()
-
-
-                        <br />
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="sticky-top mb-3">
-
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h4 class="card-title">Estados</h4>
-                                        </div>
-                                        <div class="card-body">
-                                            <fieldset>
-                                                <span>
-                                                    <input class="dot border-0" style=" background-color: #1f77b4;">
-                                                    <label>Nuevo</label>
-                                                </span><br />
-                                                <span>
-                                                    <input class="dot border-0" style=" background-color: #aec7e8;">
-                                                    <label>En Proceso</label>
-                                                </span><br />
-                                                <span>
-                                                    <input class="dot border-0" style=" background-color: #ff7f0e;">
-                                                    <label>En Espera de Feedback</label>
-                                                </span><br />
-                                                <span>
-                                                    <input class="dot border-0" style=" background-color: #2ca02c;">
-                                                    <label>Listo para Cerrar</label>
-                                                </span><br />
-                                                <span>
-                                                    <input class="dot border-0" style=" background-color: #c49c94;">
-                                                    <label>Finalizado</label>
-                                                </span><br />
-                                                <span>
-                                                    <input class="dot border-0" style=" background-color: #c5b0d5;">
-                                                    <label>No Procede</label>
-                                                </span><br />
-                                            </fieldset>
-
-                                            @*<div id="external-events">
-                                            <div class="external-event bg-success">Lunch</div>
-                                            <div class="external-event bg-warning">Go home</div>
-                                            <div class="external-event bg-info">Do homework</div>
-                                            <div class="external-event bg-primary">Work on UI design</div>
-                                            <div class="external-event bg-danger">Sleep tight</div>
-                                        </div>*@
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-9">
-                                <div class="card card-primary" style="border:none">
-                                    <div class="card-body p-0">
-                                        <!-- THE CALENDAR -->
-                                        <div id="calendar"></div>
-                                    </div>
-
-                                </div>
-                            </div>
+            <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                <div class="form-group">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mt-0 mb-0">Estados</h5>
                         </div>
+                        <div class="card-body">
+                            <fieldset>
 
-                        <!--<div class="row">
+                                <span class="btn-group">
+                                    <input class="dot border-0 m-1" style="background-color: #1f77b4;">
+                                    <label style="font-size:12px;">Nuevo</label>
+                                </span><br />
+                                <span class="btn-group">
+                                    <input class="dot border-0 m-1" style="background-color: #aec7e8;">
+                                    <label style="font-size:12px;">En Proceso</label>
+                                </span><br />
+                                <span class="btn-group">
+                                    <input class="dot border-0 m-1" style="background-color: #ff7f0e;">
+                                    <label style="font-size:12px;">En Espera de Feedback</label>
+                                </span><br />
+                                <span class="btn-group">
+                                    <input class="dot border-0 m-1" style="background-color: #2ca02c;">
+                                    <label style="font-size:12px;">Listo para Cerrar</label>
+                                </span><br />
+                                <span class="btn-group">
+                                    <input class="dot border-0 m-1" style="background-color: #c49c94;">
+                                    <label style="font-size:12px;">Finalizado</label>
+                                </span><br />
+                                <span class="btn-group">
+                                    <input class="dot border-0 m-1" style="background-color: #c5b0d5;">
+                                    <label style="font-size:12px;">No Procede</label>
+                                </span><br />
 
-                <div class="col-md-3">
-                    <div class="sticky-top mb-3">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Draggable Events</h4>
-                            </div>
-                            <div class="card-body">
-                                <div id="external-events">
-                                    <div class="external-event bg-success">Lunch</div>
-                                    <div class="external-event bg-warning">Go home</div>
-                                    <div class="external-event bg-info">Do homework</div>
-                                    <div class="external-event bg-primary">Work on UI design</div>
-                                    <div class="external-event bg-danger">Sleep tight</div>
-
-                                </div>
-                            </div>
+                            </fieldset>
                         </div>
-                    </div>
-                    <div class="col-md-9">-->
-                        @*<div class="box box-primary">*@
-                        <!--<div class="no-padding">
-                    <div id="calendar"></div>
-                </div>-->
-                        @*</div>*@
-                        <!--</div>
-
-                    </div>
-
-
-                </div>-->
-                        <!--<div class="row">
-                <div class="col-md-10 text-center">-->
-                        @*<span class="text-success">@ViewBag.SuccessSave</span>*@
-                        @*<span class="text-danger">@ViewBag.ErrorSave</span>*@
-                        <!--</div>
-                </div>-->
-                        @* }*@
                     </div>
                 </div>
             </div>
 
-            <div>
-                @Html.ActionLink("Regresar", "ListTask", "Task")
+            <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+
+                @*<div class="row" id="divDateInterval">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="control-label">Fecha Inicio:</div>
+                            @Html.TextBox("dttDateIni", "{0:d}", new { @class = "form-control", @type = "date", @id = "dttDateIni", @Value = @DateTime.Now.ToShortDateString(), @onchange = "fnDateInterval()" })
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="control-label">Fecha Fin:</div>
+                            @Html.TextBox("dttDateEnd", "{0:d}", new { @class = "form-control", @type = "date", @id = "dttDateEnd", @Value = @DateTime.Now.ToShortDateString(), @onchange = "fnDateInterval()" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div id="calendar"></div>
+                    </div>
+                </div>*@
+                
+                <!-- THE CALENDAR -->
+                <div id="calendar"></div>
+
             </div>
-
-
         </div>
+        @*</div>*@
+
+        <br />
+
+        <div>
+            @Html.ActionLink("Regresar", "ListTask", "Task")
+        </div>
+
     </div>
 </div>
+
+
 @section Scripts {
 
-    <script src="~/Scripts/moment.min.js"></script>
-    <script src="~/Content/assets/js/jquery.qtip.min.js"></script>
-    <script src="~/Scripts/fullcalendar.min.js"></script>
+    @*/*--- FullCalendar v3.9.0 ---*/*@
+    @*<script src="~/Scripts/moment.min.js"></script>*@
+    @*<script src="~/Content/assets/js/jquery.qtip.min.js"></script>*@
+    @*<script src="~/Scripts/fullcalendar.min.js"></script>*@
+    @*/*--- FullCalendar v4.4.2 ---*/*@
+    <script src="@Url.Content("~/Scripts/moment.min.js")"></script>
+    <script src="@Url.Content("~/Content/assets/js/jquery.qtip.min.js")"></script>
+    <script src="@Url.Content("~/Content/fullcalendar-4.4.2/core/main.min.js")"></script>
+    <script src="@Url.Content("~/Content/fullcalendar-4.4.2/daygrid/main.min.js")"></script>
+    <script src="@Url.Content("~/Content/fullcalendar-4.4.2/timeGrid/main.min.js")"></script>
+    <script src="@Url.Content("~/Content/fullcalendar-4.4.2/list/main.min.js")"></script>
+    <script src="@Url.Content("~/Content/fullcalendar-4.4.2/bootstrap/main.min.js")"></script>
+    <script src="@Url.Content("~/Content/fullcalendar-4.4.2/moment/main.min.js")"></script>
 
-    <script>
+    <script type="text/javascript">
         var ListPersons = [];
-     /*   debugger;*/
+        var calendar; //FullCalendar v4.4.2
+        var optionsViewFC;
 
-        @*var Permis = @Html.Raw(Json.Encode(perm));
-        Buscar = Permis.Search;
-        Editar = Permis.Edit;*@
-
-
-       function ObtenerPersonas() {
+        function ObtenerPersonas() {
             $.ajax({
                 type: "GET",
                 url: '@Url.Action("GetListPerson", "Person")?idPersonType=2',
@@ -218,7 +182,7 @@
                             }
 
                         }
-                        
+
                     }
                 }
             })
@@ -226,36 +190,233 @@
         }
 
         ObtenerPersonas();
-        function  funtionelimnar()
-        {
-            $('#calendar').fullCalendar('destroy');
+
+        //function fnDateInterval() {
+        //    var DateStart = document.getElementById("dttDateIni").value;
+        //    var DateEnd = document.getElementById("dttDateEnd").value;
+
+        //    $('#calendar').fullCalendar('destroy');
+        //    FiltrarCalender();
+
+        //    $('#calendar').fullCalendar('changeView', 'agenda', {
+        //        start: DateStart,
+        //        end: DateEnd
+        //    });
+        //}
+
+
+        /*--- FullCalendar v3.9.0 ---*/
+
+        //function funtionelimnar() {
+        //    $('#calendar').fullCalendar('destroy');
+        //    FiltrarCalender();
+        //}
+
+        //function FiltrarCalender() {
+
+        //    /*debugger;*/
+        //    var intIdResponsable = $("#filtropersona").val();
+
+        //    var datos = {
+        //        id: intIdResponsable
+        //    };
+
+        //    $('#calendar').fullCalendar({
+        //        /*themeSystem: 'jquery-ui',*/
+        //        //plugins: ['dayGrid'],
+        //        //defaultView: 'dayGridMonth',
+
+        //        header:
+        //        {
+        //            left: 'prev,next today',
+        //            center: 'title',
+        //            right: 'month,agendaWeek,agendaDay,listMonth'
+        //        },
+        //        //weekNumbers: true, // allow see week number
+        //        eventLimit: true, // allow "more" link when too many events
+
+        //        buttonText: {
+        //            today: 'Today',
+        //            month: 'Month',
+        //            week: 'Week',
+        //            day: 'Day',
+        //            list: 'List'
+        //        },
+        //        resources: [
+        //            { id: "En Proceso", title: "En Proceso" },
+        //            { id: "Nuevo", title: "Nuevo" },
+        //            { id: "Finalizado", title: "Finalizado" },
+        //            { id: "En Espera de Feedback", title: "En Espera de Feedback" },
+        //            { id: "Listo para Cerrar", title: "Listo para Cerrar" }
+        //        ],
+
+        //        events: function (start, end, timezone, callback) {
+        //            $.ajax({
+        //                url: '/Calendar/GetCalendarData',
+        //                type: "GET",
+        //                dataType: "JSON",
+        //                'data': datos,
+        //                'dataSrc': '',
+        //                success: function (result) {
+
+        //                    var events = [];
+
+        //                    $.each(result, function (i, data) {
+
+        //                        var strbackgroundColor;
+        //                        var strborderColor;
+        //                        var status = data.StatusTask;
+
+        //                        var DateStart;
+        //                        var DateEnd;
+
+        //                        if (status === "Nuevo") {
+        //                            strbackgroundColor = '#1f77b4';
+        //                            strborderColor = '#1f77b4';
+        //                        }
+
+        //                        if(status === "En Proceso")
+        //                        {
+        //                            strbackgroundColor = '#aec7e8';
+        //                            strborderColor = '#aec7e8';
+        //                        }
+
+        //                        if (status === "En Espera de Feedback") {
+        //                            strbackgroundColor = '#ff7f0e';
+        //                            strborderColor = '#ff7f0e';
+        //                        }
+
+        //                        if (status === "Listo para Cerrar") {
+        //                            strbackgroundColor = '#2ca02c';
+        //                            strborderColor = '#2ca02c';
+        //                        }
+
+        //                        if (status === "Finalizado") {
+        //                            strbackgroundColor = '#c49c94';
+        //                            strborderColor = '#c49c94';
+        //                        }
+
+
+        //                        if (status === "No Procede") {
+        //                            strbackgroundColor = '#c5b0d5';
+        //                            strborderColor = '#c5b0d5';
+        //                        }
+
+        //                        if (moment(data.DateIni).format('YYYY-MM-DD') === moment(data.DateEnd).format('YYYY-MM-DD')) {
+        //                            DateStart = moment(data.DateIni + ' ' + data.HourIni).format('YYYY-MM-DD HH:mm');
+        //                            DateEnd = moment(data.DateEnd + ' ' + data.HourEnd).format('YYYY-MM-DD HH:mm');
+        //                        }
+        //                        else {
+        //                            DateStart = moment(data.DateIni).format('YYYY-MM-DD');
+        //                            DateEnd = moment(data.DateEnd).add(1, 'days').format('YYYY-MM-DD');
+        //                        }
+        //                        //alert(DateStart);
+        //                        //alert(DateEnd);
+
+        //                        events.push(
+        //                            {
+        //                                title: data.Tittle,
+        //                                description: data.Activity,
+        //                                start: DateStart, // moment(data.DateIni).format('YYYY-MM-DD'),
+        //                                end: DateEnd,     // moment(data.DateEnd).format('YYYY-MM-DD'),
+        //                                backgroundColor: strbackgroundColor,
+        //                                borderColor: strborderColor,
+        //                                textColor: 'white'
+        //                            });
+        //                    });
+
+        //                    callback(events);
+        //                }
+        //            });
+        //        },
+
+        //        eventRender: function (event, element,view) {
+        //            element.qtip(
+        //                {
+        //                    content: event.description
+        //                });
+        //        },
+
+        //        editable: false,
+
+        //        windowResize: function () {
+        //            var ww = $(window).width();
+        //            var view = (ww <= 768) ? 'listMonth' : 'month';
+        //            var currentView = $('#calendar').fullCalendar('getView');
+        //            //alert(view);
+        //            //alert(currentView.name);
+        //            if (view != currentView.name) {
+        //                $('#calendar').fullCalendar('changeView', view);
+        //                //$('#calendar').fullCalendar('render');
+        //            }
+        //            //if (ww <= 768) {
+        //            //    $('#calendar').find('.fc-left').hide(); //.fc-toolbar .fc-header-toolbar
+        //            //    //$('#divDateInterval').show();
+        //            //} else {
+        //            //    $('#calendar').find('.fc-left').show();
+        //            //    //$('#divDateInterval').hide();
+        //            //}
+        //        }
+
+        //    });
+
+        //    //Para cuando carga por primera vez la pantalla
+        //    var ww = $(window).width();
+        //    var view = (ww <= 768) ? 'listMonth' : 'month';
+        //    var currentView = $('#calendar').fullCalendar('getView');
+        //    if (view != currentView.name) {
+        //        $('#calendar').fullCalendar('changeView', view);
+        //    }
+        //    //---------------------------------------------------
+
+        //}
+        /*---        End          ---*/
+
+
+        /*--- FullCalendar v4.4.2 ---*/
+
+        function funtionelimnar() {
+
+            if (calendar) {
+                calendar.destroy();
+            }
+
             FiltrarCalender();
         }
 
-       /* debugger;*/
+
         function FiltrarCalender() {
 
-
-            /*debugger;*/
             var intIdResponsable = $("#filtropersona").val();
-
             var datos = {
                 id: intIdResponsable
             };
 
-            $('#calendar').fullCalendar({
+            var calendarEl = document.getElementById('calendar');
+
+            optionsViewFC = {
+
+                plugins: ['dayGrid', 'timeGrid', 'list', 'bootstrap', 'moment'],
+                //defaultView: 'dayGridMonth',
+                //timeZone: 'UTC',
+                themeSystem: 'bootstrap',
                 header:
                 {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'month,agendaWeek,agendaDay'
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
                 },
+                //weekNumbers: true, // allow see week number
+                eventLimit: true, // allow "more" link when too many events
+
                 buttonText: {
-                    today: 'today',
-                    month: 'month',
-                    week: 'week',
-                    day: 'day'
+                    today: 'Today',
+                    month: 'Month',
+                    week: 'Week',
+                    day: 'Day',
+                    list: 'List'
                 },
+
                 resources: [
                     { id: "En Proceso", title: "En Proceso" },
                     { id: "Nuevo", title: "Nuevo" },
@@ -264,7 +425,7 @@
                     { id: "Listo para Cerrar", title: "Listo para Cerrar" }
                 ],
 
-                events: function (start, end, timezone, callback) {
+                events: function (info, successCallback, failureCallback) {
                     $.ajax({
                         url: '/Calendar/GetCalendarData',
                         type: "GET",
@@ -274,20 +435,22 @@
                         success: function (result) {
 
                             var events = [];
-                            
+
                             $.each(result, function (i, data) {
-                                
+
                                 var strbackgroundColor;
                                 var strborderColor;
                                 var status = data.StatusTask;
+
+                                var DateStart;
+                                var DateEnd;
 
                                 if (status === "Nuevo") {
                                     strbackgroundColor = '#1f77b4';
                                     strborderColor = '#1f77b4';
                                 }
 
-                                if(status === "En Proceso")
-                                {
+                                if (status === "En Proceso") {
                                     strbackgroundColor = '#aec7e8';
                                     strborderColor = '#aec7e8';
                                 }
@@ -313,35 +476,94 @@
                                     strborderColor = '#c5b0d5';
                                 }
 
+                                if (moment(data.DateIni).format('YYYY-MM-DD') === moment(data.DateEnd).format('YYYY-MM-DD')) {
+                                    DateStart = moment(data.DateIni + ' ' + data.HourIni).format('YYYY-MM-DD HH:mm');
+                                    DateEnd = moment(data.DateEnd + ' ' + data.HourEnd).format('YYYY-MM-DD HH:mm');
+                                }
+                                else {
+                                    DateStart = moment(data.DateIni).format('YYYY-MM-DD');
+                                    DateEnd = moment(data.DateEnd).add(1, 'days').format('YYYY-MM-DD');
+                                }
+                                //alert(DateStart);
+                                //alert(DateEnd);
 
                                 events.push(
                                     {
                                         title: data.Tittle,
                                         description: data.Activity,
-                                        start: moment(data.DateIni).format('YYYY-MM-DD'),
-                                        end: moment(data.DateEnd).format('YYYY-MM-DD'),
+                                        start: DateStart, // moment(data.DateIni).format('YYYY-MM-DD'),
+                                        end: DateEnd,     // moment(data.DateEnd).format('YYYY-MM-DD'),
                                         backgroundColor: strbackgroundColor,
                                         borderColor: strborderColor,
                                         textColor: 'white'
                                     });
                             });
 
-                            callback(events);
+                            successCallback(events);
                         }
                     });
                 },
 
-                eventRender: function (event, element,view) {
-                    element.qtip(
-                        {
-                            content: event.description
-                        });
+                eventRender: function (info) {
+                    $(info.el).qtip({
+                        content: {
+                            //title: info.event.extendedProps.summaryTitle,
+                            text: info.event.extendedProps.description
+                        },
+                        style: { classes: 'qtip-bootstrap' } //see documentation in https://github.com/qTip2/qTip2/wiki/Style-Guide
+                    });
                 },
 
                 editable: false
-            });
+
+                //, windowResize: function (view) {
+                //    //var ww = $(window).width();
+                //    //var view = (ww <= 768) ? 'listMonth' : 'dayGridMonth';
+                //    //var currentView = calendar.view;
+                //    //if (view != currentView.name) {
+                //    //    calendar.changeView(view);
+                //    //}    right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+                //    if (ww <= 768) {
+                //        //$('#calendar').find('button.fc-timeGridWeek-button').hide();
+                //        //$('#calendar').find('button.fc-timeGriDay-button').hide();
+                //        $('#calendar').find('button.fc-listMonth-button').hide();
+                //        //calendar.setOption('titleFormat', 'MMM YY');
+                //    } else {
+                //        //$('#calendar').find('button.fc-timeGridWeek-button').show();
+                //        //$('#calendar').find('button.fc-timeGriDay-button').show();
+                //        $('#calendar').find('button.fc-listMonth-button').show();
+                //        //calendar.setOption('titleFormat', 'MMMM YYYY');
+                //    }
+                //}
+
+            };
+            recreateFC($(window).width());
+
+            calendar = new FullCalendar.Calendar(calendarEl, optionsViewFC);
+            calendar.render();            
+            calendar.updateSize();
         }
-        FiltrarCalender();
+
+        function recreateFC(screenWidth) {
+            if (screenWidth <= 768) {
+                optionsViewFC.header = {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                };
+            } else {
+                optionsViewFC.header = {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+                };
+            }
+            //alert(optionsViewFC.header.right);
+            //console.log(optionsViewFC.header);
+        }
+        /*---        End          ---*/
+
+
 
         function cargarDataPerson(IdPerson, lstPersons) {
             if (IdPerson == "" || IdPerson == "0") { return false; }
@@ -356,15 +578,26 @@
             cargarDataPerson(SelecCodeValue, ListPersons);
         }
 
-        
         $(document).ready(function () {
 
             $('.select2').select2({ width: '100%' });
 
-            $('#filtropersona').on('change', function () {
-                $('calendar').fullCalendar('destroy');
-                FiltrarCalender();
-            });
+            /*--- FullCalendar v3.9.0 ---*/
+            //$('#filtropersona').on('change', function () {
+            //    $('calendar').fullCalendar('destroy');
+            //    FiltrarCalender();
+            //});
+            /*---        End          ---*/
+
         });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            FiltrarCalender();            
+        });
+
+        $(window).resize(function () {
+            funtionelimnar();
+        });
+
     </script>
 }

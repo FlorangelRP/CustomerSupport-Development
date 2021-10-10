@@ -7,11 +7,44 @@
     <link rel="shortcut icon" type="image/svg" href="~/Content/assets/images/svg/MM_Icon.svg">
     <title>@ViewBag.Title - M&M Enterprise</title>
 
-    <link rel="stylesheet" href="@Url.Content("~/Content/assets/css/jquery.qtip.min.css")" />
-    <link rel="stylesheet" href="@Url.Content("~/Content/fullcalendar.min.css")" />
-    <link rel="stylesheet" href="@Url.Content("~/Content/fullcalendar.print.css")" media="print" />
+    @*/*--- FullCalendar v3.9.0 ---*/*@
+    @*<link rel="stylesheet" href="@Url.Content("~/Content/assets/css/jquery.qtip.min.css")" />*@
+    @*<link rel="stylesheet" href="@Url.Content("~/Content/fullcalendar.min.css")" />*@
+    @*<link rel="stylesheet" href="@Url.Content("~/Content/fullcalendar.print.css")" media="print" />*@
 
     @Styles.Render("~/bundles/css")
+    @*/*--- FullCalendar v4.4.2 ---*/*@
+    <link rel="stylesheet" href="@Url.Content("~/Content/assets/css/jquery.qtip.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/fullcalendar-4.4.2/core/main.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/fullcalendar-4.4.2/daygrid/main.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/fullcalendar-4.4.2/timeGrid/main.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/fullcalendar-4.4.2/list/main.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/fullcalendar-4.4.2/bootstrap/main.min.css")" />
+    <style type="text/css">
+        @@media (max-width: 768px) {
+            .fc-toolbar {
+                display: flex;
+                flex-direction:column;
+                justify-content: flex-start;
+                align-items: center;
+            }
+            .fc-toolbar .fc-left{
+                float:none;
+            }
+            .fc-toolbar .fc-right {
+                float: none;
+            }
+            .fc-toolbar .fc-center {
+                display: block;
+            }
+            .fc-day-header {
+                /* force tittles to be one-line tall */
+                white-space: nowrap;
+                overflow: hidden;
+            }
+        }
+    </style>
+
     <link rel="stylesheet" href="@Url.Content("~/Content/assets/css/swiper.min.css")" />
     <link rel="stylesheet" href="@Url.Content("~/Content/css/select2.min.css")" />
     <link rel="stylesheet" href="@Url.Content("~/Content/toastr.min.css")" />

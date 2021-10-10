@@ -12,6 +12,8 @@ namespace CustomerSupport.Models
         public string Activity { get; set; }
         public string DateIni { get; set; }
         public string DateEnd { get; set; }
+        public string HourIni { get; set; }
+        public string HourEnd { get; set; }
         public string StatusTask { get; set; }
 
     }
