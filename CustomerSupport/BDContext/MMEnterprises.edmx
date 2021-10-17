@@ -5,6 +5,14 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="MMEnterprisesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AssociatePosition">
+          <Key>
+            <PropertyRef Name="IdPosition" />
+            <PropertyRef Name="IdAssociate" />
+          </Key>
+          <Property Name="IdPosition" Type="int" Nullable="false" />
+          <Property Name="IdAssociate" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Catalog">
           <Key>
             <PropertyRef Name="IdCatalog" />
@@ -107,6 +115,16 @@ warning 6013: The table/view 'MMEnterprises.dbo.Colors' does not have a primary 
           </Key>
           <Property Name="IdTask" Type="int" Nullable="false" />
           <Property Name="IdPerson" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Position">
+          <Key>
+            <PropertyRef Name="IdPosition" />
+          </Key>
+          <Property Name="IdPosition" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="IdDepartment" Type="int" Nullable="false" />
+          <Property Name="IdPositionLevel" Type="int" Nullable="false" />
+          <Property Name="Status" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -258,6 +276,30 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_AssociatePosition_AssocPosition">
+          <End Role="Position" Type="Self.Position" Multiplicity="1" />
+          <End Role="AssociatePosition" Type="Self.AssociatePosition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Position">
+              <PropertyRef Name="IdPosition" />
+            </Principal>
+            <Dependent Role="AssociatePosition">
+              <PropertyRef Name="IdAssociate" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AssociatePosition_Position">
+          <End Role="Position" Type="Self.Position" Multiplicity="1" />
+          <End Role="AssociatePosition" Type="Self.AssociatePosition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Position">
+              <PropertyRef Name="IdPosition" />
+            </Principal>
+            <Dependent Role="AssociatePosition">
+              <PropertyRef Name="IdPosition" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CatalogDetail_Catalog">
           <End Role="Catalog" Type="Self.Catalog" Multiplicity="1" />
           <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="*" />
@@ -355,11 +397,11 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Person_Position">
-          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="0..1" />
+          <End Role="Position" Type="Self.Position" Multiplicity="0..1" />
           <End Role="Person" Type="Self.Person" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="CatalogDetail">
-              <PropertyRef Name="IdCatalogDetail" />
+            <Principal Role="Position">
+              <PropertyRef Name="IdPosition" />
             </Principal>
             <Dependent Role="Person">
               <PropertyRef Name="IdPosition" />
@@ -423,6 +465,30 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             </Principal>
             <Dependent Role="PersonTask">
               <PropertyRef Name="IdTask" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Position_Department">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="1" />
+          <End Role="Position" Type="Self.Position" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="Position">
+              <PropertyRef Name="IdDepartment" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Position_PositionLevel">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="1" />
+          <End Role="Position" Type="Self.Position" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="Position">
+              <PropertyRef Name="IdPositionLevel" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -674,6 +740,10 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Parameter Name="DateEnd" Type="datetime" Mode="In" />
         </Function>
         <Function Name="GNLisColor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GNListAssociatePosition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdPosition" Type="int" Mode="In" />
+          <Parameter Name="IdAssociate" Type="int" Mode="In" />
+        </Function>
         <Function Name="GNListBitacora" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdTask" Type="int" Mode="In" />
         </Function>
@@ -710,6 +780,12 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
         <Function Name="GNListPersonTask" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdTask" Type="int" Mode="In" />
           <Parameter Name="IdPerson" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GNListPosition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdPosition" Type="int" Mode="In" />
+          <Parameter Name="IdDepartment" Type="int" Mode="In" />
+          <Parameter Name="IdPositionLevel" Type="int" Mode="In" />
+          <Parameter Name="Status" Type="bit" Mode="In" />
         </Function>
         <Function Name="GNListRole" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdRole" Type="int" Mode="In" />
@@ -908,6 +984,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Parameter Name="IdRole" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="MMEnterprisesModelStoreContainer">
+          <EntitySet Name="AssociatePosition" EntityType="Self.AssociatePosition" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Catalog" EntityType="Self.Catalog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CatalogDetail" EntityType="Self.CatalogDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CommentTask" EntityType="Self.CommentTask" Schema="dbo" store:Type="Tables" />
@@ -917,6 +994,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PersonContact" EntityType="Self.PersonContact" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PersonTask" EntityType="Self.PersonTask" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Position" EntityType="Self.Position" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RoleAcces" EntityType="Self.RoleAcces" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ServiceConstructionOption" EntityType="Self.ServiceConstructionOption" Schema="dbo" store:Type="Tables" />
@@ -940,6 +1018,14 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <AssociationSet Name="FK_AssociatedMenu_OptionMenu" Association="Self.FK_AssociatedMenu_OptionMenu">
             <End Role="OptionMenu" EntitySet="OptionMenu" />
             <End Role="OptionMenu1" EntitySet="OptionMenu" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AssociatePosition_AssocPosition" Association="Self.FK_AssociatePosition_AssocPosition">
+            <End Role="Position" EntitySet="Position" />
+            <End Role="AssociatePosition" EntitySet="AssociatePosition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AssociatePosition_Position" Association="Self.FK_AssociatePosition_Position">
+            <End Role="Position" EntitySet="Position" />
+            <End Role="AssociatePosition" EntitySet="AssociatePosition" />
           </AssociationSet>
           <AssociationSet Name="FK_CatalogDetail_Catalog" Association="Self.FK_CatalogDetail_Catalog">
             <End Role="Catalog" EntitySet="Catalog" />
@@ -974,7 +1060,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             <End Role="Person" EntitySet="Person" />
           </AssociationSet>
           <AssociationSet Name="FK_Person_Position" Association="Self.FK_Person_Position">
-            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="Position" EntitySet="Position" />
             <End Role="Person" EntitySet="Person" />
           </AssociationSet>
           <AssociationSet Name="FK_PersonContact_Country" Association="Self.FK_PersonContact_Country">
@@ -996,6 +1082,14 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <AssociationSet Name="FK_PersonTask_Task" Association="Self.FK_PersonTask_Task">
             <End Role="Task" EntitySet="Task" />
             <End Role="PersonTask" EntitySet="PersonTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Position_Department" Association="Self.FK_Position_Department">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="Position" EntitySet="Position" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Position_PositionLevel" Association="Self.FK_Position_PositionLevel">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="Position" EntitySet="Position" />
           </AssociationSet>
           <AssociationSet Name="FK_RoleAcces_OptionMenu" Association="Self.FK_RoleAcces_OptionMenu">
             <End Role="OptionMenu" EntitySet="OptionMenu" />
@@ -1102,8 +1196,9 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <NavigationProperty Name="Person1" Relationship="Self.FK_Person_Department" FromRole="CatalogDetail" ToRole="Person" />
           <NavigationProperty Name="Person2" Relationship="Self.FK_Person_IdentificationType" FromRole="CatalogDetail" ToRole="Person" />
           <NavigationProperty Name="Person3" Relationship="Self.FK_Person_PersonType" FromRole="CatalogDetail" ToRole="Person" />
-          <NavigationProperty Name="Person4" Relationship="Self.FK_Person_Position" FromRole="CatalogDetail" ToRole="Person" />
           <NavigationProperty Name="PersonContact" Relationship="Self.FK_PersonContact_PhoneNumberType" FromRole="CatalogDetail" ToRole="PersonContact" />
+          <NavigationProperty Name="Position" Relationship="Self.FK_Position_Department" FromRole="CatalogDetail" ToRole="Position" />
+          <NavigationProperty Name="Position1" Relationship="Self.FK_Position_PositionLevel" FromRole="CatalogDetail" ToRole="Position" />
           <NavigationProperty Name="ServiceRequest" Relationship="Self.FK_ServiceRequest_ContactType" FromRole="CatalogDetail" ToRole="ServiceRequest" />
           <NavigationProperty Name="ServiceRequest1" Relationship="Self.FK_ServiceRequest_PropertyType" FromRole="CatalogDetail" ToRole="ServiceRequest" />
           <NavigationProperty Name="ServiceRequest2" Relationship="Self.FK_ServiceRequest_ServiceStatus" FromRole="CatalogDetail" ToRole="ServiceRequest" />
@@ -1180,7 +1275,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <NavigationProperty Name="CatalogDetail1" Relationship="Self.FK_Person_Department" FromRole="Person" ToRole="CatalogDetail" />
           <NavigationProperty Name="CatalogDetail2" Relationship="Self.FK_Person_IdentificationType" FromRole="Person" ToRole="CatalogDetail" />
           <NavigationProperty Name="CatalogDetail3" Relationship="Self.FK_Person_PersonType" FromRole="Person" ToRole="CatalogDetail" />
-          <NavigationProperty Name="CatalogDetail4" Relationship="Self.FK_Person_Position" FromRole="Person" ToRole="CatalogDetail" />
+          <NavigationProperty Name="Position" Relationship="Self.FK_Person_Position" FromRole="Person" ToRole="Position" />
           <NavigationProperty Name="PersonContact" Relationship="Self.FK_PersonContact_Person" FromRole="Person" ToRole="PersonContact" />
           <NavigationProperty Name="ServiceRequest" Relationship="Self.FK_ServiceRequest_Person" FromRole="Person" ToRole="ServiceRequest" />
           <NavigationProperty Name="Task" Relationship="Self.FK_Task_Person" FromRole="Person" ToRole="Task" />
@@ -1200,6 +1295,21 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <NavigationProperty Name="CatalogDetail" Relationship="Self.FK_PersonContact_PhoneNumberType" FromRole="PersonContact" ToRole="CatalogDetail" />
           <NavigationProperty Name="Country" Relationship="Self.FK_PersonContact_Country" FromRole="PersonContact" ToRole="Country" />
           <NavigationProperty Name="Person" Relationship="Self.FK_PersonContact_Person" FromRole="PersonContact" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="Position">
+          <Key>
+            <PropertyRef Name="IdPosition" />
+          </Key>
+          <Property Name="IdPosition" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdDepartment" Type="Int32" Nullable="false" />
+          <Property Name="IdPositionLevel" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CatalogDetail" Relationship="Self.FK_Position_Department" FromRole="Position" ToRole="CatalogDetail" />
+          <NavigationProperty Name="CatalogDetail1" Relationship="Self.FK_Position_PositionLevel" FromRole="Position" ToRole="CatalogDetail" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_Person_Position" FromRole="Position" ToRole="Person" />
+          <NavigationProperty Name="Position1" Relationship="Self.AssociatePosition" FromRole="Position" ToRole="Position1" />
+          <NavigationProperty Name="Position2" Relationship="Self.AssociatePosition" FromRole="Position1" ToRole="Position" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -1400,18 +1510,6 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Person_Position">
-          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="0..1" />
-          <End Role="Person" Type="Self.Person" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CatalogDetail">
-              <PropertyRef Name="IdCatalogDetail" />
-            </Principal>
-            <Dependent Role="Person">
-              <PropertyRef Name="IdPosition" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_PersonContact_PhoneNumberType">
           <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="1" />
           <End Role="PersonContact" Type="Self.PersonContact" Multiplicity="*" />
@@ -1421,6 +1519,30 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             </Principal>
             <Dependent Role="PersonContact">
               <PropertyRef Name="IdPhoneNumberType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Position_Department">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="1" />
+          <End Role="Position" Type="Self.Position" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="Position">
+              <PropertyRef Name="IdDepartment" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Position_PositionLevel">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="1" />
+          <End Role="Position" Type="Self.Position" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="Position">
+              <PropertyRef Name="IdPositionLevel" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1544,6 +1666,18 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Person_Position">
+          <End Role="Position" Type="Self.Position" Multiplicity="0..1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Position">
+              <PropertyRef Name="IdPosition" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="IdPosition" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PersonContact_Person">
           <End Role="Person" Type="Self.Person" Multiplicity="1" />
           <End Role="PersonContact" Type="Self.PersonContact" Multiplicity="*" />
@@ -1652,6 +1786,10 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="AssociatePosition">
+          <End Role="Position" Type="Self.Position" Multiplicity="*" />
+          <End Role="Position1" Type="Self.Position" Multiplicity="*" />
+        </Association>
         <Association Name="PersonTask">
           <End Role="Person" Type="Self.Person" Multiplicity="*" />
           <End Role="Task" Type="Self.Task" Multiplicity="*" />
@@ -1677,6 +1815,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <EntitySet Name="OptionMenu" EntityType="Self.OptionMenu" />
           <EntitySet Name="Person" EntityType="Self.Person" />
           <EntitySet Name="PersonContact" EntityType="Self.PersonContact" />
+          <EntitySet Name="Position" EntityType="Self.Position" />
           <EntitySet Name="Role" EntityType="Self.Role" />
           <EntitySet Name="RoleAcces" EntityType="Self.RoleAcces" />
           <EntitySet Name="ServiceRequest" EntityType="Self.ServiceRequest" />
@@ -1704,13 +1843,17 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             <End Role="CatalogDetail" EntitySet="CatalogDetail" />
             <End Role="Person" EntitySet="Person" />
           </AssociationSet>
-          <AssociationSet Name="FK_Person_Position" Association="Self.FK_Person_Position">
-            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
-            <End Role="Person" EntitySet="Person" />
-          </AssociationSet>
           <AssociationSet Name="FK_PersonContact_PhoneNumberType" Association="Self.FK_PersonContact_PhoneNumberType">
             <End Role="CatalogDetail" EntitySet="CatalogDetail" />
             <End Role="PersonContact" EntitySet="PersonContact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Position_Department" Association="Self.FK_Position_Department">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="Position" EntitySet="Position" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Position_PositionLevel" Association="Self.FK_Position_PositionLevel">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="Position" EntitySet="Position" />
           </AssociationSet>
           <AssociationSet Name="FK_ServiceRequest_ContactType" Association="Self.FK_ServiceRequest_ContactType">
             <End Role="CatalogDetail" EntitySet="CatalogDetail" />
@@ -1752,6 +1895,10 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             <End Role="OptionMenu" EntitySet="OptionMenu" />
             <End Role="UserAcces" EntitySet="UserAcces" />
           </AssociationSet>
+          <AssociationSet Name="FK_Person_Position" Association="Self.FK_Person_Position">
+            <End Role="Position" EntitySet="Position" />
+            <End Role="Person" EntitySet="Person" />
+          </AssociationSet>
           <AssociationSet Name="FK_PersonContact_Person" Association="Self.FK_PersonContact_Person">
             <End Role="Person" EntitySet="Person" />
             <End Role="PersonContact" EntitySet="PersonContact" />
@@ -1787,6 +1934,10 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <AssociationSet Name="FK_UserAcces_User" Association="Self.FK_UserAcces_User">
             <End Role="User" EntitySet="User" />
             <End Role="UserAcces" EntitySet="UserAcces" />
+          </AssociationSet>
+          <AssociationSet Name="AssociatePosition" Association="Self.AssociatePosition">
+            <End Role="Position" EntitySet="Position" />
+            <End Role="Position1" EntitySet="Position" />
           </AssociationSet>
           <AssociationSet Name="PersonTask" Association="Self.PersonTask">
             <End Role="Person" EntitySet="Person" />
@@ -1824,6 +1975,10 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             <Parameter Name="DateEnd" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="GNLisColor" ReturnType="Collection(MMEnterprisesModel.GNLisColor_Result)" />
+          <FunctionImport Name="GNListAssociatePosition" ReturnType="Collection(MMEnterprisesModel.GNListAssociatePosition_Result)">
+            <Parameter Name="IdPosition" Mode="In" Type="Int32" />
+            <Parameter Name="IdAssociate" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="GNListBitacora" ReturnType="Collection(MMEnterprisesModel.GNListBitacora_Result)">
             <Parameter Name="IdTask" Mode="In" Type="Int32" />
           </FunctionImport>
@@ -1860,6 +2015,12 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <FunctionImport Name="GNListPersonTask" ReturnType="Collection(MMEnterprisesModel.GNListPersonTask_Result)">
             <Parameter Name="IdTask" Mode="In" Type="Int32" />
             <Parameter Name="IdPerson" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNListPosition" ReturnType="Collection(MMEnterprisesModel.GNListPosition_Result)">
+            <Parameter Name="IdPosition" Mode="In" Type="Int32" />
+            <Parameter Name="IdDepartment" Mode="In" Type="Int32" />
+            <Parameter Name="IdPositionLevel" Mode="In" Type="Int32" />
+            <Parameter Name="Status" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="GNListRole" ReturnType="Collection(MMEnterprisesModel.GNListRole_Result)">
             <Parameter Name="IdRole" Mode="In" Type="Int32" />
@@ -2067,6 +2228,12 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Property Type="String" Name="backgroundColor" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="borderColor" Nullable="true" MaxLength="50" />
         </ComplexType>
+        <ComplexType Name="GNListAssociatePosition_Result">
+          <Property Type="Int32" Name="IdPosition" Nullable="false" />
+          <Property Type="String" Name="PositionDesc" Nullable="false" MaxLength="200" />
+          <Property Type="Int32" Name="IdAssociate" Nullable="false" />
+          <Property Type="String" Name="AssociateDesc" Nullable="false" MaxLength="200" />
+        </ComplexType>
         <ComplexType Name="GNListBitacora_Result">
           <Property Type="Int32" Name="IdComment" Nullable="true" />
           <Property Type="Int32" Name="IdTask" Nullable="true" />
@@ -2142,6 +2309,15 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Property Type="String" Name="PersonEmployeeName" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="PersonEmployeeLastName" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="NumIdentification" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="GNListPosition_Result">
+          <Property Type="Int32" Name="IdPosition" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="200" />
+          <Property Type="Int32" Name="IdDepartment" Nullable="false" />
+          <Property Type="String" Name="Department" Nullable="false" MaxLength="200" />
+          <Property Type="Int32" Name="IdPositionLevel" Nullable="false" />
+          <Property Type="String" Name="PositionLevel" Nullable="false" MaxLength="200" />
+          <Property Type="Boolean" Name="Status" Nullable="false" />
         </ComplexType>
         <ComplexType Name="GNListRole_Result">
           <Property Type="Int32" Name="IdRole" Nullable="false" />
@@ -2363,6 +2539,17 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Position">
+            <EntityTypeMapping TypeName="MMEnterprisesModel.Position">
+              <MappingFragment StoreEntitySet="Position">
+                <ScalarProperty Name="IdPosition" ColumnName="IdPosition" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IdDepartment" ColumnName="IdDepartment" />
+                <ScalarProperty Name="IdPositionLevel" ColumnName="IdPositionLevel" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Role">
             <EntityTypeMapping TypeName="MMEnterprisesModel.Role">
               <MappingFragment StoreEntitySet="Role">
@@ -2475,6 +2662,14 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="AssociatePosition" TypeName="MMEnterprisesModel.AssociatePosition" StoreEntitySet="AssociatePosition">
+            <EndProperty Name="Position">
+              <ScalarProperty Name="IdPosition" ColumnName="IdAssociate" />
+            </EndProperty>
+            <EndProperty Name="Position1">
+              <ScalarProperty Name="IdPosition" ColumnName="IdPosition" />
+            </EndProperty>
+          </AssociationSetMapping>
           <AssociationSetMapping Name="PersonTask" TypeName="MMEnterprisesModel.PersonTask" StoreEntitySet="PersonTask">
             <EndProperty Name="Person">
               <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
@@ -2522,6 +2717,16 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
               <ComplexTypeMapping TypeName="MMEnterprisesModel.GNLisColor_Result">
                 <ScalarProperty Name="backgroundColor" ColumnName="backgroundColor" />
                 <ScalarProperty Name="borderColor" ColumnName="borderColor" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNListAssociatePosition" FunctionName="MMEnterprisesModel.Store.GNListAssociatePosition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListAssociatePosition_Result">
+                <ScalarProperty Name="IdPosition" ColumnName="IdPosition" />
+                <ScalarProperty Name="PositionDesc" ColumnName="PositionDesc" />
+                <ScalarProperty Name="IdAssociate" ColumnName="IdAssociate" />
+                <ScalarProperty Name="AssociateDesc" ColumnName="AssociateDesc" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -2630,6 +2835,19 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
                 <ScalarProperty Name="PersonEmployeeName" ColumnName="PersonEmployeeName" />
                 <ScalarProperty Name="PersonEmployeeLastName" ColumnName="PersonEmployeeLastName" />
                 <ScalarProperty Name="NumIdentification" ColumnName="NumIdentification" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNListPosition" FunctionName="MMEnterprisesModel.Store.GNListPosition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListPosition_Result">
+                <ScalarProperty Name="IdPosition" ColumnName="IdPosition" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IdDepartment" ColumnName="IdDepartment" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="IdPositionLevel" ColumnName="IdPositionLevel" />
+                <ScalarProperty Name="PositionLevel" ColumnName="PositionLevel" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

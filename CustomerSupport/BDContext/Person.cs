@@ -43,7 +43,7 @@ namespace CustomerSupport.BDContext
         public virtual CatalogDetail CatalogDetail1 { get; set; }
         public virtual CatalogDetail CatalogDetail2 { get; set; }
         public virtual CatalogDetail CatalogDetail3 { get; set; }
-        public virtual CatalogDetail CatalogDetail4 { get; set; }
+        public virtual Position Position { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PersonContact> PersonContact { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

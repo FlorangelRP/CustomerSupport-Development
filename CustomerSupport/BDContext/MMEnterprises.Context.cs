@@ -35,6 +35,7 @@ namespace CustomerSupport.BDContext
         public virtual DbSet<OptionMenu> OptionMenu { get; set; }
         public virtual DbSet<Person> Person { get; set; }
         public virtual DbSet<PersonContact> PersonContact { get; set; }
+        public virtual DbSet<Position> Position { get; set; }
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<RoleAcces> RoleAcces { get; set; }
         public virtual DbSet<ServiceRequest> ServiceRequest { get; set; }
@@ -112,6 +113,19 @@ namespace CustomerSupport.BDContext
         public virtual ObjectResult<GNLisColor_Result> GNLisColor()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNLisColor_Result>("GNLisColor");
+        }
+    
+        public virtual ObjectResult<GNListAssociatePosition_Result> GNListAssociatePosition(Nullable<int> idPosition, Nullable<int> idAssociate)
+        {
+            var idPositionParameter = idPosition.HasValue ?
+                new ObjectParameter("IdPosition", idPosition) :
+                new ObjectParameter("IdPosition", typeof(int));
+    
+            var idAssociateParameter = idAssociate.HasValue ?
+                new ObjectParameter("IdAssociate", idAssociate) :
+                new ObjectParameter("IdAssociate", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListAssociatePosition_Result>("GNListAssociatePosition", idPositionParameter, idAssociateParameter);
         }
     
         public virtual ObjectResult<GNListBitacora_Result> GNListBitacora(Nullable<int> idTask)
@@ -236,6 +250,27 @@ namespace CustomerSupport.BDContext
                 new ObjectParameter("IdPerson", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListPersonTask_Result>("GNListPersonTask", idTaskParameter, idPersonParameter);
+        }
+    
+        public virtual ObjectResult<GNListPosition_Result> GNListPosition(Nullable<int> idPosition, Nullable<int> idDepartment, Nullable<int> idPositionLevel, Nullable<bool> status)
+        {
+            var idPositionParameter = idPosition.HasValue ?
+                new ObjectParameter("IdPosition", idPosition) :
+                new ObjectParameter("IdPosition", typeof(int));
+    
+            var idDepartmentParameter = idDepartment.HasValue ?
+                new ObjectParameter("IdDepartment", idDepartment) :
+                new ObjectParameter("IdDepartment", typeof(int));
+    
+            var idPositionLevelParameter = idPositionLevel.HasValue ?
+                new ObjectParameter("IdPositionLevel", idPositionLevel) :
+                new ObjectParameter("IdPositionLevel", typeof(int));
+    
+            var statusParameter = status.HasValue ?
+                new ObjectParameter("Status", status) :
+                new ObjectParameter("Status", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListPosition_Result>("GNListPosition", idPositionParameter, idDepartmentParameter, idPositionLevelParameter, statusParameter);
         }
     
         public virtual ObjectResult<GNListRole_Result> GNListRole(Nullable<int> idRole, Nullable<bool> status)

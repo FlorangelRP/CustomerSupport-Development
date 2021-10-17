@@ -16,10 +16,10 @@
         @*<form>*@
 
         @{
-            MUserAcces perm = null;
+            MSerAcces perm = null;
             if (Session["Usuario"] != null)
             {
-                perm = (((MUser)Session["Usuario"])).UserAcces.Where(X => X.Action == @ViewBag.Action).FirstOrDefault();
+                perm = (((MSerUser)Session["Usuario"])).UserAcces.Where(X => X.Action == @ViewBag.Action).FirstOrDefault();
             }
         }
         @if (perm != null)

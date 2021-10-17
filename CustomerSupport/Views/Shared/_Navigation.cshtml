@@ -5,13 +5,13 @@
     <div class="container-fluid">
 
         @{
-            MUser objUser = new MUser();
-            string NameUser = "";
+            MSerUser objUser = new MSerUser();
+            //string NameUser = "";
         }
-        @if (Session["Usuario"] != null && ((MUser)Session["Usuario"]).Login != null)
+        @if (Session["Usuario"] != null && ((MSerUser)Session["Usuario"]).Login != null)
         {
-            objUser = ((MUser)Session["Usuario"]);
-            NameUser = objUser.PersonEmployee.LastName.ToString() + ", " + objUser.PersonEmployee.Name.ToString();
+            objUser = ((MSerUser)Session["Usuario"]);
+            //NameUser = objUser.PersonEmployee.LastName.ToString() + ", " + objUser.PersonEmployee.Name.ToString();
 
         }
 
@@ -31,14 +31,14 @@
 
                             <li><a href='@Url.Action("Index", "Home")'>Inicio</a></li>
 
-                            @if ((Session["Usuario"]) != null)
+                            @if (objUser != null)
                             {
 
                                 //Recorremos las Padres
-                                foreach (var mOptionPadre in (((MUser)Session["Usuario"])).UserAccesPadre)
+                                foreach (var mOptionPadre in objUser.UserAccesPadre)
                                 {
 
-                                    var Lis = (((MUser)Session["Usuario"])).UserAcces.Where(X => X.IdAssociated == mOptionPadre.IdOption && X.Visible == true).ToList();
+                                    var Lis = objUser.UserAcces.Where(X => X.IdAssociated == mOptionPadre.IdOption && X.Visible == true).ToList();
 
                                     if (Lis.Count > 0)
                                     {

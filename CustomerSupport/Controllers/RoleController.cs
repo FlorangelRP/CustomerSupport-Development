@@ -22,7 +22,7 @@ namespace CustomerSupport.Controllers
                 return RedirectToAction("Login", "User");
             }
 
-            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAccesUser = ((MSerUser)Session["Usuario"]).UserAcces;
             var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListRole").First();
             if(ObjAcces!=null)
             {
@@ -44,7 +44,8 @@ namespace CustomerSupport.Controllers
                 return View();
             }
 
-            TempData["DataRole"] = objMRole;
+            var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(objMRole);
+            TempData["DataRole"] = jsonString;
 
             switch (submit)
             {
@@ -74,7 +75,7 @@ namespace CustomerSupport.Controllers
                 return RedirectToAction("Login", "User");
             }
 
-            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAccesUser = ((MSerUser)Session["Usuario"]).UserAcces;
             var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListRole").First();
             if (ObjAcces != null)
             {
@@ -87,9 +88,10 @@ namespace CustomerSupport.Controllers
             //Aqui se trae el modelo enviado por POST desde la Lista, para que no se vea en la Url
             if (TempData["DataRole"] != null)
             {
-                if (((MRole)TempData["DataRole"]) != null && ((MRole)TempData["DataRole"]).IdRole > 0)
+                var objTempData = Newtonsoft.Json.JsonConvert.DeserializeObject<MRole>((string)TempData["DataRole"]);
+                if (objTempData != null && objTempData.IdRole > 0)
                 {
-                    id = ((MRole)TempData["DataRole"]).IdRole;
+                    id = objTempData.IdRole;
                 }
                 else
                 {
@@ -115,7 +117,7 @@ namespace CustomerSupport.Controllers
                 return RedirectToAction("Login", "User");
             }
 
-            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAccesUser = ((MSerUser)Session["Usuario"]).UserAcces;
             var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListRole").First();
             if (ObjAcces != null)
             {
@@ -200,7 +202,7 @@ namespace CustomerSupport.Controllers
                 return RedirectToAction("Login", "User");
             }
 
-            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAccesUser = ((MSerUser)Session["Usuario"]).UserAcces;
             var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListRole").First();
             if (ObjAcces != null)
             {
@@ -213,9 +215,10 @@ namespace CustomerSupport.Controllers
             //Aqui se trae el modelo enviado por POST desde la Lista, para que no se vea en la Url
             if (TempData["DataRole"] != null)
             {
-                if (((MRole)TempData["DataRole"]) != null && ((MRole)TempData["DataRole"]).IdRole > 0)
+                var objTempData = Newtonsoft.Json.JsonConvert.DeserializeObject<MRole>((string)TempData["DataRole"]);
+                if (objTempData != null && objTempData.IdRole > 0)
                 {
-                    id = ((MRole)TempData["DataRole"]).IdRole;
+                    id = objTempData.IdRole;
                 }
                 else
                 {
@@ -258,7 +261,9 @@ namespace CustomerSupport.Controllers
                         //Para evitar que se vea el id en la Url------------
                         MRole objMRole = new MRole();
                         objMRole.IdRole = objRole.IdRole;
-                        TempData["DataRole"] = objMRole;
+
+                        var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(objMRole);
+                        TempData["DataRole"] = jsonString;
                         return RedirectToAction("EditRole");
                         //---------------------------------------------------
                     }
