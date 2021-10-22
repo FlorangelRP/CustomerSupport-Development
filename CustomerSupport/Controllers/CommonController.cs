@@ -8,11 +8,11 @@ namespace CustomerSupport.Controllers
 {
     public class CommonController : Controller
     {
+        #region Session Expire Notification 
         public JsonResult ResetSession()
         {
-            var nTimeout = Session.Timeout;
-            return Json(nTimeout, JsonRequestBehavior.AllowGet);
+            return Json(Session.Timeout, JsonRequestBehavior.AllowGet);
         }
-
+        #endregion
     }
 }
