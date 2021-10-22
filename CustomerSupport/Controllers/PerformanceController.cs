@@ -21,7 +21,7 @@ namespace CustomerSupport.Controllers
                 return RedirectToAction("Login", "User");
             }
 
-            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAccesUser = ((MSerUser)Session["Usuario"]).UserAcces;
 
             var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListTask").First();
             if (ObjAcces != null)

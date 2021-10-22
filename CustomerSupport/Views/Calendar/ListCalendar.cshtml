@@ -12,13 +12,13 @@
     </div>
     <div class="card-body">
 
-        @{
-            MUserAcces perm = null;
+        @*@{
+            MSerAcces perm = null;
             if (Session["Usuario"] != null)
             {
-                perm = (((MUser)Session["Usuario"])).UserAcces.Where(X => X.Action == @ViewBag.Action).FirstOrDefault();
+                perm = (((MSerUser)Session["Usuario"])).UserAcces.Where(X => X.Action == @ViewBag.Action).FirstOrDefault();
             }
-        }
+        }*@
 
         <div class="row shadow-sm p-3 m-1 bg-white rounded">
 

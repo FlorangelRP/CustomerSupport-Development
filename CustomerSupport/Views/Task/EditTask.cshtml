@@ -286,7 +286,7 @@
                             MTaskComment objComent = new MTaskComment();
                             objComent.IdTask = Model.IdTask;
                             objComent.Date = DateTime.Now;
-                            objComent.IdUser = ((MUser)Session["Usuario"]).IdUser;
+                            objComent.IdUser = ((MSerUser)Session["Usuario"]).IdUser;
                             objComent.IdComment = 0;
                             objComent.New = 1;
                             Model.listMTaskComment.Add(objComent);
@@ -299,7 +299,7 @@
                                 MTaskComment objComent = new MTaskComment();
                                 objComent.IdTask = Model.IdTask;
                                 objComent.Date = DateTime.Now;
-                                objComent.IdUser = ((MUser)Session["Usuario"]).IdUser;
+                                objComent.IdUser = ((MSerUser)Session["Usuario"]).IdUser;
                                 objComent.IdComment = 0;
                                 objComent.New = 1;
                                 Model.listMTaskComment.Add(objComent);

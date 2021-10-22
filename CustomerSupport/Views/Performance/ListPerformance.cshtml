@@ -1,4 +1,5 @@
-﻿
+﻿@using CustomerSupport.Models
+
 @{
     ViewBag.Title = "Rendimiento";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -13,12 +14,12 @@
     <div class="card-body">
 
         @*@{
-                MUserAcces perm = null;
-                if (Session["Usuario"] != null)
-                {
-                    perm = (((MUser)Session["Usuario"])).UserAcces.Where(X => X.Action == @ViewBag.Action).FirstOrDefault();
-                }
-            }*@
+            MSerAcces perm = null;
+            if (Session["Usuario"] != null)
+            {
+                perm = (((MSerUser)Session["Usuario"])).UserAcces.Where(X => X.Action == @ViewBag.Action).FirstOrDefault();
+            }
+        }*@
 
         <div class="row shadow-sm p-3 m-1 bg-white rounded">
             <div class="card-body">
@@ -106,10 +107,10 @@
                                         </div>
                                     </div>
 
-                                </div> 
+                                </div>
                             </div>
                         </div>
-                        
+
                     </div>
 
                     <div class="col-md-6">
@@ -134,8 +135,8 @@
                         </div>
                     </div>
                 </div>
-                
-                
+
+
                 <br />
                 <div class="row">
                     <div class="col-md-6">
@@ -177,32 +178,32 @@
         <div class="row shadow-sm p-3 m-1 bg-white rounded">
             <div class="card-body">
                 <div id="barChart_Content" class="chart">
-                  @*  <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>*@
+                    @*  <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>*@
                 </div>
                 <!--<div class="m-0 row justify-content-center">
-                <div class="form-horizontal col-md-10">-->
+            <div class="form-horizontal col-md-10">-->
                 @*@using (Html.BeginForm("EditTask", "Task"))
-                    {*@
+                {*@
 
 
 
                 <!--@Html.AntiForgeryToken()
 
 
-                <br />
-                <div class="row">
-                    <div id="Barchart"></div>
-                </div>
+            <br />
+            <div class="row">
+                <div id="Barchart"></div>
+            </div>
 
-                <div class="row">
-                    <div class="col-md-10 text-center">-->
+            <div class="row">
+                <div class="col-md-10 text-center">-->
                 @*<span class="text-success">@ViewBag.SuccessSave</span>*@
                 @*<span class="text-danger">@ViewBag.ErrorSave</span>*@
                 <!--</div>
-                </div>-->
+            </div>-->
                 @* }*@
                 <!--</div>
-                </div>-->
+            </div>-->
             </div>
 
             <div>
@@ -234,7 +235,7 @@
             if (oEmployee == true) {
                 idDepartament = $("#lst_IdDepartemntEmplo").val();
             }
-            
+
             var idEmployee = $("#filtropersona").val();
 
             var oDepartament = $('#btnRadioXDepartment').is(":checked");
@@ -350,7 +351,7 @@
                         maintainAspectRatio: false,
                         datasetFill: false
                     }
-                   
+
                     var myLineChart = new Chart(barChartCanvas, {
                         type: 'bar',
                         data: barChartData,
@@ -382,7 +383,7 @@
             else {
                 var strrDepartment = "";
             }
-  
+
             $.ajax({
                 type: "GET",
                 url: '@Url.Action("GetListPerson", "Person")?idPersonType=2& PersonStatus=null' + strrDepartment,
@@ -519,7 +520,7 @@
             } else {
                 $("#divYear").hide();
             }
-          
+
             if ($('#btnRadioXEmployee').is(":checked") == true) {
                 $("#divEmpoyee").show();
             } else {

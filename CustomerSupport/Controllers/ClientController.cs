@@ -20,7 +20,7 @@ namespace CustomerSupport.Controllers
                 return RedirectToAction("Login", "User");
             }
 
-            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAccesUser = ((MSerUser)Session["Usuario"]).UserAcces;
             var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListClient").First();
             if(ObjAcces!=null)
             {
@@ -42,7 +42,8 @@ namespace CustomerSupport.Controllers
                 return View();
             }
 
-            TempData["DataPersonClient"] = objMPerson;
+            var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(objMPerson);
+            TempData["DataPersonClient"] = jsonString;
 
             switch (submit)
             {
@@ -72,7 +73,7 @@ namespace CustomerSupport.Controllers
                 return RedirectToAction("Login", "User");
             }
 
-            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAccesUser = ((MSerUser)Session["Usuario"]).UserAcces;
             var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListClient").First();
             if (ObjAcces != null)
             {
@@ -85,9 +86,10 @@ namespace CustomerSupport.Controllers
             //Aqui se trae el modelo enviado por POST desde la Lista, para que no se vea en la Url
             if (TempData["DataPersonClient"] != null)
             {
-                if (((MPerson)TempData["DataPersonClient"]) != null && ((MPerson)TempData["DataPersonClient"]).IdPerson > 0)
+                var objTempData = Newtonsoft.Json.JsonConvert.DeserializeObject<MPerson>((string)TempData["DataPersonClient"]);
+                if (objTempData != null && objTempData.IdPerson > 0)
                 {
-                    id = ((MPerson)TempData["DataPersonClient"]).IdPerson;
+                    id = objTempData.IdPerson;
                 }
                 else
                 {
@@ -113,7 +115,7 @@ namespace CustomerSupport.Controllers
                 return RedirectToAction("Login", "User");
             }
 
-            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAccesUser = ((MSerUser)Session["Usuario"]).UserAcces;
             var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListClient").First();
             if (ObjAcces != null)
             {
@@ -185,7 +187,7 @@ namespace CustomerSupport.Controllers
                 return RedirectToAction("Login", "User");
             }
 
-            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAccesUser = ((MSerUser)Session["Usuario"]).UserAcces;
             var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListClient").First();
             if (ObjAcces != null)
             {
@@ -198,9 +200,10 @@ namespace CustomerSupport.Controllers
             //Aqui se trae el modelo enviado por POST desde la Lista, para que no se vea en la Url
             if (TempData["DataPersonClient"] != null)
             {
-                if (((MPerson)TempData["DataPersonClient"]) != null && ((MPerson)TempData["DataPersonClient"]).IdPerson > 0)
+                var objTempData = Newtonsoft.Json.JsonConvert.DeserializeObject<MPerson>((string)TempData["DataPersonClient"]);
+                if (objTempData != null && objTempData.IdPerson > 0)
                 {
-                    id = ((MPerson)TempData["DataPersonClient"]).IdPerson;
+                    id = objTempData.IdPerson;
                 }
                 else
                 {
@@ -245,7 +248,9 @@ namespace CustomerSupport.Controllers
                         //Para evitar que se vea el id en la Url------------
                         MPerson objMPerson = new MPerson();
                         objMPerson.IdPerson = objPersonClient.IdPerson;
-                        TempData["DataPersonClient"] = objMPerson;
+
+                        var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(objMPerson);
+                        TempData["DataPersonClient"] = jsonString;
                         return RedirectToAction("EditClient");
                         //---------------------------------------------------
 

@@ -61,6 +61,37 @@
 
     @Html.Partial("_Footer")
 
+
+    <input type="hidden" id="hdnAppPath" value="@AppSetting.AppPath" />
+    <input type="hidden" id="hdnSessionTimeout" value="@AppSetting.SessionExpireTime" />
+    <input type="hidden" id="hdnSessionExpNotice" value="@AppSetting.SessionExpNotice" />
+
+    <div class="modal fadeIn" id="SessionExpNotice" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    @*<h4 class="modal-title">Your session will expire in @AppSetting.SessionExpNotice seconds</h4>*@
+                    @*<button id="btnModalClose" type="button" class="close" data-dismiss="modal">&times;</button>*@
+                    <h4 class="modal-title">Your session will expire in <span id="spanTime"></span> seconds</h4>
+                    <button id="btnModalClose" type="button" class="close" onclick="$('#SessionExpNotice').modal('hide');">&times;</button>
+                </div>
+                <div class="modal-body">
+                    Click "Ok" to remain logged in.<br />
+                    Click "Cancel" to log off (the changes will be lost).
+                </div>
+                <div class="modal-footer">
+                    <div class="btn_option pt-0">
+                        <button class="border-0" onclick="return SessionOKClick()" data-toggle="tooltip" title="Ok"><i class="fas fa-check"></i></button>
+                    </div>                    
+                    <div class="btn_option pt-0" data-toggle="tooltip" title="Cancel">
+                        <a href='@Url.Action("Close", "User")'><i class="fas fa-times"></i></a>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script src="@Url.Content("~/Content/assets/js/swiper.min.js")"></script>
     <script src="@Url.Content("~/Scripts/tinymce/tinymce.min.js")"></script>
 
@@ -71,6 +102,8 @@
     @*<script src="@Url.Content("~/Content/assets/plugins/select2/js/select2.full.min.js") "></script>*@
     <script src="@Url.Content("~/Scripts/select2.min.js") "></script>
     <script src="@Url.Content("~/Scripts/toastr.min.js")"></script>
+
+    <script src="@Url.Content("~/Content/assets/js/common.js")"></script>
 
     @RenderSection("Scripts", required: false)
 

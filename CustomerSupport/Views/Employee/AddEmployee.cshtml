@@ -336,6 +336,43 @@
 
     <script type="text/javascript">
 
+        function fillPosition(idDepartment) {
+
+            document.querySelector('#lst_Position').innerHTML = '';
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetPositionForDeparment", "Position")?idDepartment=' + idDepartment,
+                //url: 'Url.Action("GetTableCatalog", "TableCatalog")?idTable='+"POSITION",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+
+                    var option = $(document.createElement('option'));
+                    option.text("Seleccione");
+                    option.val("0");
+                    $("#lst_Position").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+                        option.text(this.Description);
+                        option.val(this.IdPosition); //Identity
+
+                        $("#lst_Position").append(option);
+                    });
+
+                    document.getElementById('lst_Position').value = "0";
+
+                    changeCodeInputHiddenList("lst_Position", "inpIdPosition", "");
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de cargos");
+                }
+
+            });
+
+        }
+
         $(document).ready(function () {
 
             //Validacion de fecha--------------------------------------------
@@ -386,6 +423,10 @@
                 var selectValue = $(this).val();
                 //$("#inpIdDepartment").val(selectValue);
                 changeCodeInputHiddenList("lst_Department", "inpIdDepartment", selectValue);
+
+                fillPosition(selectValue);
+                $("#inpIdPosition").val('');
+
             });
 
             $("#chkStatus").on('click', function () {
@@ -399,38 +440,7 @@
                     $("#labEstatus").text("Inactivo");
                 }
 
-            });
-
-            $.ajax({
-                type: "GET",
-                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable='+"POSITION",
-                data: "{}",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-
-                    var option = $(document.createElement('option'));
-                    option.text("Seleccione");
-                    option.val("0");
-                    $("#lst_Position").append(option);
-
-                    $(msg).each(function () {
-                        var option = $(document.createElement('option'));
-                        option.text(this.DetailDesc);
-                        option.val(this.IdCatalogDetail); //Identity
-
-                        $("#lst_Position").append(option);
-                    });
-
-                    document.getElementById('lst_Position').value = "0";
-
-                    changeCodeInputHiddenList("lst_Position", "inpIdPosition", "");
-                },
-                error: function (msg) {
-                    $("#error > span").text("Error al llenar lista de cargos");
-                }
-
-            });
+            });            
 
             $.ajax({
                 type: "GET",
@@ -489,6 +499,11 @@
                     document.getElementById('lst_Department').value = "0";
 
                     changeCodeInputHiddenList("lst_Department", "inpIdDepartment", "");
+
+                    /* cargos segun departamento */
+                    var selectDepartment = $("#lst_Department").val();
+                    fillPosition(selectDepartment);
+                    /* -----------------------   */
                 },
                 error: function (msg) {
                     $("#error > span").text("Error al llenar lista de departamentos");

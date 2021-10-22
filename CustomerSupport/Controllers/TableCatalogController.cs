@@ -20,7 +20,7 @@ namespace CustomerSupport.Controllers
                 return RedirectToAction("Login", "User");
             }
 
-            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAccesUser = ((MSerUser)Session["Usuario"]).UserAcces;
             var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListTableCatalog").First();
             if (ObjAcces != null)
             {
@@ -42,7 +42,8 @@ namespace CustomerSupport.Controllers
                 return View();
             }
 
-            TempData["DataTableCatalog"] = objMCatalog;
+            var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(objMCatalog);
+            TempData["DataTableCatalog"] = jsonString;
 
             switch (submit)
             {
@@ -72,7 +73,7 @@ namespace CustomerSupport.Controllers
                 return RedirectToAction("Login", "User");
             }
 
-            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAccesUser = ((MSerUser)Session["Usuario"]).UserAcces;
             var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListTableCatalog").First();
             if (ObjAcces != null)
             {
@@ -85,9 +86,10 @@ namespace CustomerSupport.Controllers
             //Aqui se trae el modelo enviado por POST desde la Lista, para que no se vea en la Url
             if (TempData["DataTableCatalog"] != null)
             {
-                if (((MCatalog)TempData["DataTableCatalog"]) != null && ((MCatalog)TempData["DataTableCatalog"]).IdCatalog > 0)
+                var objTempData = Newtonsoft.Json.JsonConvert.DeserializeObject<MCatalog>((string)TempData["DataTableCatalog"]);
+                if (objTempData != null && objTempData.IdCatalog > 0)
                 {
-                    id = ((MCatalog)TempData["DataTableCatalog"]).IdCatalog;
+                    id = objTempData.IdCatalog;
                 }
                 else
                 {
@@ -113,7 +115,7 @@ namespace CustomerSupport.Controllers
                 return RedirectToAction("Login", "User");
             }
 
-            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAccesUser = ((MSerUser)Session["Usuario"]).UserAcces;
             var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListTableCatalog").First();
             if (ObjAcces != null)
             {
@@ -179,7 +181,7 @@ namespace CustomerSupport.Controllers
                 return RedirectToAction("Login", "User");
             }
 
-            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAccesUser = ((MSerUser)Session["Usuario"]).UserAcces;
             var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListTableCatalog").First();
             if (ObjAcces != null)
             {
@@ -192,9 +194,10 @@ namespace CustomerSupport.Controllers
             //Aqui se trae el modelo enviado por POST desde la Lista, para que no se vea en la Url
             if (TempData["DataTableCatalog"] != null)
             {
-                if (((MCatalog)TempData["DataTableCatalog"]) != null && ((MCatalog)TempData["DataTableCatalog"]).IdCatalog > 0)
+                var objTempData = Newtonsoft.Json.JsonConvert.DeserializeObject<MCatalog>((string)TempData["DataTableCatalog"]);
+                if (objTempData != null && objTempData.IdCatalog > 0)
                 {
-                    id = ((MCatalog)TempData["DataTableCatalog"]).IdCatalog;
+                    id = objTempData.IdCatalog;
                 }
                 else
                 {
@@ -237,7 +240,9 @@ namespace CustomerSupport.Controllers
                         //Para evitar que se vea el id en la Url------------
                         MCatalog objMCatalog = new MCatalog();
                         objMCatalog.IdCatalog = objCatalog.IdCatalog;
-                        TempData["DataTableCatalog"] = objMCatalog;
+
+                        var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(objMCatalog);
+                        TempData["DataTableCatalog"] = jsonString;
                         return RedirectToAction("EditTableCatalog");
                         //---------------------------------------------------
                     }

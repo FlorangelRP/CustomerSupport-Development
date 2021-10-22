@@ -130,6 +130,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppSetting.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -273,6 +274,7 @@
     </Compile>
     <Compile Include="Controllers\CalendarController.cs" />
     <Compile Include="Controllers\PerformanceController.cs" />
+    <Compile Include="Controllers\PositionController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\CountryController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
@@ -282,11 +284,14 @@
     <Compile Include="Controllers\ServiceRequestController.cs" />
     <Compile Include="Controllers\TableCatalogController.cs" />
     <Compile Include="Controllers\TaskController.cs" />
+    <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\MCalendar.cs" />
+    <Compile Include="Models\MAssociatePosition.cs" />
+    <Compile Include="Models\MPosition.cs" />
     <Compile Include="Models\MCatalog.cs" />
     <Compile Include="Models\MCatalogDetail.cs" />
     <Compile Include="Models\MPerformance.cs" />
@@ -298,6 +303,7 @@
     <Compile Include="Models\MPersonContact.cs" />
     <Compile Include="Models\MServiceRequest.cs" />
     <Compile Include="Models\MCountry.cs" />
+    <Compile Include="Models\MSerUser.cs" />
     <Compile Include="Models\MUser.cs" />
     <Compile Include="Models\MRoleAcces.cs" />
     <Compile Include="Models\MUserAcces.cs" />
@@ -406,6 +412,7 @@
     <Content Include="Content\assets\images\wave.png" />
     <Content Include="Content\assets\js\bootstrap.js" />
     <Content Include="Content\assets\js\bootstrap.min.js" />
+    <Content Include="Content\assets\js\common.js" />
     <Content Include="Content\assets\js\isotope.pkgd.min.js" />
     <Content Include="Content\assets\js\jquery.flot.min.js" />
     <Content Include="Content\assets\js\jquery.inputpicker.js" />
