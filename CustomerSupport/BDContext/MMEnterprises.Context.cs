@@ -201,7 +201,7 @@ namespace CustomerSupport.BDContext
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListCountry_Result>("GNListCountry", idCountryParameter, idIsoCountryParameter);
         }
     
-        public virtual ObjectResult<GNListPerson_Result> GNListPerson(Nullable<int> idPerson, Nullable<int> idPersonType, Nullable<bool> status, Nullable<int> idDepartment)
+        public virtual ObjectResult<GNListPerson_Result> GNListPerson(Nullable<int> idPerson, Nullable<int> idPersonType, Nullable<bool> status, Nullable<int> idDepartment, Nullable<int> idUser)
         {
             var idPersonParameter = idPerson.HasValue ?
                 new ObjectParameter("IdPerson", idPerson) :
@@ -219,7 +219,11 @@ namespace CustomerSupport.BDContext
                 new ObjectParameter("IdDepartment", idDepartment) :
                 new ObjectParameter("IdDepartment", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListPerson_Result>("GNListPerson", idPersonParameter, idPersonTypeParameter, statusParameter, idDepartmentParameter);
+            var idUserParameter = idUser.HasValue ?
+                new ObjectParameter("idUser", idUser) :
+                new ObjectParameter("idUser", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListPerson_Result>("GNListPerson", idPersonParameter, idPersonTypeParameter, statusParameter, idDepartmentParameter, idUserParameter);
         }
     
         public virtual ObjectResult<GNListPersonContact_Result> GNListPersonContact(Nullable<int> idPerson, Nullable<int> idPersonType, Nullable<int> idContact)

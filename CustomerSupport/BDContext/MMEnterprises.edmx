@@ -771,6 +771,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Parameter Name="IdPersonType" Type="int" Mode="In" />
           <Parameter Name="Status" Type="bit" Mode="In" />
           <Parameter Name="IdDepartment" Type="int" Mode="In" />
+          <Parameter Name="idUser" Type="int" Mode="In" />
         </Function>
         <Function Name="GNListPersonContact" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdPerson" Type="int" Mode="In" />
@@ -2006,6 +2007,7 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
             <Parameter Name="IdPersonType" Mode="In" Type="Int32" />
             <Parameter Name="Status" Mode="In" Type="Boolean" />
             <Parameter Name="IdDepartment" Mode="In" Type="Int32" />
+            <Parameter Name="idUser" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GNListPersonContact" ReturnType="Collection(MMEnterprisesModel.GNListPersonContact_Result)">
             <Parameter Name="IdPerson" Mode="In" Type="Int32" />
@@ -2393,22 +2395,22 @@ warning 6002: The table/view 'MMEnterprises.dbo.VWListCatalog' does not have a p
           <Property Type="DateTime" Name="DateEnd" Nullable="false" />
           <Property Type="Time" Name="HourIni" Nullable="false" />
           <Property Type="Time" Name="HourEnd" Nullable="false" />
-          <Property Type="String" Name="Place" Nullable="false" MaxLength="300" />
+          <Property Type="String" Name="Place" Nullable="true" MaxLength="300" />
           <Property Type="Int32" Name="IdStatus" Nullable="true" />
-          <Property Type="String" Name="Status" Nullable="false" MaxLength="200" />
-          <Property Type="String" Name="UserName" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="UserLastName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Status" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="UserName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="UserLastName" Nullable="true" MaxLength="100" />
           <Property Type="Int32" Name="IdFatherTask" Nullable="true" />
           <Property Type="String" Name="Tittle" Nullable="true" MaxLength="500" />
           <Property Type="Int32" Name="IdServiceRequest" Nullable="true" />
           <Property Type="Int32" Name="IdTypeTask" Nullable="true" />
-          <Property Type="String" Name="TypeTask" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="TypeTask" Nullable="true" MaxLength="200" />
           <Property Type="Int32" Name="IdPriority" Nullable="true" />
-          <Property Type="String" Name="PriorityTask" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="PriorityTask" Nullable="true" MaxLength="200" />
           <Property Type="Int32" Name="IdResponsable" Nullable="true" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="LastName" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="Activity" Nullable="false" MaxLength="500" />
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="LastName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Activity" Nullable="true" />
         </ComplexType>
         <ComplexType Name="GNListUser_Result">
           <Property Type="Int32" Name="IdUser" Nullable="false" />
