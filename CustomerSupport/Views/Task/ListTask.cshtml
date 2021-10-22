@@ -212,7 +212,7 @@
                 toastr.error("La fecha inicial No puede ser Mayor a la fecha Final");
                 return;
             }
-
+            debugger;
             @*var meses = Array.from(@Html.Raw(Json.Encode(Model.LisMonth)));*@
             var intIdTask = $("#inIdTask").val();
             var DateI = $("#dttDateIni").val();
@@ -224,6 +224,7 @@
             var intIdResponsable = $("#filtropersona").val();
             var intIdServiceRequest = $("#IdServiceRequest").val();
             var intIdFatherTask = $("#IdFatherTask").val();
+
 
             var datos = {
                 IdTask: intIdTask,
@@ -340,7 +341,7 @@
             //debugger;
              $.ajax({
                     type: "GET",
-                    url: '@Url.Action("GetListPerson", "Person")?idPersonType=2',
+                 url: '@Url.Action("GetListPerson", "Person")?idPersonType=2&blnUser=true',
                     data: "{}",
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",

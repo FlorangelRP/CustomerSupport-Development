@@ -23,23 +23,33 @@ namespace CustomerSupport.Controllers
             return View();
         }
 
-        public ActionResult GetListPerson(int? IdPersonType = null, bool? PersonStatus = null,int? IdDepartment =null)
+        public ActionResult GetListPerson(int? IdPersonType = null, bool? PersonStatus = null,int? IdDepartment =null, bool? blnUser = false)
         {
             List<MPerson> ListPerson = new List<MPerson>();
-            ListPerson = fnListPerson(null, IdPersonType, IdDepartment, PersonStatus); 
+
+            int? Iduser  = null;
+
+
+
+            if (blnUser==true)
+            {
+                Iduser  = ((MSerUser)Session["Usuario"]).IdUser;
+            }
+
+            ListPerson = fnListPerson(null, IdPersonType, IdDepartment, PersonStatus, Iduser); 
 
             return Json(ListPerson, JsonRequestBehavior.AllowGet); 
         }
 
 
-        public static List<MPerson> fnListPerson(int? idPerson, int? PersonType, int? Department=null, bool? PersonStatus=null)
+        public static List<MPerson> fnListPerson(int? idPerson, int? PersonType, int? Department=null, bool? PersonStatus=null, int? IdUser = null)
         {
             List<MPerson> ListPerson = new List<MPerson>();
             MMEnterprisesEntities db = new MMEnterprisesEntities();
 
             MUser objUser = new MUser();
 
-            ListPerson = (from result in db.GNListPerson(idPerson, PersonType, PersonStatus, Department).ToList()
+            ListPerson = (from result in db.GNListPerson(idPerson, PersonType, PersonStatus, Department, IdUser).ToList()
                           select new MPerson
                           {
                               IdPerson = result.IdPerson,

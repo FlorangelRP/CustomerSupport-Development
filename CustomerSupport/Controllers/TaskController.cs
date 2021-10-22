@@ -75,7 +75,7 @@ namespace CustomerSupport.Controllers
             int? IdStatus = null;
             int? IdTypeTask = null;
             int? IdServiceRequest = null;
-            int? IdUser = null;
+            int? IdUser = ((MSerUser)Session["Usuario"]).IdUser;
             int? IdFatherTask = null;
             string strtittle = "";
 
@@ -131,7 +131,6 @@ namespace CustomerSupport.Controllers
 
             MUser objUser = new MUser();
 
-           
             listTask = (List<MTask>)(from tsk in db.GNListTask(IdTask, dttDateIni, dttDateEnd, IdResponsable, strTittle, IdPriority, IdStatus, IdTypeTask, IdServiceRequest, IdUser, IdFatherTask).ToList()
                                          select new MTask
                                          {
@@ -223,10 +222,11 @@ namespace CustomerSupport.Controllers
                 //-----------------------------------------------------    
 
                 MUser ObjUser = new MUser();
+                int? IdUser = ((MSerUser)Session["Usuario"]).IdUser;
                 MMEnterprisesEntities db = new MMEnterprisesEntities();
 
                 //Convert.ToInt32(id)
-               var objListTask = fnListTask(id, null, null, null, null, null, null, null, null, null, null);
+               var objListTask = fnListTask(id, null, null, null, null, null, null, null, null, IdUser, null);
 
                 return View(objListTask.First());
             }
@@ -354,7 +354,9 @@ namespace CustomerSupport.Controllers
             //-----------------------------------------------------
 
             MTask objMTask = new MTask();
-            objMTask = fnListTask(id).First();
+            int? IdUser = ((MSerUser)Session["Usuario"]).IdUser;
+
+            objMTask = fnListTask(id,null, null, null, null, null, null, null, null, IdUser).First();
 
             //MTaskComment mTaskComment = new MTaskComment();
             //objMTask.listMTaskComment.Add(mTaskComment);
