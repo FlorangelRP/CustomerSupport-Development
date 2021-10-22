@@ -19,7 +19,7 @@ namespace CustomerSupport.Controllers
             {
                 return RedirectToAction("Login", "User");
             }
-            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAccesUser = ((MSerUser)Session["Usuario"]).UserAcces;
             var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListServiceRequest").First();
             if (ObjAcces != null)
             {
@@ -41,7 +41,8 @@ namespace CustomerSupport.Controllers
                 return View();
             }
 
-            TempData["DataServiceRequest"] = objMServiceRequest;
+            var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(objMServiceRequest);
+            TempData["DataServiceRequest"] = jsonString;
 
             switch (submit)
             {
@@ -73,7 +74,7 @@ namespace CustomerSupport.Controllers
             {
                 return RedirectToAction("Login", "User");
             }
-            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAccesUser = ((MSerUser)Session["Usuario"]).UserAcces;
             var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListServiceRequest").First();
             if (ObjAcces != null)
             {
@@ -112,7 +113,7 @@ namespace CustomerSupport.Controllers
                 if (ModelState.IsValid)
                 {
                     //valores por defecto
-                    objServiceRequest.IdUser = ((MUser)Session["Usuario"]).IdUser;
+                    objServiceRequest.IdUser = ((MSerUser)Session["Usuario"]).IdUser;
                     objServiceRequest.listTask.RemoveAll(r => r.IdPersonEmployee == null); //si empleado esta null, no hay cita
                     //Hay servicios que no requieren propiedad
                     if (objServiceRequest.IdPropertyType != null && objServiceRequest.IdPropertyType == 0)
@@ -168,7 +169,7 @@ namespace CustomerSupport.Controllers
             {
                 return RedirectToAction("Login", "User");
             }
-            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAccesUser = ((MSerUser)Session["Usuario"]).UserAcces;
             var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListServiceRequest").First();
             if (ObjAcces != null)
             {
@@ -181,9 +182,10 @@ namespace CustomerSupport.Controllers
             //Aqui se trae el modelo enviado por POST desde la Lista, para que no se vea en la Url
             if (TempData["DataServiceRequest"] != null)
             {
-                if (((MServiceRequest)TempData["DataServiceRequest"]) != null && ((MServiceRequest)TempData["DataServiceRequest"]).IdServiceRequest > 0)
+                var objTempData = Newtonsoft.Json.JsonConvert.DeserializeObject<MServiceRequest>((string)TempData["DataServiceRequest"]);
+                if (objTempData != null && objTempData.IdServiceRequest > 0)
                 {
-                    id = ((MServiceRequest)TempData["DataServiceRequest"]).IdServiceRequest;
+                    id = objTempData.IdServiceRequest;
                 }
                 else
                 {
@@ -243,7 +245,7 @@ namespace CustomerSupport.Controllers
                 if (ModelState.IsValid)
                 {
                     //valores por defecto
-                    objServiceRequest.IdUser = ((MUser)Session["Usuario"]).IdUser;
+                    objServiceRequest.IdUser = ((MSerUser)Session["Usuario"]).IdUser;
                     objServiceRequest.listTask.RemoveAll(r => r.IdPersonEmployee == null); //si empleado esta null, no hay cita
                     //Hay servicios que no requieren propiedad
                     if (objServiceRequest.IdPropertyType!=null && objServiceRequest.IdPropertyType == 0) 
@@ -263,7 +265,9 @@ namespace CustomerSupport.Controllers
                         //Para evitar que se vea el id en la Url------------
                         MServiceRequest objMServiceRequest = new MServiceRequest();
                         objMServiceRequest.IdServiceRequest = objServiceRequest.IdServiceRequest;
-                        TempData["DataServiceRequest"] = objMServiceRequest;
+
+                        var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(objMServiceRequest);
+                        TempData["DataServiceRequest"] = jsonString;
                         return RedirectToAction("EditServiceRequest");
                         //---------------------------------------------------
 
@@ -316,7 +320,7 @@ namespace CustomerSupport.Controllers
                                         IdServiceStatus = d.IdServiceStatus,
                                         ServiceStatus = d.ServiceStatus,
                                         IdPerson = d.IdPerson,
-                                        PersonClient = (MPerson)(from result2 in db.GNListPerson(d.IdPerson, null, null, null).ToList()
+                                        PersonClient = (MPerson)(from result2 in db.GNListPerson(d.IdPerson, null, null, null,null).ToList()
                                                         select new MPerson
                                                         {
                                                             IdPerson = result2.IdPerson,
@@ -760,7 +764,7 @@ namespace CustomerSupport.Controllers
             {
                 return RedirectToAction("Login", "User");
             }
-            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAccesUser = ((MSerUser)Session["Usuario"]).UserAcces;
             var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListServiceRequest").First();
             if (ObjAcces != null)
             {
@@ -773,9 +777,10 @@ namespace CustomerSupport.Controllers
             //Aqui se trae el modelo enviado por POST desde la Lista, para que no se vea en la Url
             if (TempData["DataServiceRequest"] != null)
             {
-                if (((MServiceRequest)TempData["DataServiceRequest"]) != null && ((MServiceRequest)TempData["DataServiceRequest"]).IdServiceRequest > 0)
+                var objTempData = Newtonsoft.Json.JsonConvert.DeserializeObject<MServiceRequest>((string)TempData["DataServiceRequest"]);
+                if (objTempData != null && objTempData.IdServiceRequest > 0)
                 {
-                    id = ((MServiceRequest)TempData["DataServiceRequest"]).IdServiceRequest;
+                    id = objTempData.IdServiceRequest;
                 }
                 else
                 {

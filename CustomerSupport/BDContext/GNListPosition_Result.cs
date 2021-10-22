@@ -10,17 +10,15 @@
 namespace CustomerSupport.BDContext
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class CommentTask
+    public partial class GNListPosition_Result
     {
-        public int IdComment { get; set; }
-        public int IdTask { get; set; }
-        public string Comment { get; set; }
-        public int IdUser { get; set; }
-        public System.DateTime Date { get; set; }
-    
-        public virtual Task Task { get; set; }
-        public virtual User User { get; set; }
+        public int IdPosition { get; set; }
+        public string Description { get; set; }
+        public int IdDepartment { get; set; }
+        public string Department { get; set; }
+        public int IdPositionLevel { get; set; }
+        public string PositionLevel { get; set; }
+        public bool Status { get; set; }
     }
 }

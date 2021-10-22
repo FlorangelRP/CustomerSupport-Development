@@ -12,22 +12,29 @@ namespace CustomerSupport.BDContext
     using System;
     using System.Collections.Generic;
     
-    public partial class Role
+    public partial class Position
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Role()
+        public Position()
         {
-            this.RoleAcces = new HashSet<RoleAcces>();
-            this.User = new HashSet<User>();
+            this.Person = new HashSet<Person>();
+            this.Position1 = new HashSet<Position>();
+            this.Position2 = new HashSet<Position>();
         }
     
-        public int IdRole { get; set; }
-        public string NameRole { get; set; }
+        public int IdPosition { get; set; }
+        public string Description { get; set; }
+        public int IdDepartment { get; set; }
+        public int IdPositionLevel { get; set; }
         public bool Status { get; set; }
     
+        public virtual CatalogDetail CatalogDetail { get; set; }
+        public virtual CatalogDetail CatalogDetail1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RoleAcces> RoleAcces { get; set; }
+        public virtual ICollection<Person> Person { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> User { get; set; }
+        public virtual ICollection<Position> Position1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Position> Position2 { get; set; }
     }
 }

@@ -154,6 +154,9 @@
     <Compile Include="BDContext\GNLisColor_Result.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
+    <Compile Include="BDContext\GNListAssociatePosition_Result.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
     <Compile Include="BDContext\GNListBitacora_Result.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
@@ -176,6 +179,9 @@
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\GNListPerson_Result.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BDContext\GNListPosition_Result.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\GNListRoleAcces_Result.cs">
@@ -229,6 +235,9 @@
     <Compile Include="BDContext\PersonContact.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
+    <Compile Include="BDContext\Position.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
     <Compile Include="BDContext\Role.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
@@ -238,6 +247,15 @@
     <Compile Include="BDContext\ServiceRequest.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
+    <Compile Include="BDContext\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BDContext\sp_helpdiagrams_Result.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BDContext\sysdiagrams.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
     <Compile Include="BDContext\Task.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
@@ -245,6 +263,9 @@
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\UserAcces.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BDContext\UserAcces_resp.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\VWListCatalog.cs">
@@ -689,13 +710,6 @@
     <Content Include="Scripts\esm\popper-utils.js.map" />
     <Content Include="Content\assets\js\pdfmake\pdfmake.js.map" />
     <Content Include="Content\assets\js\pdfmake\pdfmake.min.js.map" />
-    <EntityDeploy Include="BDContext\MMEnterprises.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>MMEnterprises.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="BDContext\MMEnterprises.edmx.diagram">
-      <DependentUpon>MMEnterprises.edmx</DependentUpon>
-    </Content>
     <Content Include="Scripts\inputmask\bindings\inputmask.binding.js" />
     <Content Include="Scripts\inputmask\inputmask.js" />
     <Content Include="Scripts\inputmask\inputmask.min.js" />
@@ -731,6 +745,13 @@
     <Content Include="Content\assets\js\bootstrap.js.map" />
     <Content Include="Content\assets\js\bootstrap.min.js.map" />
     <Content Include="Content\assets\js\jquery.qtip.min.map" />
+    <EntityDeploy Include="BDContext\MMEnterprises.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>MMEnterprises.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="BDContext\MMEnterprises.edmx.diagram">
+      <DependentUpon>MMEnterprises.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.6.0.js" />
     <Content Include="Scripts\jquery-3.6.0.min.js" />
@@ -1181,7 +1202,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties scripts_4toastr_1js_1map__JsonSchema="" scripts_4tinymce_4tsconfig_1json__JsonSchema="" />
+      <UserProperties scripts_4tinymce_4tsconfig_1json__JsonSchema="" scripts_4toastr_1js_1map__JsonSchema="" />
     </VisualStudio>
   </ProjectExtensions>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

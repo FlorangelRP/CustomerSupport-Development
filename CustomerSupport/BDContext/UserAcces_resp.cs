@@ -12,15 +12,14 @@ namespace CustomerSupport.BDContext
     using System;
     using System.Collections.Generic;
     
-    public partial class CommentTask
+    public partial class UserAcces_resp
     {
-        public int IdComment { get; set; }
-        public int IdTask { get; set; }
-        public string Comment { get; set; }
         public int IdUser { get; set; }
-        public System.DateTime Date { get; set; }
-    
-        public virtual Task Task { get; set; }
-        public virtual User User { get; set; }
+        public int IdOption { get; set; }
+        public bool Visible { get; set; }
+        public bool Create { get; set; }
+        public bool Search { get; set; }
+        public bool Edit { get; set; }
+        public bool Delete { get; set; }
     }
 }

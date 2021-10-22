@@ -22,7 +22,7 @@ namespace CustomerSupport.Controllers
             }
             else
             {
-                var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+                var ObjAccesUser = ((MSerUser)Session["Usuario"]).UserAcces;
                 var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListUser").First();
                 if (ObjAcces != null)
                 {
@@ -45,7 +45,8 @@ namespace CustomerSupport.Controllers
                 return View();
             }
 
-            TempData["DataUser"] = objMUser;
+            var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(objMUser);
+            TempData["DataUser"] = jsonString;
 
             switch (submit)
             {
@@ -114,7 +115,7 @@ namespace CustomerSupport.Controllers
                     if (IdUser != 0)
                     {
 
-                        MUser ObjUser = new MUser();
+                        MSerUser ObjUser = new MSerUser();
 
                         ObjUser = fnSearchUserSession(IdUser);
 
@@ -153,7 +154,7 @@ namespace CustomerSupport.Controllers
             }
             else
             {
-                var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+                var ObjAccesUser = ((MSerUser)Session["Usuario"]).UserAcces;
                 var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListUser").First();
                 if (ObjAcces != null)
                 {
@@ -166,9 +167,10 @@ namespace CustomerSupport.Controllers
                 //Aqui se trae el modelo enviado por POST desde la Lista, para que no se vea en la Url
                 if (TempData["DataUser"] != null) 
                 {
-                    if (((MUser)TempData["DataUser"]) != null && ((MUser)TempData["DataUser"]).IdUser > 0)
+                    var objTempData = Newtonsoft.Json.JsonConvert.DeserializeObject<MUser>((string)TempData["DataUser"]);
+                    if (objTempData != null && objTempData.IdUser > 0)
                     {
-                        id = ((MUser)TempData["DataUser"]).IdUser;
+                        id = objTempData.IdUser;
                     }
                     else 
                     {
@@ -197,7 +199,7 @@ namespace CustomerSupport.Controllers
             }
             else
             {
-                var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+                var ObjAccesUser = ((MSerUser)Session["Usuario"]).UserAcces;
                 var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListUser").First();
                 if (ObjAcces != null)
                 {
@@ -285,7 +287,7 @@ namespace CustomerSupport.Controllers
             }
             else
             {
-                var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+                var ObjAccesUser = ((MSerUser)Session["Usuario"]).UserAcces;
                 var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListUser").First();
                 if (ObjAcces != null)
                 {
@@ -298,9 +300,10 @@ namespace CustomerSupport.Controllers
                 //Aqui se trae el modelo enviado por POST desde la Lista, para que no se vea en la Url
                 if (TempData["DataUser"] != null)
                 {
-                    if (((MUser)TempData["DataUser"]) != null && ((MUser)TempData["DataUser"]).IdUser > 0)
+                    var objTempData = Newtonsoft.Json.JsonConvert.DeserializeObject<MUser>((string)TempData["DataUser"]);
+                    if (objTempData != null && objTempData.IdUser > 0)
                     {
-                        id = ((MUser)TempData["DataUser"]).IdUser;
+                        id = objTempData.IdUser;
                     }
                     else
                     {
@@ -347,7 +350,9 @@ namespace CustomerSupport.Controllers
                         //Para evitar que se vea el id en la Url------------
                         MUser objMUser = new MUser();
                         objMUser.IdUser = objUser.IdUser;
-                        TempData["DataUser"] = objMUser;
+
+                        var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(objMUser);
+                        TempData["DataUser"] = jsonString;
                         return RedirectToAction("EditUser");
                         //---------------------------------------------------
                     }
@@ -393,7 +398,7 @@ namespace CustomerSupport.Controllers
                             Login = result.Login,
                             Status = result.Status,
                             StatusDesc = result.Status == true ? "Activo" : "Inactivo",
-                            PersonEmployee = (MPerson)(from result2 in db.GNListPerson(result.IdPerson, null, null, null).ToList()
+                            PersonEmployee = (MPerson)(from result2 in db.GNListPerson(result.IdPerson, null, null, null,null).ToList()
                                                        select new MPerson
                                                        {
                                                            //IdPerson = result2.IdPerson,
@@ -444,7 +449,7 @@ namespace CustomerSupport.Controllers
                             Password = objMUser.Desencriptar(result.Password),
                             Status = result.Status,
                             StatusDesc = result.Status == true ? "Activo" : "Inactivo",
-                            PersonEmployee = (MPerson)(from result2 in db.GNListPerson(result.IdPerson, null, null, null).ToList()
+                            PersonEmployee = (MPerson)(from result2 in db.GNListPerson(result.IdPerson, null, null, null,null).ToList()
                                                        select new MPerson
                                                        {
                                                            IdPerson = result2.IdPerson,
@@ -512,18 +517,18 @@ namespace CustomerSupport.Controllers
         /// </summary>
         /// <param optional name="IdUser"></param> <param optional name="Status"></param> <param optional name="IdPerson"></param>
         /// <returns>Objeto de tipo MUser</returns>
-        public static MUser fnSearchUserSession(int? IdUser = null, bool? Status = null, int? IdPerson = null)
+        public static MSerUser fnSearchUserSession(int? IdUser = null, bool? Status = null, int? IdPerson = null)
         {
-            MUser objMUser = new MUser();
+            MSerUser objMUser = new MSerUser();
             MMEnterprisesEntities db = new MMEnterprisesEntities();
             
             objMUser = (from result in db.GNListUser(IdUser, Status, IdPerson).ToList()
-                        select new MUser
+                        select new MSerUser
                         {
                             IdUser = result.IdUser,
                             Login = result.Login,
-                            PersonEmployee = (MPerson)(from result2 in db.GNListPerson(result.IdPerson, null, null, null).ToList()
-                                                       select new MPerson
+                            PersonEmployee = (MSerPerson)(from result2 in db.GNListPerson(result.IdPerson, null, null, null,null).ToList()
+                                                       select new MSerPerson
                                                        {
                                                            IdPerson = result2.IdPerson,
                                                            Name = result2.Name,
@@ -531,7 +536,7 @@ namespace CustomerSupport.Controllers
                                                            Email = result2.Email
                                                        }).ToList().First(),                            
                             UserAcces = (from result3 in db.GNListRoleUserPermission(result.IdUser, null).ToList()
-                                         select new MUserAcces
+                                         select new MSerAcces
                                          {
                                              IdOption = result3.IdOption,
                                              OptionName = result3.OptionName,
@@ -546,7 +551,7 @@ namespace CustomerSupport.Controllers
                                          }).ToList(),
 
                             UserAccesPadre = (from result3 in db.GNListRoleUserPermission(null, null).ToList()
-                                              select new MUserAcces
+                                              select new MSerAcces
                                               {
                                                   IdOption = result3.IdOption,
                                                   OptionName = result3.OptionName,
@@ -576,6 +581,7 @@ namespace CustomerSupport.Controllers
         
             List<MUserAcces> ObjUser = new List<MUserAcces>();
             MMEnterprisesEntities db = new MMEnterprisesEntities();
+            
 
             ObjUser = (from result3 in db.GNListUserAcces(IdUser, IdAssociated, lsRoles).ToList()
                        select new MUserAcces

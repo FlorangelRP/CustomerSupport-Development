@@ -21,7 +21,7 @@ namespace CustomerSupport.Controllers
                 return RedirectToAction("Login", "User");
             }
 
-            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAccesUser = ((MSerUser)Session["Usuario"]).UserAcces;
             var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListTask").First();
             if (ObjAcces != null)
             {
@@ -46,8 +46,8 @@ namespace CustomerSupport.Controllers
                 return View();
             }
 
-
-            TempData["DataTask"] = objMTask;
+            var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(objMTask);
+            TempData["DataTask"] = jsonString;
 
             switch (submit)
             {
@@ -75,7 +75,7 @@ namespace CustomerSupport.Controllers
             int? IdStatus = null;
             int? IdTypeTask = null;
             int? IdServiceRequest = null;
-            int? IdUser = null;
+            int? IdUser = ((MSerUser)Session["Usuario"]).IdUser;
             int? IdFatherTask = null;
             string strtittle = "";
 
@@ -131,7 +131,6 @@ namespace CustomerSupport.Controllers
 
             MUser objUser = new MUser();
 
-           
             listTask = (List<MTask>)(from tsk in db.GNListTask(IdTask, dttDateIni, dttDateEnd, IdResponsable, strTittle, IdPriority, IdStatus, IdTypeTask, IdServiceRequest, IdUser, IdFatherTask).ToList()
                                          select new MTask
                                          {
@@ -193,7 +192,7 @@ namespace CustomerSupport.Controllers
             }
             else
             {
-                var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+                var ObjAccesUser = ((MSerUser)Session["Usuario"]).UserAcces;
                 var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListTask").First();
                 if (ObjAcces != null)
                 {
@@ -206,9 +205,10 @@ namespace CustomerSupport.Controllers
                 //Aqui se trae el modelo enviado por POST desde la Lista, para que no se vea en la Url
                 if (TempData["DataTask"] != null)
                 {
-                    if (((MTask)TempData["DataTask"]) != null && ((MTask)TempData["DataTask"]).IdTask > 0)
+                    var objTempData = Newtonsoft.Json.JsonConvert.DeserializeObject<MTask>((string)TempData["DataTask"]);
+                    if (objTempData != null && objTempData.IdTask > 0)
                     {
-                        id = ((MTask)TempData["DataTask"]).IdTask;
+                        id = objTempData.IdTask;
                     }
                     else
                     {
@@ -222,10 +222,11 @@ namespace CustomerSupport.Controllers
                 //-----------------------------------------------------    
 
                 MUser ObjUser = new MUser();
+                int? IdUser = ((MSerUser)Session["Usuario"]).IdUser;
                 MMEnterprisesEntities db = new MMEnterprisesEntities();
 
                 //Convert.ToInt32(id)
-               var objListTask = fnListTask(id, null, null, null, null, null, null, null, null, null, null);
+               var objListTask = fnListTask(id, null, null, null, null, null, null, null, null, IdUser, null);
 
                 return View(objListTask.First());
             }
@@ -238,7 +239,7 @@ namespace CustomerSupport.Controllers
             {
                 return RedirectToAction("Login", "User");
             }
-            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAccesUser = ((MSerUser)Session["Usuario"]).UserAcces;
             var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListTask").First();
             if (ObjAcces != null)
             {
@@ -283,7 +284,7 @@ namespace CustomerSupport.Controllers
                 if (ModelState.IsValid)
                 {
                     //valores por defecto
-                    objTask.IdUser = ((MUser)Session["Usuario"]).IdUser;
+                    objTask.IdUser = ((MSerUser)Session["Usuario"]).IdUser;
 
                     string mensaje = "";
                     int IdTask = 0;
@@ -323,7 +324,7 @@ namespace CustomerSupport.Controllers
                 return RedirectToAction("Login", "User");
             }
 
-            var ObjAccesUser = ((MUser)Session["Usuario"]).UserAcces;
+            var ObjAccesUser = ((MSerUser)Session["Usuario"]).UserAcces;
             var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListTask").First();
             if (ObjAcces != null)
             {
@@ -336,9 +337,10 @@ namespace CustomerSupport.Controllers
             //Aqui se trae el modelo enviado por POST desde la Lista, para que no se vea en la Url
             if (TempData["DataTask"] != null)
             {
-                if (((MTask)TempData["DataTask"]) != null && ((MTask)TempData["DataTask"]).IdTask > 0)
+                var objTempData = Newtonsoft.Json.JsonConvert.DeserializeObject<MTask>((string)TempData["DataTask"]);
+                if (objTempData != null && objTempData.IdTask > 0)
                 {
-                    id = ((MTask)TempData["DataTask"]).IdTask;
+                    id = objTempData.IdTask;
                 }
                 else
                 {
@@ -352,7 +354,9 @@ namespace CustomerSupport.Controllers
             //-----------------------------------------------------
 
             MTask objMTask = new MTask();
-            objMTask = fnListTask(id).First();
+            int? IdUser = ((MSerUser)Session["Usuario"]).IdUser;
+
+            objMTask = fnListTask(id,null, null, null, null, null, null, null, null, IdUser).First();
 
             //MTaskComment mTaskComment = new MTaskComment();
             //objMTask.listMTaskComment.Add(mTaskComment);
@@ -373,7 +377,7 @@ namespace CustomerSupport.Controllers
         {
             try
             {
-                objTask.IdUser = ((MUser)Session["Usuario"]).IdUser;
+                objTask.IdUser = ((MSerUser)Session["Usuario"]).IdUser;
 
                 if (objTask.DateEnd == objTask.DateIni && objTask.HourIni == objTask.HourEnd)
                 {
@@ -395,7 +399,9 @@ namespace CustomerSupport.Controllers
                         //Para evitar que se vea el id en la Url------------
                         MTask objMTask = new MTask();
                         objMTask.IdTask = objTask.IdTask;
-                        TempData["DataTask"] = objMTask;
+
+                        var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(objMTask);
+                        TempData["DataTask"] = jsonString;
                         return RedirectToAction("EditTask");
                         //---------------------------------------------------
 
