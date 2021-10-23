@@ -1209,7 +1209,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties scripts_4toastr_1js_1map__JsonSchema="" scripts_4tinymce_4tsconfig_1json__JsonSchema="" />
+      <UserProperties scripts_4tinymce_4tsconfig_1json__JsonSchema="" scripts_4toastr_1js_1map__JsonSchema="" />
     </VisualStudio>
   </ProjectExtensions>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

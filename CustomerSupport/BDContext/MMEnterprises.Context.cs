@@ -46,6 +46,11 @@ namespace CustomerSupport.BDContext
         public virtual DbSet<UserAcces_resp> UserAcces_resp { get; set; }
         public virtual DbSet<VWListCatalog> VWListCatalog { get; set; }
     
+        public virtual int f_GNTranTask()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("f_GNTranTask");
+        }
+    
         public virtual int GNAuthenticationUser(string strLogin, string strPassword, ObjectParameter idUser)
         {
             var strLoginParameter = strLogin != null ?
@@ -815,7 +820,7 @@ namespace CustomerSupport.BDContext
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranServiceRequestTask", transactionTypeParameter, idTaskParameter, idServiceRequestParameter);
         }
     
-        public virtual int GNTranTask(string transactionType, ObjectParameter idTask, Nullable<int> idUser, Nullable<System.DateTime> dttDateIni, Nullable<System.DateTime> dttDateEnd, Nullable<System.TimeSpan> tHourIni, Nullable<System.TimeSpan> tHourEnd, string strPlace, Nullable<int> idFatherTask, Nullable<int> idResponsable, string strTittle, Nullable<int> idPriority, Nullable<int> idStatus, Nullable<int> idTypeTask, string strActivity)
+        public virtual int GNTranTask(string transactionType, ObjectParameter idTask, Nullable<int> idUser, Nullable<System.DateTime> dttDateIni, Nullable<System.DateTime> dttDateEnd, Nullable<System.TimeSpan> tHourIni, Nullable<System.TimeSpan> tHourEnd, string strPlace, Nullable<int> idFatherTask, Nullable<int> idResponsable, string strTittle, Nullable<int> idPriority, Nullable<int> idStatus, Nullable<int> idTypeTask, string strActivity, Nullable<bool> blnConfidential)
         {
             var transactionTypeParameter = transactionType != null ?
                 new ObjectParameter("TransactionType", transactionType) :
@@ -873,7 +878,11 @@ namespace CustomerSupport.BDContext
                 new ObjectParameter("strActivity", strActivity) :
                 new ObjectParameter("strActivity", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranTask", transactionTypeParameter, idTask, idUserParameter, dttDateIniParameter, dttDateEndParameter, tHourIniParameter, tHourEndParameter, strPlaceParameter, idFatherTaskParameter, idResponsableParameter, strTittleParameter, idPriorityParameter, idStatusParameter, idTypeTaskParameter, strActivityParameter);
+            var blnConfidentialParameter = blnConfidential.HasValue ?
+                new ObjectParameter("blnConfidential", blnConfidential) :
+                new ObjectParameter("blnConfidential", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranTask", transactionTypeParameter, idTask, idUserParameter, dttDateIniParameter, dttDateEndParameter, tHourIniParameter, tHourEndParameter, strPlaceParameter, idFatherTaskParameter, idResponsableParameter, strTittleParameter, idPriorityParameter, idStatusParameter, idTypeTaskParameter, strActivityParameter, blnConfidentialParameter);
         }
     
         public virtual int GNTranUser(Nullable<int> idPerson, string strLogin, string strPassword, string transactionType, ObjectParameter idUser, Nullable<bool> btStatus)

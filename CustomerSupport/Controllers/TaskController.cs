@@ -112,8 +112,6 @@ namespace CustomerSupport.Controllers
             if (objFilter.IdFatherTask != null)
                 IdFatherTask = objFilter.IdFatherTask;
 
-            
-
 
             objListTask = fnListTask(IdTask, dttDateIni, dttDateEnd, IdResponsable,strtittle, IdPriority, IdStatus, IdTypeTask, IdServiceRequest, IdUser,IdFatherTask);
 
@@ -156,6 +154,7 @@ namespace CustomerSupport.Controllers
                                              PersonEmployeeName= tsk.Name, 
                                              PersonEmployeeLastName = tsk.LastName,
                                              Activity = tsk.Activity,
+                                             Confidential = tsk.confidential==null?false: (bool)tsk.confidential,
                                              listTaskPerson = (List<MTaskPerson>)(from tp in db.GNListPersonTask(tsk.IdTask, null).ToList()
                                                                                   select new MTaskPerson
                                                                                   {
@@ -356,7 +355,13 @@ namespace CustomerSupport.Controllers
             MTask objMTask = new MTask();
             int? IdUser = ((MSerUser)Session["Usuario"]).IdUser;
 
-            objMTask = fnListTask(id,null, null, null, null, null, null, null, null, IdUser).First();
+            var ListT = fnListTask(id, null, null, null, null, null, null, null, null, IdUser);
+            if(ListT.Count>0)
+            objMTask = ListT.First();
+            else
+                return RedirectToAction("ListTask", "Task");
+
+
 
             //MTaskComment mTaskComment = new MTaskComment();
             //objMTask.listMTaskComment.Add(mTaskComment);
@@ -507,13 +512,26 @@ namespace CustomerSupport.Controllers
                     IdResponsable.Value = DBNull.Value;
                 }
 
+                //SqlParameter paramConfidential = new SqlParameter();
+                //paramPlace.ParameterName = "@blnConfidential";
+                //IdResponsable.SqlDbType = System.Data.SqlDbType.Bit;
+                //IdResponsable.Direction = System.Data.ParameterDirection.Input;
+                //IdResponsable.IsNullable = false;
+                //if (objTask.Confidential != null)
+                //{
+                //    paramConfidential.Value = objTask.Confidential;
+                //}
+                //else
+                //{
+                //    paramConfidential.Value = false;
+                //}
 
                 MUser objUser = new MUser();
 
 
                 SqlResultTask = db.Database.ExecuteSqlCommand("GNTranTask @TransactionType, @IdTask OUT, @IdUser " +
                                                         ", @dttDateIni, @dttDateEnd, @tHourIni, @tHourEnd, @strPlace " +
-                                                        ", @IdFatherTask, @IdResponsable, @strTittle, @IdPriority, @IdStatus, @IdTypeTask,@strActivity ",
+                                                        ", @IdFatherTask, @IdResponsable, @strTittle, @IdPriority, @IdStatus, @IdTypeTask,@strActivity,@blnConfidential ",
                         new SqlParameter[]{
                             new SqlParameter("@TransactionType", TransactionType),
                             paramOutIdTask,
@@ -529,7 +547,8 @@ namespace CustomerSupport.Controllers
                             new SqlParameter("@IdPriority", objTask.IdPriority),
                             new SqlParameter("@IdStatus", objTask.IdStatus),
                             new SqlParameter("@IdTypeTask", objTask.IdTypeTask),
-                            new SqlParameter("@strActivity", objTask.Activity)
+                            new SqlParameter("@strActivity", objTask.Activity),
+                            new SqlParameter("@blnConfidential", objTask.Confidential)
                         }
                     );
 

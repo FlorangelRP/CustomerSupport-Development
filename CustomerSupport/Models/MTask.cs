@@ -74,6 +74,7 @@ namespace CustomerSupport.Models
       
         public List<MTaskComment> listMTaskComment { get; set; } //Esta lista es para los Comentarios en la actividad
 
+        public bool Confidential { get; set; }
         //public List<MBitacora> listMBitacora { get; set; } //Solo para editar
 
         //---------------------------------------------------------------------------------------------------------------

@@ -159,7 +159,11 @@
                             </div>
                         </div>
 
-
+                        <div class="col-md-4 s_Checkbox">
+                            @Html.CheckBoxFor(model => model.Confidential, new { @id = "blnConfidential" })
+                            <label>Confidencial</label>
+                            @Html.ValidationMessageFor(model => model.Confidential, "", new { @class = "text-danger" })
+                        </div>
                     </div>
                     <div class="row pt-2 pb-3">
 
@@ -219,7 +223,7 @@
                                                                     <tbody id="BodyPersonEmployee">
                                                                         @if (Model != null)
                                                                         {
-                                                                            if (Model.listTaskPerson != null)
+                                                                            if (Model.listTaskPerson != null && Model.listTaskPerson.Count>0)
                                                                             {
                                                                                 string idRow;
                                                                                 string idCol;
@@ -281,7 +285,7 @@
                     {
                         int cant = 0;
 
-                        if (Model.listMTaskComment.Count == 0)
+                        if (Model.listMTaskComment!=null && Model.listMTaskComment.Count == 0)
                         {
                             MTaskComment objComent = new MTaskComment();
                             objComent.IdTask = Model.IdTask;

@@ -20,6 +20,8 @@ namespace CustomerSupport.BDContext
             this.Person = new HashSet<Person>();
             this.Position1 = new HashSet<Position>();
             this.Position2 = new HashSet<Position>();
+            this.Position11 = new HashSet<Position>();
+            this.Position3 = new HashSet<Position>();
         }
     
         public int IdPosition { get; set; }
@@ -36,5 +38,9 @@ namespace CustomerSupport.BDContext
         public virtual ICollection<Position> Position1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Position> Position2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Position> Position11 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Position> Position3 { get; set; }
     }
 }

@@ -37,6 +37,7 @@ namespace CustomerSupport.BDContext
         public Nullable<int> IdStatus { get; set; }
         public Nullable<int> IdTypeTask { get; set; }
         public string Activity { get; set; }
+        public bool confidential { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CommentTask> CommentTask { get; set; }

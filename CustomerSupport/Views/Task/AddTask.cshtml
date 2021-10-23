@@ -136,7 +136,11 @@
                             </div>
                         </div>
 
-
+                        <div class="col-md-4 s_Checkbox">
+                            @Html.CheckBoxFor(model => model.Confidential, new { @id = "blnConfidential" })
+                            <label>Confidencial</label>
+                            @Html.ValidationMessageFor(model => model.Confidential, "", new { @class = "text-danger" })
+                        </div>
                     </div>
                     <div class="row pt-2 pb-3">
 

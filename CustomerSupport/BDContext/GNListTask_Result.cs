@@ -35,5 +35,6 @@ namespace CustomerSupport.BDContext
         public string Name { get; set; }
         public string LastName { get; set; }
         public string Activity { get; set; }
+        public Nullable<bool> confidential { get; set; }
     }
 }
