@@ -46,8 +46,11 @@ namespace CustomerSupport.Controllers
                 {
                     idResponsable = id;
                 }
+
+                int? IdUser = ((MSerUser)Session["Usuario"]).IdUser;
+
                 // Loading.
-                List<MCalendar> data = fnListCalendar(null, null, null, idResponsable, null, null, null, null, null, null,null);
+                List<MCalendar> data = fnListCalendar(null, null, null, idResponsable, null, null, null, null, null, IdUser, null);
 
                 // Processing.
                 result = this.Json(data, JsonRequestBehavior.AllowGet);

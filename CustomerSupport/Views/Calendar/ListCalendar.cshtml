@@ -145,7 +145,7 @@
         function ObtenerPersonas() {
             $.ajax({
                 type: "GET",
-                url: '@Url.Action("GetListPerson", "Person")?idPersonType=2',
+                url: '@Url.Action("GetListPerson", "Person")?idPersonType=2&blnUser=true', 
                 data: "{}",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -540,7 +540,7 @@
             recreateFC($(window).width());
 
             calendar = new FullCalendar.Calendar(calendarEl, optionsViewFC);
-            calendar.render();            
+            calendar.render();
             calendar.updateSize();
         }
 
@@ -592,7 +592,7 @@
         });
 
         document.addEventListener('DOMContentLoaded', function () {
-            FiltrarCalender();            
+            FiltrarCalender();
         });
 
         $(window).resize(function () {
