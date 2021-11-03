@@ -185,18 +185,23 @@
 
 
                                             <div class="row">
-                                                <div class="col-md-8">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <div class="control-label">Colaborador:</div>
                                                         <select class="select2" onchange="filtrarColaborador(this.value)" id="filtroColaborador" data-placeholder="Seleccione"></select>
                                                         @*@Html.HiddenFor(model => model.IdPersonEmployee, new { @id = "IdPersonColaborador," })
-                                                            @Html.ValidationMessageFor(model => model.IdPersonEmployee, "", new { @class = "text-danger" })*@
+                @Html.ValidationMessageFor(model => model.IdPersonEmployee, "", new { @class = "text-danger" })*@
 
                                                     </div>
                                                 </div>
 
+                                                <div class="col-md-4 s_Checkbox">
+                                                    @Html.CheckBox("IsColaborator", false)
+                                                    <label>Colaborador:</label>
+                                                    @*  @Html.ValidationMessageFor(model => model.listTaskPerson[0].IsColaborator, "", new { @class = "text-danger" })*@
+                                                </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <div class="form-group">
                                                         @*<div class="btn_option"><a id="addRow"><i class="fas fa-plus"></i></a></div>*@
                                                         <div class="btn_option"><a onclick="addRow();"><i class="fas fa-plus"></i></a></div>
@@ -216,8 +221,9 @@
                                                                             <td style="display:none;">colHid_indexCell</td>
                                                                             <td style="display:none;">colHid_IdPersonEmployee</td>
                                                                             <td style="display:none;">colHid_PersonEmployeeName</td>
-                                                                            <td>Nombre</td>
-                                                                            <td>Opciones</td>
+                                                                            <td width="70%">Nombre</td>
+                                                                            <td width="15%">Colaborador</td>
+                                                                            <td width="15%">Opciones</td>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody id="BodyPersonEmployee">
@@ -231,6 +237,9 @@
                                                                                 string nameCol_PersonEmployeeName;
                                                                                 string nameCol_PersonEmployeeLastName;
                                                                                 string nameCol_NumIdentification;
+                                                                                string nameCol_Colaborator;
+                                                                                string chkFun;
+                                                                                string nameCol_ColaboratorI;
 
                                                                                 for (var i = 0; i < Model.listTaskPerson.Count; i++)
                                                                                 {
@@ -239,7 +248,10 @@
                                                                                     nameCol_NumIdentification = "listTaskPerson[" + i.ToString() + "].NumIdentification";
                                                                                     nameCol_IdPersonEmploye = "listTaskPerson[" + i.ToString() + "].IdPersonEmployee";
                                                                                     nameCol_PersonEmployeeName = "listTaskPerson[" + i.ToString() + "].PersonEmployeeName";
-                                                                                    nameCol_PersonEmployeeLastName = "listTaskPerson[" + i.ToString() + "].PersonEmployeeLastName";
+                                                                                    nameCol_PersonEmployeeLastName = "listTaskPerson[" + i.ToString() + "].Person";
+                                                                                    nameCol_Colaborator = "listTaskPerson[" + i.ToString() + "].Iscolaborator";
+                                                                                    chkFun = "Chk(this, "  +i.ToString() + ")";
+                                                                                    nameCol_ColaboratorI = "listTaskPerson_" + i.ToString();
 
                                                                                     var Name = " ";
                                                                                     if (@Model.listTaskPerson[i].PersonEmployeeName != "")
@@ -249,18 +261,34 @@
 
                                                                                     string strNombre = @Model.listTaskPerson[i].NumIdentification + " - " + @Model.listTaskPerson[i].PersonEmployeeLastName + @Name;
 
-                                                                                    <tr id='@idRow'>
-                                                                                        <td style="display:none;"><input name="listTaskPerson.Index" type="hidden" value='@i' /></td>
-                                                                                        <td style="display:none;"><input id='@idCol' name='@nameCol_NumIdentification' type="hidden" value='@Model.listTaskPerson[i].NumIdentification' /></td>
-                                                                                        <td style="display:none;"><input id='@idCol' name='@nameCol_IdPersonEmploye' type="hidden" value='@Model.listTaskPerson[i].IdPersonEmployee' /></td>
-                                                                                        <td style="display:none;"><input id='@idCol' name='@nameCol_PersonEmployeeName' type="hidden" value='@Model.listTaskPerson[i].PersonEmployeeName' /></td>
-                                                                                        <td style="display:none;"><input id='@idCol' name='@nameCol_PersonEmployeeLastName' type="hidden" value='@Model.listTaskPerson[i].PersonEmployeeLastName' /></td>
-                                                                                        <td name="PersonEmploye">@strNombre </td>
-                                                                                        <td><div class="btn_option pt-0"><a class="deleteRow" onclick="deleteRow('@i');"><i class="far fa-trash-alt"></i></a></div></td>
-                                                                                    </tr>
+                                                                        <tr id='@idRow'>
+                                                                            <td style="display:none;"><input name="listTaskPerson.Index" type="hidden" value='@i' /></td>
+                                                                            <td style="display:none;"><input id='@idCol' name='@nameCol_NumIdentification' type="hidden" value='@Model.listTaskPerson[i].NumIdentification' /></td>
+                                                                            <td style="display:none;"><input id='@idCol' name='@nameCol_IdPersonEmploye' type="hidden" value='@Model.listTaskPerson[i].IdPersonEmployee' /></td>
+                                                                            <td style="display:none;"><input id='@idCol' name='@nameCol_PersonEmployeeName' type="hidden" value='@Model.listTaskPerson[i].PersonEmployeeName' /></td>
+                                                                            <td style="display:none;"><input id='@idCol' name='@nameCol_PersonEmployeeLastName' type="hidden" value='@Model.listTaskPerson[i].PersonEmployeeLastName' /></td>
+                                                                            <td name="PersonEmploye">@strNombre </td>
+                                                                            <td>
+                                                                                @Html.CheckBox(nameCol_Colaborator, Model.listTaskPerson[i].Iscolaborator, new { @id = nameCol_ColaboratorI })
+                                                                            </td>                                                                           @*@if (Model.listTaskPerson[i].Iscolaborator)
+                                                                                            {
+                                                                                    <td>
+                                                                                        <input id='@nameCol_ColaboratorI' name='@nameCol_Colaborator' type='checkbox' onclick='@chkFun' checked="checked" value="true" align='middle' />
+
+                                                                                    </td>
+                                                                                }
+                                                                                else
+                                                                                            {
+                                                                                    <td>
+                                                                                        <input id='@nameCol_ColaboratorI' name='@nameCol_Colaborator' type='checkbox' onclick='@chkFun'  align='middle' value="false" />
+
+                                                                                    </td>
+                                                                                }*@
+<td><div class="btn_option pt-0"><a class="deleteRow" onclick="deleteRow('@i');"><i class="far fa-trash-alt"></i></a></div></td>
+                                                                        </tr>
 
                                                                                 }
-                                                                            }
+                                                                        }
                                                                         }
                                                                     </tbody>
                                                                 </table>
@@ -561,6 +589,7 @@
         //element.style.display = 'none';
 
         function mostrarOcultar(index, button) {
+            debugger;
             ocultable = "Ocultable_'" + index + "'";
             Montrado = "Mostrado_'" + index + "'";
             Editar = "Editar_'" + index + "'";
@@ -573,7 +602,7 @@
             //elementoGrabar = document.getElementById(Grabar);
             elementoCancelar = document.getElementById(Cancelar);
 
-            if (button.title == "Editar") {
+            if (button.ariaLabel == "Editar") {
                 elementM.style.display = 'none';
                 elementO.style.display = 'block';
                 elementoEditar.style.display = 'none';
@@ -1034,6 +1063,18 @@
             $(controlToBeRemoved).remove();
         }
 
+
+        function Chk(source, id) {
+            var isSelected = $(source).is(":checked");
+
+            if (isSelected == true) {
+                document.getElementsByName('listTaskPerson[' + id + '].Iscolaborator').checked = true;
+
+            } else {
+                document.getElementsByName('listTaskPerson[' + id + '].Iscolaborator').checked = false;
+            }
+        }
+
         function addRow() {
 
 
@@ -1044,13 +1085,19 @@
             //obtenemos los valores a insertar
             var strIdPerson = $("#filtroColaborador").val();
             var strPerson = $('select[id="filtroColaborador"] option:selected').text();
+            var strStatus = "checked"
+            var strStatusV = "true"
+            if (document.getElementById('IsColaborator').checked == false) {
+                strStatus = "unchecked";
+                strStatusV = "false";
+            }
 
             /*debugger;*/
             if (strPerson != "") {
 
                 //-------------------------
 
-                var index = document.getElementById('TTaskPerson').rows.length-1;
+                var index = document.getElementById('TTaskPerson').rows.length - 1;
                 //alert(index);
 
                 var colHid_indexCell = "<td style='display:none'><input name='listTaskPerson.Index' type = 'hidden' value = '" + index + "' /></td > ";
@@ -1061,6 +1108,17 @@
 
                /* debugger;*/
                 var colPersonEmployeeName = "<td name ='PersonEmploye'>" + strPerson + "</td> ";
+                var colStatus = "";
+                if (document.getElementById('IsColaborator').checked) {
+                    colStatus = "<td>" +
+                        "<input  id='listTaskPerson_" + index + "' name='listTaskPerson[" + index + "].Iscolaborator' type='checkbox' onclick='Chk(this," + index + ")' checked='" + strStatus + "' value='" + strStatusV + "'  align='middle' /> " +
+                        "</td> ";
+                }
+                else {
+                    colStatus = "<td>" +
+                        "<input id='listTaskPerson_" + index + "' name='listTaskPerson[" + index + "].Iscolaborator' type='checkbox' onclick='Chk(this," + index + ")'  align='middle'  /> " +
+                        "</td> ";
+                }
                 var colDelete = "<td><div class='btn_option pt-0'><a class='deleteRow' onclick='deleteRow(" + index + ");'><i class='far fa-trash-alt'></i></a></div></td> ";
 
 
@@ -1070,7 +1128,7 @@
 
                 //insertamos los valores en la tabla
                 var newRow = "<tr id='trTaskPerson" + index + "'>" +
-                    colHid_indexCell + colHid_IdPersonEmployee + colHid_IdPersonNumIdentification + colHid_PersonEmployeeName + colHid_PersonEmployeeLastName + colPersonEmployeeName + colDelete + "</tr>";
+                    colHid_indexCell + colHid_IdPersonEmployee + colHid_IdPersonNumIdentification + colHid_PersonEmployeeName + colHid_PersonEmployeeLastName + colPersonEmployeeName + colStatus+ colDelete + "</tr>";
                 //debugger;
                 $("#TTaskPerson").append(newRow);
 

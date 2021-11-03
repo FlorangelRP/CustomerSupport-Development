@@ -18,10 +18,10 @@ namespace CustomerSupport.BDContext
         public Person()
         {
             this.PersonContact = new HashSet<PersonContact>();
+            this.PersonTask = new HashSet<PersonTask>();
             this.ServiceRequest = new HashSet<ServiceRequest>();
             this.Task = new HashSet<Task>();
             this.User = new HashSet<User>();
-            this.Task1 = new HashSet<Task>();
         }
     
         public int IdPerson { get; set; }
@@ -47,12 +47,12 @@ namespace CustomerSupport.BDContext
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PersonContact> PersonContact { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PersonTask> PersonTask { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ServiceRequest> ServiceRequest { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Task> Task { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<User> User { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Task> Task1 { get; set; }
     }
 }

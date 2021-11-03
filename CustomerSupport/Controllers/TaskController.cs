@@ -161,7 +161,8 @@ namespace CustomerSupport.Controllers
                                                                                       IdPersonEmployee = tp.IdPersonEmployee,
                                                                                       PersonEmployeeName = tp.PersonEmployeeName,
                                                                                       PersonEmployeeLastName = tp.PersonEmployeeLastName,
-                                                                                      NumIdentification = objUser.Desencriptar(tp.NumIdentification)
+                                                                                      NumIdentification = objUser.Desencriptar(tp.NumIdentification),
+                                                                                      Iscolaborator=tp.Iscolaborator
                                                                                   }).ToList()
                                                                                   ,
                                              listMTaskComment = (List<MTaskComment>)(from tp in db.GNListBitacora(tsk.IdTask).ToList()
@@ -624,11 +625,12 @@ namespace CustomerSupport.Controllers
                             if (TransactionType == "U")
                             {
                                 int IdPerson = 0;
-                                SqlResult = db.Database.ExecuteSqlCommand("GNTranPersonTask @TransactionType, @IdTask, @IdPerson ",
+                                SqlResult = db.Database.ExecuteSqlCommand("GNTranPersonTask @TransactionType, @IdTask, @IdPerson,@Iscolaborator ",
                                     new SqlParameter[]{
                                         new SqlParameter("@TransactionType", "U"),
                                         new SqlParameter("@IdTask", IdTask),
-                                        new SqlParameter("@IdPerson", IdPerson)
+                                        new SqlParameter("@IdPerson", IdPerson),
+                                        new SqlParameter("@Iscolaborator", false)
                                     }
                                 );
                             }
@@ -637,11 +639,12 @@ namespace CustomerSupport.Controllers
                             foreach (var item in objTask.listTaskPerson)
                             {
 
-                                SqlResult = db.Database.ExecuteSqlCommand("GNTranPersonTask @TransactionType, @IdTask, @IdPerson ",
+                                SqlResult = db.Database.ExecuteSqlCommand("GNTranPersonTask @TransactionType, @IdTask, @IdPerson,@blnIsColaborator ",
                                     new SqlParameter[]{
                                         new SqlParameter("@TransactionType", "I"),
                                         new SqlParameter("@IdTask", IdTask),
-                                        new SqlParameter("@IdPerson", item.IdPersonEmployee)
+                                        new SqlParameter("@IdPerson", item.IdPersonEmployee),
+                                        new SqlParameter("@blnIsColaborator", item.Iscolaborator)
                                     }
                                 );
 

@@ -87,6 +87,7 @@ namespace CustomerSupport.Models
         public string PersonEmployeeName { get; set; } //opcional, se susa solo cuando se vaya a mostrar los datos en la vista
         public string PersonEmployeeLastName { get; set; } //opcional, se susa solo cuando se vaya a mostrar los datos en la vista
         public string NumIdentification { get; set; } //opcional, se susa solo cuando se vaya a mostrar los datos en la vista
+        public bool Iscolaborator { get; set; } 
     }
 
     public class MTaskComment

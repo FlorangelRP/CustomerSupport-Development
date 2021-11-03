@@ -123,6 +123,7 @@ advertencia 6013: La tabla o vista 'MMEnterprises.dbo.Colors' no tiene definida 
           </Key>
           <Property Name="IdTask" Type="int" Nullable="false" />
           <Property Name="IdPerson" Type="int" Nullable="false" />
+          <Property Name="Iscolaborator" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Position">
           <Key>
@@ -955,6 +956,7 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <Parameter Name="TransactionType" Type="char" Mode="In" />
           <Parameter Name="IdTask" Type="int" Mode="In" />
           <Parameter Name="IdPerson" Type="int" Mode="In" />
+          <Parameter Name="blnIsColaborator" Type="bit" Mode="In" />
         </Function>
         <Function Name="GNTranRole" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="TransactionType" Type="char" Mode="In" />
@@ -1395,10 +1397,10 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <NavigationProperty Name="CatalogDetail3" Relationship="Self.FK_Person_PersonType" FromRole="Person" ToRole="CatalogDetail" />
           <NavigationProperty Name="Position" Relationship="Self.FK_Person_Position" FromRole="Person" ToRole="Position" />
           <NavigationProperty Name="PersonContact" Relationship="Self.FK_PersonContact_Person" FromRole="Person" ToRole="PersonContact" />
+          <NavigationProperty Name="PersonTask" Relationship="Self.FK_PersonTask_Person" FromRole="Person" ToRole="PersonTask" />
           <NavigationProperty Name="ServiceRequest" Relationship="Self.FK_ServiceRequest_Person" FromRole="Person" ToRole="ServiceRequest" />
           <NavigationProperty Name="Task" Relationship="Self.FK_Task_Person" FromRole="Person" ToRole="Task" />
           <NavigationProperty Name="User" Relationship="Self.FK_User_Person" FromRole="Person" ToRole="User" />
-          <NavigationProperty Name="Task1" Relationship="Self.PersonTask" FromRole="Person" ToRole="Task" />
         </EntityType>
         <EntityType Name="PersonContact">
           <Key>
@@ -1413,6 +1415,17 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <NavigationProperty Name="CatalogDetail" Relationship="Self.FK_PersonContact_PhoneNumberType" FromRole="PersonContact" ToRole="CatalogDetail" />
           <NavigationProperty Name="Country" Relationship="Self.FK_PersonContact_Country" FromRole="PersonContact" ToRole="Country" />
           <NavigationProperty Name="Person" Relationship="Self.FK_PersonContact_Person" FromRole="PersonContact" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="PersonTask">
+          <Key>
+            <PropertyRef Name="IdTask" />
+            <PropertyRef Name="IdPerson" />
+          </Key>
+          <Property Name="IdTask" Type="Int32" Nullable="false" />
+          <Property Name="IdPerson" Type="Int32" Nullable="false" />
+          <Property Name="Iscolaborator" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_PersonTask_Person" FromRole="PersonTask" ToRole="Person" />
+          <NavigationProperty Name="Task" Relationship="Self.FK_PersonTask_Task" FromRole="PersonTask" ToRole="Task" />
         </EntityType>
         <EntityType Name="Position">
           <Key>
@@ -1527,10 +1540,10 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <Property Name="confidential" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CommentTask" Relationship="Self.FK_CommentTask_Task" FromRole="Task" ToRole="CommentTask" />
           <NavigationProperty Name="Person" Relationship="Self.FK_Task_Person" FromRole="Task" ToRole="Person" />
+          <NavigationProperty Name="PersonTask" Relationship="Self.FK_PersonTask_Task" FromRole="Task" ToRole="PersonTask" />
           <NavigationProperty Name="Task1" Relationship="Self.FK_FatherTask_Task" FromRole="Task" ToRole="Task1" />
           <NavigationProperty Name="Task2" Relationship="Self.FK_FatherTask_Task" FromRole="Task1" ToRole="Task" />
           <NavigationProperty Name="User" Relationship="Self.FK_Task_User" FromRole="Task" ToRole="User" />
-          <NavigationProperty Name="Person1" Relationship="Self.PersonTask" FromRole="Task" ToRole="Person" />
           <NavigationProperty Name="ServiceRequest" Relationship="Self.ServiceRequestTask" FromRole="Task" ToRole="ServiceRequest" />
         </EntityType>
         <EntityType Name="User">
@@ -1839,6 +1852,18 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PersonTask_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="PersonTask" Type="Self.PersonTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="IdPerson" />
+            </Principal>
+            <Dependent Role="PersonTask">
+              <PropertyRef Name="IdPerson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ServiceRequest_Person">
           <End Role="Person" Type="Self.Person" Multiplicity="1" />
           <End Role="ServiceRequest" Type="Self.ServiceRequest" Multiplicity="*" />
@@ -1872,6 +1897,18 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
             </Principal>
             <Dependent Role="User">
               <PropertyRef Name="IdPerson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonTask_Task">
+          <End Role="Task" Type="Self.Task" Multiplicity="1" />
+          <End Role="PersonTask" Type="Self.PersonTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="IdTask" />
+            </Principal>
+            <Dependent Role="PersonTask">
+              <PropertyRef Name="IdTask" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1943,10 +1980,6 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <End Role="Position" Type="Self.Position" Multiplicity="*" />
           <End Role="Position1" Type="Self.Position" Multiplicity="*" />
         </Association>
-        <Association Name="PersonTask">
-          <End Role="Person" Type="Self.Person" Multiplicity="*" />
-          <End Role="Task" Type="Self.Task" Multiplicity="*" />
-        </Association>
         <Association Name="ServiceConstructionOption">
           <End Role="ServiceRequest" Type="Self.ServiceRequest" Multiplicity="*" />
           <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="*" />
@@ -1968,6 +2001,7 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <EntitySet Name="OptionMenu" EntityType="Self.OptionMenu" />
           <EntitySet Name="Person" EntityType="Self.Person" />
           <EntitySet Name="PersonContact" EntityType="Self.PersonContact" />
+          <EntitySet Name="PersonTask" EntityType="Self.PersonTask" />
           <EntitySet Name="Position" EntityType="Self.Position" />
           <EntitySet Name="Role" EntityType="Self.Role" />
           <EntitySet Name="RoleAcces" EntityType="Self.RoleAcces" />
@@ -2058,6 +2092,10 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
             <End Role="Person" EntitySet="Person" />
             <End Role="PersonContact" EntitySet="PersonContact" />
           </AssociationSet>
+          <AssociationSet Name="FK_PersonTask_Person" Association="Self.FK_PersonTask_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="PersonTask" EntitySet="PersonTask" />
+          </AssociationSet>
           <AssociationSet Name="FK_ServiceRequest_Person" Association="Self.FK_ServiceRequest_Person">
             <End Role="Person" EntitySet="Person" />
             <End Role="ServiceRequest" EntitySet="ServiceRequest" />
@@ -2069,6 +2107,10 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <AssociationSet Name="FK_User_Person" Association="Self.FK_User_Person">
             <End Role="Person" EntitySet="Person" />
             <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonTask_Task" Association="Self.FK_PersonTask_Task">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="PersonTask" EntitySet="PersonTask" />
           </AssociationSet>
           <AssociationSet Name="FK_RoleAcces_Role" Association="Self.FK_RoleAcces_Role">
             <End Role="Role" EntitySet="Role" />
@@ -2097,10 +2139,6 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <AssociationSet Name="PermissionAssociateXPosition" Association="Self.PermissionAssociateXPosition">
             <End Role="Position" EntitySet="Position" />
             <End Role="Position1" EntitySet="Position" />
-          </AssociationSet>
-          <AssociationSet Name="PersonTask" Association="Self.PersonTask">
-            <End Role="Person" EntitySet="Person" />
-            <End Role="Task" EntitySet="Task" />
           </AssociationSet>
           <AssociationSet Name="ServiceConstructionOption" Association="Self.ServiceConstructionOption">
             <End Role="ServiceRequest" EntitySet="ServiceRequest" />
@@ -2285,6 +2323,7 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
             <Parameter Name="TransactionType" Mode="In" Type="String" />
             <Parameter Name="IdTask" Mode="In" Type="Int32" />
             <Parameter Name="IdPerson" Mode="In" Type="Int32" />
+            <Parameter Name="blnIsColaborator" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="GNTranRole">
             <Parameter Name="TransactionType" Mode="In" Type="String" />
@@ -2501,6 +2540,7 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <Property Type="String" Name="PersonEmployeeName" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="PersonEmployeeLastName" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="NumIdentification" Nullable="true" MaxLength="100" />
+          <Property Type="Boolean" Name="Iscolaborator" Nullable="false" />
         </ComplexType>
         <ComplexType Name="GNListPosition_Result">
           <Property Type="Int32" Name="IdPosition" Nullable="false" />
@@ -2743,6 +2783,15 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="PersonTask">
+            <EntityTypeMapping TypeName="MMEnterprisesModel.PersonTask">
+              <MappingFragment StoreEntitySet="PersonTask">
+                <ScalarProperty Name="IdTask" ColumnName="IdTask" />
+                <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
+                <ScalarProperty Name="Iscolaborator" ColumnName="Iscolaborator" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Position">
             <EntityTypeMapping TypeName="MMEnterprisesModel.Position">
               <MappingFragment StoreEntitySet="Position">
@@ -2907,14 +2956,6 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
               <ScalarProperty Name="IdPosition" ColumnName="IdPosition" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="PersonTask" TypeName="MMEnterprisesModel.PersonTask" StoreEntitySet="PersonTask">
-            <EndProperty Name="Person">
-              <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
-            </EndProperty>
-            <EndProperty Name="Task">
-              <ScalarProperty Name="IdTask" ColumnName="IdTask" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="ServiceConstructionOption" TypeName="MMEnterprisesModel.ServiceConstructionOption" StoreEntitySet="ServiceConstructionOption">
             <EndProperty Name="ServiceRequest">
               <ScalarProperty Name="IdServiceRequest" ColumnName="IdServiceRequest" />
@@ -3073,6 +3114,7 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
                 <ScalarProperty Name="PersonEmployeeName" ColumnName="PersonEmployeeName" />
                 <ScalarProperty Name="PersonEmployeeLastName" ColumnName="PersonEmployeeLastName" />
                 <ScalarProperty Name="NumIdentification" ColumnName="NumIdentification" />
+                <ScalarProperty Name="Iscolaborator" ColumnName="Iscolaborator" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

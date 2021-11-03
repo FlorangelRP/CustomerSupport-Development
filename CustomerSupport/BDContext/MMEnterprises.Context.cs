@@ -35,6 +35,7 @@ namespace CustomerSupport.BDContext
         public virtual DbSet<OptionMenu> OptionMenu { get; set; }
         public virtual DbSet<Person> Person { get; set; }
         public virtual DbSet<PersonContact> PersonContact { get; set; }
+        public virtual DbSet<PersonTask> PersonTask { get; set; }
         public virtual DbSet<Position> Position { get; set; }
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<RoleAcces> RoleAcces { get; set; }
@@ -614,7 +615,7 @@ namespace CustomerSupport.BDContext
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranPersonContact", transactionTypeParameter, idContact, idPersonParameter, idPhoneNumberTypeParameter, strIdIsoCountryParameter, strPhoneNumberParameter, btStatusParameter);
         }
     
-        public virtual int GNTranPersonTask(string transactionType, Nullable<int> idTask, Nullable<int> idPerson)
+        public virtual int GNTranPersonTask(string transactionType, Nullable<int> idTask, Nullable<int> idPerson, Nullable<bool> blnIsColaborator)
         {
             var transactionTypeParameter = transactionType != null ?
                 new ObjectParameter("TransactionType", transactionType) :
@@ -628,7 +629,11 @@ namespace CustomerSupport.BDContext
                 new ObjectParameter("IdPerson", idPerson) :
                 new ObjectParameter("IdPerson", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranPersonTask", transactionTypeParameter, idTaskParameter, idPersonParameter);
+            var blnIsColaboratorParameter = blnIsColaborator.HasValue ?
+                new ObjectParameter("blnIsColaborator", blnIsColaborator) :
+                new ObjectParameter("blnIsColaborator", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranPersonTask", transactionTypeParameter, idTaskParameter, idPersonParameter, blnIsColaboratorParameter);
         }
     
         public virtual int GNTranRole(string transactionType, ObjectParameter idRole, string nameRole, Nullable<bool> status)

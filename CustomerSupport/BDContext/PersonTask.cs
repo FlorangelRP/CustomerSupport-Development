@@ -10,14 +10,15 @@
 namespace CustomerSupport.BDContext
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class GNListPersonTask_Result
+    public partial class PersonTask
     {
         public int IdTask { get; set; }
-        public int IdPersonEmployee { get; set; }
-        public string PersonEmployeeName { get; set; }
-        public string PersonEmployeeLastName { get; set; }
-        public string NumIdentification { get; set; }
+        public int IdPerson { get; set; }
         public bool Iscolaborator { get; set; }
+    
+        public virtual Person Person { get; set; }
+        public virtual Task Task { get; set; }
     }
 }
