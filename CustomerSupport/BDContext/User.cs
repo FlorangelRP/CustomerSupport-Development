@@ -18,6 +18,7 @@ namespace CustomerSupport.BDContext
         public User()
         {
             this.CommentTask = new HashSet<CommentTask>();
+            this.NotificationSettings = new HashSet<NotificationSettings>();
             this.ServiceRequest = new HashSet<ServiceRequest>();
             this.Task = new HashSet<Task>();
             this.UserAcces = new HashSet<UserAcces>();
@@ -32,6 +33,8 @@ namespace CustomerSupport.BDContext
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CommentTask> CommentTask { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<NotificationSettings> NotificationSettings { get; set; }
         public virtual Person Person { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ServiceRequest> ServiceRequest { get; set; }

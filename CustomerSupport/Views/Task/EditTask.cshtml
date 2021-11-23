@@ -49,6 +49,7 @@
                                 <div class="control-label">Prioridad:</div>
                                 <select id="lst_Priority" class="form-control" style="width: 100%;"></select>
                                 @Html.HiddenFor(model => model.IdPriority, new { @id = "inIdPriority" })
+                                @Html.HiddenFor(model => model.PriorityTask, new { @id = "strPriorityTask" })
                                 @Html.ValidationMessageFor(model => model.IdPriority, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -58,6 +59,7 @@
                                 <div class="control-label">Tipo:</div>
                                 <select id="lst_IdTypeTask" class="form-control" style="width: 100%;"></select>
                                 @Html.HiddenFor(model => model.IdTypeTask, new { @id = "inIdTypeTask" })
+                                @Html.HiddenFor(model => model.TypeTask, new { @id = "strTypeTask" })
                                 @Html.ValidationMessageFor(model => model.IdTypeTask, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -67,6 +69,7 @@
                                 <div class="control-label">Estado:</div>
                                 <select id="lst_IdStatus" class="form-control" style="width: 100%;"></select>
                                 @Html.HiddenFor(model => model.IdStatus, new { @id = "inIdStatus" })
+                                @Html.HiddenFor(model => model.Status, new { @id = "strStatus" })
                                 @Html.ValidationMessageFor(model => model.IdStatus, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -154,6 +157,7 @@
                                 <div class="control-label">Responsable:</div>
                                 <select class="select2" onchange="filtrarPersona(this.value)" id="filtropersona" data-placeholder="Seleccione" name="IdPersonEmployee"></select>
                                 @Html.HiddenFor(model => model.IdPersonEmployee, new { @id = "IdPersonEmployee," })
+                                @Html.HiddenFor(model => model.PersonEmployeeLastName, new { @id = "strPersonEmployeeLastName" })
                                 @Html.ValidationMessageFor(model => model.IdPersonEmployee, "", new { @class = "text-danger" })
 
                             </div>
@@ -221,6 +225,7 @@
                                                                             <td style="display:none;">colHid_indexCell</td>
                                                                             <td style="display:none;">colHid_IdPersonEmployee</td>
                                                                             <td style="display:none;">colHid_PersonEmployeeName</td>
+                                                                            <td style="display:none;">colHid_PersonEmployeeLastName</td>
                                                                             <td width="70%">Nombre</td>
                                                                             <td width="15%">Colaborador</td>
                                                                             <td width="15%">Opciones</td>
@@ -241,6 +246,7 @@
                                                                                 string chkFun;
                                                                                 string nameCol_ColaboratorI;
 
+
                                                                                 for (var i = 0; i < Model.listTaskPerson.Count; i++)
                                                                                 {
                                                                                     idRow = "trTaskPerson" + i.ToString();
@@ -248,7 +254,7 @@
                                                                                     nameCol_NumIdentification = "listTaskPerson[" + i.ToString() + "].NumIdentification";
                                                                                     nameCol_IdPersonEmploye = "listTaskPerson[" + i.ToString() + "].IdPersonEmployee";
                                                                                     nameCol_PersonEmployeeName = "listTaskPerson[" + i.ToString() + "].PersonEmployeeName";
-                                                                                    nameCol_PersonEmployeeLastName = "listTaskPerson[" + i.ToString() + "].Person";
+                                                                                    nameCol_PersonEmployeeLastName = "listTaskPerson[" + i.ToString() + "].PersonEmployeeLastName";
                                                                                     nameCol_Colaborator = "listTaskPerson[" + i.ToString() + "].Iscolaborator";
                                                                                     chkFun = "Chk(this, "  +i.ToString() + ")";
                                                                                     nameCol_ColaboratorI = "listTaskPerson_" + i.ToString();
@@ -260,13 +266,14 @@
                                                                                     }
 
                                                                                     string strNombre = @Model.listTaskPerson[i].NumIdentification + " - " + @Model.listTaskPerson[i].PersonEmployeeLastName + @Name;
+                                                                                    string strNombreCompleto = @Model.listTaskPerson[i].PersonEmployeeLastName + @Name;
 
                                                                         <tr id='@idRow'>
                                                                             <td style="display:none;"><input name="listTaskPerson.Index" type="hidden" value='@i' /></td>
                                                                             <td style="display:none;"><input id='@idCol' name='@nameCol_NumIdentification' type="hidden" value='@Model.listTaskPerson[i].NumIdentification' /></td>
                                                                             <td style="display:none;"><input id='@idCol' name='@nameCol_IdPersonEmploye' type="hidden" value='@Model.listTaskPerson[i].IdPersonEmployee' /></td>
                                                                             <td style="display:none;"><input id='@idCol' name='@nameCol_PersonEmployeeName' type="hidden" value='@Model.listTaskPerson[i].PersonEmployeeName' /></td>
-                                                                            <td style="display:none;"><input id='@idCol' name='@nameCol_PersonEmployeeLastName' type="hidden" value='@Model.listTaskPerson[i].PersonEmployeeLastName' /></td>
+                                                                            <td style="display:none;"><input id='@idCol' name='@nameCol_PersonEmployeeLastName' type="hidden" value='@strNombreCompleto' /></td>
                                                                             <td name="PersonEmploye">@strNombre </td>
                                                                             <td>
                                                                                 @Html.CheckBox(nameCol_Colaborator, Model.listTaskPerson[i].Iscolaborator, new { @id = nameCol_ColaboratorI })
@@ -284,7 +291,7 @@
 
                                                                                     </td>
                                                                                 }*@
-<td><div class="btn_option pt-0"><a class="deleteRow" onclick="deleteRow('@i');"><i class="far fa-trash-alt"></i></a></div></td>
+                                                                            <td><div class="btn_option pt-0"><a class="deleteRow" onclick="deleteRow('@i');"><i class="far fa-trash-alt"></i></a></div></td>
                                                                         </tr>
 
                                                                                 }
@@ -692,7 +699,7 @@
             });
         }
 
-                function ObtenerTask() {
+        function ObtenerTask() {
             /*debugger;*/
              $.ajax({
                 type: "GET",
@@ -743,6 +750,10 @@
            /* debugger;*/
             var SelecCodeValue = person.trim();
             cargarDataPerson(SelecCodeValue, ListPersons);
+            var combo = document.getElementById("filtropersona");
+            var selected = combo.options[combo.selectedIndex].text;
+            selectedA = selected.split(" - ");
+            $("#strPersonEmployeeLastName").val(selectedA[1]);
         }
 
         function filtrarColaborador(Colaborador) {
@@ -840,18 +851,30 @@
                 var selectValue = $(this).val();
                 //$("#inpIdIdentificationType").val(selectValue);
                 changeCodeInputHiddenList("lst_Priority", "inIdPriority", selectValue);
+
+                var combo = document.getElementById("lst_Priority");
+                var selected = combo.options[combo.selectedIndex].text;
+                $("#strPriorityTask").val(selected);
             });
 
             $("#lst_IdStatus").on('change', function () {
                 var selectValue = $(this).val();
                 //$("#inpIdIdentificationType").val(selectValue);
                 changeCodeInputHiddenList("lst_IdStatus", "inIdStatus", selectValue);
+
+                var combo = document.getElementById("lst_IdStatus");
+                var selected = combo.options[combo.selectedIndex].text;
+                $("#strStatus").val(selected);
             });
 
             $("#lst_IdTypeTask").on('change', function () {
                 var selectValue = $(this).val();
                 //$("#inpIdIdentificationType").val(selectValue);
                 changeCodeInputHiddenList("lst_IdTypeTask", "inIdTypeTask", selectValue);
+
+                var combo = document.getElementById("lst_IdTypeTask");
+                var selected = combo.options[combo.selectedIndex].text;
+                $("#strTypeTask").val(selected);
             });
 
             $.ajax({
@@ -1096,7 +1119,7 @@
             if (strPerson != "") {
 
                 //-------------------------
-
+                var datosempl = strPerson.split(" - ");
                 var index = document.getElementById('TTaskPerson').rows.length - 1;
                 //alert(index);
 
@@ -1104,7 +1127,7 @@
                 var colHid_IdPersonEmployee = "<td style='display:none'><input id='listTaskPerson_" + index + "' name = 'listTaskPerson[" + index + "].IdPersonEmployee' type='hidden' value='" + strIdPerson + "' /></td> ";
                 var colHid_IdPersonNumIdentification = "<td style='display:none'><input id='listTaskPerson_" + index + "' name = 'listTaskPerson[" + index + "].NumIdentification' type='hidden' value='" + strIdPerson + "' /></td> ";
                 var colHid_PersonEmployeeName = "<td style='display:none'><input id='listTaskPerson_" + index + "' name = 'listTaskPerson[" + index + "].PersonEmployeeName' type = 'hidden' value = '" + strPerson + "' /></td> ";
-                var colHid_PersonEmployeeLastName = "<td style='display:none'><input id='listTaskPerson_" + index + "' name = 'listTaskPerson[" + index + "].PersonEmployeeLastName' type = 'hidden' value = '" + strPerson + "' /></td> ";
+                var colHid_PersonEmployeeLastName = "<td style='display:none'><input id='listTaskPerson_" + index + "' name = 'listTaskPerson[" + index + "].PersonEmployeeLastName' type = 'hidden' value = '" +  datosempl[1].toString()  + "' /></td> ";
 
                /* debugger;*/
                 var colPersonEmployeeName = "<td name ='PersonEmploye'>" + strPerson + "</td> ";

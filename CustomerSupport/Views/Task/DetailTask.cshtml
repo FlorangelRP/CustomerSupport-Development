@@ -175,6 +175,7 @@
                                                                                 <td style="display:none;">colHid_IdPersonEmployee</td>
                                                                                 <td style="display:none;">colHid_PersonEmployeeName</td>
                                                                                 <td>Nombre</td>
+                                                                                <td>Colaborador</td>
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody id="BodyPersonEmployee">
@@ -188,7 +189,7 @@
                                                                                     string nameCol_PersonEmployeeName;
                                                                                     string nameCol_PersonEmployeeLastName;
                                                                                     string nameCol_NumIdentification;
-
+                                                                                 
                                                                                     for (var i = 0; i < Model.listTaskPerson.Count; i++)
                                                                                     {
                                                                                         idRow = "trTaskPerson" + i.ToString();
@@ -206,14 +207,17 @@
 
                                                                                         string strNombre = @Model.listTaskPerson[i].NumIdentification + " - " + @Model.listTaskPerson[i].PersonEmployeeLastName + @Name;
 
-                                                                                        <tr id='@idRow'>
-                                                                                            <td style="display:none;"><input name="listPersonContact.Index" type="hidden" value='@i' /></td>
-                                                                                            <td style="display:none;"><input id='@idCol' name='@nameCol_NumIdentification' type="hidden" value='@Model.listTaskPerson[i].NumIdentification' /></td>
-                                                                                            <td style="display:none;"><input id='@idCol' name='@nameCol_IdPersonEmploye' type="hidden" value='@Model.listTaskPerson[i].IdPersonEmployee' /></td>
-                                                                                            <td style="display:none;"><input id='@idCol' name='@nameCol_PersonEmployeeName' type="hidden" value='@Model.listTaskPerson[i].PersonEmployeeName' /></td>
-                                                                                            <td style="display:none;"><input id='@idCol' name='@nameCol_PersonEmployeeLastName' type="hidden" value='@Model.listTaskPerson[i].PersonEmployeeLastName' /></td>
-                                                                                            <td name="PersonEmploye">@strNombre </td>
-                                                                                        </tr>
+                                                                                        string iscolaborator = @Model.listTaskPerson[i].Iscolaborator == true ? "Si" : "No";
+
+                                                                            <tr id='@idRow'>
+                                                                                <td style="display:none;"><input name="listPersonContact.Index" type="hidden" value='@i' /></td>
+                                                                                <td style="display:none;"><input id='@idCol' name='@nameCol_NumIdentification' type="hidden" value='@Model.listTaskPerson[i].NumIdentification' /></td>
+                                                                                <td style="display:none;"><input id='@idCol' name='@nameCol_IdPersonEmploye' type="hidden" value='@Model.listTaskPerson[i].IdPersonEmployee' /></td>
+                                                                                <td style="display:none;"><input id='@idCol' name='@nameCol_PersonEmployeeName' type="hidden" value='@Model.listTaskPerson[i].PersonEmployeeName' /></td>
+                                                                                <td style="display:none;"><input id='@idCol' name='@nameCol_PersonEmployeeLastName' type="hidden" value='@Model.listTaskPerson[i].PersonEmployeeLastName' /></td>
+                                                                                <td name="PersonEmploye">@strNombre </td>
+                                                                                <td name="PersonEmploye">@iscolaborator </td>
+                                                                            </tr>
 
                                                                                     }
                                                                                 }

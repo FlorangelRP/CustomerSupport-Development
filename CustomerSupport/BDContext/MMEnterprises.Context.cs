@@ -32,6 +32,9 @@ namespace CustomerSupport.BDContext
         public virtual DbSet<CommentTask> CommentTask { get; set; }
         public virtual DbSet<ConfigurationParameter> ConfigurationParameter { get; set; }
         public virtual DbSet<Country> Country { get; set; }
+        public virtual DbSet<NotificationSettings> NotificationSettings { get; set; }
+        public virtual DbSet<NotificationSettingsPriority> NotificationSettingsPriority { get; set; }
+        public virtual DbSet<NotificationSettingsStatus> NotificationSettingsStatus { get; set; }
         public virtual DbSet<OptionMenu> OptionMenu { get; set; }
         public virtual DbSet<Person> Person { get; set; }
         public virtual DbSet<PersonContact> PersonContact { get; set; }
@@ -121,6 +124,37 @@ namespace CustomerSupport.BDContext
         public virtual ObjectResult<GNLisColor_Result> GNLisColor()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNLisColor_Result>("GNLisColor");
+        }
+    
+        public virtual ObjectResult<GNLisNotificationSettings_Result> GNLisNotificationSettings(Nullable<int> idUser, Nullable<int> idPerson)
+        {
+            var idUserParameter = idUser.HasValue ?
+                new ObjectParameter("IdUser", idUser) :
+                new ObjectParameter("IdUser", typeof(int));
+    
+            var idPersonParameter = idPerson.HasValue ?
+                new ObjectParameter("IdPerson", idPerson) :
+                new ObjectParameter("IdPerson", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNLisNotificationSettings_Result>("GNLisNotificationSettings", idUserParameter, idPersonParameter);
+        }
+    
+        public virtual ObjectResult<GNLisNotificationSettingsPriority_Result> GNLisNotificationSettingsPriority(Nullable<int> idSetting)
+        {
+            var idSettingParameter = idSetting.HasValue ?
+                new ObjectParameter("IdSetting", idSetting) :
+                new ObjectParameter("IdSetting", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNLisNotificationSettingsPriority_Result>("GNLisNotificationSettingsPriority", idSettingParameter);
+        }
+    
+        public virtual ObjectResult<GNLisNotificationSettingsStatus_Result> GNLisNotificationSettingsStatus(Nullable<int> idSetting)
+        {
+            var idSettingParameter = idSetting.HasValue ?
+                new ObjectParameter("IdSetting", idSetting) :
+                new ObjectParameter("IdSetting", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNLisNotificationSettingsStatus_Result>("GNLisNotificationSettingsStatus", idSettingParameter);
         }
     
         public virtual ObjectResult<GNListAssociatePosition_Result> GNListAssociatePosition(Nullable<int> idPosition, Nullable<int> idAssociate)
@@ -523,6 +557,78 @@ namespace CustomerSupport.BDContext
                 new ObjectParameter("dttDate", typeof(System.DateTime));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranCommentTask", transactionTypeParameter, idComment, idTaskParameter, strCommentParameter, idUserParameter, dttDateParameter);
+        }
+    
+        public virtual int GNTranNotificationSettings(Nullable<bool> blnSendResponsable, Nullable<bool> blnSendColaborator, Nullable<bool> blnSendFollower, Nullable<bool> blnSendAddComment, Nullable<bool> blnSendEditComment, Nullable<int> intIdUser, string transactionType, ObjectParameter idSetting)
+        {
+            var blnSendResponsableParameter = blnSendResponsable.HasValue ?
+                new ObjectParameter("blnSendResponsable", blnSendResponsable) :
+                new ObjectParameter("blnSendResponsable", typeof(bool));
+    
+            var blnSendColaboratorParameter = blnSendColaborator.HasValue ?
+                new ObjectParameter("blnSendColaborator", blnSendColaborator) :
+                new ObjectParameter("blnSendColaborator", typeof(bool));
+    
+            var blnSendFollowerParameter = blnSendFollower.HasValue ?
+                new ObjectParameter("blnSendFollower", blnSendFollower) :
+                new ObjectParameter("blnSendFollower", typeof(bool));
+    
+            var blnSendAddCommentParameter = blnSendAddComment.HasValue ?
+                new ObjectParameter("blnSendAddComment", blnSendAddComment) :
+                new ObjectParameter("blnSendAddComment", typeof(bool));
+    
+            var blnSendEditCommentParameter = blnSendEditComment.HasValue ?
+                new ObjectParameter("blnSendEditComment", blnSendEditComment) :
+                new ObjectParameter("blnSendEditComment", typeof(bool));
+    
+            var intIdUserParameter = intIdUser.HasValue ?
+                new ObjectParameter("intIdUser", intIdUser) :
+                new ObjectParameter("intIdUser", typeof(int));
+    
+            var transactionTypeParameter = transactionType != null ?
+                new ObjectParameter("TransactionType", transactionType) :
+                new ObjectParameter("TransactionType", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranNotificationSettings", blnSendResponsableParameter, blnSendColaboratorParameter, blnSendFollowerParameter, blnSendAddCommentParameter, blnSendEditCommentParameter, intIdUserParameter, transactionTypeParameter, idSetting);
+        }
+    
+        public virtual int GNTranNotificationSettingsPriority(string transactionType, Nullable<int> idSetting, Nullable<int> idPriority)
+        {
+            var transactionTypeParameter = transactionType != null ?
+                new ObjectParameter("TransactionType", transactionType) :
+                new ObjectParameter("TransactionType", typeof(string));
+    
+            var idSettingParameter = idSetting.HasValue ?
+                new ObjectParameter("IdSetting", idSetting) :
+                new ObjectParameter("IdSetting", typeof(int));
+    
+            var idPriorityParameter = idPriority.HasValue ?
+                new ObjectParameter("IdPriority", idPriority) :
+                new ObjectParameter("IdPriority", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranNotificationSettingsPriority", transactionTypeParameter, idSettingParameter, idPriorityParameter);
+        }
+    
+        public virtual int GNTranNotificationSettingsStatus()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranNotificationSettingsStatus");
+        }
+    
+        public virtual int GNTraNotificationSettingsStatus(string transactionType, Nullable<int> idStatus, Nullable<int> idSetting)
+        {
+            var transactionTypeParameter = transactionType != null ?
+                new ObjectParameter("TransactionType", transactionType) :
+                new ObjectParameter("TransactionType", typeof(string));
+    
+            var idStatusParameter = idStatus.HasValue ?
+                new ObjectParameter("IdStatus", idStatus) :
+                new ObjectParameter("IdStatus", typeof(int));
+    
+            var idSettingParameter = idSetting.HasValue ?
+                new ObjectParameter("IdSetting", idSetting) :
+                new ObjectParameter("IdSetting", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTraNotificationSettingsStatus", transactionTypeParameter, idStatusParameter, idSettingParameter);
         }
     
         public virtual int GNTranPerson(string transactionType, ObjectParameter idPerson, Nullable<int> idPersonType, Nullable<int> idIdentificationType, string strNumIdentification, string strName, string strLastName, Nullable<System.DateTime> dttBirthday, string strAddress, string strEmail, Nullable<int> idContactType, Nullable<int> idPosition, Nullable<bool> btClientPermission, Nullable<bool> btStatus, Nullable<int> idDepartment)
@@ -1070,6 +1176,19 @@ namespace CustomerSupport.BDContext
         public virtual int sp_upgraddiagrams()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_upgraddiagrams");
+        }
+    
+        public virtual ObjectResult<GNLisConfigurationParameter_Result> GNLisConfigurationParameter(Nullable<int> idConfig, string strAbbreviation)
+        {
+            var idConfigParameter = idConfig.HasValue ?
+                new ObjectParameter("IdConfig", idConfig) :
+                new ObjectParameter("IdConfig", typeof(int));
+    
+            var strAbbreviationParameter = strAbbreviation != null ?
+                new ObjectParameter("strAbbreviation", strAbbreviation) :
+                new ObjectParameter("strAbbreviation", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNLisConfigurationParameter_Result>("GNLisConfigurationParameter", idConfigParameter, strAbbreviationParameter);
         }
     }
 }

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MMEnterprisesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MMEnterprisesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AssociatePosition">
           <Key>
             <PropertyRef Name="IdPosition" />
@@ -31,12 +31,6 @@
           <Property Name="Description" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="Status" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6013: La tabla o vista 'MMEnterprises.dbo.Colors' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
-        <EntityType Name="Colors">
-          <Property Name="backgroundColor" Type="varchar" MaxLength="50" />
-          <Property Name="borderColor" Type="varchar" MaxLength="50" />
-        </EntityType>-->
         <EntityType Name="CommentTask">
           <Key>
             <PropertyRef Name="IdComment" />
@@ -54,7 +48,7 @@ advertencia 6013: La tabla o vista 'MMEnterprises.dbo.Colors' no tiene definida 
           <Property Name="IdConfig" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Description" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="Abbreviation" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Value" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Value" Type="varchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="Country">
           <Key>
@@ -65,6 +59,34 @@ advertencia 6013: La tabla o vista 'MMEnterprises.dbo.Colors' no tiene definida 
           <Property Name="Country" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="CountryAreaCode" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="Status" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NotificationSettings">
+          <Key>
+            <PropertyRef Name="IdSetting" />
+          </Key>
+          <Property Name="IdSetting" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SendResponsable" Type="bit" Nullable="false" />
+          <Property Name="SendColaborator" Type="bit" Nullable="false" />
+          <Property Name="SendFollower" Type="bit" Nullable="false" />
+          <Property Name="SendAddComment" Type="bit" Nullable="false" />
+          <Property Name="SendEditComment" Type="bit" Nullable="false" />
+          <Property Name="IdUser" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NotificationSettingsPriority">
+          <Key>
+            <PropertyRef Name="IdSetting" />
+            <PropertyRef Name="IdPriority" />
+          </Key>
+          <Property Name="IdSetting" Type="int" Nullable="false" />
+          <Property Name="IdPriority" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NotificationSettingsStatus">
+          <Key>
+            <PropertyRef Name="IdSetting" />
+            <PropertyRef Name="IdStatus" />
+          </Key>
+          <Property Name="IdSetting" Type="int" Nullable="false" />
+          <Property Name="IdStatus" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="OptionMenu">
           <Key>
@@ -385,6 +407,42 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
             </Principal>
             <Dependent Role="Task1">
               <PropertyRef Name="IdFatherTask" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NotificationSettings_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="NotificationSettings" Type="Self.NotificationSettings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="IdUser" />
+            </Principal>
+            <Dependent Role="NotificationSettings">
+              <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NotificationSettingsPriority_NotificationSettings">
+          <End Role="NotificationSettings" Type="Self.NotificationSettings" Multiplicity="1" />
+          <End Role="NotificationSettingsPriority" Type="Self.NotificationSettingsPriority" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NotificationSettings">
+              <PropertyRef Name="IdSetting" />
+            </Principal>
+            <Dependent Role="NotificationSettingsPriority">
+              <PropertyRef Name="IdSetting" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NotificationSettingsStatus_NotificationSettings">
+          <End Role="NotificationSettings" Type="Self.NotificationSettings" Multiplicity="1" />
+          <End Role="NotificationSettingsStatus" Type="Self.NotificationSettingsStatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NotificationSettings">
+              <PropertyRef Name="IdSetting" />
+            </Principal>
+            <Dependent Role="NotificationSettingsStatus">
+              <PropertyRef Name="IdSetting" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -806,6 +864,20 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <Parameter Name="DateEnd" Type="datetime" Mode="In" />
         </Function>
         <Function Name="GNLisColor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GNLisConfigurationParameter" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdConfig" Type="int" Mode="In" />
+          <Parameter Name="strAbbreviation" Type="varchar(max)" Mode="In" />
+        </Function>
+        <Function Name="GNLisNotificationSettings" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdUser" Type="int" Mode="In" />
+          <Parameter Name="IdPerson" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GNLisNotificationSettingsPriority" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdSetting" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GNLisNotificationSettingsStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdSetting" Type="int" Mode="In" />
+        </Function>
         <Function Name="GNListAssociatePosition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdPosition" Type="int" Mode="In" />
           <Parameter Name="IdAssociate" Type="int" Mode="In" />
@@ -925,6 +997,27 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <Parameter Name="strComment" Type="varchar(max)" Mode="In" />
           <Parameter Name="IdUser" Type="int" Mode="In" />
           <Parameter Name="dttDate" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="GNTranNotificationSettings" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="blnSendResponsable" Type="bit" Mode="In" />
+          <Parameter Name="blnSendColaborator" Type="bit" Mode="In" />
+          <Parameter Name="blnSendFollower" Type="bit" Mode="In" />
+          <Parameter Name="blnSendAddComment" Type="bit" Mode="In" />
+          <Parameter Name="blnSendEditComment" Type="bit" Mode="In" />
+          <Parameter Name="intIdUser" Type="int" Mode="In" />
+          <Parameter Name="TransactionType" Type="char" Mode="In" />
+          <Parameter Name="IdSetting" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="GNTranNotificationSettingsPriority" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TransactionType" Type="char" Mode="In" />
+          <Parameter Name="IdSetting" Type="int" Mode="In" />
+          <Parameter Name="IdPriority" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GNTranNotificationSettingsStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GNTraNotificationSettingsStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TransactionType" Type="char" Mode="In" />
+          <Parameter Name="IdStatus" Type="int" Mode="In" />
+          <Parameter Name="IdSetting" Type="int" Mode="In" />
         </Function>
         <Function Name="GNTranPerson" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="TransactionType" Type="char" Mode="In" />
@@ -1089,6 +1182,9 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <EntitySet Name="CommentTask" EntityType="Self.CommentTask" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ConfigurationParameter" EntityType="Self.ConfigurationParameter" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NotificationSettings" EntityType="Self.NotificationSettings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NotificationSettingsPriority" EntityType="Self.NotificationSettingsPriority" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NotificationSettingsStatus" EntityType="Self.NotificationSettingsStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OptionMenu" EntityType="Self.OptionMenu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PermissionAssociateXPosition" EntityType="Self.PermissionAssociateXPosition" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
@@ -1154,6 +1250,18 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <AssociationSet Name="FK_FatherTask_Task" Association="Self.FK_FatherTask_Task">
             <End Role="Task" EntitySet="Task" />
             <End Role="Task1" EntitySet="Task" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NotificationSettings_User" Association="Self.FK_NotificationSettings_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="NotificationSettings" EntitySet="NotificationSettings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NotificationSettingsPriority_NotificationSettings" Association="Self.FK_NotificationSettingsPriority_NotificationSettings">
+            <End Role="NotificationSettings" EntitySet="NotificationSettings" />
+            <End Role="NotificationSettingsPriority" EntitySet="NotificationSettingsPriority" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NotificationSettingsStatus_NotificationSettings" Association="Self.FK_NotificationSettingsStatus_NotificationSettings">
+            <End Role="NotificationSettings" EntitySet="NotificationSettings" />
+            <End Role="NotificationSettingsStatus" EntitySet="NotificationSettingsStatus" />
           </AssociationSet>
           <AssociationSet Name="FK_PermissionAssociateXPosition_AssocPosition" Association="Self.FK_PermissionAssociateXPosition_AssocPosition">
             <End Role="Position" EntitySet="Position" />
@@ -1288,8 +1396,7 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
             <End Role="UserRole" EntitySet="UserRole" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MMEnterprisesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1344,7 +1451,7 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <Property Name="IdConfig" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Abbreviation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Value" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Value" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
         <EntityType Name="Country">
           <Key>
@@ -1356,6 +1463,39 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <Property Name="CountryAreaCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Status" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="PersonContact" Relationship="Self.FK_PersonContact_Country" FromRole="Country" ToRole="PersonContact" />
+        </EntityType>
+        <EntityType Name="NotificationSettings">
+          <Key>
+            <PropertyRef Name="IdSetting" />
+          </Key>
+          <Property Name="IdSetting" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SendResponsable" Type="Boolean" Nullable="false" />
+          <Property Name="SendColaborator" Type="Boolean" Nullable="false" />
+          <Property Name="SendFollower" Type="Boolean" Nullable="false" />
+          <Property Name="SendAddComment" Type="Boolean" Nullable="false" />
+          <Property Name="SendEditComment" Type="Boolean" Nullable="false" />
+          <Property Name="IdUser" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.FK_NotificationSettings_User" FromRole="NotificationSettings" ToRole="User" />
+          <NavigationProperty Name="NotificationSettingsPriority" Relationship="Self.FK_NotificationSettingsPriority_NotificationSettings" FromRole="NotificationSettings" ToRole="NotificationSettingsPriority" />
+          <NavigationProperty Name="NotificationSettingsStatus" Relationship="Self.FK_NotificationSettingsStatus_NotificationSettings" FromRole="NotificationSettings" ToRole="NotificationSettingsStatus" />
+        </EntityType>
+        <EntityType Name="NotificationSettingsPriority">
+          <Key>
+            <PropertyRef Name="IdSetting" />
+            <PropertyRef Name="IdPriority" />
+          </Key>
+          <Property Name="IdSetting" Type="Int32" Nullable="false" />
+          <Property Name="IdPriority" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="NotificationSettings" Relationship="Self.FK_NotificationSettingsPriority_NotificationSettings" FromRole="NotificationSettingsPriority" ToRole="NotificationSettings" />
+        </EntityType>
+        <EntityType Name="NotificationSettingsStatus">
+          <Key>
+            <PropertyRef Name="IdSetting" />
+            <PropertyRef Name="IdStatus" />
+          </Key>
+          <Property Name="IdSetting" Type="Int32" Nullable="false" />
+          <Property Name="IdStatus" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="NotificationSettings" Relationship="Self.FK_NotificationSettingsStatus_NotificationSettings" FromRole="NotificationSettingsStatus" ToRole="NotificationSettings" />
         </EntityType>
         <EntityType Name="OptionMenu">
           <Key>
@@ -1556,6 +1696,7 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Status" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CommentTask" Relationship="Self.FK_CommentTask_User" FromRole="User" ToRole="CommentTask" />
+          <NavigationProperty Name="NotificationSettings" Relationship="Self.FK_NotificationSettings_User" FromRole="User" ToRole="NotificationSettings" />
           <NavigationProperty Name="Person" Relationship="Self.FK_User_Person" FromRole="User" ToRole="Person" />
           <NavigationProperty Name="ServiceRequest" Relationship="Self.FK_ServiceRequest_User" FromRole="User" ToRole="ServiceRequest" />
           <NavigationProperty Name="Task" Relationship="Self.FK_Task_User" FromRole="User" ToRole="Task" />
@@ -1792,6 +1933,42 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_NotificationSettings_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="NotificationSettings" Type="Self.NotificationSettings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="IdUser" />
+            </Principal>
+            <Dependent Role="NotificationSettings">
+              <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NotificationSettingsPriority_NotificationSettings">
+          <End Role="NotificationSettings" Type="Self.NotificationSettings" Multiplicity="1" />
+          <End Role="NotificationSettingsPriority" Type="Self.NotificationSettingsPriority" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NotificationSettings">
+              <PropertyRef Name="IdSetting" />
+            </Principal>
+            <Dependent Role="NotificationSettingsPriority">
+              <PropertyRef Name="IdSetting" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NotificationSettingsStatus_NotificationSettings">
+          <End Role="NotificationSettings" Type="Self.NotificationSettings" Multiplicity="1" />
+          <End Role="NotificationSettingsStatus" Type="Self.NotificationSettingsStatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NotificationSettings">
+              <PropertyRef Name="IdSetting" />
+            </Principal>
+            <Dependent Role="NotificationSettingsStatus">
+              <PropertyRef Name="IdSetting" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_AssociatedMenu_OptionMenu">
           <End Role="OptionMenu" Type="Self.OptionMenu" Multiplicity="0..1" />
           <End Role="OptionMenu1" Type="Self.OptionMenu" Multiplicity="*" />
@@ -1998,6 +2175,9 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <EntitySet Name="CommentTask" EntityType="Self.CommentTask" />
           <EntitySet Name="ConfigurationParameter" EntityType="Self.ConfigurationParameter" />
           <EntitySet Name="Country" EntityType="Self.Country" />
+          <EntitySet Name="NotificationSettings" EntityType="Self.NotificationSettings" />
+          <EntitySet Name="NotificationSettingsPriority" EntityType="Self.NotificationSettingsPriority" />
+          <EntitySet Name="NotificationSettingsStatus" EntityType="Self.NotificationSettingsStatus" />
           <EntitySet Name="OptionMenu" EntityType="Self.OptionMenu" />
           <EntitySet Name="Person" EntityType="Self.Person" />
           <EntitySet Name="PersonContact" EntityType="Self.PersonContact" />
@@ -2071,6 +2251,18 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <AssociationSet Name="FK_PersonContact_Country" Association="Self.FK_PersonContact_Country">
             <End Role="Country" EntitySet="Country" />
             <End Role="PersonContact" EntitySet="PersonContact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NotificationSettings_User" Association="Self.FK_NotificationSettings_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="NotificationSettings" EntitySet="NotificationSettings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NotificationSettingsPriority_NotificationSettings" Association="Self.FK_NotificationSettingsPriority_NotificationSettings">
+            <End Role="NotificationSettings" EntitySet="NotificationSettings" />
+            <End Role="NotificationSettingsPriority" EntitySet="NotificationSettingsPriority" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NotificationSettingsStatus_NotificationSettings" Association="Self.FK_NotificationSettingsStatus_NotificationSettings">
+            <End Role="NotificationSettings" EntitySet="NotificationSettings" />
+            <End Role="NotificationSettingsStatus" EntitySet="NotificationSettingsStatus" />
           </AssociationSet>
           <AssociationSet Name="FK_AssociatedMenu_OptionMenu" Association="Self.FK_AssociatedMenu_OptionMenu">
             <End Role="OptionMenu" EntitySet="OptionMenu" />
@@ -2173,12 +2365,22 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
             <Parameter Name="DateEnd" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="GNLisColor" ReturnType="Collection(MMEnterprisesModel.GNLisColor_Result)" />
+          <FunctionImport Name="GNLisNotificationSettings" ReturnType="Collection(MMEnterprisesModel.GNLisNotificationSettings_Result)">
+            <Parameter Name="IdUser" Mode="In" Type="Int32" />
+            <Parameter Name="IdPerson" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNLisNotificationSettingsPriority" ReturnType="Collection(MMEnterprisesModel.GNLisNotificationSettingsPriority_Result)">
+          <Parameter Name="IdSetting" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNLisNotificationSettingsStatus" ReturnType="Collection(MMEnterprisesModel.GNLisNotificationSettingsStatus_Result)">
+          <Parameter Name="IdSetting" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="GNListAssociatePosition" ReturnType="Collection(MMEnterprisesModel.GNListAssociatePosition_Result)">
             <Parameter Name="IdPosition" Mode="In" Type="Int32" />
             <Parameter Name="IdAssociate" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GNListBitacora" ReturnType="Collection(MMEnterprisesModel.GNListBitacora_Result)">
-            <Parameter Name="IdTask" Mode="In" Type="Int32" />
+          <Parameter Name="IdTask" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GNListCatalog" ReturnType="Collection(MMEnterprisesModel.GNListCatalog_Result)">
             <Parameter Name="IdCatalog" Mode="In" Type="Int32" />
@@ -2292,6 +2494,27 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
             <Parameter Name="strComment" Mode="In" Type="String" />
             <Parameter Name="IdUser" Mode="In" Type="Int32" />
             <Parameter Name="dttDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="GNTranNotificationSettings">
+            <Parameter Name="blnSendResponsable" Mode="In" Type="Boolean" />
+            <Parameter Name="blnSendColaborator" Mode="In" Type="Boolean" />
+            <Parameter Name="blnSendFollower" Mode="In" Type="Boolean" />
+            <Parameter Name="blnSendAddComment" Mode="In" Type="Boolean" />
+            <Parameter Name="blnSendEditComment" Mode="In" Type="Boolean" />
+            <Parameter Name="intIdUser" Mode="In" Type="Int32" />
+            <Parameter Name="TransactionType" Mode="In" Type="String" />
+            <Parameter Name="IdSetting" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNTranNotificationSettingsPriority">
+            <Parameter Name="TransactionType" Mode="In" Type="String" />
+            <Parameter Name="IdSetting" Mode="In" Type="Int32" />
+            <Parameter Name="IdPriority" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNTranNotificationSettingsStatus" />
+          <FunctionImport Name="GNTraNotificationSettingsStatus">
+            <Parameter Name="TransactionType" Mode="In" Type="String" />
+            <Parameter Name="IdStatus" Mode="In" Type="Int32" />
+            <Parameter Name="IdSetting" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GNTranPerson">
             <Parameter Name="TransactionType" Mode="In" Type="String" />
@@ -2449,15 +2672,39 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
+          <FunctionImport Name="GNLisConfigurationParameter" ReturnType="Collection(MMEnterprisesModel.GNLisConfigurationParameter_Result)">
+            <Parameter Name="IdConfig" Mode="In" Type="Int32" />
+            <Parameter Name="strAbbreviation" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="GNLisChart_Result">
-          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="201" />
-          <Property Type="String" Name="StatusTask" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="StatusTask" Nullable="true" MaxLength="100" />
           <Property Type="Int32" Name="Cantidad" Nullable="true" />
         </ComplexType>
         <ComplexType Name="GNLisColor_Result">
           <Property Type="String" Name="backgroundColor" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="borderColor" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="GNLisNotificationSettings_Result">
+          <Property Type="Int32" Name="IdSetting" Nullable="false" />
+          <Property Type="Boolean" Name="SendResponsable" Nullable="false" />
+          <Property Type="Boolean" Name="SendColaborator" Nullable="false" />
+          <Property Type="Boolean" Name="SendFollower" Nullable="false" />
+          <Property Type="Boolean" Name="SendAddComment" Nullable="false" />
+          <Property Type="Boolean" Name="SendEditComment" Nullable="false" />
+          <Property Type="Int32" Name="IdUser" Nullable="false" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="GNLisNotificationSettingsPriority_Result">
+          <Property Type="Int32" Name="IdSetting" Nullable="false" />
+          <Property Type="Int32" Name="IdPriority" Nullable="false" />
+          <Property Type="String" Name="Priority" Nullable="false" MaxLength="200" />
+        </ComplexType>
+        <ComplexType Name="GNLisNotificationSettingsStatus_Result">
+          <Property Type="Int32" Name="IdSetting" Nullable="false" />
+          <Property Type="Int32" Name="IdStatus" Nullable="false" />
+          <Property Type="String" Name="Status" Nullable="false" MaxLength="200" />
         </ComplexType>
         <ComplexType Name="GNListAssociatePosition_Result">
           <Property Type="Int32" Name="IdPosition" Nullable="false" />
@@ -2680,6 +2927,12 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
+        <ComplexType Name="GNLisConfigurationParameter_Result">
+          <Property Type="Int32" Name="IdConfig" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="500" />
+          <Property Type="String" Name="Abbreviation" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Value" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2735,6 +2988,35 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
                 <ScalarProperty Name="Country1" ColumnName="Country" />
                 <ScalarProperty Name="CountryAreaCode" ColumnName="CountryAreaCode" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NotificationSettings">
+            <EntityTypeMapping TypeName="MMEnterprisesModel.NotificationSettings">
+              <MappingFragment StoreEntitySet="NotificationSettings">
+                <ScalarProperty Name="IdSetting" ColumnName="IdSetting" />
+                <ScalarProperty Name="SendResponsable" ColumnName="SendResponsable" />
+                <ScalarProperty Name="SendColaborator" ColumnName="SendColaborator" />
+                <ScalarProperty Name="SendFollower" ColumnName="SendFollower" />
+                <ScalarProperty Name="SendAddComment" ColumnName="SendAddComment" />
+                <ScalarProperty Name="SendEditComment" ColumnName="SendEditComment" />
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NotificationSettingsPriority">
+            <EntityTypeMapping TypeName="MMEnterprisesModel.NotificationSettingsPriority">
+              <MappingFragment StoreEntitySet="NotificationSettingsPriority">
+                <ScalarProperty Name="IdSetting" ColumnName="IdSetting" />
+                <ScalarProperty Name="IdPriority" ColumnName="IdPriority" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NotificationSettingsStatus">
+            <EntityTypeMapping TypeName="MMEnterprisesModel.NotificationSettingsStatus">
+              <MappingFragment StoreEntitySet="NotificationSettingsStatus">
+                <ScalarProperty Name="IdSetting" ColumnName="IdSetting" />
+                <ScalarProperty Name="IdStatus" ColumnName="IdStatus" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2996,6 +3278,38 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
               <ComplexTypeMapping TypeName="MMEnterprisesModel.GNLisColor_Result">
                 <ScalarProperty Name="backgroundColor" ColumnName="backgroundColor" />
                 <ScalarProperty Name="borderColor" ColumnName="borderColor" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNLisNotificationSettings" FunctionName="MMEnterprisesModel.Store.GNLisNotificationSettings">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNLisNotificationSettings_Result">
+                <ScalarProperty Name="IdSetting" ColumnName="IdSetting" />
+                <ScalarProperty Name="SendResponsable" ColumnName="SendResponsable" />
+                <ScalarProperty Name="SendColaborator" ColumnName="SendColaborator" />
+                <ScalarProperty Name="SendFollower" ColumnName="SendFollower" />
+                <ScalarProperty Name="SendAddComment" ColumnName="SendAddComment" />
+                <ScalarProperty Name="SendEditComment" ColumnName="SendEditComment" />
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNLisNotificationSettingsPriority" FunctionName="MMEnterprisesModel.Store.GNLisNotificationSettingsPriority">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNLisNotificationSettingsPriority_Result">
+                <ScalarProperty Name="IdSetting" ColumnName="IdSetting" />
+                <ScalarProperty Name="IdPriority" ColumnName="IdPriority" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNLisNotificationSettingsStatus" FunctionName="MMEnterprisesModel.Store.GNLisNotificationSettingsStatus">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNLisNotificationSettingsStatus_Result">
+                <ScalarProperty Name="IdSetting" ColumnName="IdSetting" />
+                <ScalarProperty Name="IdStatus" ColumnName="IdStatus" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -3288,6 +3602,10 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <FunctionImportMapping FunctionImportName="GNTranCatalog" FunctionName="MMEnterprisesModel.Store.GNTranCatalog" />
           <FunctionImportMapping FunctionImportName="GNTranCatalogDetail" FunctionName="MMEnterprisesModel.Store.GNTranCatalogDetail" />
           <FunctionImportMapping FunctionImportName="GNTranCommentTask" FunctionName="MMEnterprisesModel.Store.GNTranCommentTask" />
+          <FunctionImportMapping FunctionImportName="GNTranNotificationSettings" FunctionName="MMEnterprisesModel.Store.GNTranNotificationSettings" />
+          <FunctionImportMapping FunctionImportName="GNTranNotificationSettingsPriority" FunctionName="MMEnterprisesModel.Store.GNTranNotificationSettingsPriority" />
+          <FunctionImportMapping FunctionImportName="GNTranNotificationSettingsStatus" FunctionName="MMEnterprisesModel.Store.GNTranNotificationSettingsStatus" />
+          <FunctionImportMapping FunctionImportName="GNTraNotificationSettingsStatus" FunctionName="MMEnterprisesModel.Store.GNTraNotificationSettingsStatus" />
           <FunctionImportMapping FunctionImportName="GNTranPerson" FunctionName="MMEnterprisesModel.Store.GNTranPerson" />
           <FunctionImportMapping FunctionImportName="GNTranPersonContact" FunctionName="MMEnterprisesModel.Store.GNTranPersonContact" />
           <FunctionImportMapping FunctionImportName="GNTranPersonTask" FunctionName="MMEnterprisesModel.Store.GNTranPersonTask" />
@@ -3324,6 +3642,16 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="MMEnterprisesModel.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="MMEnterprisesModel.Store.sp_upgraddiagrams" />
+          <FunctionImportMapping FunctionImportName="GNLisConfigurationParameter" FunctionName="MMEnterprisesModel.Store.GNLisConfigurationParameter">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNLisConfigurationParameter_Result">
+                <ScalarProperty Name="IdConfig" ColumnName="IdConfig" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Abbreviation" ColumnName="Abbreviation" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

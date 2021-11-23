@@ -1,8 +1,10 @@
 ﻿using CustomerSupport.BDContext;
+using CustomerSupport.Class;
 using CustomerSupport.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -82,25 +84,25 @@ namespace CustomerSupport.Controllers
             if (objFilter.IdTask > 0)
                 IdTask = objFilter.IdTask;
 
-            if (objFilter.DateIni !=null)
+            if (objFilter.DateIni != null)
                 dttDateIni = objFilter.DateIni;
 
             if (objFilter.DateEnd != null)
                 dttDateEnd = objFilter.DateEnd;
 
-            if (objFilter.IdPersonEmployee != null && objFilter.IdPersonEmployee>0)
+            if (objFilter.IdPersonEmployee != null && objFilter.IdPersonEmployee > 0)
                 IdResponsable = objFilter.IdPersonEmployee;
 
-            if ( objFilter.IdPriority > 0)
+            if (objFilter.IdPriority > 0)
                 IdPriority = objFilter.IdPriority;
 
-            if (objFilter.IdStatus >0)
+            if (objFilter.IdStatus > 0)
                 IdStatus = objFilter.IdStatus;
 
             if (objFilter.IdTypeTask > 0)
                 IdTypeTask = objFilter.IdTypeTask;
 
-            if (objFilter.IdServiceRequest!=null)
+            if (objFilter.IdServiceRequest != null)
                 IdServiceRequest = objFilter.IdServiceRequest;
 
             if (objFilter.IdUser > 0)
@@ -113,14 +115,14 @@ namespace CustomerSupport.Controllers
                 IdFatherTask = objFilter.IdFatherTask;
 
 
-            objListTask = fnListTask(IdTask, dttDateIni, dttDateEnd, IdResponsable,strtittle, IdPriority, IdStatus, IdTypeTask, IdServiceRequest, IdUser,IdFatherTask);
+            objListTask = fnListTask(IdTask, dttDateIni, dttDateEnd, IdResponsable, strtittle, IdPriority, IdStatus, IdTypeTask, IdServiceRequest, IdUser, IdFatherTask);
 
             return Json(objListTask, JsonRequestBehavior.AllowGet);
 
         }
 
 
-        public static List<MTask> fnListTask(int? IdTask = null, DateTime? dttDateIni = null, DateTime? dttDateEnd = null, int? IdResponsable = null, string strTittle = "",int? IdPriority = null,  int? IdStatus = null,int? IdTypeTask = null, int? IdServiceRequest = null, int? IdUser = null, int? IdFatherTask = null)
+        public static List<MTask> fnListTask(int? IdTask = null, DateTime? dttDateIni = null, DateTime? dttDateEnd = null, int? IdResponsable = null, string strTittle = "", int? IdPriority = null, int? IdStatus = null, int? IdTypeTask = null, int? IdServiceRequest = null, int? IdUser = null, int? IdFatherTask = null)
         {
 
 
@@ -130,55 +132,55 @@ namespace CustomerSupport.Controllers
             MUser objUser = new MUser();
 
             listTask = (List<MTask>)(from tsk in db.GNListTask(IdTask, dttDateIni, dttDateEnd, IdResponsable, strTittle, IdPriority, IdStatus, IdTypeTask, IdServiceRequest, IdUser, IdFatherTask).ToList()
-                                         select new MTask
-                                         {
-                                             IdTask = tsk.IdTask,
-                                             IdUser = tsk.IdUser,
-                                             UserName = tsk.UserName,
-                                             UserLastName = tsk.UserLastName,
-                                             DateIni = tsk.DateIni,
-                                             DateEnd = tsk.DateEnd,
-                                             HourIni = tsk.HourIni,
-                                             HourEnd = tsk.HourEnd,
-                                             Place = tsk.Place,
-                                             Status = tsk.Status,
-                                             IdStatus = tsk.IdStatus,
-                                             IdFatherTask= tsk.IdFatherTask,
-                                             Tittle= tsk.Tittle,
-                                             IdServiceRequest=tsk.IdServiceRequest,
-                                             IdTypeTask = tsk.IdTypeTask,
-                                             TypeTask = tsk.TypeTask,
-                                             IdPriority = tsk.IdPriority,
-                                             PriorityTask = tsk.PriorityTask,
-                                             IdPersonEmployee = tsk.IdResponsable,
-                                             PersonEmployeeName= tsk.Name, 
-                                             PersonEmployeeLastName = tsk.LastName,
-                                             Activity = tsk.Activity,
-                                             Confidential = tsk.confidential==null?false: (bool)tsk.confidential,
-                                             listTaskPerson = (List<MTaskPerson>)(from tp in db.GNListPersonTask(tsk.IdTask, null).ToList()
-                                                                                  select new MTaskPerson
-                                                                                  {
-                                                                                      IdPersonEmployee = tp.IdPersonEmployee,
-                                                                                      PersonEmployeeName = tp.PersonEmployeeName,
-                                                                                      PersonEmployeeLastName = tp.PersonEmployeeLastName,
-                                                                                      NumIdentification = objUser.Desencriptar(tp.NumIdentification),
-                                                                                      Iscolaborator=tp.Iscolaborator
-                                                                                  }).ToList()
-                                                                                  ,
-                                             listMTaskComment = (List<MTaskComment>)(from tp in db.GNListBitacora(tsk.IdTask).ToList()
-                                                                                  select new MTaskComment
-                                                                                  {
-                                                                                      IdComment = tp.IdComment,
-                                                                                      IdTask = tp.IdTask,
-                                                                                      Comment = tp.Comment,
-                                                                                      IdUser = tp.IdUser,
-                                                                                      UserName = tp.UserName,
-                                                                                      DateOperation = tp.DateOperation,
-                                                                                      Date = tp.Date,
-                                                                                      New = 0,
-                                                                                  }).ToList()
+                                     select new MTask
+                                     {
+                                         IdTask = tsk.IdTask,
+                                         IdUser = tsk.IdUser,
+                                         UserName = tsk.UserName,
+                                         UserLastName = tsk.UserLastName,
+                                         DateIni = tsk.DateIni,
+                                         DateEnd = tsk.DateEnd,
+                                         HourIni = tsk.HourIni,
+                                         HourEnd = tsk.HourEnd,
+                                         Place = tsk.Place,
+                                         Status = tsk.Status,
+                                         IdStatus = tsk.IdStatus,
+                                         IdFatherTask = tsk.IdFatherTask,
+                                         Tittle = tsk.Tittle,
+                                         IdServiceRequest = tsk.IdServiceRequest,
+                                         IdTypeTask = tsk.IdTypeTask,
+                                         TypeTask = tsk.TypeTask,
+                                         IdPriority = tsk.IdPriority,
+                                         PriorityTask = tsk.PriorityTask,
+                                         IdPersonEmployee = tsk.IdResponsable,
+                                         PersonEmployeeName = tsk.Name,
+                                         PersonEmployeeLastName = tsk.LastName,
+                                         Activity = tsk.Activity,
+                                         Confidential = tsk.confidential == null ? false : (bool)tsk.confidential,
+                                         listTaskPerson = (List<MTaskPerson>)(from tp in db.GNListPersonTask(tsk.IdTask, null).ToList()
+                                                                              select new MTaskPerson
+                                                                              {
+                                                                                  IdPersonEmployee = tp.IdPersonEmployee,
+                                                                                  PersonEmployeeName = tp.PersonEmployeeName,
+                                                                                  PersonEmployeeLastName = tp.PersonEmployeeLastName,
+                                                                                  NumIdentification = objUser.Desencriptar(tp.NumIdentification),
+                                                                                  Iscolaborator = tp.Iscolaborator
+                                                                              }).ToList()
+                                                                              ,
+                                         listMTaskComment = (List<MTaskComment>)(from tp in db.GNListBitacora(tsk.IdTask).ToList()
+                                                                                 select new MTaskComment
+                                                                                 {
+                                                                                     IdComment = tp.IdComment,
+                                                                                     IdTask = tp.IdTask,
+                                                                                     Comment = tp.Comment,
+                                                                                     IdUser = tp.IdUser,
+                                                                                     UserName = tp.UserName,
+                                                                                     DateOperation = tp.DateOperation,
+                                                                                     Date = tp.Date,
+                                                                                     New = 0,
+                                                                                 }).ToList()
 
-                                         }).ToList();
+                                     }).ToList();
             return listTask;
 
         }
@@ -226,7 +228,7 @@ namespace CustomerSupport.Controllers
                 MMEnterprisesEntities db = new MMEnterprisesEntities();
 
                 //Convert.ToInt32(id)
-               var objListTask = fnListTask(id, null, null, null, null, null, null, null, null, IdUser, null);
+                var objListTask = fnListTask(id, null, null, null, null, null, null, null, null, IdUser, null);
 
                 return View(objListTask.First());
             }
@@ -269,12 +271,12 @@ namespace CustomerSupport.Controllers
             }
             try
             {
-                if(objTask.DateEnd< objTask.DateIni)
+                if (objTask.DateEnd < objTask.DateIni)
                 {
                     ViewBag.ErrorSave = "La fecha Fin no puede ser menor a la fecha inicial";
                     return View(objTask);
                 }
-                
+
                 if (objTask.DateEnd == objTask.DateIni && objTask.HourIni == objTask.HourEnd)
                 {
                     ViewBag.ErrorSave = "La Hora Inicio no puede ser igual a la Hora Fin";
@@ -357,8 +359,8 @@ namespace CustomerSupport.Controllers
             int? IdUser = ((MSerUser)Session["Usuario"]).IdUser;
 
             var ListT = fnListTask(id, null, null, null, null, null, null, null, null, IdUser);
-            if(ListT.Count>0)
-            objMTask = ListT.First();
+            if (ListT.Count > 0)
+                objMTask = ListT.First();
             else
                 return RedirectToAction("ListTask", "Task");
 
@@ -437,6 +439,56 @@ namespace CustomerSupport.Controllers
             try
             {
                 MMEnterprisesEntities db = new MMEnterprisesEntities();
+                Utilities objUtilities = new Utilities();
+
+                string activity = "";
+                string strfromaddress = ConfigurationParameterController.fnListMConfigurationParameter(null, "MAILNOTIFICACIONES").FirstOrDefault().Value;
+                string strSubject = ConfigurationParameterController.fnListMConfigurationParameter(null, "SUBJECTNOTIFICACIONES").FirstOrDefault().Value;
+                string strPassword = ConfigurationParameterController.fnListMConfigurationParameter(null, "PASSWORDNOTIFICACIONES").FirstOrDefault().Value;
+                string strHost = ConfigurationParameterController.fnListMConfigurationParameter(null, "HOSTNOTIFICACIONES").FirstOrDefault().Value;
+                string strPuerto = ConfigurationParameterController.fnListMConfigurationParameter(null, "PORTNOTIFICACIONES").FirstOrDefault().Value;
+                string strMiembros = "";
+                if (objTask.listTaskPerson.Count() > 0)  
+                     strMiembros =  objTask.listTaskPerson.Select(x => { return x.PersonEmployeeLastName; }).ToList().Aggregate((a, b) => $"{a},{b}");
+
+                if (objTask.PersonEmployeeLastName != "" )
+                {
+                    if (strMiembros != "")
+                    {
+                        strMiembros = strMiembros + ", ";
+
+
+                    }
+
+                    strMiembros = strMiembros + objTask.PersonEmployeeLastName;
+                }
+
+
+                string strBody = "";
+                if (objTask.TypeTask == "Reunión")
+                {
+                    strBody = ConfigurationParameterController.fnListMConfigurationParameter(null, "BODYNOTIFICACIONESMEETING").FirstOrDefault().Value;
+                    strBody = strBody.Replace("[Members]", strMiembros);
+                    strBody = strBody.Replace("[Place]", objTask.Place == null ? "" : objTask.Place);
+                }
+                else
+                {
+                    strBody = ConfigurationParameterController.fnListMConfigurationParameter(null, "BODYNOTIFICACIONESTASK").FirstOrDefault().Value;
+                    strBody = strBody.Replace("[Type]", objTask.TypeTask == null ? "" : objTask.TypeTask.ToString());
+                }
+
+                strBody = strBody.Replace("[Title]", objTask.Tittle == null ? "" : objTask.Tittle.ToString());
+                strBody = strBody.Replace("[DateIni]", objTask.DateIni == null ? "" : objTask.DateIni.Value.ToShortDateString());
+                strBody = strBody.Replace("[DateEnd]", objTask.DateEnd.Value.ToShortDateString());
+                DateTime timeIni = DateTime.Today.Add(objTask.HourIni);
+                string displayTimeIni = timeIni.ToString("hh:mm tt");
+                strBody = strBody.Replace("[HourIni]", displayTimeIni);
+
+                DateTime timeEnd = DateTime.Today.Add(objTask.HourEnd);
+                string displayTimeEnd = timeEnd.ToString("hh:mm tt");
+                strBody = strBody.Replace("[HourEnd]", displayTimeEnd);
+                strBody = strBody.Replace("[Priority]", objTask.PriorityTask == null ? "" : objTask.PriorityTask.ToString());
+                strBody = strBody.Replace("[Status]", objTask.Status == null ? "" : objTask.Status.ToString());
 
                 int SqlResult;
                 int SqlResultTask;
@@ -513,19 +565,68 @@ namespace CustomerSupport.Controllers
                     IdResponsable.Value = DBNull.Value;
                 }
 
-                //SqlParameter paramConfidential = new SqlParameter();
-                //paramPlace.ParameterName = "@blnConfidential";
-                //IdResponsable.SqlDbType = System.Data.SqlDbType.Bit;
-                //IdResponsable.Direction = System.Data.ParameterDirection.Input;
-                //IdResponsable.IsNullable = false;
-                //if (objTask.Confidential != null)
-                //{
-                //    paramConfidential.Value = objTask.Confidential;
-                //}
-                //else
-                //{
-                //    paramConfidential.Value = false;
-                //}
+                bool blnAddComment = false;
+                bool blnEditComment = false;
+                bool blnModifiPriority = false;
+                bool blnModistatus = false;
+
+                MTask objTaskAnt = null;
+
+                if (objTask.IdTask > 0)
+                {
+                    objTaskAnt = fnListTask(objTask.IdTask, null, null, null, null, null, null, null, null, objTask.IdUser, null).First();
+
+
+                    if (objTask.listMTaskComment != null)
+                    {
+
+                        if ((objTask.listMTaskComment.Where(z => z.Comment != null).ToList().Count() > 0 && objTaskAnt.listMTaskComment == null) || (objTask.listMTaskComment.Where(z => z.Comment != null).ToList().Count() > objTaskAnt.listMTaskComment.Count()))
+                        {
+                           blnAddComment = true;
+                           activity = "Se Agrego un comentario";
+                        }
+
+                        int ClisCount = 0;
+                        if (objTask.listMTaskComment.Where(z => z.Comment != null).ToList().Count() > 0 && objTaskAnt.listMTaskComment.Where(z => z.Comment != null).ToList().Count() > 0)
+                        {
+                            var resultado = from TaskAnt in objTaskAnt.listMTaskComment
+                                            join TaskN in objTask.listMTaskComment on
+                                                TaskAnt.Comment equals TaskN.Comment
+                                            select TaskAnt;
+                            ClisCount = resultado.ToList().Count;
+
+                            if (ClisCount != objTask.listMTaskComment.Where(z => z.Comment != null).ToList().Count())
+                            {
+                                blnEditComment = true;
+                                if(activity != "")
+                                    activity = activity + "-";
+
+                                activity = activity + "Se Modifico un comentario";
+                            }
+                        }
+
+
+                    }
+
+                    if (objTaskAnt.IdPriority != objTask.IdPriority)
+                    {
+                        blnModifiPriority = true;
+                        if (activity != "")
+                            activity = activity + "-";
+
+                        activity = activity + "Se Modifico la Prioridad";
+                    }
+
+                    if (objTaskAnt.IdStatus != objTask.IdStatus)
+                    {
+                        blnModistatus = true;
+                        if (activity != "")
+                            activity = activity + "-";
+
+                        activity = activity + "Se Modifico el Estado";
+                    }
+
+                }
 
                 MUser objUser = new MUser();
 
@@ -555,60 +656,44 @@ namespace CustomerSupport.Controllers
 
                 IdTask = Int32.Parse(paramOutIdTask.Value.ToString());
 
+           
+
                 if (IdTask != 0)
                 {
+                    strBody = strBody.Replace("[IdTicket]", IdTask.ToString());
+
                     if (objTask.listMTaskComment != null)
                     {
                         if (objTask.listMTaskComment.Count() > 0)
                         {
 
-                            ////si va a actualizar, se eliminan los Comentarios de las actividades para volver a insertar
-                            //if (TransactionType == "U")
-                            //{
-                            //    SqlParameter paramOutIdComment = new SqlParameter("@IdComment", System.Data.SqlDbType.Int);
-                            //    paramOutIdComment.Direction = System.Data.ParameterDirection.Output;
-
-
-                            //        SqlResult = db.Database.ExecuteSqlCommand("GNTranCommentTask @TransactionType, @IdComment OUT, @IdTask " +
-                            //                                                ", @strComment,@IdUser, @dttDate  ",
-                            //        new SqlParameter[]{
-                            //            new SqlParameter("@TransactionType", TransactionType),
-                            //            paramOutIdComment,
-                            //            new SqlParameter("@IdTask", IdTask),
-                            //            new SqlParameter("@strComment", DBNull.Value),
-                            //            new SqlParameter("@IdUser", DBNull.Value),
-                            //            new SqlParameter("@dttDate", DBNull.Value)
-                            //        }
-                            //    );
-                            //}
-
                             //Inserta los Comentarios
                             foreach (var item in objTask.listMTaskComment)
                             {
-                                if (item.IdComment != null && item.Comment!=null)
-                                { 
-                                if (item.Date == null)
-                                    item.Date = DateTime.Now;
+                                if (item.IdComment != null && item.Comment != null)
+                                {
+                                    if (item.Date == null)
+                                        item.Date = DateTime.Now;
 
-                                if (item.IdUser == null)
-                                    item.IdUser = objTask.IdUser;
+                                    if (item.IdUser == null)
+                                        item.IdUser = objTask.IdUser;
 
-                                int IdComment = (int)item.IdComment;
-                                SqlParameter paramOutIdComment = new SqlParameter("@IdComment", System.Data.SqlDbType.Int);
-                                paramOutIdComment.Direction = System.Data.ParameterDirection.InputOutput;
-                                paramOutIdComment.Value = IdComment;
+                                    int IdComment = (int)item.IdComment;
+                                    SqlParameter paramOutIdComment = new SqlParameter("@IdComment", System.Data.SqlDbType.Int);
+                                    paramOutIdComment.Direction = System.Data.ParameterDirection.InputOutput;
+                                    paramOutIdComment.Value = IdComment;
 
-                                SqlResult = db.Database.ExecuteSqlCommand("GNTranCommentTask @TransactionType, @IdComment OUT, @IdTask " +
-                                                                            ", @strComment,@IdUser, @dttDate ",
-                                    new SqlParameter[]{
+                                    SqlResult = db.Database.ExecuteSqlCommand("GNTranCommentTask @TransactionType, @IdComment OUT, @IdTask " +
+                                                                                ", @strComment,@IdUser, @dttDate ",
+                                        new SqlParameter[]{
                                         new SqlParameter("@TransactionType", "I"),
                                         paramOutIdComment,
                                         new SqlParameter("@IdTask", IdTask),
                                         new SqlParameter("@strComment", item.Comment),
                                         new SqlParameter("@IdUser", item.IdUser),
                                         new SqlParameter("@dttDate", item.Date),
-                                    }
-                                );
+                                        }
+                                    );
                                     IdComment = Int32.Parse(paramOutIdComment.Value.ToString());
                                     item.IdComment = IdComment;
                                 }
@@ -635,6 +720,8 @@ namespace CustomerSupport.Controllers
                                 );
                             }
 
+                            bool blnItemModifiPriority = blnModifiPriority;
+                            bool blnItemModistatus = blnModistatus;
                             //Inserta los Comentarios
                             foreach (var item in objTask.listTaskPerson)
                             {
@@ -648,11 +735,61 @@ namespace CustomerSupport.Controllers
                                     }
                                 );
 
+                                //// se envia correo segun los seguidores
+                                ////Buscamos correo de Colaborador- seguidor para ver si tiene configurado 
+                                if (item.IdPersonEmployee != null)
+                                {
+                                    var objNoti = NotificationSettingsController.fnListMNotificationSettings(null, item.IdPersonEmployee);
+                                    if (objNoti.Count > 0)
+                                    {
+                                        if (objNoti[0].Email != "")
+                                        {
+                                       
+                                            if (blnModifiPriority == true)
+                                            {
+                                                var objPriot = objNoti.First().LisMNotificationSettingsPriority.Select(x => x.IdPriority == objTask.IdPriority).Count();
+                                                if (objPriot == 0)
+                                                {
+                                                    blnItemModifiPriority = false;
+                                                }
+                                            }
+
+                                            if (blnModistatus == true)
+                                            {
+                                                var objStatus = objNoti.First().LisNotificationSettingsStatus.Select(x => x.IdStatus == objTask.IdStatus).Count();
+                                                if (objStatus == 0)
+                                                {
+                                                    blnItemModistatus = false;
+                                                }
+                                            }
+
+
+                                            if (objNoti[0].SendColaborator || objNoti[0].SendFollower)
+                                            {
+                                                if (blnAddComment == true || blnEditComment == true || blnItemModifiPriority == true || blnItemModistatus == true || objTaskAnt == null)
+                                                {
+                                                    Utilities objutilities = new Utilities();
+                                                    strSubject = strSubject.Replace("[NRO]", IdTask.ToString());
+                                                    if(activity != "")
+                                                        strSubject = strSubject+ " - " + activity;
+                                                    objutilities.SendMail(strfromaddress, objNoti[0].Email, strBody, strSubject, strPassword, strHost, Convert.ToInt32(strPuerto));
+
+                                                }
+
+                                            }
+                                        }
+
+                                    }
+                                }
+
+                                blnItemModifiPriority = blnModifiPriority;
+                                blnItemModistatus = blnModistatus;
+
                             }
                         }
                     }
 
-                    if(objTask.IdServiceRequest!=null)
+                    if (objTask.IdServiceRequest != null)
                     {
                         //si va a actualizar, se eliminan los Comentarios de las actividades para volver a insertar
                         if (TransactionType == "U")
@@ -670,8 +807,8 @@ namespace CustomerSupport.Controllers
                         //Se asocia la actividad con el servicio si esta insertando
                         if (paramTransactionType.Value.ToString() == "I") //TransactionType == "I"
                         {
-                            if(objTask.IdServiceRequest!=null)
-                            { 
+                            if (objTask.IdServiceRequest != null)
+                            {
                                 SqlResult = db.Database.ExecuteSqlCommand("GNTranServiceRequestTask @TransactionType, @IdTask, @IdServiceRequest ",
                                     new SqlParameter[]{
                                                         new SqlParameter("@TransactionType",TransactionType), //TransactionType
@@ -680,6 +817,50 @@ namespace CustomerSupport.Controllers
                                     }
                                 );
                             }
+                        }
+                    }
+
+                    ////Buscamos correo de responsable para ver si tiene configurado 
+                    if (objTask.IdPersonEmployee != null)
+                    {
+                        var objNoti = NotificationSettingsController.fnListMNotificationSettings(null, (int)IdResponsable.Value);
+                        if (objNoti.Count > 0)
+                        {
+                            if (objNoti[0].Email != "")
+                            {
+
+                                if (blnModifiPriority == true)
+                                {
+                                    var objPriot = objNoti.First().LisMNotificationSettingsPriority.Select(x => x.IdPriority == objTask.IdPriority).Count();
+                                    if (objPriot == 0)
+                                    {
+                                        blnModifiPriority = false;
+                                    }
+                                }
+
+                                if (blnModistatus == true)
+                                {
+                                    var objStatus = objNoti.First().LisNotificationSettingsStatus.Select(x => x.IdStatus == objTask.IdStatus).Count();
+                                    if (objStatus == 0)
+                                    {
+                                        blnModistatus = false;
+                                    }
+                                }
+
+                                if (objNoti[0].SendResponsable)
+                                {
+                                    if (blnAddComment == true || blnEditComment == true || blnModifiPriority == true || blnModistatus == true || objTaskAnt == null)
+                                    {
+                                        Utilities objutilities = new Utilities();
+
+
+
+                                        strSubject = strSubject.Replace("[NRO]", IdTask.ToString());
+                                        objutilities.SendMail(strfromaddress, objNoti[0].Email, strBody, strSubject, strPassword, strHost, Convert.ToInt32(strPuerto));
+                                    }
+                                }
+                            }
+
                         }
                     }
 

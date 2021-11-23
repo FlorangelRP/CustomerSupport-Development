@@ -25,6 +25,7 @@
                                 <div class="control-label">Prioridad:</div>
                                 <select id="lst_Priority" class="form-control" style="width: 100%;"></select>
                                 @Html.HiddenFor(model => model.IdPriority, new { @id = "inIdPriority" })
+                                @Html.HiddenFor(model => model.PriorityTask, new { @id = "strPriorityTask" })
                                 @Html.ValidationMessageFor(model => model.IdPriority, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -34,6 +35,7 @@
                                 <div class="control-label">Tipo:</div>
                                 <select id="lst_IdTypeTask" class="form-control" style="width: 100%;"></select>
                                 @Html.HiddenFor(model => model.IdTypeTask, new { @id = "inIdTypeTask" })
+                                @Html.HiddenFor(model => model.TypeTask, new { @id = "strTypeTask" })
                                 @Html.ValidationMessageFor(model => model.IdTypeTask, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -43,6 +45,7 @@
                                 <div class="control-label">Estado:</div>
                                 <select id="lst_IdStatus" class="form-control" style="width: 100%;"></select>
                                 @Html.HiddenFor(model => model.IdStatus, new { @id = "inIdStatus" })
+                                @Html.HiddenFor(model => model.Status, new { @id = "strStatus" })
                                 @Html.ValidationMessageFor(model => model.IdStatus, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -105,7 +108,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <div class="control-label">Fecha Fin:</div>
-                                @Html.TextBoxFor(model => model.DateEnd, "{0:d}", new { @class = "form-control", @type = "date", @id = "dttDateEnd" , @Value = @DateTime.Now.ToShortDateString() })
+                                @Html.TextBoxFor(model => model.DateEnd, "{0:d}", new { @class = "form-control", @type = "date", @id = "dttDateEnd", @Value = @DateTime.Now.ToShortDateString() })
                                 @Html.ValidationMessageFor(model => model.DateEnd, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -131,6 +134,7 @@
                                 <div class="control-label">Responsable:</div>
                                 <select class="select2" onchange="filtrarPersona(this.value)" id="filtropersona" data-placeholder="Seleccione" name="IdPersonEmployee"></select>
                                 @Html.HiddenFor(model => model.IdPersonEmployee, new { @id = "IdPersonEmployee," })
+                                @Html.HiddenFor(model => model.PersonEmployeeLastName, new { @id = "strPersonEmployeeLastName" })
                                 @Html.ValidationMessageFor(model => model.IdPersonEmployee, "", new { @class = "text-danger" })
 
                             </div>
@@ -167,14 +171,14 @@
                                                         <div class="control-label">Colaborador/seguidor:</div>
                                                         <select class="select2" onchange="filtrarColaborador(this.value)" id="filtroColaborador" data-placeholder="Seleccione"></select>
                                                         @*@Html.HiddenFor(model => model.IdPersonEmployee, new { @id = "IdPersonColaborador," })
-                @Html.ValidationMessageFor(model => model.IdPersonEmployee, "", new { @class = "text-danger" })*@
+                                                            @Html.ValidationMessageFor(model => model.IdPersonEmployee, "", new { @class = "text-danger" })*@
 
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4 s_Checkbox">
                                                     @Html.CheckBox("IsColaborator", false)
                                                     <label>Colaborador:</label>
-                                                  @*  @Html.ValidationMessageFor(model => model.listTaskPerson[0].IsColaborator, "", new { @class = "text-danger" })*@
+                                                    @*  @Html.ValidationMessageFor(model => model.listTaskPerson[0].IsColaborator, "", new { @class = "text-danger" })*@
                                                 </div>
 
                                                 <div class="col-md-2">
@@ -197,6 +201,7 @@
                                                                             <td style="display:none;">colHid_indexCell</td>
                                                                             <td style="display:none;">colHid_IdPersonEmployee</td>
                                                                             <td style="display:none;">colHid_PersonEmployeeName</td>
+                                                                            <td style="display:none;">colHid_PersonEmployeeLastName</td>
                                                                             <td width="70%">Nombre</td>
                                                                             <td width="15%">Colaborador</td>
                                                                             <td width="15%">Opciones</td>
@@ -204,48 +209,52 @@
                                                                     </thead>
                                                                     <tbody id="BodyPersonEmployee">
                                                                         @if (Model != null)
+                                                                        {
+                                                                            if (Model.listTaskPerson != null)
+                                                                            {
+                                                                                string idRow;
+                                                                                string idCol;
+                                                                                string nameCol_IdPersonEmploye;
+                                                                                string nameCol_PersonEmployeeName;
+                                                                                string nameCol_NumIdentification;
+                                                                                string nameCol_Status;
+                                                                                string nameCol_PersonEmployeeLastName;
+
+
+                                                                                for (var i = 0; i < Model.listTaskPerson.Count; i++)
+                                                                                {
+                                                                                    idRow = "trTaskPerson" + i.ToString();
+                                                                                    idCol = "listTaskPerson_" + i.ToString();
+                                                                                    nameCol_NumIdentification = "listTaskPerson[" + i.ToString() + "].NumIdentification";
+                                                                                    nameCol_IdPersonEmploye = "listTaskPerson[" + i.ToString() + "].IdPersonEmployee";
+                                                                                    nameCol_PersonEmployeeName = "listTaskPerson[" + i.ToString() + "].PersonEmployeeName";
+                                                                                    nameCol_PersonEmployeeLastName = "listTaskPerson[" + i.ToString() + "].PersonEmployeeLastName";
+                                                                                    nameCol_Status = "listTaskPerson[" + i.ToString() + "].Iscolaborator";
+
+                                                                                    var Name = " ";
+                                                                                    if (@Model.listTaskPerson[i].PersonEmployeeName != "")
                                                                                     {
-                                                                                        if (Model.listTaskPerson != null)
-                                                                                        {
-                                                                                            string idRow;
-                                                                                            string idCol;
-                                                                                            string nameCol_IdPersonEmploye;
-                                                                                            string nameCol_PersonEmployeeName;
-                                                                                            string nameCol_NumIdentification;
-                                                                                            string nameCol_Status;
-                                                                                            
+                                                                                        Name = " " + @Model.listTaskPerson[i].PersonEmployeeName;
+                                                                                    }
 
-                                                                                            for (var i = 0; i < Model.listTaskPerson.Count; i++)
-                                                                                            {
-                                                                                                idRow = "trTaskPerson" + i.ToString();
-                                                                                                idCol = "listTaskPerson_" + i.ToString();
-                                                                                                nameCol_NumIdentification = "listTaskPerson[" + i.ToString() + "].NumIdentification";
-                                                                                                nameCol_IdPersonEmploye = "listTaskPerson[" + i.ToString() + "].IdPersonEmployee";
-                                                                                                nameCol_PersonEmployeeName = "listTaskPerson[" + i.ToString() + "].PersonEmployeeName";
-                                                                                                nameCol_Status = "listTaskPerson[" + i.ToString() + "].Iscolaborator";
+                                                                                    string strNombre = @Model.listTaskPerson[i].NumIdentification + " - " + @Model.listTaskPerson[i].PersonEmployeeLastName + @Name;
 
-                                                                                                var Name = " ";
-                                                                                                if (@Model.listTaskPerson[i].PersonEmployeeName != "")
-                                                                                                {
-                                                                                                    Name = " " + @Model.listTaskPerson[i].PersonEmployeeName;
-                                                                                                }
+                                                                                    string strNombreCompleto = @Model.listTaskPerson[i].PersonEmployeeLastName + @Name;
 
-                                                                                                string strNombre = @Model.listTaskPerson[i].NumIdentification + " - " + @Model.listTaskPerson[i].PersonEmployeeLastName + @Name;
-
-                                                                        <tr id='@idRow'>
-                                                                            <td style="display:none;"><input name="listPersonContact.Index" type="hidden" value='@i' /></td>
-                                                                            <td style="display:none;"><input id='@idCol' name='@nameCol_NumIdentification' type="hidden" value='@Model.listTaskPerson[i].NumIdentification' /></td>
-                                                                            <td style="display:none;"><input id='@idCol' name='@nameCol_IdPersonEmploye' type="hidden" value='@Model.listTaskPerson[i].IdPersonEmployee' /></td>
-                                                                            <td style="display:none;"><input id='@idCol' name='@nameCol_PersonEmployeeName' type="hidden" value='@Model.listTaskPerson[i].PersonEmployeeName' /></td>
-                                                                            <td name="PersonEmploye">@strNombre </td>
-                                                                            <td>
-                                                                                @Html.CheckBoxFor(model => model.listTaskPerson[i].Iscolaborator, new { @id = nameCol_Status, @onclick = "Chk(this," + i + ")" })
-                                                                            </td>
-                                                                            <td><div class="btn_option pt-0"><a class="deleteRow" onclick="deleteRow('@i');"><i class="far fa-trash-alt"></i></a></div></td>
-                                                                        </tr>
+                                                                                    <tr id='@idRow'>
+                                                                                        <td style="display:none;"><input name="listPersonContact.Index" type="hidden" value='@i' /></td>
+                                                                                        <td style="display:none;"><input id='@idCol' name='@nameCol_NumIdentification' type="hidden" value='@Model.listTaskPerson[i].NumIdentification' /></td>
+                                                                                        <td style="display:none;"><input id='@idCol' name='@nameCol_IdPersonEmploye' type="hidden" value='@Model.listTaskPerson[i].IdPersonEmployee' /></td>
+                                                                                        <td style="display:none;"><input id='@idCol' name='@nameCol_PersonEmployeeLastName' type="hidden" value='@strNombreCompleto' /></td>
+                                                                                        <td name="PersonEmploye">@strNombre </td>
+                                                                                        <td>
+                                                                                            @Html.CheckBoxFor(model => model.listTaskPerson[i].Iscolaborator, new { @id = nameCol_Status, @onclick = "Chk(this," + i + ")" })
+                                                                                        </td>
+                                                                                        <td><div class="btn_option pt-0"><a class="deleteRow" onclick="deleteRow('@i');"><i class="far fa-trash-alt"></i></a></div></td>
+                                                                                    </tr>
 
                                                                                 }
-                                                                        }
+                                                                            }
                                                                         }
                                                                     </tbody>
                                                                 </table>
@@ -443,7 +452,12 @@
         function filtrarPersona(person) {
             /*debugger;*/
             var SelecCodeValue = person.trim();
+            
             cargarDataPerson(SelecCodeValue, ListPersons);
+            var combo = document.getElementById("filtropersona");
+            var selected = combo.options[combo.selectedIndex].text;
+            selectedA = selected.split(" - ");
+            $("#strPersonEmployeeLastName").val(selectedA[1]);
         }
 
         function filtrarColaborador(Colaborador) {
@@ -539,21 +553,37 @@
             $('.select2').select2({ width: '100%' });
 
             $("#lst_Priority").on('change', function () {
+                debugger;
                 var selectValue = $(this).val();
                 //$("#inpIdIdentificationType").val(selectValue);
                 changeCodeInputHiddenList("lst_Priority", "inIdPriority", selectValue);
+                debugger;
+                var combo = document.getElementById("lst_Priority");
+                var selected = combo.options[combo.selectedIndex].text;
+                $("#strPriorityTask").val(selected);
+
             });
 
             $("#lst_IdStatus").on('change', function () {
                 var selectValue = $(this).val();
                 //$("#inpIdIdentificationType").val(selectValue);
                 changeCodeInputHiddenList("lst_IdStatus", "inIdStatus", selectValue);
+
+                var combo = document.getElementById("lst_IdStatus");
+                var selected = combo.options[combo.selectedIndex].text;
+                $("#strStatus").val(selected);
+
             });
 
             $("#lst_IdTypeTask").on('change', function () {
                 var selectValue = $(this).val();
                 //$("#inpIdIdentificationType").val(selectValue);
                 changeCodeInputHiddenList("lst_IdTypeTask", "inIdTypeTask", selectValue);
+
+                var combo = document.getElementById("lst_IdTypeTask");
+                var selected = combo.options[combo.selectedIndex].text;
+                $("#strTypeTask").val(selected);
+
             });
 
             $.ajax({
@@ -664,6 +694,7 @@
                     if (CodeAntSelected != "") {
                         $("#" + idDropDownList + " option[value='" + CodeAntSelected + "']").attr("selected", true);
                         $("#" + idInputHidden).val(CodeAntSelected);
+
                     }
                     else {
                         var CodeActual = $("#" + idDropDownList).val();
@@ -742,7 +773,7 @@
 
         function Chk(source, id) {
             var isSelected = $(source).is(":checked");
-            
+
             if (isSelected == true) {
                 document.getElementsByName('listTaskPerson[' + id + '].Iscolaborator').checked=true;
 
@@ -767,12 +798,13 @@
                  strStatus = "unchecked";
                  strStatusV = "false";
              }
-                 
+
 
             //debugger;
             if (strPerson != "") {
 
                 //-------------------------
+                var datosempl = strPerson.split(" - " );
 
                 var index = document.getElementById('TTaskPerson').rows.length;
                 //alert(index);
@@ -781,6 +813,7 @@
                 var colHid_IdPersonEmployee = "<td style='display:none'><input id='listTaskPerson_" + index + "' name = 'listTaskPerson[" + index + "].IdPersonEmployee' type='hidden' value='" + strIdPerson + "' /></td> ";
                 var colHid_IdPersonNumIdentification = "<td style='display:none'><input id='listTaskPerson_" + index + "' name = 'listTaskPerson[" + index + "].NumIdentification' type='hidden' value='" + strIdPerson + "' /></td> ";
                 var colHid_PersonEmployeeName = "<td style='display:none'><input id='listTaskPerson_" + index + "' name = 'listTaskPerson[" + index + "].PersonEmployeeName' type = 'hidden' value = '" + strPerson + "' /></td> ";
+                var colHid_PersonEmployeeLastName = "<td style='display:none'><input id='listTaskPerson_" + index + "' name = 'listTaskPerson[" + index + "].PersonEmployeeLastName' type = 'hidden' value = '" + datosempl[1].toString() + "' /></td> ";
 
                 /*debugger;*/
                 var colPersonEmployeeName = "<td name ='PersonEmploye'>" + strPerson + "</td> ";
@@ -810,7 +843,7 @@
 
                 //insertamos los valores en la tabla
                 var newRow = "<tr id='trTaskPerson" + index + "'>" +
-                    colHid_indexCell + colHid_IdPersonEmployee + colHid_IdPersonNumIdentification + colHid_PersonEmployeeName + colPersonEmployeeName + colStatus+ colDelete + "</tr>";
+                    colHid_indexCell + colHid_IdPersonEmployee + colHid_IdPersonNumIdentification + colHid_PersonEmployeeName + colHid_PersonEmployeeLastName+ colPersonEmployeeName + colStatus+ colDelete + "</tr>";
                 //debugger;
                 $("#TTaskPerson").append(newRow);
 

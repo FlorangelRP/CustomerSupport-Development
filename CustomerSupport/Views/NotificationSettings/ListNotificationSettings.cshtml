@@ -1,0 +1,632 @@
+﻿@using CustomerSupport.Models
+@model CustomerSupport.Models.MNotificationSettings
+@{
+    ViewBag.Title = "Notificaciones";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">@ViewBag.Title</h3>
+    </div>
+    <div class="card-body">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="m-0 row justify-content-center">
+                <div class="form-horizontal col-md-10">
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="control-label">Recibir cuando soy:</div>
+                                </div>
+                            </div>
+                            <div class="row shadow-sm p-3 m-1 bg-white rounded">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4 s_Checkbox">
+                                            @Html.CheckBoxFor(model => model.SendResponsable, new { @id = "blnSendResponsable" })
+                                            <label>Responsable</label>
+                                            @Html.ValidationMessageFor(model => model.SendResponsable, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="col-md-4 s_Checkbox">
+                                            @Html.CheckBoxFor(model => model.SendFollower, new { @id = "blnSendFollower" })
+                                            <label>Seguidor</label>
+                                            @Html.ValidationMessageFor(model => model.SendFollower, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4 s_Checkbox">
+                                                @Html.CheckBoxFor(model => model.SendColaborator, new { @id = "blnSendColaborator" })
+                                                <label>Colaborador</label>
+                                                @Html.ValidationMessageFor(model => model.SendColaborator, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="control-label">Recibir cuando un Comentario:</div>
+                                </div>
+                            </div>
+                            <div class="row shadow-sm p-3 m-1 bg-white rounded">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4 s_Checkbox">
+                                            @Html.CheckBoxFor(model => model.SendAddComment, new { @id = "blnSendAddComment" })
+                                            <label>Se agrega</label>
+                                            @Html.ValidationMessageFor(model => model.SendAddComment, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="col-md-4 s_Checkbox">
+                                            @Html.CheckBoxFor(model => model.SendEditComment, new { @id = "blnSendEditComment" })
+                                            <label>Se modifica</label>
+                                            @Html.ValidationMessageFor(model => model.SendEditComment, "", new { @class = "text-danger" })
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row pt-2 pb-3">
+
+                        <div class="col-md-12">
+
+                            <div class="accordion border" id="accordionPriority">
+                                <div class="card collapsed-card">
+                                    <div class="card-header" id="headingPriority">
+                                        <h2 class="mb-0">
+                                            <button class="btn btn-link text-decoration-none" type="button" data-toggle="collapse" data-target="#collapseCardPriority" aria-expanded="false" aria-controls="collapsePriority">
+                                                Prioridad
+                                            </button>
+                                        </h2>
+                                    </div>
+
+                                    <div id="collapseCardPriority" class="collapse" aria-labelledby="headingTaskPriority" data-parent="#accordionPriority">
+
+                                        <div class="card-body">
+
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <div class="control-label">Prioridad:</div>
+                                                        <select id="lst_Priority" class="form-control" style="width: 100%;"></select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        @*<div class="btn_option"><a id="addRow"><i class="fas fa-plus"></i></a></div>*@
+                                                        <div class="btn_option"><a onclick="addRow();"><i class="fas fa-plus"></i></a></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @*<hr>*@
+                                            <div class="row pt-3">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <div class="table-responsive">
+                                                            <div class="container">
+
+                                                                <table id="TPriority" class="table table-bordered table-striped">
+                                                                    <thead class="font-weight-bold">
+                                                                        <tr>
+                                                                            <td style="display:none;">colHid_indexCell</td>
+                                                                            <td style="display:none;">colHid_IdPriority</td>
+                                                                            <td style="display:none;">colHid_Priority</td>
+                                                                            <td width="70%">Prioridad</td>
+                                                                            <td width="15%">Opciones</td>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="BodyPriority">
+                                                                        @if (Model != null)
+                                                                        {
+                                                                            if (Model.LisMNotificationSettingsPriority != null)
+                                                                            {
+                                                                                string idRow;
+                                                                                string idCol;
+                                                                                string nameCol_IdPriority;
+                                                                                string nameCol_Priority;
+
+
+
+                                                                                for (var i = 0; i < Model.LisMNotificationSettingsPriority.Count; i++)
+                                                                                {
+                                                                                    idRow = "trPriority" + i.ToString();
+                                                                                    idCol = "lisTPriority_" + i.ToString();
+                                                                                    nameCol_IdPriority = "LisMNotificationSettingsPriority[" + i.ToString() + "].IdPriority";
+                                                                                    nameCol_Priority = "LisMNotificationSettingsPriority[" + i.ToString() + "].Priority";
+
+
+
+                                                                                    <tr id='@idRow'>
+                                                                                        <td style="display:none;"><input name="LisMNotificationSettingsPriority.Index" type="hidden" value='@i' /></td>
+                                                                                        <td style="display:none;"><input id='@idCol' name='@nameCol_IdPriority' type="hidden" value='@Model.LisMNotificationSettingsPriority[i].IdPriority' /></td>
+                                                                                        <td style="display:none;"><input id='@idCol' name='@nameCol_Priority' type="hidden" value='@Model.LisMNotificationSettingsPriority[i].Priority' /></td>
+                                                                                        <td name="Priority">@Model.LisMNotificationSettingsPriority[i].Priority </td>
+                                                                                        <td><div class="btn_option pt-0"><a class="deleteRow" onclick="deleteRow('@i');"><i class="far fa-trash-alt"></i></a></div></td>
+                                                                                    </tr>
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    </tbody>
+                                                                </table>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row pt-2 pb-3">
+
+                        <div class="col-md-12">
+
+                            <div class="accordion border" id="accordionStatus">
+                                <div class="card collapsed-card">
+                                    <div class="card-header" id="headingStatus">
+                                        <h2 class="mb-0">
+                                            <button class="btn btn-link text-decoration-none" type="button" data-toggle="collapse" data-target="#collapseCardStatus" aria-expanded="false" aria-controls="collapseStatus">
+                                                Estado
+                                            </button>
+                                        </h2>
+                                    </div>
+
+                                    <div id="collapseCardStatus" class="collapse" aria-labelledby="headingTaskStatus" data-parent="#accordionStatus">
+
+                                        <div class="card-body">
+
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <div class="control-label">Estado:</div>
+                                                        <select id="lst_IdStatus" class="form-control" style="width: 100%;"></select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        @*<div class="btn_option"><a id="addRow"><i class="fas fa-plus"></i></a></div>*@
+                                                        <div class="btn_option"><a onclick="addRowStatus();"><i class="fas fa-plus"></i></a></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @*<hr>*@
+                                            <div class="row pt-3">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <div class="table-responsive">
+                                                            <div class="container">
+
+                                                                <table id="TStatus" class="table table-bordered table-striped">
+                                                                    <thead class="font-weight-bold">
+                                                                        <tr>
+                                                                            <td style="display:none;">colHid_indexCell</td>
+                                                                            <td style="display:none;">colHid_IdStatus</td>
+                                                                            <td style="display:none;">colHid_Status</td>
+                                                                            <td width="70%">Estado</td>
+                                                                            <td width="15%">Opciones</td>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="BodyStatus">
+                                                                        @if (Model != null)
+                                                                        {
+                                                                            if (Model.LisNotificationSettingsStatus != null)
+                                                                            {
+                                                                                if(Model.LisNotificationSettingsStatus.Count>0)
+                                                                                { 
+                                                                                    string idRow;
+                                                                                    string idCol;
+                                                                                    string nameCol_IdStatus;
+                                                                                    string nameCol_Status;
+
+
+
+                                                                                    for (var i = 0; i < Model.LisNotificationSettingsStatus.Count; i++)
+                                                                                    {
+                                                                                        idRow = "trStatus" + i.ToString();
+                                                                                        idCol = "lisTStatus_" + i.ToString();
+                                                                                        nameCol_IdStatus = "LisNotificationSettingsStatus[" + i.ToString() + "].IdStatus";
+                                                                                        nameCol_Status = "LisNotificationSettingsStatus[" + i.ToString() + "].Status";
+
+
+
+                                                                                        <tr id='@idRow'>
+                                                                                            <td style="display:none;"><input name="LisNotificationSettingsStatus.Index" type="hidden" value='@i' /></td>
+                                                                                            <td style="display:none;"><input id='@idCol' name='@nameCol_IdStatus' type="hidden" value='@Model.LisNotificationSettingsStatus[i].IdStatus' /></td>
+                                                                                            <td style="display:none;"><input id='@idCol' name='@nameCol_Status' type="hidden" value='@Model.LisNotificationSettingsStatus[i].Status' /></td>
+                                                                                            <td name="Status">@Model.LisNotificationSettingsStatus[i].Status </td>
+                                                                                            <td><div class="btn_option pt-0"><a class="deleteRow" onclick="deleteRowStatus('@i');"><i class="far fa-trash-alt"></i></a></div></td>
+                                                                                        </tr>
+
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    </tbody>
+                                                                </table>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-offset-2 col-md-10">
+                            <div class="form-group">
+                                <div class="text-center">
+                                    @*<a href="location.href='@Url.Action("Create", "Client")';return false;" class="white_btn">Grabar</a>*@
+                                    <button class="white_btn" type="submit">Grabar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+
+    </div>
+</div>
+@section Scripts {
+
+    <script src="~/Content/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+
+    <script>
+
+            //----------------------------------------------------------------
+
+            //Mensaje de confirmacion--------------------
+            if ("@ViewBag.SuccessSave"!=""){
+                toastr.success("@ViewBag.SuccessSave");
+            }
+            if ("@ViewBag.ErrorSave" != ""){
+                toastr.error("@ViewBag.ErrorSave");
+            }
+            //-------------------------------------------
+
+
+        $(document).ready(function () {
+
+
+            var search = $("#IdFatherTask");
+            search.on('focus', function () {
+                /*debugger;*/
+                search.autocomplete({
+                    source: ListTask //<-- pasamos un array de strings
+                });
+
+            });
+
+
+            $('.select2').select2({ width: '100%' });
+
+            //$("#lst_Priority").on('change', function () {
+            //    var selectValue = $(this).val();
+            //    //$("#inpIdIdentificationType").val(selectValue);
+            //    changeCodeInputHiddenList("lst_Priority", "lst_Priority", selectValue);
+            //});
+
+            //$("#lst_IdStatus").on('change', function () {
+            //    var selectValue = $(this).val();
+            //    //$("#inpIdIdentificationType").val(selectValue);
+            //    changeCodeInputHiddenList("lst_IdStatus", "lst_IdStatus", selectValue);
+            //});
+
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' +"PRIORITYTASK",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+
+                    var option = $(document.createElement('option'));
+                    //option.text("Seleccione");
+                    //option.val("0");
+                    //$("#lst_Priority").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+
+                        option.text(this.DetailDesc);
+                        option.val(this.IdCatalogDetail); //Identity
+
+                        $("#lst_Priority").append(option);
+                    });
+
+                    document.getElementById('lst_Priority').value = "0";
+
+                  /*  changeCodeInputHiddenList("lst_Priority", "inIdPriority", "");*/
+
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de prioridad");
+                }
+
+            });
+
+            $.ajax({
+                type: "GET",
+                 url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' +"STATETASK",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+
+                    var option = $(document.createElement('option'));
+                    //option.text("Seleccione");
+                    //option.val("0");
+                    //$("#lst_IdStatus").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+
+                        option.text(this.DetailDesc);
+                        option.val(this.IdCatalogDetail); //Identity
+
+                        $("#lst_IdStatus").append(option);
+                    });
+
+                    document.getElementById('lst_IdStatus').value = "0";
+
+                   /* changeCodeInputHiddenList("lst_IdStatus", "lst_IdStatus", "");*/
+
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de Estado");
+                }
+
+            });
+
+
+
+            function changeCodeInputHiddenList(idDropDownList, idInputHidden, valCode) {
+                if (valCode === "") {
+
+                    var CodeAntSelected = document.getElementById(idInputHidden).value;
+
+                    if (CodeAntSelected != "") {
+                        $("#" + idDropDownList + " option[value='" + CodeAntSelected + "']").attr("selected", true);
+                        $("#" + idInputHidden).val(CodeAntSelected);
+                    }
+                    else {
+                        var CodeActual = $("#" + idDropDownList).val();
+                        $("#" + idInputHidden).val(CodeActual);
+                    }
+
+                }
+                else {
+                    $("#" + idInputHidden).val(valCode);
+                }
+
+            }
+
+        });
+
+        function deleteRow(id) {
+            var controlToBeRemoved = "#trPriority" + id;
+            $(controlToBeRemoved).remove();
+        }
+
+
+
+        function addRow() {
+
+            @{
+                Model.LisMNotificationSettingsPriority.Add(new MNotificationSettingsPriority());
+            }
+
+            //obtenemos los valores a insertar
+             var strIdPriority = $("#lst_Priority").val();
+             var strPriority = $('select[id="lst_Priority"] option:selected').text();
+
+
+            //debugger;
+             if (strPriority != "") {
+
+                //-------------------------
+
+                var index = document.getElementById('TPriority').rows.length;
+                //alert(index);
+
+                 var colHid_indexCell = "<td style='display:none'><input name='LisMNotificationSettingsPriority.Index' type = 'hidden' value = '" + index + "' /></td > ";
+                 var colHid_IdPriority = "<td style='display:none'><input id='lisTPriority_" + index + "' name = 'LisMNotificationSettingsPriority[" + index + "].IdPriority' type='hidden' value='" + strIdPriority + "' /></td> ";
+                 var colHid_Priority = "<td style='display:none'><input id='lisTPriority_" + index + "' name = 'LisMNotificationSettingsPriority[" + index + "].Priority' type='hidden' value='" + strPriority + "' /></td> ";
+
+                /*debugger;*/
+                 var colPriority = "<td name ='Priority'>" + strPriority + "</td> ";
+
+
+                var colDelete = "<td><div class='btn_option pt-0'><a class='deleteRow' onclick='deleteRow(" + index + ");'><i class='far fa-trash-alt'></i></a></div></td> ";
+
+
+                //Si el numero a insertar ya existe lo elimina para luego volver a insertarlo y asi evitar duplicados
+                 var isFound = doSearchForDelete(strPriority, "Priority");
+                //alert(isFound);
+
+                //insertamos los valores en la tabla
+                var newRow = "<tr id='trPriority" + index + "'>" +
+                    colHid_indexCell + colHid_IdPriority + colHid_Priority+colPriority+ colDelete + "</tr>";
+                //debugger;
+                $("#TPriority").append(newRow);
+
+                //--------------------------
+
+                //limpiamos los valores ya agregados
+                 document.getElementById('lst_Priority').value = "";
+            }
+
+        }
+
+        function doSearchForDelete(searchText, colName) {
+
+            const tableReg = document.getElementById('TPriority');
+
+            
+            let position = 0;
+            let found = false;
+            //debugger;
+            // Recorremos todas las filas con contenido de la tabla
+            for (let i = 1; i < tableReg.rows.length; i++) {
+
+                const cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
+                let searchCol = colName; //+ i.toString();
+                const compareWith = cellsOfRow[searchCol].innerHTML.toLowerCase();
+
+                // Buscamos el texto en el contenido de la celda y capturamos la posicion de la fila
+                if (compareWith.indexOf(searchText.toLowerCase()) > -1) {
+                    found = true;
+                    position = i;
+                    break;
+                }
+            }
+
+            //si lo encontro, se elimina
+            if (found) {
+
+                    document.getElementById('TPriority').deleteRow(position);
+
+            }
+
+            return found;
+        }
+
+        function doSearchForDeleteStatus(searchText, colName) {
+
+
+                const tableReg = document.getElementById('TStatus');
+
+
+            let position = 0;
+            let found = false;
+            //debugger;
+            // Recorremos todas las filas con contenido de la tabla
+            for (let i = 1; i < tableReg.rows.length; i++) {
+
+                const cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
+                let searchCol = colName; //+ i.toString();
+                const compareWith = cellsOfRow[searchCol].innerHTML.toLowerCase();
+
+                // Buscamos el texto en el contenido de la celda y capturamos la posicion de la fila
+                if (compareWith.indexOf(searchText.toLowerCase()) > -1) {
+                    found = true;
+                    position = i;
+                    break;
+                }
+            }
+
+            //si lo encontro, se elimina
+            if (found) {
+
+                    document.getElementById('TStatus').deleteRow(position);
+
+            }
+
+            return found;
+        }
+
+        function searchDescription(code, idList) {
+            //debugger;
+            var Description = $("#" + idList + " option[value='" + code + "']").text();
+            //alert(Description);
+            return Description;
+        }
+
+        function deleteRowStatus(id) {
+            var controlToBeRemoved = "#trStatus" + id;
+            $(controlToBeRemoved).remove();
+        }
+
+        function addRowStatus() {
+
+
+            @{
+                Model.LisNotificationSettingsStatus.Add(new MNotificationSettingsStatus());
+            }
+
+            //obtenemos los valores a insertar
+            var strIdStatus = $("#lst_IdStatus").val();
+            var strStatus = $('select[id="lst_IdStatus"] option:selected').text();
+
+
+            //debugger;
+            if (strStatus != "") {
+
+                //-------------------------
+
+                var index = document.getElementById('TStatus').rows.length - 1;
+                //alert(index);
+
+                var colHid_indexCell = "<td style='display:none'><input name='LisNotificationSettingsStatus.Index' type = 'hidden' value = '" + index + "' /></td > ";
+                var colHid_IdStatus = "<td style='display:none'><input id='lisTStatus_" + index + "' name = 'LisNotificationSettingsStatus[" + index + "].IdStatus' type='hidden' value='" + strIdStatus + "' /></td> ";
+                var colHid_Status = "<td style='display:none'><input id='lisTStatus_" + index + "' name = 'LisNotificationSettingsStatus[" + index + "].Status' type='hidden' value='" + strStatus + "' /></td> ";
+
+                /*debugger;*/
+                 var colStatus = "<td name ='Status'>" + strStatus + "</td> ";
+
+
+                 var colDelete = "<td><div class='btn_option pt-0'><a class='deleteRow' onclick='deleteRowStatus(" + index + ");'><i class='far fa-trash-alt'></i></a></div></td> ";
+
+
+                //Si el numero a insertar ya existe lo elimina para luego volver a insertarlo y asi evitar duplicados
+                 var isFound = doSearchForDeleteStatus(strStatus, "Status");
+                //alert(isFound);
+
+                //insertamos los valores en la tabla
+                var newRow = "<tr id='trStatus" + index + "'>" +
+                    colHid_indexCell + colHid_IdStatus + colHid_Status+ colStatus+ colDelete + "</tr>";
+                //debugger;
+                $("#TStatus").append(newRow);
+
+                //--------------------------
+
+                //limpiamos los valores ya agregados
+                 document.getElementById('lst_IdStatus').value = "";
+            }
+
+        }
+
+
+    </script>
+}
