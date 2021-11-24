@@ -553,11 +553,11 @@
             $('.select2').select2({ width: '100%' });
 
             $("#lst_Priority").on('change', function () {
-                debugger;
+                //debugger;
                 var selectValue = $(this).val();
                 //$("#inpIdIdentificationType").val(selectValue);
                 changeCodeInputHiddenList("lst_Priority", "inIdPriority", selectValue);
-                debugger;
+                //debugger;
                 var combo = document.getElementById("lst_Priority");
                 var selected = combo.options[combo.selectedIndex].text;
                 $("#strPriorityTask").val(selected);
