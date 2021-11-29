@@ -23,7 +23,7 @@ namespace CustomerSupport.Controllers
 
             var ObjAccesUser = ((MSerUser)Session["Usuario"]).UserAcces;
 
-            var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListTask").First();
+            var ObjAcces = ObjAccesUser.Where(p => p.Action == "ListPerformance").First();
             if (ObjAcces != null)
             {
                 if (ObjAcces.Visible == false)

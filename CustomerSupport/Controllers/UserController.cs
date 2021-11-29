@@ -629,15 +629,12 @@ namespace CustomerSupport.Controllers
                 IdUser = Int32.Parse(paramOutIdUsuario.Value.ToString());
                 if (IdUser != 0)
                 {
-                    //Accesos por usuario
-                    if (objUser.UserAcces != null && objUser.UserAcces.Count() > 0) 
+                    //si va a actualizar, se eliminan los accesos por usuario para volver a insertar, en caso que hayan permisos en la lista
+                    if (TransactionType == "U")
                     {
-                        //si va a actualizar, se eliminan los accesos por usuario para volver a insertar
-                        if (TransactionType == "U")
-                        {
-                            SqlResult = db.Database.ExecuteSqlCommand("GNTranUserAcces @TransactionType, @IdUser, @IdOption, @blnVisible " +
-                                                                    ", @blnCreate, @blnSearch, @blnEdit, @blnDelete ",
-                                        new SqlParameter[]{
+                        SqlResult = db.Database.ExecuteSqlCommand("GNTranUserAcces @TransactionType, @IdUser, @IdOption, @blnVisible " +
+                                                                ", @blnCreate, @blnSearch, @blnEdit, @blnDelete ",
+                                    new SqlParameter[]{
                                                 new SqlParameter("@TransactionType", TransactionType),
                                                 new SqlParameter("@IdUser", IdUser),
                                                 new SqlParameter("@IdOption", DBNull.Value),
@@ -646,9 +643,12 @@ namespace CustomerSupport.Controllers
                                                 new SqlParameter("@blnSearch", DBNull.Value),
                                                 new SqlParameter("@blnEdit", DBNull.Value),
                                                 new SqlParameter("@blnDelete", DBNull.Value)
-                                        }
-                            );
-                        }
+                                    }
+                        );
+                    }
+                    //Accesos por usuario
+                    if (objUser.UserAcces != null && objUser.UserAcces.Count() > 0) 
+                    {
                         foreach (var item in objUser.UserAcces)
                         {
 
@@ -668,20 +668,20 @@ namespace CustomerSupport.Controllers
                         }
                     }
 
-                    //Roles del usuario
-                    if (objUser.Roles != null && objUser.Roles.Count() > 0) 
+                    //si va a actualizar, se eliminan los roles del usuario para volver a insertar, en caso que hayan roles en la lista
+                    if (TransactionType == "U")
                     {
-                        //si va a actualizar, se eliminan los roles del usuario para volver a insertar
-                        if (TransactionType == "U") 
-                        {
-                            SqlResult = db.Database.ExecuteSqlCommand("GNTranUserRole @TransactionType, @IdUser, @IdRole ",
-                                new SqlParameter[]{
+                        SqlResult = db.Database.ExecuteSqlCommand("GNTranUserRole @TransactionType, @IdUser, @IdRole ",
+                            new SqlParameter[]{
                                         new SqlParameter("@TransactionType", TransactionType),
                                         new SqlParameter("@IdUser", IdUser),
                                         new SqlParameter("@IdRole", DBNull.Value)
-                                }
-                            );
-                        }
+                            }
+                        );
+                    }
+                    //Roles del usuario
+                    if (objUser.Roles != null && objUser.Roles.Count() > 0) 
+                    {
                         foreach (var item in objUser.Roles)
                         {
                             SqlResult = db.Database.ExecuteSqlCommand("GNTranUserRole @TransactionType, @IdUser, @IdRole ",

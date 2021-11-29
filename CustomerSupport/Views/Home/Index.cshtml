@@ -2,53 +2,187 @@
 @model MStatistics
 @{
     ViewBag.Title = "Página Inicio";
+    MSerAcces perm = null;
+    bool optVisible = false;
 }
 
 @*<section class="ss_about_sec_four">*@
 <!--===== Section Five Start =====-->
 <div class="happy_clients">
-    <h3 class="ss_h3_center text-center">Nuestros Logros</h3>
+    <h3 class="ss_h3_center text-center">Accesos Directos</h3>
     <h1 class="text-center"></h1>
 </div>
 <div class="ss_about_counter" id="counter">
     <div class="container">
         <div class="row">
+            @{
+                optVisible = false;
+                if (Session["Usuario"] != null)
+                {
+                    perm = (((MSerUser)Session["Usuario"])).UserAcces.Where(X => X.Action == "ListEmployee").FirstOrDefault();
+                    if (perm != null)
+                    {
+                        optVisible = perm.Visible;
+                    }
+                }
+            }
             <div class="col-lg-3 col-md-6">
-
                 <div class="counter_div text-center wow fadeIn" data-wow-delay="0.1s" data-wow-duration="1s">
-                    <img class="img-fluid" src="~/Content/assets/images/svg/icon-employee.svg" alt="image" />
-                    <div class="ss_count counter-value" data-count=@Model.NroEmployee>0</div>
-                    <h2>Empleados</h2>
+                    <a href="#" onclick="fnRedirectTo(this,@optVisible,'ListEmployee');">
+                        <img class="img-fluid" src="~/Content/assets/images/svg/icon-employee.svg" alt="image" />
+                        <div class="ss_count counter-value" data-count=@Model.NroEmployee>0</div>
+                        <h2>Empleados</h2>
+                    </a>
                 </div>
             </div>
+            @{
+                optVisible = false;
+                if (Session["Usuario"] != null)
+                {
+                    perm = (((MSerUser)Session["Usuario"])).UserAcces.Where(X => X.Action == "ListClient").FirstOrDefault();
+                    if (perm != null)
+                    {
+                        optVisible = perm.Visible;
+                    }
+                }
+            }
             <div class="col-lg-3 col-md-6">
                 <div class="counter_div text-center wow fadeIn" data-wow-delay="0.2s" data-wow-duration="1s">
-                    <img class="img-fluid" src="~/Content/assets/images/svg/icon-client.svg" alt="image" />
-                    <div class="ss_count counter-value" data-count=@Model.NroClient>0</div>
-                    <h2>Clientes</h2>
+                    <a href="#" onclick="fnRedirectTo(this,@optVisible,'ListClient');">
+                        <img class="img-fluid" src="~/Content/assets/images/svg/icon-client.svg" alt="image" />
+                        <div class="ss_count counter-value" data-count=@Model.NroClient>0</div>
+                        <h2>Clientes</h2>
+                    </a>
                 </div>
             </div>
+            @{
+                optVisible = false;
+                if (Session["Usuario"] != null)
+                {
+                    perm = (((MSerUser)Session["Usuario"])).UserAcces.Where(X => X.Action == "ListServiceRequest").FirstOrDefault();
+                    if (perm != null)
+                    {
+                        optVisible = perm.Visible;
+                    }
+                }
+            }
             <div class="col-lg-3 col-md-6">
                 <div class="counter_div text-center wow fadeIn" data-wow-delay="0.3s" data-wow-duration="1s">
-                    <img class="img-fluid" src="~/Content/assets/images/svg/icon-service-pending.svg" alt="image" />
-                    <div class="ss_count counter-value" data-count=@Model.ServicesProcess>0</div>
-                    <h2>Servicios en Proceso</h2>
+                    <a href="#" onclick="fnRedirectTo(this,@optVisible,'ListServiceRequest');">
+                        <img class="img-fluid" src="~/Content/assets/images/svg/icon-service-pending.svg" alt="image" />
+                        <div class="ss_count counter-value" data-count=@Model.ServicesProcess>0</div>
+                        <h2>Serv. en Proceso</h2>
+                    </a>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
                 <div class="counter_div text-center wow fadeIn" data-wow-delay="0.4s" data-wow-duration="1s">
-                    <img class="img-fluid" src="~/Content/assets/images/svg/icon-service-end.svg" alt="image" />
-                    <div class="ss_count counter-value" data-count=@Model.servicesCompleted>0</div>
-                    <h2>Servicios Finalizados</h2>
+                    <a href="#" onclick="fnRedirectTo(this,@optVisible,'ListServiceRequest');">
+                        <img class="img-fluid" src="~/Content/assets/images/svg/icon-service-end.svg" alt="image" />
+                        <div class="ss_count counter-value" data-count=@Model.servicesCompleted>0</div>
+                        <h2>Serv. Finalizados</h2>
+                    </a>
                 </div>
             </div>
+        </div>
+        <hr />
+        <div class="row">
+
+            @{
+                if (Session["Usuario"] != null)
+                {
+                    perm = (((MSerUser)Session["Usuario"])).UserAcces.Where(X => X.Action == "ListTask").FirstOrDefault();
+                    if (perm != null)
+                    {
+                        if (perm.Create)
+                        {
+                            <div class="col-lg-3 col-md-6">
+                                <div class="counter_div text-center wow fadeIn" data-wow-delay="0.1s" data-wow-duration="1s">
+                                    <a href="#" onclick="fnRedirectTo(this,@perm.Create,'AddTask');">
+                                        <img class="img-fluid" src="~/Content/assets/images/svg/icon-addticket.svg" alt="image" />                                        
+                                        <h2>Crear Ticket</h2>
+                                    </a>
+                                </div>
+                            </div>
+                        }
+
+                        if (perm.Visible)
+                        {
+                            <div class="col-lg-3 col-md-6">
+                                <div class="counter_div text-center wow fadeIn" data-wow-delay="0.2s" data-wow-duration="1s">
+                                    <a href="#" onclick="fnRedirectTo(this,@perm.Visible,'ListTask');">
+                                        <img class="img-fluid" src="~/Content/assets/images/svg/icon-searchticket.svg" alt="image" />
+                                        <h2>Buscar Ticket</h2>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="counter_div text-center wow fadeIn" data-wow-delay="0.3s" data-wow-duration="1s">
+                                    <a href="#" onclick="fnRedirectTo(this,@perm.Visible,'ListCalendar');">
+                                        <img class="img-fluid" src="~/Content/assets/images/svg/icon-calendar.svg" alt="image" />
+                                        <h2>Cronograma</h2>
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                    }
+
+                    perm = (((MSerUser)Session["Usuario"])).UserAcces.Where(X => X.Action == "ListPerformance").FirstOrDefault();
+                    if (perm != null)
+                    {
+                        if (perm.Visible)
+                        {
+                            <div class="col-lg-3 col-md-6">
+                                <div class="counter_div text-center wow fadeIn" data-wow-delay="0.4s" data-wow-duration="1s">
+                                    <a href="#" onclick="fnRedirectTo(this,@perm.Visible,'ListPerformance');">
+                                        <img class="img-fluid" src="~/Content/assets/images/svg/icon-performance.svg" alt="image" />
+                                        <h2>Rendimiento</h2>
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+            }
+
         </div>
     </div>
 </div>
 
+
 @section Scripts {
 
     <script type="text/javascript">
+
+        function fnRedirectTo(element, isVisible, actionName) {
+            if (isVisible) {
+                switch (actionName) {
+                    case "ListEmployee":
+                        element.href = '@Url.Action("ListEmployee", "Employee")';
+                        break;
+                    case "ListClient":
+                        element.href = '@Url.Action("ListClient", "Client")';
+                        break;
+                    case "ListServiceRequest":
+                        element.href = '@Url.Action("ListServiceRequest", "ServiceRequest")';
+                        break;
+                    case "AddTask":
+                        element.href = '@Url.Action("AddTask", "Task")';
+                        break;
+                    case "ListTask":
+                        element.href = '@Url.Action("ListTask", "Task")';
+                        break;
+                    case "ListCalendar":
+                        element.href = '@Url.Action("ListCalendar", "Calendar")';
+                        break;
+                    case "ListPerformance":
+                        element.href = '@Url.Action("ListPerformance", "Performance")';
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
 
         $(document).ready(function () {
 

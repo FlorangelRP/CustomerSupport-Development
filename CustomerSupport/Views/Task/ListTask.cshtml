@@ -22,25 +22,25 @@
             }
         }
 
-        @if (perm != null)
-        {
-            if (perm.Create == true)
-            {
-                <div class="row">
-                    <div class=" col-2">
 
-                        <div class="btn_option pt-0" style=" vertical-align: central"><button class="searchRow border-0" data-toggle="tooltip" data-placement="top" title="Ver Cronograma" onclick="location.href='@Url.Action("ListCalendar", "Calendar")';return false;"><i class="far fa-calendar-alt"></i></button></div>
-                    </div>
-                    <div class="col-md-10  text-right">
+        <div class="row">
+            <div class=" col-2">
+                <div class="btn_option pt-0" style=" vertical-align: central"><button class="searchRow border-0" data-toggle="tooltip" data-placement="top" title="Ver Cronograma" onclick="location.href='@Url.Action("ListCalendar", "Calendar")';return false;"><i class="far fa-calendar-alt"></i></button></div>
+            </div>
+            <div class="col-md-10  text-right">
+                @if (perm != null)
+                {
+                    if (perm.Create == true)
+                    {
                         <div class="text-right">
-
                             <button class="white_btn" onclick="location.href='@Url.Action("AddTask", "Task")';return false;">Agregar</button>
                         </div>
-                    </div>
-                </div>
-                <br />
-            }
-        }
+                    }
+                }
+            </div>
+        </div>
+        <br />
+
         <div class="row">
             <div class="col-md-12">
                 <div class="control-label">Opciones de Filtro:</div>

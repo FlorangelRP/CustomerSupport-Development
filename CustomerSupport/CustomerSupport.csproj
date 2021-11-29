@@ -439,7 +439,11 @@
     <Content Include="Content\assets\images\ss_map.png" />
     <Content Include="Content\assets\images\ss_signature.png" />
     <Content Include="Content\assets\images\svg\black_logo.svg" />
+    <Content Include="Content\assets\images\svg\icon-addticket.svg" />
+    <Content Include="Content\assets\images\svg\icon-calendar.svg" />
     <Content Include="Content\assets\images\svg\icon-employee.svg" />
+    <Content Include="Content\assets\images\svg\icon-performance.svg" />
+    <Content Include="Content\assets\images\svg\icon-searchticket.svg" />
     <Content Include="Content\assets\images\svg\icon-service-end.svg" />
     <Content Include="Content\assets\images\svg\icon-service-pending.svg" />
     <Content Include="Content\assets\images\svg\icon6.svg" />
