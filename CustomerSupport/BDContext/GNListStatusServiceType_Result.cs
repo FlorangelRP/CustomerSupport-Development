@@ -11,10 +11,12 @@ namespace CustomerSupport.BDContext
 {
     using System;
     
-    public partial class GNListCatalog_Result
+    public partial class GNListStatusServiceType_Result
     {
-        public int IdCatalog { get; set; }
-        public string IdTable { get; set; }
-        public string Description { get; set; }
+        public int IdServiceType { get; set; }
+        public string ServiceType { get; set; }
+        public int IdServiceStatus { get; set; }
+        public string IdTableDetail { get; set; }
+        public string ServiceStatus { get; set; }
     }
 }

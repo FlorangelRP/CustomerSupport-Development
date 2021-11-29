@@ -843,7 +843,42 @@
             return found;
         }
 
+        function fillServiceStatus(IdServiceType) {
 
+            document.querySelector('#lst_ServiceStatus').innerHTML = '';
+            $.ajax({
+                type: "GET",
+                //url: 'Url.Action("GetTableCatalog", "TableCatalog")?idTable=' + "SERVICESTATUS",
+                url: '@Url.Action("GetListStatusServiceType", "StatusServiceType")?IdServiceType=' + IdServiceType,
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+
+                    var option = $(document.createElement('option'));
+                    option.text("Seleccione");
+                    option.val("0");
+                    $("#lst_ServiceStatus").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+                        option.text(this.Description);
+                        option.val(this.IdCatalogDetail); //Identity
+
+                        $("#lst_ServiceStatus").append(option);
+                    });
+
+                    document.getElementById('lst_ServiceStatus').value = "0";
+
+                    changeCodeInputHiddenList("lst_ServiceStatus", "inpIdServiceStatus", "");
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de Estados de por tipo de Servicio");
+                }
+
+            });
+
+        }
 
         $(document).ready(function () {
 
@@ -939,38 +974,6 @@
                 var selectValue = $(this).val();
                 changeCodeInputHiddenList("lst_ServiceStatus", "inpIdServiceStatus", selectValue);
             });
-            $.ajax({
-                type: "GET",
-                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' +"SERVICESTATUS",
-                data: "{}",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-
-                    var option = $(document.createElement('option'));
-                    option.text("Seleccione");
-                    option.val("0");
-                    $("#lst_ServiceStatus").append(option);
-
-                    $(msg).each(function () {
-                        var option = $(document.createElement('option'));
-
-                        option.text(this.DetailDesc);
-                        option.val(this.IdCatalogDetail); //Identity
-
-                        $("#lst_ServiceStatus").append(option);
-                    });
-
-                    document.getElementById('lst_ServiceStatus').value = "0";
-
-                    changeCodeInputHiddenList("lst_ServiceStatus", "inpIdServiceStatus", "");
-                },
-                error: function (msg) {
-                    $("#error > span").text("Error al llenar lista de Estados de Solicitud");
-                }
-
-            });
-
 
             $("#lst_ServiceType").on('change', function () {
                 var selectValue = $(this).val();
@@ -978,6 +981,9 @@
 
                 var selecDesc = $('select[id="lst_ServiceType"] option:selected').text();
                 showServiceType(selecDesc);
+
+                fillServiceStatus(selectValue);
+                $("#inpIdServiceStatus").val('');
             });
             $.ajax({
                 type: "GET",
@@ -1005,6 +1011,11 @@
 
                     changeCodeInputHiddenList("lst_ServiceType", "inpIdServiceType", "");
                     showServiceType($('select[id="lst_ServiceType"] option:selected').text());
+
+                    /* estados segun tipo de servicio */
+                    var selectServiceType = $("#lst_ServiceType").val();
+                    fillServiceStatus(selectServiceType);
+                    /* -----------------------   */
                 },
                 error: function (msg) {
                     $("#error > span").text("Error al llenar lista de Servicios");

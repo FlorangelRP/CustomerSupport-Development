@@ -224,6 +224,9 @@
     <Compile Include="BDContext\GNListServiceRequest_Result.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
+    <Compile Include="BDContext\GNListStatusServiceType_Result.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
     <Compile Include="BDContext\GNListTask_Result.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
@@ -284,15 +287,6 @@
     <Compile Include="BDContext\ServiceRequest.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
-    <Compile Include="BDContext\sp_helpdiagramdefinition_Result.cs">
-      <DependentUpon>MMEnterprises.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BDContext\sp_helpdiagrams_Result.cs">
-      <DependentUpon>MMEnterprises.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BDContext\sysdiagrams.cs">
-      <DependentUpon>MMEnterprises.tt</DependentUpon>
-    </Compile>
     <Compile Include="BDContext\Task.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
@@ -302,15 +296,13 @@
     <Compile Include="BDContext\UserAcces.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
-    <Compile Include="BDContext\UserAcces_resp.cs">
-      <DependentUpon>MMEnterprises.tt</DependentUpon>
-    </Compile>
     <Compile Include="BDContext\VWListCatalog.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="Class\Utilities.cs" />
     <Compile Include="Controllers\CalendarController.cs" />
     <Compile Include="Controllers\ConfigurationParameterController.cs" />
+    <Compile Include="Controllers\StatusServiceTypeController.cs" />
     <Compile Include="Controllers\NotificationSettingsController.cs" />
     <Compile Include="Controllers\PerformanceController.cs" />
     <Compile Include="Controllers\PositionController.cs" />
@@ -1256,7 +1248,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties scripts_4toastr_1js_1map__JsonSchema="" scripts_4tinymce_4tsconfig_1json__JsonSchema="" />
+      <UserProperties scripts_4tinymce_4tsconfig_1json__JsonSchema="" scripts_4toastr_1js_1map__JsonSchema="" />
     </VisualStudio>
   </ProjectExtensions>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

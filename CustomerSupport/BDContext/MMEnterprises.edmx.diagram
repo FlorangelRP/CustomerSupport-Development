@@ -4,29 +4,27 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="2025da6dfc6f4b1bac49701d0cab6816" Name="Diagram1">
+      <Diagram DiagramId="e3feb44cbe6a476ca14e91b973cc3e20" Name="Diagram1">
         <EntityTypeShape EntityType="MMEnterprisesModel.Catalog" Width="1.5" PointX="11.25" PointY="6.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="MMEnterprisesModel.CatalogDetail" Width="1.5" PointX="13.5" PointY="11.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MMEnterprisesModel.CatalogDetail" Width="1.5" PointX="13.5" PointY="11.125" IsExpanded="true" />
         <EntityTypeShape EntityType="MMEnterprisesModel.CommentTask" Width="1.5" PointX="8.25" PointY="15.375" IsExpanded="true" />
         <EntityTypeShape EntityType="MMEnterprisesModel.ConfigurationParameter" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MMEnterprisesModel.Country" Width="1.5" PointX="18" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MMEnterprisesModel.Country" Width="1.5" PointX="18" PointY="10" IsExpanded="true" />
         <EntityTypeShape EntityType="MMEnterprisesModel.NotificationSettings" Width="1.5" PointX="8.25" PointY="19.125" IsExpanded="true" />
         <EntityTypeShape EntityType="MMEnterprisesModel.NotificationSettingsPriority" Width="1.5" PointX="10.5" PointY="18.625" IsExpanded="true" />
         <EntityTypeShape EntityType="MMEnterprisesModel.NotificationSettingsStatus" Width="1.5" PointX="10.5" PointY="21" IsExpanded="true" />
         <EntityTypeShape EntityType="MMEnterprisesModel.OptionMenu" Width="1.5" PointX="0.75" PointY="12" IsExpanded="true" />
-        <EntityTypeShape EntityType="MMEnterprisesModel.Person" Width="1.5" PointX="18" PointY="13.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="MMEnterprisesModel.PersonContact" Width="1.5" PointX="20.25" PointY="13.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MMEnterprisesModel.Person" Width="1.5" PointX="18" PointY="13.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MMEnterprisesModel.PersonContact" Width="1.5" PointX="20.25" PointY="13.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MMEnterprisesModel.PersonTask" Width="1.5" PointX="20.25" PointY="17.375" IsExpanded="true" />
         <EntityTypeShape EntityType="MMEnterprisesModel.Position" Width="1.5" PointX="15.75" PointY="18.25" IsExpanded="true" />
         <EntityTypeShape EntityType="MMEnterprisesModel.Role" Width="1.5" PointX="0.75" PointY="16.5" IsExpanded="true" />
         <EntityTypeShape EntityType="MMEnterprisesModel.RoleAcces" Width="1.5" PointX="3" PointY="16.125" IsExpanded="true" />
         <EntityTypeShape EntityType="MMEnterprisesModel.ServiceRequest" Width="1.5" PointX="11.25" PointY="9.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="MMEnterprisesModel.sysdiagrams" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MMEnterprisesModel.Task" Width="1.5" PointX="23.25" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MMEnterprisesModel.Task" Width="1.5" PointX="23.25" PointY="11.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MMEnterprisesModel.User" Width="1.5" PointX="6" PointY="15.875" IsExpanded="true" />
         <EntityTypeShape EntityType="MMEnterprisesModel.UserAcces" Width="1.5" PointX="8.25" PointY="11.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="MMEnterprisesModel.UserAcces_resp" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MMEnterprisesModel.VWListCatalog" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MMEnterprisesModel.VWListCatalog" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <AssociationConnector Association="MMEnterprisesModel.FK_CatalogDetail_Catalog" ManuallyRouted="false" />
         <AssociationConnector Association="MMEnterprisesModel.FK_Person_ContactType" ManuallyRouted="false" />
         <AssociationConnector Association="MMEnterprisesModel.FK_Person_Department" ManuallyRouted="false" />
@@ -64,6 +62,7 @@
         <AssociationConnector Association="MMEnterprisesModel.PermissionAssociateXPosition" ManuallyRouted="false" />
         <AssociationConnector Association="MMEnterprisesModel.ServiceConstructionOption" ManuallyRouted="false" />
         <AssociationConnector Association="MMEnterprisesModel.ServiceRequestTask" ManuallyRouted="false" />
+        <AssociationConnector Association="MMEnterprisesModel.StatusServiceType" ManuallyRouted="false" />
         <AssociationConnector Association="MMEnterprisesModel.UserRole" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>

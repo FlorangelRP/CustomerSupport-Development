@@ -30,6 +30,14 @@
                                 @Html.HiddenFor(model => model.IdServiceRequest)
                             </div>
                         </div>
+                        <div class="col-md-8"></div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <div class="control-label">Fecha de Registro:</div>
+                                @Html.DisplayFor(model => model.RegisterDate, "{0:d}", new { @type = "date" })
+                                @Html.HiddenFor(model => model.RegisterDate)
+                            </div>
+                        </div>
                     </div>
                     <hr>
 
@@ -926,8 +934,42 @@
             return found;
         }
 
+        function fillServiceStatus(IdServiceType) {
 
+            document.querySelector('#lst_ServiceStatus').innerHTML = '';
+            $.ajax({
+                type: "GET",
+                //url: 'Url.Action("GetTableCatalog", "TableCatalog")?idTable=' + "SERVICESTATUS",
+                url: '@Url.Action("GetListStatusServiceType", "StatusServiceType")?IdServiceType=' + IdServiceType,
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
 
+                    var option = $(document.createElement('option'));
+                    option.text("Seleccione");
+                    option.val("0");
+                    $("#lst_ServiceStatus").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+                        option.text(this.Description);
+                        option.val(this.IdCatalogDetail); //Identity
+
+                        $("#lst_ServiceStatus").append(option);
+                    });
+
+                    document.getElementById('lst_ServiceStatus').value = "0";
+
+                    changeCodeInputHiddenList("lst_ServiceStatus", "inpIdServiceStatus", "");
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de Estados de por tipo de Servicio");
+                }
+
+            });
+
+        }
 
         $(document).ready(function () {
 
@@ -979,41 +1021,14 @@
             //});
             //cargarDataPersonEmployee($("#searchEmployee").val(), ListPersonsEmployee);
 
+            /* estados segun tipo de servicio */
+            var selectServiceType = $("#IdServiceType").val();
+            fillServiceStatus(selectServiceType);
+            /* -----------------------   */
 
             $("#lst_ServiceStatus").on('change', function () {
                 var selectValue = $(this).val();
                 changeCodeInputHiddenList("lst_ServiceStatus", "inpIdServiceStatus", selectValue);
-            });
-            $.ajax({
-                type: "GET",
-                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' +"SERVICESTATUS",
-                data: "{}",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-
-                    var option = $(document.createElement('option'));
-                    option.text("Seleccione");
-                    option.val("0");
-                    $("#lst_ServiceStatus").append(option);
-
-                    $(msg).each(function () {
-                        var option = $(document.createElement('option'));
-
-                        option.text(this.DetailDesc);
-                        option.val(this.IdCatalogDetail); //Identity
-
-                        $("#lst_ServiceStatus").append(option);
-                    });
-
-                    document.getElementById('lst_ServiceStatus').value = "0";
-
-                    changeCodeInputHiddenList("lst_ServiceStatus", "inpIdServiceStatus", "");
-                },
-                error: function (msg) {
-                    $("#error > span").text("Error al llenar lista de Estados de Solicitud");
-                }
-
             });
 
 
