@@ -22,6 +22,14 @@
                             @Html.HiddenFor(model => model.IdServiceRequest)
                         </div>
                     </div>
+                    <div class="col-md-8"></div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="control-label">Fecha de Registro:</div>
+                            @Html.DisplayFor(model => model.RegisterDate, "{0:d}", new { @type = "date" })
+                            @Html.HiddenFor(model => model.RegisterDate)
+                        </div>
+                    </div>
                 </div>
                 <hr>
                 <div class="row">
@@ -408,59 +416,304 @@
 
                                         @if (Model.ServiceType == "Living Trust")
                                         {
-                                    <div id="serviceLivingTrust">
-                                        @*<div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <div class="control-label font-weight-bold">Tipo de Propiedad:</div>
-                    @Html.DisplayFor(model => model.PropertyType)
-                </div>
-            </div>
-        </div>*@
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <div class="control-label font-weight-bold">Que tipos de bienes desea agregar?</div>
-                                                    @Html.DisplayFor(model => model.Assets, new { @rows = 3, @cols = 10 })
+                                            <div id="serviceLivingTrust">
+
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="font-weight-bold">Tiene Beneficiarios?: </label>
+                                                            @*<div class="control-label font-weight-bold"></div>*@
+                                                            @{ string Beneficiaries = "";
+                                                                Beneficiaries = !string.IsNullOrEmpty(Model.LivT_Beneficiaries) ? "Si" : "No";
+                                                            }
+                                                            @Beneficiaries
+                                                        </div>
+                                                    </div>
+                                                    @if (!string.IsNullOrEmpty(Model.LivT_Beneficiaries))
+                                                    {
+                                                        @*<div class="row">*@
+                                                        <div id="divLivT_Beneficiaries" class="col-md-8">
+                                                            <div class="form-group">
+                                                                <div class="control-label font-weight-bold">Beneficiarios:</div>
+                                                                @Html.TextAreaFor(model => model.LivT_Beneficiaries, new { @class = "form-control", @rows = 3, @cols = 10, @readonly = true })
+                                                            </div>
+                                                        </div>
+                                                        @*</div>*@
+                                                    }
                                                 </div>
-                                            </div>
-                                        </div>
-                                        @if (Model.Beneficiaries != null && Model.Beneficiaries.Trim() != "")
-                                        {
-                                            <div class="row">
-                                                <div id="divBeneficiarios" class="col-md-6">
-                                                    <div class="form-group">
-                                                        <div class="control-label font-weight-bold">Beneficiarios:</div>
-                                                        @Html.DisplayFor(model => model.Beneficiaries)
-                                                        
+
+                                                <div class="row pb-3">
+                                                    <div class="col-md-12">
+                                                        <div class="accordion border" id="accordionAssets">
+                                                            <div class="card collapsed-card">
+                                                                <div class="card-header p-0" id="headingAssets">
+                                                                    <h2 class="mb-0">
+                                                                        <button class="btn btn-link text-decoration-none" type="button" data-toggle="collapse" data-target="#collapseCardAssets" aria-expanded="false" aria-controls="collapseAssets">
+                                                                            Bienes a incluir
+                                                                        </button>
+                                                                    </h2>
+                                                                </div>
+
+                                                                <div id="collapseCardAssets" class="collapse" aria-labelledby="headingAssets" data-parent="#accordionAssets">
+
+                                                                    <div class="card-body">
+
+                                                                        <div class="col-12">
+                                                                            <div class="row pt-3">
+                                                                                <div class="col-md-12">
+                                                                                    <div class="form-group">
+                                                                                        <div class="table-responsive">
+                                                                                            <div class="container">
+
+                                                                                                <table id="TAssets" class="table table-bordered table-striped">
+                                                                                                    <thead class="font-weight-bold">
+                                                                                                        <tr>
+                                                                                                            <td style="display:none;">colHid_indexCell</td>
+                                                                                                            <td style="display:none;">colHid_IdAsset</td>
+                                                                                                            <td style="display:none;">colHid_IdServiceRequest</td>
+                                                                                                            <td style="display:none;">colHid_IdAssetsType</td>
+                                                                                                            <td style="display:none;">colHid_AssetsType</td>
+                                                                                                            <td style="display:none;">colHid_Status</td>
+
+                                                                                                            <td style="width: 15%;">Tipo de Bien</td>
+                                                                                                            <td style="width: 30%;">Descripcion</td>
+                                                                                                            <td style="width: 25%;">Beneficiarios %</td>
+                                                                                                            <td style="width: 20%;">Administradores</td>
+                                                                                                        </tr>
+                                                                                                    </thead>
+                                                                                                    <tbody id="BodyAssets">
+                                                                                                        @if (Model != null)
+                                                                                                        {
+                                                                                                            if (Model.listServiceRequestAssets != null && Model.listServiceRequestAssets.Count() > 0)
+                                                                                                            {
+                                                                                                                string idRow;
+                                                                                                                string nameCol_IdAsset;
+                                                                                                                string nameCol_IdServiceRequest;
+                                                                                                                string nameCol_IdAssetsType;
+                                                                                                                string nameCol_AssetsType;
+                                                                                                                string nameCol_Description;
+                                                                                                                string nameCol_Beneficiaries;
+                                                                                                                string nameCol_Administrators;
+                                                                                                                string nameCol_Status;
+
+                                                                                                                for (var i = 0; i < Model.listServiceRequestAssets.Count; i++)
+                                                                                                                {
+                                                                                                                    idRow = "trAssets" + i.ToString();
+                                                                                                                    nameCol_IdAsset = "listServiceRequestAssets[" + i.ToString() + "].IdAsset";
+                                                                                                                    nameCol_IdServiceRequest = "listServiceRequestAssets[" + i.ToString() + "].IdServiceRequest";
+                                                                                                                    nameCol_IdAssetsType = "listServiceRequestAssets[" + i.ToString() + "].IdAssetsType";
+                                                                                                                    nameCol_AssetsType = "listServiceRequestAssets[" + i.ToString() + "].AssetsType";
+                                                                                                                    nameCol_Description = "listServiceRequestAssets[" + i.ToString() + "].Description";
+                                                                                                                    nameCol_Beneficiaries = "listServiceRequestAssets[" + i.ToString() + "].Beneficiaries";
+                                                                                                                    nameCol_Administrators = "listServiceRequestAssets[" + i.ToString() + "].Administrators";
+                                                                                                                    nameCol_Status = "listServiceRequestAssets[" + i.ToString() + "].Status";
+
+                                                                                                                    <tr id='@idRow'>
+                                                                                                                        <td style="display:none;"><input name="listServiceRequestAssets.Index" type="hidden" value='@i' /></td>
+                                                                                                                        <td style="display:none;"><input id='@nameCol_IdAsset' name='@nameCol_IdAsset' type="hidden" value='@Model.listServiceRequestAssets[i].IdAsset' /></td>
+                                                                                                                        <td style="display:none;"><input id='@nameCol_IdServiceRequest' name='@nameCol_IdServiceRequest' type="hidden" value='@Model.listServiceRequestAssets[i].IdServiceRequest' /></td>
+                                                                                                                        <td style="display:none;"><input id='@nameCol_IdAssetsType' name='@nameCol_IdAssetsType' type="hidden" value='@Model.listServiceRequestAssets[i].IdAssetsType' /></td>
+                                                                                                                        <td style="display:none;"><input id='@nameCol_AssetsType' name='@nameCol_AssetsType' type="hidden" value='@Model.listServiceRequestAssets[i].AssetsType' /></td>
+                                                                                                                        <td style="display:none;"><input id='@nameCol_Status' name='@nameCol_Status' type="hidden" value='@Model.listServiceRequestAssets[i].Status.ToString().ToLower()' /></td>
+
+                                                                                                                        <td>@Model.listServiceRequestAssets[i].AssetsType</td>
+
+                                                                                                                        <td><textarea readonly id='@nameCol_Description' name='@nameCol_Description' rows="2" cols="2" class="cell-Input form-control inputLostFocus">@Model.listServiceRequestAssets[i].Description</textarea></td>
+                                                                                                                        <td><textarea readonly id='@nameCol_Beneficiaries' name='@nameCol_Beneficiaries' rows="2" cols="2" class="cell-Input form-control inputLostFocus">@Model.listServiceRequestAssets[i].Beneficiaries</textarea></td>
+                                                                                                                        <td><textarea readonly id='@nameCol_Administrators' name='@nameCol_Administrators' rows="2" cols="2" class="cell-Input form-control inputLostFocus">@Model.listServiceRequestAssets[i].Administrators</textarea></td>                                                                                                                        
+                                                                                                                    </tr>
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    </tbody>
+                                                                                                </table>
+
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Condición de herencia:</div>
+                                                            @Html.TextAreaFor(model => model.LivT_InheritanceCondition, new { @class = "form-control", @rows = 5, @cols = 10, @readonly = true })
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mt-2 mb-2">
+                                                    <div class="col-md-12 align-self-center">
+
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="control-label font-weight-bold">Agente responsable:</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row shadow-sm p-3 m-1 bg-white rounded">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <div class="control-label">Principal:</div>
+                                                                    @Html.DisplayFor(model => model.LivT_ResponsibleAgent1)
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <div class="control-label">Secundario:</div>
+                                                                    @Html.DisplayFor(model => model.LivT_ResponsibleAgent2)
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label>Autoriza a su agente responsable a tomar decisiones en caso de autopsia o disposición de sus restos?: </label>
+                                                                    @*<div class="control-label font-weight-bold"></div>*@
+                                                                    @{ string AuthorizeRespAgent = "";
+                                                                        AuthorizeRespAgent = Model.LivT_AuthorizeRespAgent == true ? "Si" : "No";
+                                                                    }
+                                                                    @AuthorizeRespAgent
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <br />
+
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="font-weight-bold">En caso de enfermedad incurable e irreversible que provocara su muerte en corto tiempo, desea prolongar la vida?: </label>
+                                                            @*<div class="control-label font-weight-bold"></div>*@
+                                                            @{ string ProlongLife = "";
+                                                                ProlongLife = Model.LivT_ProlongLife == true ? "Si" : "No";
+                                                            }
+                                                            @ProlongLife
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="font-weight-bold">Luego de su muerte, desea donar sus organos?: </label>
+                                                            @*<div class="control-label font-weight-bold"></div>*@
+                                                            @{ string DonateOrgans = "";
+                                                                DonateOrgans = Model.LivT_DonateOrgans == true ? "Si" : "No";
+                                                            }
+                                                            @DonateOrgans
+                                                        </div>
+                                                    </div>
+                                                    @if (Model.LivT_DonateOrgans == true)
+                                                    {
+                                                        <div id="divOrgans" class="col-md-4">
+                                                            <div class="form-group">
+                                                                <div class="control-label">Organos a Donar:</div>
+                                                                @Html.TextAreaFor(model => model.LivT_Organs, new { @class = "form-control", @rows = 2, @cols = 4, @readonly = true })
+                                                            </div>
+                                                        </div>
+                                                        <div id="divOrgansFor" class="col-md-6">
+                                                            <div class="control-label">Finalidad:</div>
+                                                            <div class="row">
+                                                                <div class="col-md-3 s_Checkbox mt-0 mb-0">
+                                                                    @Html.CheckBoxFor(model => model.LivT_OrganForTransplant, new { @disabled = "disabled" })
+                                                                    @Html.Label("LivT_OrganForTransplant", "Trasplante")
+                                                                </div>
+                                                                <div class="col-md-3 s_Checkbox mt-0 mb-0">
+                                                                    @Html.CheckBoxFor(model => model.LivT_OrganForTherapy, new { @disabled = "disabled" })
+                                                                    @Html.Label("LivT_OrganForTherapy", "Terapia")
+                                                                </div>
+                                                                <div class="col-md-3 s_Checkbox mt-0 mb-0">
+                                                                    @Html.CheckBoxFor(model => model.LivT_OrganForEducation, new { @disabled = "disabled" })
+                                                                    @Html.Label("LivT_OrganForEducation", "Educación")
+                                                                </div>
+                                                                <div class="col-md-3 s_Checkbox mt-0 mb-0">
+                                                                    @Html.CheckBoxFor(model => model.LivT_OrganForInvestigation, new { @disabled = "disabled" })
+                                                                    @Html.Label("LivT_OrganForInvestigation", "Investigación")
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="font-weight-bold">Tiene medico de cabecera?: </label>
+                                                            @*<div class="control-label font-weight-bold"></div>*@
+                                                            @{ string HaveGp = "";
+                                                                HaveGp = !string.IsNullOrEmpty(Model.LivT_GpNames) ? "Si" : "No";
+                                                            }
+                                                            @HaveGp
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @if (!string.IsNullOrEmpty(Model.LivT_GpNames))
+                                                {
+                                                    <div id="divGPInformation" class="row">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <div class="control-label">Nombre:</div>
+                                                                @Html.DisplayFor(model => model.LivT_GpNames)
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <div class="control-label">Telefono:</div>
+                                                                @Html.DisplayFor(model => model.LivT_GpPhoneNumber)
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-5">
+                                                            <div class="form-group">
+                                                                <div class="control-label">Dirección:</div>
+                                                                @Html.TextAreaFor(model => model.LivT_GpAddress, new { @class = "form-control", @rows = 2, @cols = 5, @readonly = true })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+
+
+                                                @*<div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Que tipos de bienes desea agregar?</div>
+                                                            @Html.DisplayFor(model => model.Assets, new { @rows = 3, @cols = 10 })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Explicacion breve del proceso:</div>
+                                                            @Html.DisplayFor(model => model.Process, new { @class = "form-control", @rows = 3, @cols = 10 })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="control-label font-weight-bold">Desea que:</div>
+                                                            @Html.DisplayFor(model => model.Wish, new { @rows = 3, @cols = 10 })
+                                                        </div>
+                                                    </div>
+                                                </div>*@
                                             </div>
                                         }
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <div class="control-label font-weight-bold">Explicacion breve del proceso:</div>
-                                                    @Html.DisplayFor(model => model.Process, new { @class = "form-control", @rows = 3, @cols = 10 })
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <div class="control-label font-weight-bold">Desea que:</div>
-                                                    @Html.DisplayFor(model => model.Wish, new { @rows = 3, @cols = 10 })
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
 
-                                        }
-
+                                        <hr />
                                         <div class="row">
                                             <div class="col-md-5">
                                                 <div class="form-group">
-                                                    <div class="control-label font-weight-bold">Via de Contacto:</div>
+                                                    <div class="control-label font-weight-bold" data-toggle="tooltip" data-placement="top" title="Vía por la cual el Cliente se enteró del Servicio.">Vía de Contacto:</div>
                                                     @Html.DisplayFor(model => model.ContactType)
                                                 </div>
                                             </div>
@@ -470,7 +723,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <div class="control-label font-weight-bold">Notas:</div>
-                                                    @Html.DisplayFor(model => model.Note)
+                                                    @Html.TextAreaFor(model => model.Note, new { @class = "form-control", @rows = 3, @cols = 10, @readonly = true })
                                                 </div>
                                             </div>
                                         </div>

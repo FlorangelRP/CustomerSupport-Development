@@ -35,7 +35,6 @@ namespace CustomerSupport.BDContext
         public Nullable<decimal> LoanAmount { get; set; }
         public Nullable<decimal> CurrentDebt { get; set; }
         public string Assets { get; set; }
-        public string Beneficiaries { get; set; }
         public string Process { get; set; }
         public string Wish { get; set; }
         public Nullable<bool> Plane { get; set; }
@@ -44,5 +43,20 @@ namespace CustomerSupport.BDContext
         public int IdUser { get; set; }
         public string RegisterUser { get; set; }
         public System.DateTime RegisterDate { get; set; }
+        public string LivT_Beneficiaries { get; set; }
+        public string LivT_InheritanceCondition { get; set; }
+        public string LivT_ResponsibleAgent1 { get; set; }
+        public string LivT_ResponsibleAgent2 { get; set; }
+        public Nullable<bool> LivT_AuthorizeRespAgent { get; set; }
+        public Nullable<bool> LivT_ProlongLife { get; set; }
+        public Nullable<bool> LivT_DonateOrgans { get; set; }
+        public string LivT_Organs { get; set; }
+        public Nullable<bool> LivT_OrganForTransplant { get; set; }
+        public Nullable<bool> LivT_OrganForTherapy { get; set; }
+        public Nullable<bool> LivT_OrganForEducation { get; set; }
+        public Nullable<bool> LivT_OrganForInvestigation { get; set; }
+        public string LivT_GpNames { get; set; }
+        public string LivT_GpPhoneNumber { get; set; }
+        public string LivT_GpAddress { get; set; }
     }
 }

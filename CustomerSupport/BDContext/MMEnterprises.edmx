@@ -214,15 +214,40 @@ advertencia 6013: La tabla o vista 'MMEnterprises.dbo.Colors' no tiene definida 
           <Property Name="LoanAmount" Type="decimal" Precision="18" Scale="2" />
           <Property Name="CurrentDebt" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Assets" Type="varchar" MaxLength="500" />
-          <Property Name="Beneficiaries" Type="varchar" MaxLength="500" />
+          <Property Name="LivT_Beneficiaries" Type="varchar" MaxLength="1000" />
           <Property Name="Process" Type="varchar" MaxLength="500" />
           <Property Name="Wish" Type="varchar" MaxLength="500" />
           <Property Name="Plane" Type="bit" />
           <Property Name="Financing" Type="bit" />
-          <Property Name="Note" Type="varchar" MaxLength="500" />
+          <Property Name="Note" Type="varchar" MaxLength="4000" />
           <Property Name="IdUser" Type="int" Nullable="false" />
           <Property Name="RegisterUser" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="RegisterDate" Type="datetime" Nullable="false" />
+          <Property Name="LivT_InheritanceCondition" Type="varchar" MaxLength="8000" />
+          <Property Name="LivT_ResponsibleAgent1" Type="varchar" MaxLength="200" />
+          <Property Name="LivT_ResponsibleAgent2" Type="varchar" MaxLength="200" />
+          <Property Name="LivT_AuthorizeRespAgent" Type="bit" />
+          <Property Name="LivT_ProlongLife" Type="bit" />
+          <Property Name="LivT_DonateOrgans" Type="bit" />
+          <Property Name="LivT_Organs" Type="varchar" MaxLength="300" />
+          <Property Name="LivT_OrganForTransplant" Type="bit" />
+          <Property Name="LivT_OrganForTherapy" Type="bit" />
+          <Property Name="LivT_OrganForEducation" Type="bit" />
+          <Property Name="LivT_OrganForInvestigation" Type="bit" />
+          <Property Name="LivT_GpNames" Type="varchar" MaxLength="200" />
+          <Property Name="LivT_GpPhoneNumber" Type="varchar" MaxLength="100" />
+          <Property Name="LivT_GpAddress" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="ServiceRequestAssets">
+          <Key>
+            <PropertyRef Name="IdAsset" />
+          </Key>
+          <Property Name="IdAsset" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdServiceRequest" Type="int" Nullable="false" />
+          <Property Name="IdAssetsType" Type="int" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="1000" />
+          <Property Name="Beneficiaries" Type="varchar" MaxLength="1000" />
+          <Property Name="Administrators" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="ServiceRequestTask">
           <Key>
@@ -231,6 +256,14 @@ advertencia 6013: La tabla o vista 'MMEnterprises.dbo.Colors' no tiene definida 
           </Key>
           <Property Name="IdTask" Type="int" Nullable="false" />
           <Property Name="IdServiceRequest" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StatusServiceType">
+          <Key>
+            <PropertyRef Name="IdServiceType" />
+            <PropertyRef Name="IdServiceStatus" />
+          </Key>
+          <Property Name="IdServiceType" Type="int" Nullable="false" />
+          <Property Name="IdServiceStatus" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -741,6 +774,30 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ServiceRequestAssets_AssetsType">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="1" />
+          <End Role="ServiceRequestAssets" Type="Self.ServiceRequestAssets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="ServiceRequestAssets">
+              <PropertyRef Name="IdAssetsType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceRequestAssets_ServiceRequest">
+          <End Role="ServiceRequest" Type="Self.ServiceRequest" Multiplicity="1" />
+          <End Role="ServiceRequestAssets" Type="Self.ServiceRequestAssets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceRequest">
+              <PropertyRef Name="IdServiceRequest" />
+            </Principal>
+            <Dependent Role="ServiceRequestAssets">
+              <PropertyRef Name="IdServiceRequest" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ServiceRequestTask_ServiceRequest">
           <End Role="ServiceRequest" Type="Self.ServiceRequest" Multiplicity="1" />
           <End Role="ServiceRequestTask" Type="Self.ServiceRequestTask" Multiplicity="*" />
@@ -762,6 +819,30 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
             </Principal>
             <Dependent Role="ServiceRequestTask">
               <PropertyRef Name="IdTask" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StatusServiceType_ServiceStatus">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="1" />
+          <End Role="StatusServiceType" Type="Self.StatusServiceType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="StatusServiceType">
+              <PropertyRef Name="IdServiceStatus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StatusServiceType_ServiceType">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="1" />
+          <End Role="StatusServiceType" Type="Self.StatusServiceType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="StatusServiceType">
+              <PropertyRef Name="IdServiceType" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -958,6 +1039,17 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <Parameter Name="IdPerson" Type="int" Mode="In" />
           <Parameter Name="IdUser" Type="int" Mode="In" />
         </Function>
+        <Function Name="GNListServiceRequestAssets" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdServiceRequest" Type="int" Mode="In" />
+          <Parameter Name="IdAssetsType" Type="int" Mode="In" />
+          <Parameter Name="IdAsset" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GNListStatusServiceType" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdServiceType" Type="int" Mode="In" />
+          <Parameter Name="IdServiceStatus" Type="int" Mode="In" />
+          <Parameter Name="btStatusServiceType" Type="bit" Mode="In" />
+          <Parameter Name="btStatusServiceStatus" Type="bit" Mode="In" />
+        </Function>
         <Function Name="GNListTask" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdTask" Type="int" Mode="In" />
           <Parameter Name="dttDateIni" Type="date" Mode="In" />
@@ -1102,13 +1194,36 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <Parameter Name="LoanAmount" Type="decimal" Mode="In" />
           <Parameter Name="CurrentDebt" Type="decimal" Mode="In" />
           <Parameter Name="Assets" Type="varchar" Mode="In" />
-          <Parameter Name="Beneficiaries" Type="varchar" Mode="In" />
           <Parameter Name="Process" Type="varchar" Mode="In" />
           <Parameter Name="Wish" Type="varchar" Mode="In" />
           <Parameter Name="Plane" Type="bit" Mode="In" />
           <Parameter Name="Financing" Type="bit" Mode="In" />
           <Parameter Name="Note" Type="varchar" Mode="In" />
           <Parameter Name="IdUser" Type="int" Mode="In" />
+          <Parameter Name="LivT_Beneficiaries" Type="varchar" Mode="In" />
+          <Parameter Name="LivT_InheritanceCondition" Type="varchar" Mode="In" />
+          <Parameter Name="LivT_ResponsibleAgent1" Type="varchar" Mode="In" />
+          <Parameter Name="LivT_ResponsibleAgent2" Type="varchar" Mode="In" />
+          <Parameter Name="LivT_AuthorizeRespAgent" Type="bit" Mode="In" />
+          <Parameter Name="LivT_ProlongLife" Type="bit" Mode="In" />
+          <Parameter Name="LivT_DonateOrgans" Type="bit" Mode="In" />
+          <Parameter Name="LivT_Organs" Type="varchar" Mode="In" />
+          <Parameter Name="LivT_OrganForTransplant" Type="bit" Mode="In" />
+          <Parameter Name="LivT_OrganForTherapy" Type="bit" Mode="In" />
+          <Parameter Name="LivT_OrganForEducation" Type="bit" Mode="In" />
+          <Parameter Name="LivT_OrganForInvestigation" Type="bit" Mode="In" />
+          <Parameter Name="LivT_GpNames" Type="varchar" Mode="In" />
+          <Parameter Name="LivT_GpPhoneNumber" Type="varchar" Mode="In" />
+          <Parameter Name="LivT_GpAddress" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="GNTranServiceRequestAssets" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TransactionType" Type="char" Mode="In" />
+          <Parameter Name="IdAsset" Type="int" Mode="InOut" />
+          <Parameter Name="IdServiceRequest" Type="int" Mode="In" />
+          <Parameter Name="IdAssetsType" Type="int" Mode="In" />
+          <Parameter Name="Description" Type="varchar" Mode="In" />
+          <Parameter Name="Beneficiaries" Type="varchar" Mode="In" />
+          <Parameter Name="Administrators" Type="varchar" Mode="In" />
         </Function>
         <Function Name="GNTranServiceRequestTask" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="TransactionType" Type="char" Mode="In" />
@@ -1206,7 +1321,9 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <EntitySet Name="RoleAcces" EntityType="Self.RoleAcces" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ServiceConstructionOption" EntityType="Self.ServiceConstructionOption" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ServiceRequest" EntityType="Self.ServiceRequest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ServiceRequestAssets" EntityType="Self.ServiceRequestAssets" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ServiceRequestTask" EntityType="Self.ServiceRequestTask" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StatusServiceType" EntityType="Self.StatusServiceType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Task" EntityType="Self.Task" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
@@ -1370,6 +1487,14 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
             <End Role="User" EntitySet="User" />
             <End Role="ServiceRequest" EntitySet="ServiceRequest" />
           </AssociationSet>
+          <AssociationSet Name="FK_ServiceRequestAssets_AssetsType" Association="Self.FK_ServiceRequestAssets_AssetsType">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="ServiceRequestAssets" EntitySet="ServiceRequestAssets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceRequestAssets_ServiceRequest" Association="Self.FK_ServiceRequestAssets_ServiceRequest">
+            <End Role="ServiceRequest" EntitySet="ServiceRequest" />
+            <End Role="ServiceRequestAssets" EntitySet="ServiceRequestAssets" />
+          </AssociationSet>
           <AssociationSet Name="FK_ServiceRequestTask_ServiceRequest" Association="Self.FK_ServiceRequestTask_ServiceRequest">
             <End Role="ServiceRequest" EntitySet="ServiceRequest" />
             <End Role="ServiceRequestTask" EntitySet="ServiceRequestTask" />
@@ -1377,6 +1502,14 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <AssociationSet Name="FK_ServiceRequestTask_Task" Association="Self.FK_ServiceRequestTask_Task">
             <End Role="Task" EntitySet="Task" />
             <End Role="ServiceRequestTask" EntitySet="ServiceRequestTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StatusServiceType_ServiceStatus" Association="Self.FK_StatusServiceType_ServiceStatus">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="StatusServiceType" EntitySet="StatusServiceType" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StatusServiceType_ServiceType" Association="Self.FK_StatusServiceType_ServiceType">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="StatusServiceType" EntitySet="StatusServiceType" />
           </AssociationSet>
           <AssociationSet Name="FK_Task_Person" Association="Self.FK_Task_Person">
             <End Role="Person" EntitySet="Person" />
@@ -1442,7 +1575,10 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <NavigationProperty Name="ServiceRequest1" Relationship="Self.FK_ServiceRequest_PropertyType" FromRole="CatalogDetail" ToRole="ServiceRequest" />
           <NavigationProperty Name="ServiceRequest2" Relationship="Self.FK_ServiceRequest_ServiceStatus" FromRole="CatalogDetail" ToRole="ServiceRequest" />
           <NavigationProperty Name="ServiceRequest3" Relationship="Self.FK_ServiceRequest_ServiceType" FromRole="CatalogDetail" ToRole="ServiceRequest" />
+          <NavigationProperty Name="ServiceRequestAssets" Relationship="Self.FK_ServiceRequestAssets_AssetsType" FromRole="CatalogDetail" ToRole="ServiceRequestAssets" />
           <NavigationProperty Name="ServiceRequest4" Relationship="Self.ServiceConstructionOption" FromRole="CatalogDetail" ToRole="ServiceRequest" />
+          <NavigationProperty Name="CatalogDetail1" Relationship="Self.StatusServiceType" FromRole="CatalogDetail" ToRole="CatalogDetail1" />
+          <NavigationProperty Name="CatalogDetail2" Relationship="Self.StatusServiceType" FromRole="CatalogDetail1" ToRole="CatalogDetail" />
         </EntityType>
         <EntityType Name="CommentTask">
           <Key>
@@ -1643,23 +1779,51 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <Property Name="LoanAmount" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="CurrentDebt" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="Assets" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="Beneficiaries" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="LivT_Beneficiaries" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <Property Name="Process" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Wish" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Plane" Type="Boolean" />
           <Property Name="Financing" Type="Boolean" />
-          <Property Name="Note" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Note" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
           <Property Name="IdUser" Type="Int32" Nullable="false" />
           <Property Name="RegisterUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="RegisterDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LivT_InheritanceCondition" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+          <Property Name="LivT_ResponsibleAgent1" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="LivT_ResponsibleAgent2" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="LivT_AuthorizeRespAgent" Type="Boolean" />
+          <Property Name="LivT_ProlongLife" Type="Boolean" />
+          <Property Name="LivT_DonateOrgans" Type="Boolean" />
+          <Property Name="LivT_Organs" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="LivT_OrganForTransplant" Type="Boolean" />
+          <Property Name="LivT_OrganForTherapy" Type="Boolean" />
+          <Property Name="LivT_OrganForEducation" Type="Boolean" />
+          <Property Name="LivT_OrganForInvestigation" Type="Boolean" />
+          <Property Name="LivT_GpNames" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="LivT_GpPhoneNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="LivT_GpAddress" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CatalogDetail" Relationship="Self.FK_ServiceRequest_ContactType" FromRole="ServiceRequest" ToRole="CatalogDetail" />
           <NavigationProperty Name="CatalogDetail1" Relationship="Self.FK_ServiceRequest_PropertyType" FromRole="ServiceRequest" ToRole="CatalogDetail" />
           <NavigationProperty Name="CatalogDetail2" Relationship="Self.FK_ServiceRequest_ServiceStatus" FromRole="ServiceRequest" ToRole="CatalogDetail" />
           <NavigationProperty Name="CatalogDetail3" Relationship="Self.FK_ServiceRequest_ServiceType" FromRole="ServiceRequest" ToRole="CatalogDetail" />
           <NavigationProperty Name="Person" Relationship="Self.FK_ServiceRequest_Person" FromRole="ServiceRequest" ToRole="Person" />
           <NavigationProperty Name="User" Relationship="Self.FK_ServiceRequest_User" FromRole="ServiceRequest" ToRole="User" />
+          <NavigationProperty Name="ServiceRequestAssets" Relationship="Self.FK_ServiceRequestAssets_ServiceRequest" FromRole="ServiceRequest" ToRole="ServiceRequestAssets" />
           <NavigationProperty Name="CatalogDetail4" Relationship="Self.ServiceConstructionOption" FromRole="ServiceRequest" ToRole="CatalogDetail" />
           <NavigationProperty Name="Task" Relationship="Self.ServiceRequestTask" FromRole="ServiceRequest" ToRole="Task" />
+        </EntityType>
+        <EntityType Name="ServiceRequestAssets">
+          <Key>
+            <PropertyRef Name="IdAsset" />
+          </Key>
+          <Property Name="IdAsset" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdServiceRequest" Type="Int32" Nullable="false" />
+          <Property Name="IdAssetsType" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Beneficiaries" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Administrators" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CatalogDetail" Relationship="Self.FK_ServiceRequestAssets_AssetsType" FromRole="ServiceRequestAssets" ToRole="CatalogDetail" />
+          <NavigationProperty Name="ServiceRequest" Relationship="Self.FK_ServiceRequestAssets_ServiceRequest" FromRole="ServiceRequestAssets" ToRole="ServiceRequest" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -1910,6 +2074,18 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ServiceRequestAssets_AssetsType">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="1" />
+          <End Role="ServiceRequestAssets" Type="Self.ServiceRequestAssets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogDetail">
+              <PropertyRef Name="IdCatalogDetail" />
+            </Principal>
+            <Dependent Role="ServiceRequestAssets">
+              <PropertyRef Name="IdAssetsType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CommentTask_Task">
           <End Role="Task" Type="Self.Task" Multiplicity="1" />
           <End Role="CommentTask" Type="Self.CommentTask" Multiplicity="*" />
@@ -2126,6 +2302,18 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ServiceRequestAssets_ServiceRequest">
+          <End Role="ServiceRequest" Type="Self.ServiceRequest" Multiplicity="1" />
+          <End Role="ServiceRequestAssets" Type="Self.ServiceRequestAssets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceRequest">
+              <PropertyRef Name="IdServiceRequest" />
+            </Principal>
+            <Dependent Role="ServiceRequestAssets">
+              <PropertyRef Name="IdServiceRequest" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_FatherTask_Task">
           <End Role="Task" Type="Self.Task" Multiplicity="0..1" />
           <End Role="Task1" Type="Self.Task" Multiplicity="*" />
@@ -2178,6 +2366,10 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <End Role="ServiceRequest" Type="Self.ServiceRequest" Multiplicity="*" />
           <End Role="Task" Type="Self.Task" Multiplicity="*" />
         </Association>
+        <Association Name="StatusServiceType">
+          <End Role="CatalogDetail" Type="Self.CatalogDetail" Multiplicity="*" />
+          <End Role="CatalogDetail1" Type="Self.CatalogDetail" Multiplicity="*" />
+        </Association>
         <Association Name="UserRole">
           <End Role="Role" Type="Self.Role" Multiplicity="*" />
           <End Role="User" Type="Self.User" Multiplicity="*" />
@@ -2199,6 +2391,7 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <EntitySet Name="Role" EntityType="Self.Role" />
           <EntitySet Name="RoleAcces" EntityType="Self.RoleAcces" />
           <EntitySet Name="ServiceRequest" EntityType="Self.ServiceRequest" />
+          <EntitySet Name="ServiceRequestAssets" EntityType="Self.ServiceRequestAssets" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="Task" EntityType="Self.Task" />
           <EntitySet Name="User" EntityType="Self.User" />
@@ -2252,6 +2445,10 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <AssociationSet Name="FK_ServiceRequest_ServiceType" Association="Self.FK_ServiceRequest_ServiceType">
             <End Role="CatalogDetail" EntitySet="CatalogDetail" />
             <End Role="ServiceRequest" EntitySet="ServiceRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceRequestAssets_AssetsType" Association="Self.FK_ServiceRequestAssets_AssetsType">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="ServiceRequestAssets" EntitySet="ServiceRequestAssets" />
           </AssociationSet>
           <AssociationSet Name="FK_CommentTask_Task" Association="Self.FK_CommentTask_Task">
             <End Role="Task" EntitySet="Task" />
@@ -2325,6 +2522,10 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
             <End Role="User" EntitySet="User" />
             <End Role="ServiceRequest" EntitySet="ServiceRequest" />
           </AssociationSet>
+          <AssociationSet Name="FK_ServiceRequestAssets_ServiceRequest" Association="Self.FK_ServiceRequestAssets_ServiceRequest">
+            <End Role="ServiceRequest" EntitySet="ServiceRequest" />
+            <End Role="ServiceRequestAssets" EntitySet="ServiceRequestAssets" />
+          </AssociationSet>
           <AssociationSet Name="FK_FatherTask_Task" Association="Self.FK_FatherTask_Task">
             <End Role="Task" EntitySet="Task" />
             <End Role="Task1" EntitySet="Task" />
@@ -2352,6 +2553,10 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <AssociationSet Name="ServiceRequestTask" Association="Self.ServiceRequestTask">
             <End Role="ServiceRequest" EntitySet="ServiceRequest" />
             <End Role="Task" EntitySet="Task" />
+          </AssociationSet>
+          <AssociationSet Name="StatusServiceType" Association="Self.StatusServiceType">
+            <End Role="CatalogDetail" EntitySet="CatalogDetail" />
+            <End Role="CatalogDetail1" EntitySet="CatalogDetail" />
           </AssociationSet>
           <AssociationSet Name="UserRole" Association="Self.UserRole">
             <End Role="Role" EntitySet="Role" />
@@ -2464,6 +2669,17 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
             <Parameter Name="IdServiceStatus" Mode="In" Type="Int32" />
             <Parameter Name="IdPerson" Mode="In" Type="Int32" />
             <Parameter Name="IdUser" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNListServiceRequestAssets" ReturnType="Collection(MMEnterprisesModel.GNListServiceRequestAssets_Result)">
+            <Parameter Name="IdServiceRequest" Mode="In" Type="Int32" />
+            <Parameter Name="IdAssetsType" Mode="In" Type="Int32" />
+            <Parameter Name="IdAsset" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GNListStatusServiceType" ReturnType="Collection(MMEnterprisesModel.GNListStatusServiceType_Result)">
+            <Parameter Name="IdServiceType" Mode="In" Type="Int32" />
+            <Parameter Name="IdServiceStatus" Mode="In" Type="Int32" />
+            <Parameter Name="btStatusServiceType" Mode="In" Type="Boolean" />
+            <Parameter Name="btStatusServiceStatus" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="GNListTask" ReturnType="Collection(MMEnterprisesModel.GNListTask_Result)">
             <Parameter Name="IdTask" Mode="In" Type="Int32" />
@@ -2609,13 +2825,36 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
             <Parameter Name="LoanAmount" Mode="In" Type="Decimal" />
             <Parameter Name="CurrentDebt" Mode="In" Type="Decimal" />
             <Parameter Name="Assets" Mode="In" Type="String" />
-            <Parameter Name="Beneficiaries" Mode="In" Type="String" />
             <Parameter Name="Process" Mode="In" Type="String" />
             <Parameter Name="Wish" Mode="In" Type="String" />
             <Parameter Name="Plane" Mode="In" Type="Boolean" />
             <Parameter Name="Financing" Mode="In" Type="Boolean" />
             <Parameter Name="Note" Mode="In" Type="String" />
             <Parameter Name="IdUser" Mode="In" Type="Int32" />
+            <Parameter Name="LivT_Beneficiaries" Mode="In" Type="String" />
+            <Parameter Name="LivT_InheritanceCondition" Mode="In" Type="String" />
+            <Parameter Name="LivT_ResponsibleAgent1" Mode="In" Type="String" />
+            <Parameter Name="LivT_ResponsibleAgent2" Mode="In" Type="String" />
+            <Parameter Name="LivT_AuthorizeRespAgent" Mode="In" Type="Boolean" />
+            <Parameter Name="LivT_ProlongLife" Mode="In" Type="Boolean" />
+            <Parameter Name="LivT_DonateOrgans" Mode="In" Type="Boolean" />
+            <Parameter Name="LivT_Organs" Mode="In" Type="String" />
+            <Parameter Name="LivT_OrganForTransplant" Mode="In" Type="Boolean" />
+            <Parameter Name="LivT_OrganForTherapy" Mode="In" Type="Boolean" />
+            <Parameter Name="LivT_OrganForEducation" Mode="In" Type="Boolean" />
+            <Parameter Name="LivT_OrganForInvestigation" Mode="In" Type="Boolean" />
+            <Parameter Name="LivT_GpNames" Mode="In" Type="String" />
+            <Parameter Name="LivT_GpPhoneNumber" Mode="In" Type="String" />
+            <Parameter Name="LivT_GpAddress" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GNTranServiceRequestAssets">
+            <Parameter Name="TransactionType" Mode="In" Type="String" />
+            <Parameter Name="IdAsset" Mode="InOut" Type="Int32" />
+            <Parameter Name="IdServiceRequest" Mode="In" Type="Int32" />
+            <Parameter Name="IdAssetsType" Mode="In" Type="Int32" />
+            <Parameter Name="Description" Mode="In" Type="String" />
+            <Parameter Name="Beneficiaries" Mode="In" Type="String" />
+            <Parameter Name="Administrators" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="GNTranServiceRequestTask">
             <Parameter Name="TransactionType" Mode="In" Type="String" />
@@ -2878,15 +3117,45 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <Property Type="Decimal" Name="LoanAmount" Nullable="true" Precision="18" Scale="2" />
           <Property Type="Decimal" Name="CurrentDebt" Nullable="true" Precision="18" Scale="2" />
           <Property Type="String" Name="Assets" Nullable="true" MaxLength="500" />
-          <Property Type="String" Name="Beneficiaries" Nullable="true" MaxLength="500" />
           <Property Type="String" Name="Process" Nullable="true" MaxLength="500" />
           <Property Type="String" Name="Wish" Nullable="true" MaxLength="500" />
           <Property Type="Boolean" Name="Plane" Nullable="true" />
           <Property Type="Boolean" Name="Financing" Nullable="true" />
-          <Property Type="String" Name="Note" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="Note" Nullable="true" MaxLength="4000" />
           <Property Type="Int32" Name="IdUser" Nullable="false" />
           <Property Type="String" Name="RegisterUser" Nullable="false" MaxLength="50" />
           <Property Type="DateTime" Name="RegisterDate" Nullable="false" Precision="23" />
+          <Property Type="String" Name="LivT_Beneficiaries" Nullable="true" MaxLength="1000" />
+          <Property Type="String" Name="LivT_InheritanceCondition" Nullable="true" MaxLength="8000" />
+          <Property Type="String" Name="LivT_ResponsibleAgent1" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="LivT_ResponsibleAgent2" Nullable="true" MaxLength="200" />
+          <Property Type="Boolean" Name="LivT_AuthorizeRespAgent" Nullable="true" />
+          <Property Type="Boolean" Name="LivT_ProlongLife" Nullable="true" />
+          <Property Type="Boolean" Name="LivT_DonateOrgans" Nullable="true" />
+          <Property Type="String" Name="LivT_Organs" Nullable="true" MaxLength="300" />
+          <Property Type="Boolean" Name="LivT_OrganForTransplant" Nullable="true" />
+          <Property Type="Boolean" Name="LivT_OrganForTherapy" Nullable="true" />
+          <Property Type="Boolean" Name="LivT_OrganForEducation" Nullable="true" />
+          <Property Type="Boolean" Name="LivT_OrganForInvestigation" Nullable="true" />
+          <Property Type="String" Name="LivT_GpNames" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="LivT_GpPhoneNumber" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="LivT_GpAddress" Nullable="true" MaxLength="500" />
+        </ComplexType>
+        <ComplexType Name="GNListServiceRequestAssets_Result">
+          <Property Type="Int32" Name="IdAsset" Nullable="false" />
+          <Property Type="Int32" Name="IdServiceRequest" Nullable="false" />
+          <Property Type="Int32" Name="IdAssetsType" Nullable="false" />
+          <Property Type="String" Name="AssetsType" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="1000" />
+          <Property Type="String" Name="Beneficiaries" Nullable="true" MaxLength="1000" />
+          <Property Type="String" Name="Administrators" Nullable="true" MaxLength="500" />
+        </ComplexType>
+        <ComplexType Name="GNListStatusServiceType_Result">
+          <Property Type="Int32" Name="IdServiceType" Nullable="false" />
+          <Property Type="String" Name="ServiceType" Nullable="false" MaxLength="200" />
+          <Property Type="Int32" Name="IdServiceStatus" Nullable="false" />
+          <Property Type="String" Name="IdTableDetail" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ServiceStatus" Nullable="false" MaxLength="200" />
         </ComplexType>
         <ComplexType Name="GNListTask_Result">
           <Property Type="Int32" Name="IdTask" Nullable="false" />
@@ -3149,7 +3418,7 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
                 <ScalarProperty Name="LoanAmount" ColumnName="LoanAmount" />
                 <ScalarProperty Name="CurrentDebt" ColumnName="CurrentDebt" />
                 <ScalarProperty Name="Assets" ColumnName="Assets" />
-                <ScalarProperty Name="Beneficiaries" ColumnName="Beneficiaries" />
+                <ScalarProperty Name="LivT_Beneficiaries" ColumnName="LivT_Beneficiaries" />
                 <ScalarProperty Name="Process" ColumnName="Process" />
                 <ScalarProperty Name="Wish" ColumnName="Wish" />
                 <ScalarProperty Name="Plane" ColumnName="Plane" />
@@ -3158,6 +3427,32 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
                 <ScalarProperty Name="IdUser" ColumnName="IdUser" />
                 <ScalarProperty Name="RegisterUser" ColumnName="RegisterUser" />
                 <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+                <ScalarProperty Name="LivT_InheritanceCondition" ColumnName="LivT_InheritanceCondition" />
+                <ScalarProperty Name="LivT_ResponsibleAgent1" ColumnName="LivT_ResponsibleAgent1" />
+                <ScalarProperty Name="LivT_ResponsibleAgent2" ColumnName="LivT_ResponsibleAgent2" />
+                <ScalarProperty Name="LivT_AuthorizeRespAgent" ColumnName="LivT_AuthorizeRespAgent" />
+                <ScalarProperty Name="LivT_ProlongLife" ColumnName="LivT_ProlongLife" />
+                <ScalarProperty Name="LivT_DonateOrgans" ColumnName="LivT_DonateOrgans" />
+                <ScalarProperty Name="LivT_Organs" ColumnName="LivT_Organs" />
+                <ScalarProperty Name="LivT_OrganForTransplant" ColumnName="LivT_OrganForTransplant" />
+                <ScalarProperty Name="LivT_OrganForTherapy" ColumnName="LivT_OrganForTherapy" />
+                <ScalarProperty Name="LivT_OrganForEducation" ColumnName="LivT_OrganForEducation" />
+                <ScalarProperty Name="LivT_OrganForInvestigation" ColumnName="LivT_OrganForInvestigation" />
+                <ScalarProperty Name="LivT_GpNames" ColumnName="LivT_GpNames" />
+                <ScalarProperty Name="LivT_GpPhoneNumber" ColumnName="LivT_GpPhoneNumber" />
+                <ScalarProperty Name="LivT_GpAddress" ColumnName="LivT_GpAddress" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ServiceRequestAssets">
+            <EntityTypeMapping TypeName="MMEnterprisesModel.ServiceRequestAssets">
+              <MappingFragment StoreEntitySet="ServiceRequestAssets">
+                <ScalarProperty Name="IdAsset" ColumnName="IdAsset" />
+                <ScalarProperty Name="IdServiceRequest" ColumnName="IdServiceRequest" />
+                <ScalarProperty Name="IdAssetsType" ColumnName="IdAssetsType" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Beneficiaries" ColumnName="Beneficiaries" />
+                <ScalarProperty Name="Administrators" ColumnName="Administrators" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3274,6 +3569,14 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
             </EndProperty>
             <EndProperty Name="Task">
               <ScalarProperty Name="IdTask" ColumnName="IdTask" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="StatusServiceType" TypeName="MMEnterprisesModel.StatusServiceType" StoreEntitySet="StatusServiceType">
+            <EndProperty Name="CatalogDetail">
+              <ScalarProperty Name="IdCatalogDetail" ColumnName="IdServiceStatus" />
+            </EndProperty>
+            <EndProperty Name="CatalogDetail1">
+              <ScalarProperty Name="IdCatalogDetail" ColumnName="IdServiceType" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="UserRole" TypeName="MMEnterprisesModel.UserRole" StoreEntitySet="UserRole">
@@ -3552,7 +3855,6 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
                 <ScalarProperty Name="LoanAmount" ColumnName="LoanAmount" />
                 <ScalarProperty Name="CurrentDebt" ColumnName="CurrentDebt" />
                 <ScalarProperty Name="Assets" ColumnName="Assets" />
-                <ScalarProperty Name="Beneficiaries" ColumnName="Beneficiaries" />
                 <ScalarProperty Name="Process" ColumnName="Process" />
                 <ScalarProperty Name="Wish" ColumnName="Wish" />
                 <ScalarProperty Name="Plane" ColumnName="Plane" />
@@ -3561,6 +3863,45 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
                 <ScalarProperty Name="IdUser" ColumnName="IdUser" />
                 <ScalarProperty Name="RegisterUser" ColumnName="RegisterUser" />
                 <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+                <ScalarProperty Name="LivT_Beneficiaries" ColumnName="LivT_Beneficiaries" />
+                <ScalarProperty Name="LivT_InheritanceCondition" ColumnName="LivT_InheritanceCondition" />
+                <ScalarProperty Name="LivT_ResponsibleAgent1" ColumnName="LivT_ResponsibleAgent1" />
+                <ScalarProperty Name="LivT_ResponsibleAgent2" ColumnName="LivT_ResponsibleAgent2" />
+                <ScalarProperty Name="LivT_AuthorizeRespAgent" ColumnName="LivT_AuthorizeRespAgent" />
+                <ScalarProperty Name="LivT_ProlongLife" ColumnName="LivT_ProlongLife" />
+                <ScalarProperty Name="LivT_DonateOrgans" ColumnName="LivT_DonateOrgans" />
+                <ScalarProperty Name="LivT_Organs" ColumnName="LivT_Organs" />
+                <ScalarProperty Name="LivT_OrganForTransplant" ColumnName="LivT_OrganForTransplant" />
+                <ScalarProperty Name="LivT_OrganForTherapy" ColumnName="LivT_OrganForTherapy" />
+                <ScalarProperty Name="LivT_OrganForEducation" ColumnName="LivT_OrganForEducation" />
+                <ScalarProperty Name="LivT_OrganForInvestigation" ColumnName="LivT_OrganForInvestigation" />
+                <ScalarProperty Name="LivT_GpNames" ColumnName="LivT_GpNames" />
+                <ScalarProperty Name="LivT_GpPhoneNumber" ColumnName="LivT_GpPhoneNumber" />
+                <ScalarProperty Name="LivT_GpAddress" ColumnName="LivT_GpAddress" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNListServiceRequestAssets" FunctionName="MMEnterprisesModel.Store.GNListServiceRequestAssets">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListServiceRequestAssets_Result">
+                <ScalarProperty Name="IdAsset" ColumnName="IdAsset" />
+                <ScalarProperty Name="IdServiceRequest" ColumnName="IdServiceRequest" />
+                <ScalarProperty Name="IdAssetsType" ColumnName="IdAssetsType" />
+                <ScalarProperty Name="AssetsType" ColumnName="AssetsType" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Beneficiaries" ColumnName="Beneficiaries" />
+                <ScalarProperty Name="Administrators" ColumnName="Administrators" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNListStatusServiceType" FunctionName="MMEnterprisesModel.Store.GNListStatusServiceType">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNListStatusServiceType_Result">
+                <ScalarProperty Name="IdServiceType" ColumnName="IdServiceType" />
+                <ScalarProperty Name="ServiceType" ColumnName="ServiceType" />
+                <ScalarProperty Name="IdServiceStatus" ColumnName="IdServiceStatus" />
+                <ScalarProperty Name="IdTableDetail" ColumnName="IdTableDetail" />
+                <ScalarProperty Name="ServiceStatus" ColumnName="ServiceStatus" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -3649,6 +3990,7 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <FunctionImportMapping FunctionImportName="GNTranRoleAcces" FunctionName="MMEnterprisesModel.Store.GNTranRoleAcces" />
           <FunctionImportMapping FunctionImportName="GNTranServiceConstructionOption" FunctionName="MMEnterprisesModel.Store.GNTranServiceConstructionOption" />
           <FunctionImportMapping FunctionImportName="GNTranServiceRequest" FunctionName="MMEnterprisesModel.Store.GNTranServiceRequest" />
+          <FunctionImportMapping FunctionImportName="GNTranServiceRequestAssets" FunctionName="MMEnterprisesModel.Store.GNTranServiceRequestAssets" />
           <FunctionImportMapping FunctionImportName="GNTranServiceRequestTask" FunctionName="MMEnterprisesModel.Store.GNTranServiceRequestTask" />
           <FunctionImportMapping FunctionImportName="GNTranTask" FunctionName="MMEnterprisesModel.Store.GNTranTask" />
           <FunctionImportMapping FunctionImportName="GNTranUser" FunctionName="MMEnterprisesModel.Store.GNTranUser" />

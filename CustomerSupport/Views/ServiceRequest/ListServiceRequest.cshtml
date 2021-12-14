@@ -115,7 +115,7 @@
                             'render': function (jsonDate) {
                                 var date = new Date(parseInt(jsonDate.substr(6)));
                                 var month = ("0" + (date.getMonth() + 1)).slice(-2);
-                                return ("0" + date.getDate()).slice(-2) + '-' + month + '-' + date.getFullYear();
+                                return date.getFullYear() + '-' + month + '-' + ("0" + date.getDate()).slice(-2);
                             }
                         },
                         { 'data': 'ServiceStatus', 'autowidth': true },
@@ -163,7 +163,7 @@
                     ],
                     "columnDefs":
                         [
-                            {"targets": 0,"orderable": false },
+                            //{"targets": 0,"orderable": false },
                             { "targets": 6, "bVisible": Editar },
                             { "targets": 7, "bVisible": Buscar }
                         ],

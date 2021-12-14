@@ -30,6 +30,14 @@
                                 @Html.HiddenFor(model => model.IdServiceRequest)
                             </div>
                         </div>
+                        <div class="col-md-8"></div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <div class="control-label">Fecha de Registro:</div>
+                                @Html.DisplayFor(model => model.RegisterDate, "{0:d}", new { @type = "date" })
+                                @Html.HiddenFor(model => model.RegisterDate)
+                            </div>
+                        </div>
                     </div>
                     <hr>
 
@@ -353,72 +361,477 @@
                                             </div>
                                             <div id="serviceLivingTrust">
                                                 <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <div class="control-label">Que tipos de bienes desea agregar?</div>
-                                                            @Html.TextAreaFor(model => model.Assets, new { @class = "form-control", @rows = 3, @cols = 10 })
-                                                            @Html.ValidationMessageFor(model => model.Assets, "", new { @class = "text-danger" })
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <div class="control-label">Tiene Beneficiarios?</div>
-
-                                                            <label class="ss_radioButton">
-                                                                Si
-                                                                @if (Model.Beneficiaries == null || Model.Beneficiaries.Trim() == "")
-                                                                {
-                                                                    <input id="btnRadioSI" type="radio" name="radio">
-                                                                }
-                                                                else
-                                                                {
-                                                                    <input id="btnRadioSI" type="radio" checked="checked" name="radio">
-                                                                }
-                                                                <span class="checkmark"></span>
-                                                            </label>
-                                                            <label class="ss_radioButton">
-                                                                No
-                                                                @if (Model.Beneficiaries == null || Model.Beneficiaries.Trim() == "")
-                                                                {
-                                                                    <input id="btnRadioNO" type="radio" checked="checked" name="radio">
-                                                                }
-                                                                else
-                                                                {
-                                                                    <input id="btnRadioNO" type="radio" name="radio">
-                                                                }
-                                                                <span class="checkmark"></span>
-                                                            </label>
-
+                                                            @if (string.IsNullOrEmpty(Model.LivT_Beneficiaries))
+                                                            {
+                                                                <label class="ss_radioButton">
+                                                                    Si
+                                                                    @*<input id="btnRadioSI" type="radio" name="radioBeneficiaries">*@
+                                                                    @Html.RadioButton("radioBeneficiaries", true, new { @id = "btnRadioSI" })
+                                                                    <span class="checkmark"></span>
+                                                                </label>
+                                                                <label class="ss_radioButton">
+                                                                    No
+                                                                    @*<input id="btnRadioNO" type="radio" checked="checked" name="radioBeneficiaries">*@
+                                                                    @Html.RadioButton("radioBeneficiaries", false, new { @id = "btnRadioNO", @checked = "checked" })
+                                                                    <span class="checkmark"></span>
+                                                                </label>
+                                                            }
+                                                            else
+                                                            {
+                                                                <label class="ss_radioButton">
+                                                                    Si
+                                                                    @*<input id="btnRadioSI" type="radio" name="radioBeneficiaries">*@
+                                                                    @Html.RadioButton("radioBeneficiaries", true, new { @id = "btnRadioSI", @checked = "checked" })
+                                                                    <span class="checkmark"></span>
+                                                                </label>
+                                                                <label class="ss_radioButton">
+                                                                    No
+                                                                    @*<input id="btnRadioNO" type="radio" checked="checked" name="radioBeneficiaries">*@
+                                                                    @Html.RadioButton("radioBeneficiaries", false, new { @id = "btnRadioNO" })
+                                                                    <span class="checkmark"></span>
+                                                                </label>
+                                                            }
                                                         </div>
                                                     </div>
-                                                    <div id="divBeneficiarios" class="col-md-6">
+                                                    <div id="divLivT_Beneficiaries" class="col-md-6">
                                                         <div class="form-group">
                                                             <div class="control-label">Beneficiarios:</div>
-                                                            @Html.TextAreaFor(model => model.Beneficiaries, new { @class = "form-control", @rows = 3, @cols = 10 })
-                                                            @Html.ValidationMessageFor(model => model.Beneficiaries, "", new { @class = "text-danger" })
+                                                            @Html.TextAreaFor(model => model.LivT_Beneficiaries, new { @class = "form-control", @rows = 3, @cols = 10 })
+                                                            @Html.ValidationMessageFor(model => model.LivT_Beneficiaries, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                <div class="row pb-3">
+                                                    <div class="col-md-12">
+                                                        <div class="accordion border" id="accordionAssets">
+                                                            <div class="card collapsed-card">
+                                                                <div class="card-header p-0" id="headingAssets">
+                                                                    <h2 class="mb-0">
+                                                                        <button class="btn btn-link text-decoration-none" type="button" data-toggle="collapse" data-target="#collapseCardAssets" aria-expanded="false" aria-controls="collapseAssets">
+                                                                            Bienes a incluir
+                                                                        </button>
+                                                                    </h2>
+                                                                </div>
+
+                                                                <div id="collapseCardAssets" class="collapse" aria-labelledby="headingAssets" data-parent="#accordionAssets">
+
+                                                                    <div class="card-body">
+
+                                                                        <div class="col-12">
+                                                                            <div class="row">
+                                                                                <div class="col-md-4">
+                                                                                    <div class="form-group">
+                                                                                        <div class="control-label">Tipo de Bien:</div>
+                                                                                        <select id="lst_Assets" class="form-control" style="width: 100%;">
+                                                                                        </select>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-8">
+                                                                                    <div class="form-group">
+                                                                                        <div class="control-label">Descripción:</div>
+                                                                                        @Html.TextArea("txtDescription", "", 3, 8, new { @maxlength = "1000", @class = "form-control" })
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row">
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group">
+                                                                                        <div class="control-label">Beneficiarios con porcentaje de participacion:</div>
+                                                                                        @Html.TextArea("txtBeneficiaries", "", 2, 6, new { @maxlength = "1000", @class = "form-control" })
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-5">
+                                                                                    <div class="form-group">
+                                                                                        <div class="control-label">Administrador en caso de venta o renta:</div>
+                                                                                        @Html.TextArea("txtAdministrators", "", 2, 4, new { @maxlength = "500", @class = "form-control" })
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-1">
+                                                                                    <div class="form-group">
+                                                                                        <div class="btn_option"><a onclick="addRow();"><i class="fas fa-plus"></i></a></div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-12">
+                                                                            <div class="row pt-3">
+                                                                                <div class="col-md-12">
+                                                                                    <div class="form-group">
+                                                                                        <div class="table-responsive">
+                                                                                            <div class="container">
+
+                                                                                                <table id="TAssets" class="table table-bordered table-striped">
+                                                                                                    <thead class="font-weight-bold">
+                                                                                                        <tr>
+                                                                                                            <td style="display:none;">colHid_indexCell</td>
+                                                                                                            <td style="display:none;">colHid_IdAsset</td>
+                                                                                                            <td style="display:none;">colHid_IdServiceRequest</td>
+                                                                                                            <td style="display:none;">colHid_IdAssetsType</td>
+                                                                                                            <td style="display:none;">colHid_AssetsType</td>
+                                                                                                            <td style="display:none;">colHid_Status</td>
+
+                                                                                                            <td style="width: 15%;">Tipo de Bien</td>
+                                                                                                            <td style="width: 30%;">Descripcion</td>
+                                                                                                            <td style="width: 25%;">Beneficiarios %</td>
+                                                                                                            <td style="width: 20%;">Administradores</td>
+
+                                                                                                            <td style="width: 10%;">Opciones</td>
+                                                                                                        </tr>
+                                                                                                    </thead>
+                                                                                                    <tbody id="BodyAssets">
+                                                                                                        @if (Model != null)
+                                                                                                        {
+                                                                                                            if (Model.listServiceRequestAssets != null && Model.listServiceRequestAssets.Count() > 0)
+                                                                                                            {
+                                                                                                                string idRow;
+                                                                                                                string nameCol_IdAsset;
+                                                                                                                string nameCol_IdServiceRequest;
+                                                                                                                string nameCol_IdAssetsType;
+                                                                                                                string nameCol_AssetsType;
+                                                                                                                string nameCol_Description;
+                                                                                                                string nameCol_Beneficiaries;
+                                                                                                                string nameCol_Administrators;
+                                                                                                                string nameCol_Status;
+
+                                                                                                                for (var i = 0; i < Model.listServiceRequestAssets.Count; i++)
+                                                                                                                {
+                                                                                                                    idRow = "trAssets" + i.ToString();
+                                                                                                                    nameCol_IdAsset = "listServiceRequestAssets[" + i.ToString() + "].IdAsset";
+                                                                                                                    nameCol_IdServiceRequest = "listServiceRequestAssets[" + i.ToString() + "].IdServiceRequest";
+                                                                                                                    nameCol_IdAssetsType = "listServiceRequestAssets[" + i.ToString() + "].IdAssetsType";
+                                                                                                                    nameCol_AssetsType = "listServiceRequestAssets[" + i.ToString() + "].AssetsType";
+                                                                                                                    nameCol_Description = "listServiceRequestAssets[" + i.ToString() + "].Description";
+                                                                                                                    nameCol_Beneficiaries = "listServiceRequestAssets[" + i.ToString() + "].Beneficiaries";
+                                                                                                                    nameCol_Administrators = "listServiceRequestAssets[" + i.ToString() + "].Administrators";
+                                                                                                                    nameCol_Status = "listServiceRequestAssets[" + i.ToString() + "].Status";
+
+                                                                                                                    <tr id='@idRow'>
+                                                                                                                        <td style="display:none;"><input name="listServiceRequestAssets.Index" type="hidden" value='@i' /></td>
+                                                                                                                        <td style="display:none;"><input id='@nameCol_IdAsset' name='@nameCol_IdAsset' type="hidden" value='@Model.listServiceRequestAssets[i].IdAsset' /></td>
+                                                                                                                        <td style="display:none;"><input id='@nameCol_IdServiceRequest' name='@nameCol_IdServiceRequest' type="hidden" value='@Model.listServiceRequestAssets[i].IdServiceRequest' /></td>
+                                                                                                                        <td style="display:none;"><input id='@nameCol_IdAssetsType' name='@nameCol_IdAssetsType' type="hidden" value='@Model.listServiceRequestAssets[i].IdAssetsType' /></td>
+                                                                                                                        <td style="display:none;"><input id='@nameCol_AssetsType' name='@nameCol_AssetsType' type="hidden" value='@Model.listServiceRequestAssets[i].AssetsType' /></td>
+                                                                                                                        <td style="display:none;"><input id='@nameCol_Status' name='@nameCol_Status' type="hidden" value='@Model.listServiceRequestAssets[i].Status.ToString().ToLower()' /></td>
+
+                                                                                                                        <td>@Model.listServiceRequestAssets[i].AssetsType</td>
+
+                                                                                                                        <td><textarea id='@nameCol_Description' name='@nameCol_Description' rows="2" cols="2" class="cell-Input form-control inputLostFocus">@Model.listServiceRequestAssets[i].Description</textarea></td>
+                                                                                                                        <td><textarea id='@nameCol_Beneficiaries' name='@nameCol_Beneficiaries' rows="2" cols="2" class="cell-Input form-control inputLostFocus">@Model.listServiceRequestAssets[i].Beneficiaries</textarea></td>
+                                                                                                                        <td><textarea id='@nameCol_Administrators' name='@nameCol_Administrators' rows="2" cols="2" class="cell-Input form-control inputLostFocus">@Model.listServiceRequestAssets[i].Administrators</textarea></td>
+
+                                                                                                                        <td><div class="btn_option pt-0"><a class="deleteRow" onclick="deleteRow('@i');"><i class="far fa-trash-alt"></i></a></div></td>
+                                                                                                                    </tr>
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    </tbody>
+                                                                                                </table>
+
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <div class="control-label">Explicacion breve del proceso:</div>
-                                                            @Html.TextAreaFor(model => model.Process, new { @class = "form-control", @rows = 3, @cols = 10 })
-                                                            @Html.ValidationMessageFor(model => model.Process, "", new { @class = "text-danger" })
+                                                            <div class="control-label">Condición de herencia:</div>
+                                                            @Html.TextAreaFor(model => model.LivT_InheritanceCondition, new { @class = "form-control", @rows = 5, @cols = 10 })
+                                                            @Html.ValidationMessageFor(model => model.LivT_InheritanceCondition, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                <div class="row mt-2 mb-2">
+                                                    <div class="col-md-12 align-self-center">
+
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="control-label">Agente responsable:</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row shadow-sm p-3 m-1 bg-white rounded">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <div class="control-label">Principal:</div>
+                                                                    @Html.TextBoxFor(model => model.LivT_ResponsibleAgent1, new { @class = "form-control", @maxlength = "200" })
+                                                                    @Html.ValidationMessageFor(model => model.LivT_ResponsibleAgent1, "", new { @class = "text-danger" })
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <div class="control-label">Secundario:</div>
+                                                                    @Html.TextBoxFor(model => model.LivT_ResponsibleAgent2, new { @class = "form-control", @maxlength = "200" })
+                                                                    @Html.ValidationMessageFor(model => model.LivT_ResponsibleAgent2, "", new { @class = "text-danger" })
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label>Autoriza a su agente responsable a tomar decisiones en caso de autopsia o disposición de sus restos?</label>
+                                                                    @if (Model.LivT_AuthorizeRespAgent == null || Model.LivT_AuthorizeRespAgent == false)
+                                                                    {
+                                                                        <label class="ss_radioButton">
+                                                                            Si
+                                                                            @Html.RadioButtonFor(model => model.LivT_AuthorizeRespAgent, true)
+                                                                            <span class="checkmark"></span>
+                                                                        </label>
+                                                                        <label class="ss_radioButton">
+                                                                            No
+                                                                            @Html.RadioButtonFor(model => model.LivT_AuthorizeRespAgent, false, new { @checked = "checked" })
+                                                                            <span class="checkmark"></span>
+                                                                        </label>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <label class="ss_radioButton">
+                                                                            Si
+                                                                            @Html.RadioButtonFor(model => model.LivT_AuthorizeRespAgent, true, new { @checked = "checked" })
+                                                                            <span class="checkmark"></span>
+                                                                        </label>
+                                                                        <label class="ss_radioButton">
+                                                                            No
+                                                                            @Html.RadioButtonFor(model => model.LivT_AuthorizeRespAgent, false)
+                                                                            <span class="checkmark"></span>
+                                                                        </label>
+                                                                    }
+                                                                    @Html.ValidationMessageFor(model => model.LivT_AuthorizeRespAgent, "", new { @class = "text-danger" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <br />
+
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <div class="control-label">Desea que:</div>
-                                                            @Html.TextAreaFor(model => model.Wish, new { @class = "form-control", @rows = 3, @cols = 10 })
-                                                            @Html.ValidationMessageFor(model => model.Wish, "", new { @class = "text-danger" })
+                                                            <label>En caso de enfermedad incurable e irreversible que provocara su muerte en corto tiempo, desea prolongar la vida?</label>
+                                                            @if (Model.LivT_ProlongLife == null || Model.LivT_ProlongLife == false)
+                                                            {
+                                                                <label class="ss_radioButton">
+                                                                    Si
+                                                                    @Html.RadioButtonFor(model => model.LivT_ProlongLife, true)
+                                                                    <span class="checkmark"></span>
+                                                                </label>
+                                                                <label class="ss_radioButton">
+                                                                    No
+                                                                    @Html.RadioButtonFor(model => model.LivT_ProlongLife, false, new { @checked = "checked" })
+                                                                    <span class="checkmark"></span>
+                                                                </label>
+                                                            }
+                                                            else
+                                                            {
+                                                                <label class="ss_radioButton">
+                                                                    Si
+                                                                    @Html.RadioButtonFor(model => model.LivT_ProlongLife, true, new { @checked = "checked" })
+                                                                    <span class="checkmark"></span>
+                                                                </label>
+                                                                <label class="ss_radioButton">
+                                                                    No
+                                                                    @Html.RadioButtonFor(model => model.LivT_ProlongLife, false)
+                                                                    <span class="checkmark"></span>
+                                                                </label>
+                                                            }
+                                                            @Html.ValidationMessageFor(model => model.LivT_ProlongLife, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>Luego de su muerte, desea donar sus organos?</label>
+                                                            @if (Model.LivT_DonateOrgans == null || Model.LivT_DonateOrgans == false)
+                                                            {
+                                                                <label class="ss_radioButton">
+                                                                    Si
+                                                                    @Html.RadioButtonFor(model => model.LivT_DonateOrgans, true, new { @id = "LivT_DonateOrgansSi" })
+                                                                    <span class="checkmark"></span>
+                                                                </label>
+                                                                <label class="ss_radioButton">
+                                                                    No
+                                                                    @Html.RadioButtonFor(model => model.LivT_DonateOrgans, false, new { @id = "LivT_DonateOrgansNo", @checked = "checked" })
+                                                                    <span class="checkmark"></span>
+                                                                </label>
+                                                            }
+                                                            else
+                                                            {
+                                                                <label class="ss_radioButton">
+                                                                    Si
+                                                                    @Html.RadioButtonFor(model => model.LivT_DonateOrgans, true, new { @id = "LivT_DonateOrgansSi", @checked = "checked" })
+                                                                    <span class="checkmark"></span>
+                                                                </label>
+                                                                <label class="ss_radioButton">
+                                                                    No
+                                                                    @Html.RadioButtonFor(model => model.LivT_DonateOrgans, false, new { @id = "LivT_DonateOrgansNo" })
+                                                                    <span class="checkmark"></span>
+                                                                </label>
+                                                            }
+                                                            @Html.ValidationMessageFor(model => model.LivT_DonateOrgans, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                    <div id="divOrgans" class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label">Organos a Donar:</div>
+                                                            @Html.TextAreaFor(model => model.LivT_Organs, new { @class = "form-control", @rows = 2, @cols = 4 })
+                                                            @Html.ValidationMessageFor(model => model.LivT_Organs, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                    <div id="divOrgansFor" class="col-md-6">
+                                                        <div class="control-label">Finalidad:</div>
+                                                        <div class="row">
+                                                            <div class="col-md-3 s_Checkbox mt-0 mb-0">
+                                                                @*@Html.TextBoxFor(model => model.LivT_OrganForTransplant, new { @type="checkbox", @id= "LivT_OrganForTransplant" })*@
+                                                                @Html.CheckBoxFor(model => model.LivT_OrganForTransplant)
+                                                                @Html.Label("LivT_OrganForTransplant", "Trasplante")
+                                                            </div>
+                                                            <div class="col-md-3 s_Checkbox mt-0 mb-0">
+                                                                @*@Html.TextBoxFor(model => model.LivT_OrganForTherapy, new { @type = "checkbox", @id = "LivT_OrganForTherapy" })*@
+                                                                @Html.CheckBoxFor(model => model.LivT_OrganForTherapy)
+                                                                @Html.Label("LivT_OrganForTherapy", "Terapia")
+                                                            </div>
+                                                            <div class="col-md-3 s_Checkbox mt-0 mb-0">
+                                                                @*@Html.TextBoxFor(model => model.LivT_OrganForEducation, new { @type = "checkbox", @id = "LivT_OrganForEducation" })*@
+                                                                @Html.CheckBoxFor(model => model.LivT_OrganForEducation)
+                                                                @Html.Label("LivT_OrganForEducation", "Educación")
+                                                            </div>
+                                                            <div class="col-md-3 s_Checkbox mt-0 mb-0">
+                                                                @*@Html.TextBoxFor(model => model.LivT_OrganForInvestigation, new { @type = "checkbox", @id = "LivT_OrganForInvestigation" })*@
+                                                                @Html.CheckBoxFor(model => model.LivT_OrganForInvestigation)
+                                                                @Html.Label("LivT_OrganForInvestigation", "Investigación")
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>Tiene medico de cabecera?</label>
+                                                            @if (string.IsNullOrEmpty(Model.LivT_GpNames) && string.IsNullOrEmpty(Model.LivT_GpPhoneNumber) && string.IsNullOrEmpty(Model.LivT_GpAddress))
+                                                            {
+                                                                <label class="ss_radioButton">
+                                                                    Si
+                                                                    @Html.RadioButton("btnRadioGP", true, new { @id = "btnRadioGPSi" })
+                                                                    <span class="checkmark"></span>
+                                                                </label>
+                                                                <label class="ss_radioButton">
+                                                                    No
+                                                                    @Html.RadioButton("btnRadioGP", true, new { @id = "btnRadioGPNo", @checked = "checked" })
+                                                                    <span class="checkmark"></span>
+                                                                </label>
+                                                            }
+                                                            else
+                                                            {
+                                                                <label class="ss_radioButton">
+                                                                    Si
+                                                                    @Html.RadioButton("btnRadioGP", true, new { @id = "btnRadioGPSi", @checked = "checked" })
+                                                                    <span class="checkmark"></span>
+                                                                </label>
+                                                                <label class="ss_radioButton">
+                                                                    No
+                                                                    @Html.RadioButton("btnRadioGP", true, new { @id = "btnRadioGPNo" })
+                                                                    <span class="checkmark"></span>
+                                                                </label>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div id="divGPInformation" class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="control-label">Nombre:</div>
+                                                            @Html.TextBoxFor(model => model.LivT_GpNames, new { @class = "form-control", @maxlength = "200" })
+                                                            @Html.ValidationMessageFor(model => model.LivT_GpNames, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <div class="control-label">Telefono:</div>
+                                                            @Html.TextBoxFor(model => model.LivT_GpPhoneNumber, new { @class = "form-control", @maxlength = "100" })
+                                                            @Html.ValidationMessageFor(model => model.LivT_GpPhoneNumber, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <div class="control-label">Dirección:</div>
+                                                            @Html.TextAreaFor(model => model.LivT_GpAddress, new { @class = "form-control", @rows = 2, @cols = 5, @maxlength = "500" })
+                                                            @Html.ValidationMessageFor(model => model.LivT_GpAddress, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <br />
+                                                <br />
+                                                <div class="row pb-3">
+                                                    <div class="col-md-12">
+                                                        <div class="accordion border" id="accordionRemover">
+                                                            <div class="card collapsed-card">
+                                                                <div class="card-header p-0" id="headingRemover">
+                                                                    <h2 class="mb-0">
+                                                                        <button class="btn btn-link text-decoration-none" type="button" data-toggle="collapse" data-target="#collapseCardRemover" aria-expanded="false" aria-controls="collapseAssets">
+                                                                            Respaldo de Datos a Eliminar
+                                                                        </button>
+                                                                    </h2>
+                                                                </div>
+
+                                                                <div id="collapseCardRemover" class="collapse" aria-labelledby="headingRemover" data-parent="#accordionRemover">
+
+                                                                    <div class="card-body">
+
+                                                                        <div class="row">
+                                                                            <div class="col-md-12">
+                                                                                <div class="form-group">
+                                                                                    <div class="control-label">Que tipos de bienes desea agregar?</div>
+                                                                                    @Html.TextAreaFor(model => model.Assets, new { @class = "form-control", @rows = 3, @cols = 10 })
+                                                                                    @Html.ValidationMessageFor(model => model.Assets, "", new { @class = "text-danger" })
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-md-12">
+                                                                                <div class="form-group">
+                                                                                    <div class="control-label">Explicacion breve del proceso:</div>
+                                                                                    @Html.TextAreaFor(model => model.Process, new { @class = "form-control", @rows = 3, @cols = 10 })
+                                                                                    @Html.ValidationMessageFor(model => model.Process, "", new { @class = "text-danger" })
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-md-12">
+                                                                                <div class="form-group">
+                                                                                    <div class="control-label">Desea que:</div>
+                                                                                    @Html.TextAreaFor(model => model.Wish, new { @class = "form-control", @rows = 3, @cols = 10 })
+                                                                                    @Html.ValidationMessageFor(model => model.Wish, "", new { @class = "text-danger" })
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <br />
                                             </div>
                                             <div id="divInfoIncomeDebt">
                                                 <div class="row">
@@ -458,10 +871,11 @@
                                             </div>
                                             @*End - vistas por tipo de servicio*@
 
+                                            <hr />
                                             <div class="row">
                                                 <div class="col-md-5">
                                                     <div class="form-group">
-                                                        <div class="control-label font-weight-bold">Via de Contacto:</div>
+                                                        <div class="control-label font-weight-bold" data-toggle="tooltip" data-placement="top" title="Vía por la cual el Cliente se enteró del Servicio.">Vía de Contacto:</div>
                                                         @Html.DisplayFor(model => model.ContactType)
                                                         @Html.HiddenFor(model => model.IdContactType)
                                                     </div>
@@ -926,8 +1340,104 @@
             return found;
         }
 
+        function fillServiceStatus(IdServiceType) {
+
+            document.querySelector('#lst_ServiceStatus').innerHTML = '';
+            $.ajax({
+                type: "GET",
+                //url: 'Url.Action("GetTableCatalog", "TableCatalog")?idTable=' + "SERVICESTATUS",
+                url: '@Url.Action("GetListStatusServiceType", "StatusServiceType")?IdServiceType=' + IdServiceType,
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+
+                    var option = $(document.createElement('option'));
+                    option.text("Seleccione");
+                    option.val("0");
+                    $("#lst_ServiceStatus").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+                        option.text(this.Description);
+                        option.val(this.IdCatalogDetail); //Identity
+
+                        $("#lst_ServiceStatus").append(option);
+                    });
+
+                    document.getElementById('lst_ServiceStatus').value = "0";
+
+                    changeCodeInputHiddenList("lst_ServiceStatus", "inpIdServiceStatus", "");
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de Estados de por tipo de Servicio");
+                }
+
+            });
+
+        }
+
+        //Funciones para tabla de Bienes a incluir:
+            function deleteRow(id){
+                var idTrRow = '#trAssets' + id;
+                var idTdStatus = 'listServiceRequestAssets[' + id + '].Status';
+
+                document.getElementById('' + idTdStatus + '').value = "false";
+                $(idTrRow).hide();
+            }
+
+            function addRow(){
+
+                @{
+                    Model.listServiceRequestAssets.Add(new MServiceRequestAssets());
+                }
+
+                //obtenemos los valores a insertar
+                var strIdAsset = "0";
+                var strIdServiceRequest = $("#IdServiceRequest").val();
+                var strIdAssetsType = $("#lst_Assets").val();
+                var strAssetsType = $('select[id="lst_Assets"] option:selected').text();
+                var strDescription = $("#txtDescription").val();
+                var strBeneficiaries = $("#txtBeneficiaries").val();
+                var strAdministrators = $("#txtAdministrators").val();
+                var strStatus = "true";
 
 
+                if (strDescription.trim() != "") {
+
+                    var index = document.getElementById('TAssets').rows.length;
+
+                    var colHid_indexCell = "<td style='display:none'><input name='listServiceRequestAssets.Index' type = 'hidden' value = '" + index + "' /></td > ";
+                    var colHid_IdAsset = "<td style='display:none'><input id='listServiceRequestAssets[" + index + "].IdAsset' name = 'listServiceRequestAssets[" + index + "].IdAsset' type = 'hidden' value = '" + strIdAsset + "' /></td> ";
+                    var colHid_IdServiceRequest = "<td style='display:none'><input id='listServiceRequestAssets[" + index + "].IdServiceRequest' name = 'listServiceRequestAssets[" + index + "].IdServiceRequest' type='hidden' value='" + strIdServiceRequest + "' /></td> ";
+                    var colHid_IdAssetsType = "<td style='display:none'><input id='listServiceRequestAssets[" + index + "].IdAssetsType' name = 'listServiceRequestAssets[" + index + "].IdAssetsType' type='hidden' value='" + strIdAssetsType + "' /></td> ";
+                    var colHid_AssetsType = "<td style='display:none'><input id='listServiceRequestAssets[" + index + "].AssetsType' name = 'listServiceRequestAssets[" + index + "].AssetsType' type='hidden' value='" + strAssetsType + "' /></td> ";
+                    var colHid_Status = "<td style='display:none'><input id='listServiceRequestAssets[" + index + "].Status' name = 'listServiceRequestAssets[" + index + "].Status' type = 'hidden' value = '" + strStatus + "' /></td> ";
+
+                    var colAssetsType = "<td>" + strAssetsType + "</td> ";
+                    var colDescription = "<td><textarea id='listServiceRequestAssets[" + index + "].Description' name = 'listServiceRequestAssets[" + index + "].Description' rows='2' cols='2'  class = 'cell-Input form-control inputLostFocus'>" + strDescription + "</textarea></td> ";
+                    var colBeneficiaries = "<td><textarea id='listServiceRequestAssets[" + index + "].Beneficiaries' name = 'listServiceRequestAssets[" + index + "].Beneficiaries' rows='2' cols='2'  class = 'cell-Input form-control inputLostFocus'>" + strBeneficiaries + "</textarea></td> ";
+                    var colAdministrators = "<td><textarea id='listServiceRequestAssets[" + index + "].Administrators' name = 'listServiceRequestAssets[" + index + "].Administrators' rows='2' cols='2'  class = 'cell-Input form-control inputLostFocus'>" + strAdministrators + "</textarea></td> ";
+
+                    var colDelete = "<td><div class='btn_option pt-0'><a class='deleteRow' onclick='deleteRow(" + index + ");'><i class='far fa-trash-alt'></i></a></div></td> ";
+
+                    //insertamos los valores en la tabla
+                    var newRow = "<tr id='trAssets" + index + "'>" +
+                        colHid_indexCell + colHid_IdAsset + colHid_IdServiceRequest + colHid_IdAssetsType + colHid_AssetsType +
+                        colHid_Status + colAssetsType + colDescription + colBeneficiaries + colAdministrators +
+                        colDelete + "</tr>";
+                    $("#TAssets").append(newRow);
+                    //--------------------------
+
+                    //limpiamos los valores ya agregados
+                    document.getElementById('lst_Assets').value = "";
+                    document.getElementById('txtDescription').value = "";
+                    document.getElementById('txtBeneficiaries').value = "";
+                    document.getElementById('txtAdministrators').value = "";
+                }
+
+            }
+        //-----------------------------------------
 
         $(document).ready(function () {
 
@@ -979,41 +1489,24 @@
             //});
             //cargarDataPersonEmployee($("#searchEmployee").val(), ListPersonsEmployee);
 
+            /* estados segun tipo de servicio */
+            var selectServiceType = $("#IdServiceType").val();
+            fillServiceStatus(selectServiceType);
+            /* -----------------------   */
+
+            //Assets marcados para eliminar no se muestran
+            $('#TAssets tbody tr').each(function () {
+                var cell = this.querySelector('td input[name*=Status]');
+                var isVisible = cell.value;
+                if (isVisible === "false") {
+                    $(this).hide();
+                }
+            })
+            //-------------------------------------------
 
             $("#lst_ServiceStatus").on('change', function () {
                 var selectValue = $(this).val();
                 changeCodeInputHiddenList("lst_ServiceStatus", "inpIdServiceStatus", selectValue);
-            });
-            $.ajax({
-                type: "GET",
-                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' +"SERVICESTATUS",
-                data: "{}",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-
-                    var option = $(document.createElement('option'));
-                    option.text("Seleccione");
-                    option.val("0");
-                    $("#lst_ServiceStatus").append(option);
-
-                    $(msg).each(function () {
-                        var option = $(document.createElement('option'));
-
-                        option.text(this.DetailDesc);
-                        option.val(this.IdCatalogDetail); //Identity
-
-                        $("#lst_ServiceStatus").append(option);
-                    });
-
-                    document.getElementById('lst_ServiceStatus').value = "0";
-
-                    changeCodeInputHiddenList("lst_ServiceStatus", "inpIdServiceStatus", "");
-                },
-                error: function (msg) {
-                    $("#error > span").text("Error al llenar lista de Estados de Solicitud");
-                }
-
             });
 
 
@@ -1021,9 +1514,9 @@
 
             // If the checkbox is checked, display the output text
             if ($('#btnRadioSI').is(":checked") == true) {
-                $("#divBeneficiarios").show();
+                $("#divLivT_Beneficiaries").show();
             } else {
-                $("#divBeneficiarios").hide();
+                $("#divLivT_Beneficiaries").hide();
             }
 
             $("#btnRadioSI").on('click', function () {
@@ -1031,7 +1524,7 @@
                 var IsSelected = $('#btnRadioSI').is(":checked");
                 // If the checkbox is checked, display the output text
                 if (IsSelected == true) {
-                    $("#divBeneficiarios").show();
+                    $("#divLivT_Beneficiaries").show();
                 }
 
             });
@@ -1040,11 +1533,78 @@
                 var IsSelected = $('#btnRadioNO').is(":checked");
                 // If the checkbox is checked, display the output text
                 if (IsSelected == true) {
-                    $("#Beneficiaries").val("");
-                    $("#divBeneficiarios").hide();
+                    $("#LivT_Beneficiaries").val("");
+                    $("#divLivT_Beneficiaries").hide();
                 }
 
             });
+
+
+            // If the checkbox is checked, display the output text
+            if ($('#btnRadioGPSi').is(":checked") == true) {
+                $("#divGPInformation").show();
+            } else {
+                $("#divGPInformation").hide();
+            }
+
+            $("#btnRadioGPSi").on('click', function () {
+
+                var IsSelected = $('#btnRadioGPSi').is(":checked");
+                // If the checkbox is checked, display the output text
+                if (IsSelected == true) {
+                    $("#divGPInformation").show();
+                }
+
+            });
+            $("#btnRadioGPNo").on('click', function () {
+
+                var IsSelected = $('#btnRadioGPNo').is(":checked");
+                // If the checkbox is checked, display the output text
+                if (IsSelected == true) {
+                    $("#LivT_GpNames").val("");
+                    $("#LivT_GpPhoneNumber").val("");
+                    $("#LivT_GpAddress").val("");
+                    $("#divGPInformation").hide();
+                }
+
+            });
+
+
+            // If the checkbox is checked, display the output text
+            if ($('#LivT_DonateOrgansSi').is(":checked") == true) {
+                $("#divOrgans").show();
+                $("#divOrgansFor").show();
+            } else {
+                $("#divOrgans").hide();
+                $("#divOrgansFor").hide();
+            }
+
+            $("#LivT_DonateOrgansSi").on('click', function () {
+
+                var IsSelected = $('#LivT_DonateOrgansSi').is(":checked");
+                // If the checkbox is checked, display the output text
+                if (IsSelected == true) {
+                    $("#divOrgans").show();
+                    $("#divOrgansFor").show();
+                }
+
+            });
+            $("#LivT_DonateOrgansNo").on('click', function () {
+
+                var IsSelected = $('#LivT_DonateOrgansNo').is(":checked");
+                // If the checkbox is checked, display the output text
+                if (IsSelected == true) {
+                    $("#LivT_Organs").val("");
+                    document.getElementById("LivT_OrganForTransplant").checked = false;
+                    document.getElementById("LivT_OrganForTherapy").checked = false;
+                    document.getElementById("LivT_OrganForEducation").checked = false;
+                    document.getElementById("LivT_OrganForInvestigation").checked = false;
+                    $("#divOrgans").hide();
+                    $("#divOrgansFor").hide();
+                }
+
+            });
+
 
             $("#lst_PropertyType").on('change', function () {
                 var selectValue = $(this).val();
@@ -1108,6 +1668,35 @@
                     $("#error > span").text("Error al llenar lista de Opciones de Construccion");
                 }
 
+
+            });
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable='+"ASSETSTYPE",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+
+                    var option = $(document.createElement('option'));
+                    option.text("Seleccione");
+                    option.val("");
+                    $("#lst_Assets").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+                        option.text(this.DetailDesc);
+                        option.val(this.IdCatalogDetail); //Identity
+
+                        $("#lst_Assets").append(option);
+                    });
+
+                    document.getElementById('lst_Assets').value = "";
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de Tipos de Bienes");
+                }
 
             });
 

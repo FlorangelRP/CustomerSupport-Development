@@ -21,6 +21,13 @@
                 <div class="col-md-12 form-horizontal">
 
                     @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                @Html.HiddenFor(model => model.IdServiceRequest)
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="row">
 
@@ -226,11 +233,11 @@
                                                 </div>
                                             </div>
 
-
+                                            <hr />
                                             <div class="row">
                                                 <div class="col-md-5">
                                                     <div class="form-group">
-                                                        <div class="control-label">Via de Contacto:</div>
+                                                        <div class="control-label" data-toggle="tooltip" data-placement="top" title="Vía por la cual el Cliente se enteró del Servicio.">Vía de Contacto:</div>
                                                         <select id="lst_ContactType" class="form-control" style="width: 100%;">
                                                         </select>
                                                         @Html.HiddenFor(model => model.IdContactType, new { @id = "inpIdContactType" })
@@ -250,127 +257,127 @@
 
                                             @*<div class="row pt-2 pb-3">
 
-                                                <div class="col-md-12">*@
+                                <div class="col-md-12">*@
 
-                                                    @*<div class="accordion border" id="accordionCita">*@
-                                                        @*<div class="card collapsed-card">*@
-                                                            @*<div class="card-header" id="headingCita">
-                                                                <h2 class="mb-0">
-                                                                    <button class="btn btn-link text-decoration-none" type="button" data-toggle="collapse" data-target="#collapseCardCita" aria-expanded="false" aria-controls="collapseCita">
-                                                                        Cita
-                                                                    </button>
-                                                                </h2>
-                                                            </div>*@
+                                            @*<div class="accordion border" id="accordionCita">*@
+                                            @*<div class="card collapsed-card">*@
+                                            @*<div class="card-header" id="headingCita">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link text-decoration-none" type="button" data-toggle="collapse" data-target="#collapseCardCita" aria-expanded="false" aria-controls="collapseCita">
+                                            Cita
+                                        </button>
+                                    </h2>
+                                </div>*@
 
-                                                            @*<div id="collapseCardCita" class="collapse" aria-labelledby="headingCita" data-parent="#accordionCita">*@
+                                            @*<div id="collapseCardCita" class="collapse" aria-labelledby="headingCita" data-parent="#accordionCita">*@
 
-                                                                @*<div class="card-body">*@
-                                                                    @* @Html.Partial("_PartialDetailTask")*@
+                                            @*<div class="card-body">*@
+                                            @* @Html.Partial("_PartialDetailTask")*@
 
-                                                                    @*@{
-            Model.listTask.Add(new MTask());
-        }*@
+                                            @*@{
+                                    Model.listTask.Add(new MTask());
+                                }*@
 
-                                                                    @*<div class="row">*@
-                                                                        @*<div class="col-md-4">
-                                                                            <div class="form-group">
-                                                                                <div class="control-label">Prioridad:</div>
-                                                                                <select id="lst_Priority" class="form-control" style="width: 100%;">
-                                                                                </select>
-                                                                                @Html.HiddenFor(model => model.listTask[0].IdPriority, new { @id = "inIdPriority" })
-                                                                                @Html.ValidationMessageFor(model => model.listTask[0].IdPriority, "", new { @class = "text-danger" })
-                                                                            </div>
-                                                                        </div>*@
+                                            @*<div class="row">*@
+                                            @*<div class="col-md-4">
+                                    <div class="form-group">
+                                        <div class="control-label">Prioridad:</div>
+                                        <select id="lst_Priority" class="form-control" style="width: 100%;">
+                                        </select>
+                                        @Html.HiddenFor(model => model.listTask[0].IdPriority, new { @id = "inIdPriority" })
+                                        @Html.ValidationMessageFor(model => model.listTask[0].IdPriority, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>*@
 
-                                                                        @*<div class="col-md-4">
-                                                                            <div class="form-group">
-                                                                                <div class="control-label">Tipo:</div>
-                                                                                <select id="lst_IdTypeTask" class="form-control" style="width: 100%;">
-                                                                                </select>
-                                                                                @Html.HiddenFor(model => model.listTask[0].IdTypeTask, new { @id = "inIdTypeTask" })
-                                                                                @Html.ValidationMessageFor(model => model.listTask[0].IdTypeTask, "", new { @class = "text-danger" })
-                                                                            </div>
-                                                                        </div>*@
+                                            @*<div class="col-md-4">
+                                    <div class="form-group">
+                                        <div class="control-label">Tipo:</div>
+                                        <select id="lst_IdTypeTask" class="form-control" style="width: 100%;">
+                                        </select>
+                                        @Html.HiddenFor(model => model.listTask[0].IdTypeTask, new { @id = "inIdTypeTask" })
+                                        @Html.ValidationMessageFor(model => model.listTask[0].IdTypeTask, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>*@
 
-                                                                        @*<div class="col-md-4">
-                                                                            <div class="form-group">
-                                                                                <div class="control-label">Estado:</div>
-                                                                                <select id="lst_IdStatus" class="form-control" style="width: 100%;">
-                                                                                </select>
-                                                                                @Html.HiddenFor(model => model.listTask[0].IdStatus, new { @id = "inIdStatus" })
-                                                                                @Html.ValidationMessageFor(model => model.listTask[0].IdStatus, "", new { @class = "text-danger" })
-                                                                            </div>
-                                                                        </div>*@
+                                            @*<div class="col-md-4">
+                                    <div class="form-group">
+                                        <div class="control-label">Estado:</div>
+                                        <select id="lst_IdStatus" class="form-control" style="width: 100%;">
+                                        </select>
+                                        @Html.HiddenFor(model => model.listTask[0].IdStatus, new { @id = "inIdStatus" })
+                                        @Html.ValidationMessageFor(model => model.listTask[0].IdStatus, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>*@
 
-                                                                    @*</div>*@
+                                            @*</div>*@
 
-                                                                    @*<div class="row">*@
-                                                                        <!--<div class="col-md-3">
-                                                                            <div class="form-group">
-                                                                                <label>Representante:</label><br>-->
-                                                                                @*@Html.TextBoxFor(model => model.listTask[0].IdPersonEmployee, new { @id = "searchEmployee", @name = "listTask[0].IdPersonEmployee", @class = "form-control", @placeholder = "Seleccione" })*@
+                                            @*<div class="row">*@
+                                            <!--<div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Representante:</label><br>-->
+                                            @*@Html.TextBoxFor(model => model.listTask[0].IdPersonEmployee, new { @id = "searchEmployee", @name = "listTask[0].IdPersonEmployee", @class = "form-control", @placeholder = "Seleccione" })*@
 
-                                                                                <!--<select class="select2" onchange="filtrarEmployee(this.value)" id="filtroEmployee" data-placeholder="Seleccionar" name="listTask[0].IdPersonEmployee"></select>-->
-                                                                                @*@Html.ValidationMessageFor(model => model.listTask[0].IdPersonEmployee, "", new { @class = "text-danger" })*@
-                                                                            <!--</div>
-                                                                        </div>-->
-                                                                        <!--<div class="col-md-3">
-                                                                            <div class="form-group">
-                                                                                <div class="control-label">Nombres:</div>
-                                                                                <label id="lbPersonEmployeeName"></label>-->
-                                                                                @*@Html.TextBoxFor(model => model.listTask[0].PersonEmployeeName, new { @class = "form-control" })*@
-                                                                                @*@Html.ValidationMessageFor(model => model.listTask[0].PersonEmployeeName, "", new { @class = "text-danger" })*@
-                                                                            <!--</div>
-                                                                        </div>-->
-                                                                        <!--<div class="col-md-3">
-                                                                            <div class="form-group">
-                                                                                <div class="control-label">Apellidos:</div>
-                                                                                <label id="lbPersonEmployeeLastName"></label>-->
-                                                                                @*@Html.TextBoxFor(model => model.listTask[0].PersonEmployeeLastName, new { @class = "form-control" })*@
-                                                                                @*@Html.ValidationMessageFor(model => model.listTask[0].PersonEmployeeLastName, "", new { @class = "text-danger" })*@
-                                                                            <!--</div>
-                                                                        </div>-->
-                                                                        @*<div class="col-md-3">
-                                                                            <div class="form-group">
-                                                                                <div class="control-label">Actividad a realizar:</div>
-                                                                                @Html.TextAreaFor(model => model.listTask[0].Tittle, new { @class = "form-control", @rows = 3, @cols = 10 })
-                                                                                @Html.ValidationMessageFor(model => model.listTask[0].Tittle, "", new { @class = "text-danger" })
-                                                                            </div>
-                                                                        </div>*@
-                                                                    @*</div>*@
-                                                                    @*<div class="row">*@
-                                                                        @*<div class="col-md-3">
-                                                                            <div class="form-group">
-                                                                                <div class="control-label">Fecha:</div>
-                                                                                @Html.TextBoxFor(model => model.listTask[0].DateIni, "{0:d}", new { @class = "form-control", @type = "date", @id = "dttDateIni" })
-                                                                                @Html.ValidationMessageFor(model => model.listTask[0].DateIni, "", new { @class = "text-danger" })
-                                                                            </div>
-                                                                        </div>*@
-                                                                        @*<div class="col-md-3">
-                                                                            <div class="form-group">
-                                                                                <div class="control-label">Hora:</div>
-                                                                                @Html.TextBoxFor(model => model.listTask[0].HourIni, new { @class = "form-control", @type = "time" })
-                                                                                @Html.ValidationMessageFor(model => model.listTask[0].HourIni, "", new { @class = "text-danger" })
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-6">
-                                                                            <div class="form-group">
-                                                                                <div class="control-label">Lugar:</div>
-                                                                                @Html.TextAreaFor(model => model.listTask[0].Place, new { @class = "form-control", @rows = 3, @cols = 10 })
-                                                                                @Html.ValidationMessageFor(model => model.listTask[0].Place, "", new { @class = "text-danger" })
-                                                                            </div>
-                                                                        </div>*@
-                                                                    @*</div>*@
+                                            <!--<select class="select2" onchange="filtrarEmployee(this.value)" id="filtroEmployee" data-placeholder="Seleccionar" name="listTask[0].IdPersonEmployee"></select>-->
+                                            @*@Html.ValidationMessageFor(model => model.listTask[0].IdPersonEmployee, "", new { @class = "text-danger" })*@
+                                            <!--</div>
+                            </div>-->
+                                            <!--<div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="control-label">Nombres:</div>
+                                    <label id="lbPersonEmployeeName"></label>-->
+                                            @*@Html.TextBoxFor(model => model.listTask[0].PersonEmployeeName, new { @class = "form-control" })*@
+                                            @*@Html.ValidationMessageFor(model => model.listTask[0].PersonEmployeeName, "", new { @class = "text-danger" })*@
+                                            <!--</div>
+                            </div>-->
+                                            <!--<div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="control-label">Apellidos:</div>
+                                    <label id="lbPersonEmployeeLastName"></label>-->
+                                            @*@Html.TextBoxFor(model => model.listTask[0].PersonEmployeeLastName, new { @class = "form-control" })*@
+                                            @*@Html.ValidationMessageFor(model => model.listTask[0].PersonEmployeeLastName, "", new { @class = "text-danger" })*@
+                                            <!--</div>
+                            </div>-->
+                                            @*<div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class="control-label">Actividad a realizar:</div>
+                                        @Html.TextAreaFor(model => model.listTask[0].Tittle, new { @class = "form-control", @rows = 3, @cols = 10 })
+                                        @Html.ValidationMessageFor(model => model.listTask[0].Tittle, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>*@
+                                            @*</div>*@
+                                            @*<div class="row">*@
+                                            @*<div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class="control-label">Fecha:</div>
+                                        @Html.TextBoxFor(model => model.listTask[0].DateIni, "{0:d}", new { @class = "form-control", @type = "date", @id = "dttDateIni" })
+                                        @Html.ValidationMessageFor(model => model.listTask[0].DateIni, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>*@
+                                            @*<div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class="control-label">Hora:</div>
+                                        @Html.TextBoxFor(model => model.listTask[0].HourIni, new { @class = "form-control", @type = "time" })
+                                        @Html.ValidationMessageFor(model => model.listTask[0].HourIni, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="control-label">Lugar:</div>
+                                        @Html.TextAreaFor(model => model.listTask[0].Place, new { @class = "form-control", @rows = 3, @cols = 10 })
+                                        @Html.ValidationMessageFor(model => model.listTask[0].Place, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>*@
+                                            @*</div>*@
 
-                                                                @*</div>*@
+                                            @*</div>*@
 
-                                                            @*</div>*@
-                                                        @*</div>*@
-                                                    @*</div>*@
+                                            @*</div>*@
+                                            @*</div>*@
+                                            @*</div>*@
 
-                                                @*</div>
+                                            @*</div>
 
-                                            </div>*@
+                                </div>*@
 
                                         </div>
 
@@ -468,8 +475,6 @@
                 /*debugger;*/
                 var SelecCodeValue = person.trim();
                 cargarDataPerson(SelecCodeValue, ListPersons);
-
-
         }
 
         function ObtenerPersonas() {
@@ -843,7 +848,104 @@
             return found;
         }
 
+        function fillServiceStatus(IdServiceType) {
 
+            document.querySelector('#lst_ServiceStatus').innerHTML = '';
+            $.ajax({
+                type: "GET",
+                //url: 'Url.Action("GetTableCatalog", "TableCatalog")?idTable=' + "SERVICESTATUS",
+                url: '@Url.Action("GetListStatusServiceType", "StatusServiceType")?IdServiceType=' + IdServiceType,
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+
+                    var option = $(document.createElement('option'));
+                    option.text("Seleccione");
+                    option.val("0");
+                    $("#lst_ServiceStatus").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+                        option.text(this.Description);
+                        option.val(this.IdCatalogDetail); //Identity
+
+                        $("#lst_ServiceStatus").append(option);
+                    });
+
+                    document.getElementById('lst_ServiceStatus').value = "0";
+
+                    changeCodeInputHiddenList("lst_ServiceStatus", "inpIdServiceStatus", "");
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de Estados de por tipo de Servicio");
+                }
+
+            });
+
+        }
+
+        //Funciones para tabla de Bienes a incluir:
+            function deleteRow(id){
+                var idTrRow = '#trAssets' + id;
+                var idTdStatus = 'listServiceRequestAssets[' + id + '].Status';
+
+                document.getElementById('' + idTdStatus + '').value = "false";
+                $(idTrRow).hide();
+            }
+
+            function addRow(){
+
+                @{
+                    Model.listServiceRequestAssets.Add(new MServiceRequestAssets());
+                }
+
+                //obtenemos los valores a insertar
+                var strIdAsset = "0";
+                var strIdServiceRequest = $("#IdServiceRequest").val();
+                var strIdAssetsType = $("#lst_Assets").val();
+                var strAssetsType = $('select[id="lst_Assets"] option:selected').text();
+                var strDescription = $("#txtDescription").val();
+                var strBeneficiaries = $("#txtBeneficiaries").val();
+                var strAdministrators = $("#txtAdministrators").val();
+                var strStatus = "true";
+
+
+                if (strDescription.trim() != "") {
+
+                    var index = document.getElementById('TAssets').rows.length;
+
+                    var colHid_indexCell = "<td style='display:none'><input name='listServiceRequestAssets.Index' type = 'hidden' value = '" + index + "' /></td > ";
+                    var colHid_IdAsset = "<td style='display:none'><input id='listServiceRequestAssets[" + index + "].IdAsset' name = 'listServiceRequestAssets[" + index + "].IdAsset' type = 'hidden' value = '" + strIdAsset + "' /></td> ";
+                    var colHid_IdServiceRequest = "<td style='display:none'><input id='listServiceRequestAssets[" + index + "].IdServiceRequest' name = 'listServiceRequestAssets[" + index + "].IdServiceRequest' type='hidden' value='" + strIdServiceRequest + "' /></td> ";
+                    var colHid_IdAssetsType = "<td style='display:none'><input id='listServiceRequestAssets[" + index + "].IdAssetsType' name = 'listServiceRequestAssets[" + index + "].IdAssetsType' type='hidden' value='" + strIdAssetsType + "' /></td> ";
+                    var colHid_AssetsType = "<td style='display:none'><input id='listServiceRequestAssets[" + index + "].AssetsType' name = 'listServiceRequestAssets[" + index + "].AssetsType' type='hidden' value='" + strAssetsType + "' /></td> ";
+                    var colHid_Status = "<td style='display:none'><input id='listServiceRequestAssets[" + index + "].Status' name = 'listServiceRequestAssets[" + index + "].Status' type = 'hidden' value = '" + strStatus + "' /></td> ";
+
+                    var colAssetsType = "<td>" + strAssetsType + "</td> ";
+                    var colDescription = "<td><textarea id='listServiceRequestAssets[" + index + "].Description' name = 'listServiceRequestAssets[" + index + "].Description' rows='2' cols='2'  class = 'cell-Input form-control inputLostFocus'>" + strDescription + "</textarea></td> ";
+                    var colBeneficiaries = "<td><textarea id='listServiceRequestAssets[" + index + "].Beneficiaries' name = 'listServiceRequestAssets[" + index + "].Beneficiaries' rows='2' cols='2'  class = 'cell-Input form-control inputLostFocus'>" + strBeneficiaries + "</textarea></td> ";
+                    var colAdministrators = "<td><textarea id='listServiceRequestAssets[" + index + "].Administrators' name = 'listServiceRequestAssets[" + index + "].Administrators' rows='2' cols='2'  class = 'cell-Input form-control inputLostFocus'>" + strAdministrators + "</textarea></td> ";
+
+                    var colDelete = "<td><div class='btn_option pt-0'><a class='deleteRow' onclick='deleteRow(" + index + ");'><i class='far fa-trash-alt'></i></a></div></td> ";
+
+                    //insertamos los valores en la tabla
+                    var newRow = "<tr id='trAssets" + index + "'>" +
+                        colHid_indexCell + colHid_IdAsset + colHid_IdServiceRequest + colHid_IdAssetsType + colHid_AssetsType +
+                        colHid_Status + colAssetsType + colDescription + colBeneficiaries + colAdministrators +
+                        colDelete + "</tr>";
+                    $("#TAssets").append(newRow);
+                    //--------------------------
+
+                    //limpiamos los valores ya agregados
+                    document.getElementById('lst_Assets').value = "";
+                    document.getElementById('txtDescription').value = "";
+                    document.getElementById('txtBeneficiaries').value = "";
+                    document.getElementById('txtAdministrators').value = "";
+                }
+
+            }
+        //-----------------------------------------
 
         $(document).ready(function () {
 
@@ -870,6 +972,16 @@
             if ("@ViewBag.ErrorSave" != ""){
                 toastr.error("@ViewBag.ErrorSave");
             }
+            //-------------------------------------------
+
+            //Assets marcados para eliminar no se muestran
+            $('#TAssets tbody tr').each(function () {
+                var cell = this.querySelector('td input[name*=Status]');
+                var isVisible = cell.value;
+                if (isVisible==="false") {
+                    $(this).hide();
+                }
+            })
             //-------------------------------------------
 
             $('#EstimatedValue').inputmask("decimal");
@@ -939,38 +1051,6 @@
                 var selectValue = $(this).val();
                 changeCodeInputHiddenList("lst_ServiceStatus", "inpIdServiceStatus", selectValue);
             });
-            $.ajax({
-                type: "GET",
-                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' +"SERVICESTATUS",
-                data: "{}",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-
-                    var option = $(document.createElement('option'));
-                    option.text("Seleccione");
-                    option.val("0");
-                    $("#lst_ServiceStatus").append(option);
-
-                    $(msg).each(function () {
-                        var option = $(document.createElement('option'));
-
-                        option.text(this.DetailDesc);
-                        option.val(this.IdCatalogDetail); //Identity
-
-                        $("#lst_ServiceStatus").append(option);
-                    });
-
-                    document.getElementById('lst_ServiceStatus').value = "0";
-
-                    changeCodeInputHiddenList("lst_ServiceStatus", "inpIdServiceStatus", "");
-                },
-                error: function (msg) {
-                    $("#error > span").text("Error al llenar lista de Estados de Solicitud");
-                }
-
-            });
-
 
             $("#lst_ServiceType").on('change', function () {
                 var selectValue = $(this).val();
@@ -978,6 +1058,9 @@
 
                 var selecDesc = $('select[id="lst_ServiceType"] option:selected').text();
                 showServiceType(selecDesc);
+
+                fillServiceStatus(selectValue);
+                $("#inpIdServiceStatus").val('');
             });
             $.ajax({
                 type: "GET",
@@ -1005,6 +1088,11 @@
 
                     changeCodeInputHiddenList("lst_ServiceType", "inpIdServiceType", "");
                     showServiceType($('select[id="lst_ServiceType"] option:selected').text());
+
+                    /* estados segun tipo de servicio */
+                    var selectServiceType = $("#lst_ServiceType").val();
+                    fillServiceStatus(selectServiceType);
+                    /* -----------------------   */
                 },
                 error: function (msg) {
                     $("#error > span").text("Error al llenar lista de Servicios");
@@ -1017,9 +1105,9 @@
 
             // If the checkbox is checked, display the output text
             if ($('#btnRadioSI').is(":checked") == true) {
-                $("#divBeneficiarios").show();
+                $("#divLivT_Beneficiaries").show();
             } else {
-                $("#divBeneficiarios").hide();
+                $("#divLivT_Beneficiaries").hide();
             }
 
             $("#btnRadioSI").on('click', function () {
@@ -1027,7 +1115,7 @@
                 var IsSelected = $('#btnRadioSI').is(":checked");
                 // If the checkbox is checked, display the output text
                 if (IsSelected == true) {
-                    $("#divBeneficiarios").show();
+                    $("#divLivT_Beneficiaries").show();
                 }
 
             });
@@ -1036,11 +1124,78 @@
                 var IsSelected = $('#btnRadioNO').is(":checked");
                 // If the checkbox is checked, display the output text
                 if (IsSelected == true) {
-                    $("#Beneficiaries").val("");
-                    $("#divBeneficiarios").hide();
+                    $("#LivT_Beneficiaries").val("");
+                    $("#divLivT_Beneficiaries").hide();
                 }
 
             });
+
+
+            // If the checkbox is checked, display the output text
+            if ($('#btnRadioGPSi').is(":checked") == true) {
+                $("#divGPInformation").show();
+            } else {
+                $("#divGPInformation").hide();
+            }
+
+            $("#btnRadioGPSi").on('click', function () {
+
+                var IsSelected = $('#btnRadioGPSi').is(":checked");
+                // If the checkbox is checked, display the output text
+                if (IsSelected == true) {
+                    $("#divGPInformation").show();
+                }
+
+            });
+            $("#btnRadioGPNo").on('click', function () {
+
+                var IsSelected = $('#btnRadioGPNo').is(":checked");
+                // If the checkbox is checked, display the output text
+                if (IsSelected == true) {
+                    $("#LivT_GpNames").val("");
+                    $("#LivT_GpPhoneNumber").val("");
+                    $("#LivT_GpAddress").val("");
+                    $("#divGPInformation").hide();
+                }
+
+            });
+
+
+            // If the checkbox is checked, display the output text
+            if ($('#LivT_DonateOrgansSi').is(":checked") == true) {
+                $("#divOrgans").show();
+                $("#divOrgansFor").show();
+            } else {
+                $("#divOrgans").hide();
+                $("#divOrgansFor").hide();
+            }
+
+            $("#LivT_DonateOrgansSi").on('click', function () {
+
+                var IsSelected = $('#LivT_DonateOrgansSi').is(":checked");
+                // If the checkbox is checked, display the output text
+                if (IsSelected == true) {
+                    $("#divOrgans").show();
+                    $("#divOrgansFor").show();
+                }
+
+            });
+            $("#LivT_DonateOrgansNo").on('click', function () {
+
+                var IsSelected = $('#LivT_DonateOrgansNo').is(":checked");
+                // If the checkbox is checked, display the output text
+                if (IsSelected == true) {
+                    $("#LivT_Organs").val("");
+                    document.getElementById("LivT_OrganForTransplant").checked = false;
+                    document.getElementById("LivT_OrganForTherapy").checked = false;
+                    document.getElementById("LivT_OrganForEducation").checked = false;
+                    document.getElementById("LivT_OrganForInvestigation").checked = false;
+                    $("#divOrgans").hide();
+                    $("#divOrgansFor").hide();
+                }
+
+            });
+
 
             $("#lst_PropertyType").on('change', function () {
                 var selectValue = $(this).val();
@@ -1102,6 +1257,35 @@
                 },
                 error: function (msg) {
                     $("#error > span").text("Error al llenar lista de Opciones de Construccion");
+                }
+
+            });
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable='+"ASSETSTYPE",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+
+                    var option = $(document.createElement('option'));
+                    option.text("Seleccione");
+                    option.val("");
+                    $("#lst_Assets").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+                        option.text(this.DetailDesc);
+                        option.val(this.IdCatalogDetail); //Identity
+
+                        $("#lst_Assets").append(option);
+                    });
+
+                    document.getElementById('lst_Assets').value = "";
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de Tipos de Bienes");
                 }
 
             });

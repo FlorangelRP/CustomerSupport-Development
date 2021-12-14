@@ -221,7 +221,13 @@
     <Compile Include="BDContext\GNListServiceConstructionOption_Result.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
+    <Compile Include="BDContext\GNListServiceRequestAssets_Result.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
     <Compile Include="BDContext\GNListServiceRequest_Result.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BDContext\GNListStatusServiceType_Result.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\GNListTask_Result.cs">
@@ -242,8 +248,8 @@
       <DependentUpon>MMEnterprises.Context.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\MMEnterprises.cs">
-      <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\MMEnterprises.Designer.cs">
@@ -284,6 +290,9 @@
     <Compile Include="BDContext\ServiceRequest.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
+    <Compile Include="BDContext\ServiceRequestAssets.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
     <Compile Include="BDContext\sp_helpdiagramdefinition_Result.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
@@ -311,6 +320,7 @@
     <Compile Include="Class\Utilities.cs" />
     <Compile Include="Controllers\CalendarController.cs" />
     <Compile Include="Controllers\ConfigurationParameterController.cs" />
+    <Compile Include="Controllers\StatusServiceTypeController.cs" />
     <Compile Include="Controllers\NotificationSettingsController.cs" />
     <Compile Include="Controllers\PerformanceController.cs" />
     <Compile Include="Controllers\PositionController.cs" />
@@ -338,6 +348,7 @@
     <Compile Include="Models\MPerformance.cs" />
     <Compile Include="Models\MRole.cs" />
     <Compile Include="Models\MServiceConstructionOption.cs" />
+    <Compile Include="Models\MServiceRequestAssets.cs" />
     <Compile Include="Models\MStatistics.cs" />
     <Compile Include="Models\MTask.cs" />
     <Compile Include="Models\MPerson.cs" />
@@ -439,7 +450,11 @@
     <Content Include="Content\assets\images\ss_map.png" />
     <Content Include="Content\assets\images\ss_signature.png" />
     <Content Include="Content\assets\images\svg\black_logo.svg" />
+    <Content Include="Content\assets\images\svg\icon-addticket.svg" />
+    <Content Include="Content\assets\images\svg\icon-calendar.svg" />
     <Content Include="Content\assets\images\svg\icon-employee.svg" />
+    <Content Include="Content\assets\images\svg\icon-performance.svg" />
+    <Content Include="Content\assets\images\svg\icon-searchticket.svg" />
     <Content Include="Content\assets\images\svg\icon-service-end.svg" />
     <Content Include="Content\assets\images\svg\icon-service-pending.svg" />
     <Content Include="Content\assets\images\svg\icon6.svg" />
@@ -1252,7 +1267,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties scripts_4tinymce_4tsconfig_1json__JsonSchema="" scripts_4toastr_1js_1map__JsonSchema="" />
+      <UserProperties scripts_4toastr_1js_1map__JsonSchema="" scripts_4tinymce_4tsconfig_1json__JsonSchema="" />
     </VisualStudio>
   </ProjectExtensions>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

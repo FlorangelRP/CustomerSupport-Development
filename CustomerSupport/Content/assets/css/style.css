@@ -1832,11 +1832,12 @@ input:checked ~ .s_st_checkbox:after {
     margin-top: 20px;	
 }
 .counter_div {
-    padding: 50px 0;
-    background: white;
-    margin-top: -100px;
-    border: 1px solid #f6f9fe;
-	transition:0.3s;
+	padding: 20px 0;
+	background: white;
+	margin-top: -100px; /*-100px*/
+	margin-bottom: 100px;
+	border: 1px solid #f6f9fe;
+	transition: 0.3s;
 	border-radius: 10px;
 }
 .counter_div:hover{
@@ -1850,7 +1851,7 @@ input:checked ~ .s_st_checkbox:after {
 	color:#ffffff;
 }
 .happy_clients h1{
-	padding-bottom:100px;
+	padding-bottom:100px; /*100px*/
 }
 .happy_clients h3:before {
     background: #061736;
@@ -3741,8 +3742,9 @@ tr.group:hover {
 	.ss_td_one_right {
 		padding-top: 56px;
 	}
-	.counter_div{
-		margin-top:30px;
+	.counter_div {
+		margin-top: 30px;
+		margin-bottom: 0px;
 	}
 	.ss_about_counter {
 		background-color: transparent;
@@ -3820,6 +3822,9 @@ tr.group:hover {
 	}
 	.happy_clients {
 		padding-top:16px;
+	}
+	.counter_div {
+		margin-bottom: 0px;
 	}
 	.ss_section_six {
 		padding-bottom: 25px;
