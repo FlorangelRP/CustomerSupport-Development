@@ -75,7 +75,7 @@ namespace CustomerSupport.Controllers
             MUser objUser = new MUser();
 
 
-            listMCalendar = (List<MCalendar>)(from tsk in db.GNListTask(IdTask, dttDateIni, dttDateEnd, IdResponsable, strTittle, IdPriority, IdStatus, IdTypeTask, IdServiceRequest, IdUser, IdFatherTask).ToList()
+            listMCalendar = (List<MCalendar>)(from tsk in db.GNListTask(IdTask, dttDateIni, dttDateEnd, IdResponsable, strTittle, IdPriority, IdStatus, IdTypeTask, IdServiceRequest, IdUser, IdFatherTask,null,null).ToList()
                                      select new MCalendar
                                      {
                                          IdTask = tsk.IdTask,

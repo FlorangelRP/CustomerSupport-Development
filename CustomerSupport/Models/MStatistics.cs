@@ -27,5 +27,9 @@ namespace CustomerSupport.Models
         public bool XDate { get; set; }
         public DateTime? DateIni { get; set; }
         public DateTime? DateEnd { get; set; }
+        public bool Xtype { get; set; }
+
+        public int? IdTypeTask { get; set; }
+
     }
 }

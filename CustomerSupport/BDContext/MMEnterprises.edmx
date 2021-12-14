@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="MMEnterprisesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="MMEnterprisesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AssociatePosition">
           <Key>
             <PropertyRef Name="IdPosition" />
@@ -31,6 +31,12 @@
           <Property Name="Description" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="Status" Type="bit" Nullable="false" />
         </EntityType>
+        <!--Errores durante la generación:
+advertencia 6013: La tabla o vista 'MMEnterprises.dbo.Colors' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
+        <EntityType Name="Colors">
+          <Property Name="backgroundColor" Type="varchar" MaxLength="50" />
+          <Property Name="borderColor" Type="varchar" MaxLength="50" />
+        </EntityType>-->
         <EntityType Name="CommentTask">
           <Key>
             <PropertyRef Name="IdComment" />
@@ -255,6 +261,7 @@
           <Property Name="IdTypeTask" Type="int" />
           <Property Name="Activity" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="confidential" Type="bit" Nullable="false" />
+          <Property Name="CreationDate" Type="datetime" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -862,6 +869,8 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <Parameter Name="XDate" Type="bit" Mode="In" />
           <Parameter Name="DateIni" Type="datetime" Mode="In" />
           <Parameter Name="DateEnd" Type="datetime" Mode="In" />
+          <Parameter Name="Xtype" Type="bit" Mode="In" />
+          <Parameter Name="IdTypeTask" Type="int" Mode="In" />
         </Function>
         <Function Name="GNLisColor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="GNLisConfigurationParameter" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -961,6 +970,8 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <Parameter Name="IdServiceRequest" Type="int" Mode="In" />
           <Parameter Name="IdUser" Type="int" Mode="In" />
           <Parameter Name="IdFatherTask" Type="int" Mode="In" />
+          <Parameter Name="IdColaborator" Type="int" Mode="In" />
+          <Parameter Name="IdFollower" Type="int" Mode="In" />
         </Function>
         <Function Name="GNListUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdUser" Type="int" Mode="In" />
@@ -1396,7 +1407,8 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
             <End Role="UserRole" EntitySet="UserRole" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MMEnterprisesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1678,6 +1690,7 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <Property Name="IdTypeTask" Type="Int32" />
           <Property Name="Activity" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="confidential" Type="Boolean" Nullable="false" />
+          <Property Name="CreationDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="CommentTask" Relationship="Self.FK_CommentTask_Task" FromRole="Task" ToRole="CommentTask" />
           <NavigationProperty Name="Person" Relationship="Self.FK_Task_Person" FromRole="Task" ToRole="Person" />
           <NavigationProperty Name="PersonTask" Relationship="Self.FK_PersonTask_Task" FromRole="Task" ToRole="PersonTask" />
@@ -2363,24 +2376,30 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
             <Parameter Name="XDate" Mode="In" Type="Boolean" />
             <Parameter Name="DateIni" Mode="In" Type="DateTime" />
             <Parameter Name="DateEnd" Mode="In" Type="DateTime" />
+            <Parameter Name="Xtype" Mode="In" Type="Boolean" />
+            <Parameter Name="IdTypeTask" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GNLisColor" ReturnType="Collection(MMEnterprisesModel.GNLisColor_Result)" />
+          <FunctionImport Name="GNLisConfigurationParameter" ReturnType="Collection(MMEnterprisesModel.GNLisConfigurationParameter_Result)">
+            <Parameter Name="IdConfig" Mode="In" Type="Int32" />
+            <Parameter Name="strAbbreviation" Mode="In" Type="String" />
+          </FunctionImport>
           <FunctionImport Name="GNLisNotificationSettings" ReturnType="Collection(MMEnterprisesModel.GNLisNotificationSettings_Result)">
             <Parameter Name="IdUser" Mode="In" Type="Int32" />
             <Parameter Name="IdPerson" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GNLisNotificationSettingsPriority" ReturnType="Collection(MMEnterprisesModel.GNLisNotificationSettingsPriority_Result)">
-          <Parameter Name="IdSetting" Mode="In" Type="Int32" />
+            <Parameter Name="IdSetting" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GNLisNotificationSettingsStatus" ReturnType="Collection(MMEnterprisesModel.GNLisNotificationSettingsStatus_Result)">
-          <Parameter Name="IdSetting" Mode="In" Type="Int32" />
+            <Parameter Name="IdSetting" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GNListAssociatePosition" ReturnType="Collection(MMEnterprisesModel.GNListAssociatePosition_Result)">
             <Parameter Name="IdPosition" Mode="In" Type="Int32" />
             <Parameter Name="IdAssociate" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GNListBitacora" ReturnType="Collection(MMEnterprisesModel.GNListBitacora_Result)">
-          <Parameter Name="IdTask" Mode="In" Type="Int32" />
+            <Parameter Name="IdTask" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GNListCatalog" ReturnType="Collection(MMEnterprisesModel.GNListCatalog_Result)">
             <Parameter Name="IdCatalog" Mode="In" Type="Int32" />
@@ -2458,6 +2477,8 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
             <Parameter Name="IdServiceRequest" Mode="In" Type="Int32" />
             <Parameter Name="IdUser" Mode="In" Type="Int32" />
             <Parameter Name="IdFatherTask" Mode="In" Type="Int32" />
+            <Parameter Name="IdColaborator" Mode="In" Type="Int32" />
+            <Parameter Name="IdFollower" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GNListUser" ReturnType="Collection(MMEnterprisesModel.GNListUser_Result)">
             <Parameter Name="IdUser" Mode="In" Type="Int32" />
@@ -2672,19 +2693,21 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
-          <FunctionImport Name="GNLisConfigurationParameter" ReturnType="Collection(MMEnterprisesModel.GNLisConfigurationParameter_Result)">
-            <Parameter Name="IdConfig" Mode="In" Type="Int32" />
-            <Parameter Name="strAbbreviation" Mode="In" Type="String" />
-          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="GNLisChart_Result">
-          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="StatusTask" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="201" />
+          <Property Type="String" Name="StatusTask" Nullable="false" MaxLength="200" />
           <Property Type="Int32" Name="Cantidad" Nullable="true" />
         </ComplexType>
         <ComplexType Name="GNLisColor_Result">
           <Property Type="String" Name="backgroundColor" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="borderColor" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="GNLisConfigurationParameter_Result">
+          <Property Type="Int32" Name="IdConfig" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="500" />
+          <Property Type="String" Name="Abbreviation" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Value" Nullable="false" />
         </ComplexType>
         <ComplexType Name="GNLisNotificationSettings_Result">
           <Property Type="Int32" Name="IdSetting" Nullable="false" />
@@ -2889,6 +2912,10 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <Property Type="String" Name="LastName" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="Activity" Nullable="true" />
           <Property Type="Boolean" Name="confidential" Nullable="true" />
+          <Property Type="String" Name="Colaborator" Nullable="true" MaxLength="201" />
+          <Property Type="String" Name="Seguidor" Nullable="true" MaxLength="201" />
+          <Property Type="DateTime" Name="OperationDate" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="CreationDate" Nullable="true" Precision="23" />
         </ComplexType>
         <ComplexType Name="GNListUser_Result">
           <Property Type="Int32" Name="IdUser" Nullable="false" />
@@ -2926,12 +2953,6 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           <Property Type="Int32" Name="ID" Nullable="false" />
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
-        </ComplexType>
-        <ComplexType Name="GNLisConfigurationParameter_Result">
-          <Property Type="Int32" Name="IdConfig" Nullable="false" />
-          <Property Type="String" Name="Description" Nullable="false" MaxLength="500" />
-          <Property Type="String" Name="Abbreviation" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Value" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -3169,6 +3190,7 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
                 <ScalarProperty Name="IdTypeTask" ColumnName="IdTypeTask" />
                 <ScalarProperty Name="Activity" ColumnName="Activity" />
                 <ScalarProperty Name="confidential" ColumnName="confidential" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3278,6 +3300,16 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
               <ComplexTypeMapping TypeName="MMEnterprisesModel.GNLisColor_Result">
                 <ScalarProperty Name="backgroundColor" ColumnName="backgroundColor" />
                 <ScalarProperty Name="borderColor" ColumnName="borderColor" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GNLisConfigurationParameter" FunctionName="MMEnterprisesModel.Store.GNLisConfigurationParameter">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNLisConfigurationParameter_Result">
+                <ScalarProperty Name="IdConfig" ColumnName="IdConfig" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Abbreviation" ColumnName="Abbreviation" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -3558,6 +3590,10 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="Activity" ColumnName="Activity" />
                 <ScalarProperty Name="confidential" ColumnName="confidential" />
+                <ScalarProperty Name="Colaborator" ColumnName="Colaborator" />
+                <ScalarProperty Name="Seguidor" ColumnName="Seguidor" />
+                <ScalarProperty Name="OperationDate" ColumnName="OperationDate" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -3642,16 +3678,6 @@ advertencia 6002: La tabla o vista 'MMEnterprises.dbo.VWListCatalog' no tiene de
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="MMEnterprisesModel.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="MMEnterprisesModel.Store.sp_upgraddiagrams" />
-          <FunctionImportMapping FunctionImportName="GNLisConfigurationParameter" FunctionName="MMEnterprisesModel.Store.GNLisConfigurationParameter">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="MMEnterprisesModel.GNLisConfigurationParameter_Result">
-                <ScalarProperty Name="IdConfig" ColumnName="IdConfig" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Abbreviation" ColumnName="Abbreviation" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

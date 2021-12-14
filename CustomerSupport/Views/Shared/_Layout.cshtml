@@ -24,19 +24,23 @@
         @@media (max-width: 768px) {
             .fc-toolbar {
                 display: flex;
-                flex-direction:column;
+                flex-direction: column;
                 justify-content: flex-start;
                 align-items: center;
             }
-            .fc-toolbar .fc-left{
-                float:none;
-            }
-            .fc-toolbar .fc-right {
-                float: none;
-            }
-            .fc-toolbar .fc-center {
-                display: block;
-            }
+
+                .fc-toolbar .fc-left {
+                    float: none;
+                }
+
+                .fc-toolbar .fc-right {
+                    float: none;
+                }
+
+                .fc-toolbar .fc-center {
+                    display: block;
+                }
+
             .fc-day-header {
                 /* force tittles to be one-line tall */
                 white-space: nowrap;
@@ -82,10 +86,10 @@
                 <div class="modal-footer">
                     <div class="btn_option pt-0">
                         <button class="border-0" onclick="return SessionOKClick()" data-toggle="tooltip" title="Ok"><i class="fas fa-check"></i></button>
-                    </div>                    
+                    </div>
                     <div class="btn_option pt-0" data-toggle="tooltip" title="Cancel">
                         <a href='@Url.Action("Close", "User")'><i class="fas fa-times"></i></a>
-                    </div>                    
+                    </div>
                 </div>
             </div>
         </div>

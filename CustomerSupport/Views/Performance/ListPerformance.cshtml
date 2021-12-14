@@ -149,11 +149,39 @@
                             </label>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <div class="btn_option pt-0" style=" vertical-align: bottom"><button class="searchRow border-0" data-toggle="tooltip" data-placement="top" title="Filtrar" onclick="FiltrarTicket()" ;return false;"><i class="fas fa-filter"></i></button></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row" style="display:none" id="divYear">
+                            </div>
                         </div>
                     </div>
+
+
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="ss_radioButton">
+                                Tickets por Tipo
+                                <input id="btnRadioXTypeTask" type="radio" name="radio">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row" style="display:none" id="divTypetask">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <div class="control-label">Tipo:</div>
+                                            <select class="form-control" id="lst_IdTypeTask"  style="width: 100%;"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
                 </div>
                 <div class="row" style="display:none" id="divDate">
                     <div class="col-md-2">
@@ -171,6 +199,13 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group"  align="right">
+                            <div class="btn_option pt-0" style=" vertical-align: bottom"><button class="searchRow border-0" data-toggle="tooltip" data-placement="top" title="Filtrar" onclick="FiltrarTicket()" ;return false;"><i class="fas fa-filter"></i></button></div>
+                        </div>
+                    </div>
+                </div>
                 <br />
             </div>
         </div>
@@ -180,30 +215,31 @@
                 <div id="barChart_Content" class="chart">
                     @*  <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>*@
                 </div>
-                <!--<div class="m-0 row justify-content-center">
-            <div class="form-horizontal col-md-10">-->
-                @*@using (Html.BeginForm("EditTask", "Task"))
-                {*@
+
+    <!--<div class="m-0 row justify-content-center">
+<div class="form-horizontal col-md-10">-->
+    @*@using (Html.BeginForm("EditTask", "Task"))
+    {*@
 
 
 
-                <!--@Html.AntiForgeryToken()
+    <!--@Html.AntiForgeryToken()
 
 
-            <br />
-            <div class="row">
-                <div id="Barchart"></div>
-            </div>
+<br />
+<div class="row">
+    <div id="Barchart"></div>
+</div>
 
-            <div class="row">
-                <div class="col-md-10 text-center">-->
-                @*<span class="text-success">@ViewBag.SuccessSave</span>*@
-                @*<span class="text-danger">@ViewBag.ErrorSave</span>*@
-                <!--</div>
-            </div>-->
-                @* }*@
-                <!--</div>
-            </div>-->
+<div class="row">
+    <div class="col-md-10 text-center">-->
+    @*<span class="text-success">@ViewBag.SuccessSave</span>*@
+    @*<span class="text-danger">@ViewBag.ErrorSave</span>*@
+    <!--</div>
+</div>-->
+    @* }*@
+    <!--</div>
+</div>-->
             </div>
 
             <div>
@@ -244,6 +280,12 @@
                 idDepartament = $("#lst_IdDepartemnt").val();
             }
 
+            var idTypeTask = 0;
+            var oTypeTask = $('#btnRadioXTypeTask').is(":checked");
+
+            if (oTypeTask == true) {
+                idTypeTask = $("#lst_IdTypeTask").val();
+            }
 
             var oYear = $('#btnRadioXYear').is(":checked");
 
@@ -278,6 +320,8 @@
                 XDate: oDate,
                 DateIni: oateTime,
                 DateEnd: oateEnd,
+                Xtype: oTypeTask,
+                IdTypeTask: idTypeTask,
             };
             oLista = [];
             oLabel = [];
@@ -508,6 +552,36 @@
 
             });
 
+             $.ajax({
+                type: "GET",
+                 url: '@Url.Action("GetTableCatalog", "TableCatalog")?idTable=' +"TYPETASK",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+
+                    var option = $(document.createElement('option'));
+                    option.text("Todos");
+                    option.val("0");
+                    $("#lst_IdTypeTask").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+
+                        option.text(this.DetailDesc);
+                        option.val(this.IdCatalogDetail); //Identity
+
+                        $("#lst_IdTypeTask").append(option);
+                    });
+
+                    document.getElementById('lst_IdTypeTask').value = "0";
+
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de Departamento");
+                }
+
+            });
 
             if ($('#btnRadioXMonth').is(":checked") == true) {
                 $("#divMonth").show();
@@ -585,7 +659,20 @@
                 else {
                     $("#divDate").hide();
                 }
+
+                var IsRadioXTypeTask = $('#btnRadioXTypeTask').is(":checked");
+                // If the checkbox is checked, display the output text
+                if (IsRadioXTypeTask == true) {
+                    $("#divTypetask").show();
+                }
+                else {
+                    $("#divTypetask").hide();
+                }
+
             });
+
+          
+
         });
 
     </script>

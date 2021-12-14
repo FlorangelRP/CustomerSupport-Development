@@ -31,7 +31,38 @@
 
                         <div class="btn_option pt-0" style=" vertical-align: central"><button class="searchRow border-0" data-toggle="tooltip" data-placement="top" title="Ver Cronograma" onclick="location.href='@Url.Action("ListCalendar", "Calendar")';return false;"><i class="far fa-calendar-alt"></i></button></div>
                     </div>
-                    <div class="col-md-10  text-right">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @*<div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mt-0 mb-0">Leyenda</h5>
+                            </div>
+                            <div class="card-body">*@
+                            <fieldset>
+
+                                <span class="btn-group">
+                                    <input class="dot border-0 m-1" style="background-color: #61bd4f;">
+                                    <label style="font-size:12px;">En Proceso</label>
+                                </span>
+                                <span class="btn-group">
+                                    <input class="dot border-0 m-1" style="background-color: #ff9f1a; ">
+                                    <label style="font-size:12px;">En Espera de Feedback</label>
+                                </span>
+                                <span class="btn-group">
+                                    <input class="dot border-0 m-1" style="background-color: #f2d600;">
+                                    <label style="font-size:12px;">Por Vencer</label>
+                                </span>
+                                <span class="btn-group">
+                                    <input class="dot border-0 m-1" style="background-color: #eb5a46;">
+                                    <label style="font-size:12px;">Vencido</label>
+                                </span>
+                            </fieldset>
+                            @*</div>
+                            </div>*@
+                        </div>
+                    </div>
+                    <div class="col-md-4  text-right">
                         <div class="text-right">
 
                             <button class="white_btn" onclick="location.href='@Url.Action("AddTask", "Task")';return false;">Agregar</button>
@@ -115,8 +146,6 @@
                 </div>
                 <div class="row">
 
-
-
                     <div class="col-md-2">
                         <div class="form-group">
                             <div class="control-label"># Servicio:</div>
@@ -131,7 +160,25 @@
                             @Html.ValidationMessageFor(model => model.IdFatherTask, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="control-label">Colaborador:</div>
+                            <select class="select2" onchange="filtrarColaborador(this.value)" id="filtrocolaborador" data-placeholder="Seleccione" name="IdColaborator"></select>
+                            @Html.HiddenFor(model => model.IdColaborator, new { @id = "IdColaborator," })
+                            @Html.ValidationMessageFor(model => model.IdColaborator, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="control-label">Seguidor:</div>
+                            <select class="select2" onchange="filtrarSeguidor(this.value)" id="filtroseguidor" data-placeholder="Seleccione" name="Idseguidor"></select>
+                            @Html.HiddenFor(model => model.IdFollower, new { @id = "IdSeguidor," })
+                            @Html.ValidationMessageFor(model => model.IdFollower, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+                    <div class="col-md-2">
                         <div class="form-group">
                             <br />
                             @*<button class="white_btn small-btn" onclick="FiltrarTicket()" ;return false;">Aceptar</button>*@
@@ -140,43 +187,53 @@
                     </div>
 
                 </div>
-                <div class="row">
-
-
-
-                </div>
+                @*<div class="row">
+                </div>*@
             </div>
         </div>
 
         <br />
-        @using (Html.BeginForm("ListTask", "Task", FormMethod.Post))
-        {
-            <div class="table-responsive">
-                <div class="container">
-                    <table id="TTask" class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>Nro</th>
-                                <th>Tipo</th>
-                                <th>Prioridad</th>
-                                <th>Título</th>
-                                <th>Estado</th>
-                                <th>Responsable</th>
-                                @if (perm != null)
-                                {
-                                    if (perm.Search == true || perm.Edit == true)
-                                    {
-                                        <th class="text-center" colspan="2">Opciones</th>
-                                    }
-                                }
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
+
+        <div class="row">
+            @*col-lg-12 col-md-12 col-sm-12 col-12 align-self-center"*@
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 align-self-center">
+                @using (Html.BeginForm("ListTask", "Task", FormMethod.Post))
+                {
+                    <div class="table-responsive" style="width:99%">
+                        @*<div class="container">*@
+                            <table id="TTask" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Nro</th>
+                                        <th>Tipo</th>
+                                        <th>Prioridad</th>
+                                        <th>Título</th>
+                                        <th>Estado</th>
+                                        <th>Responsable</th>
+                                        <th>Colaborador</th>
+                                        <th>Seguidor</th>
+                                        @*<th>Responsable</th>*@
+                                        <th>Creador</th>
+                                        <th>Fecha de Creación</th>
+                                        <th>Ultima Actualización</th>
+                                        @if (perm != null)
+                                        {
+                                            if (perm.Search == true || perm.Edit == true)
+                                            {
+                                                <th class="text-center" colspan="2">Opciones</th>
+                                            }
+                                        }
+                                    </tr>
+                                </thead>
+                            </table>
+                        @*</div>*@
+                    </div>
+                    @Html.HiddenFor(model => model.IdTask, new { @id = "hidd_IdTask" })
+                    @Html.Hidden("submit")
+                }
             </div>
-            @Html.HiddenFor(model => model.IdTask, new { @id = "hidd_IdTask" })
-            @Html.Hidden("submit")
-        }
+        </div>
 
     </div>
 </div>
@@ -193,9 +250,16 @@
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+     <script src="https://cdn.datatables.net/rowgroup/1.1.4/js/dataTables.rowGroup.min.js"></script>
 
     <script>
         var ListPersons = [];
+        var ListColaborador = [];
+        var ListSeguidor = [];
+        var collapsedGroups = {};
+        var top = '';
+        var middle = '';
+        var parent = '';
         //debugger;
 
         var Permis = @Html.Raw(Json.Encode(perm));
@@ -212,7 +276,7 @@
                 toastr.error("La fecha inicial No puede ser Mayor a la fecha Final");
                 return;
             }
-            //debugger;
+          /*  debugger;*/
             @*var meses = Array.from(@Html.Raw(Json.Encode(Model.LisMonth)));*@
             var intIdTask = $("#inIdTask").val();
             var DateI = $("#dttDateIni").val();
@@ -224,6 +288,8 @@
             var intIdResponsable = $("#filtropersona").val();
             var intIdServiceRequest = $("#IdServiceRequest").val();
             var intIdFatherTask = $("#IdFatherTask").val();
+            var intIdColaborator = $("#filtrocolaborador").val();
+            var intIdFollower = $("#filtroseguidor").val();
 
 
             var datos = {
@@ -236,8 +302,9 @@
                 Tittle: strTitt,
                 IdPersonEmployee: intIdResponsable,
                 IdServiceRequest:intIdServiceRequest,
-                IdFatherTask:intIdFatherTask
-
+                IdFatherTask:intIdFatherTask,
+                IdColaborator: intIdColaborator,
+                IdFollower: intIdFollower
             };
 
             table = $('#TTask').DataTable({
@@ -269,6 +336,37 @@
                                     return '';
                             }
                         },
+                        { 'data': 'Colaborator', 'autowidth': true },
+                        { 'data': 'Follower', 'autowidth': true },
+                        { 'data': 'Creator', 'autowidth': true },
+                        {
+                            'data': 'CreationDate',
+                            'render': function (jsonDate) {
+
+                                if (jsonDate != null) {
+                                    var date = new Date(parseInt(jsonDate.substr(6)));
+                                    var month = ("0" + (date.getMonth() + 1)).slice(-2);
+                                    return ("0" + date.getDate()).slice(-2) + '-' + month + '-' + date.getFullYear();
+                                }
+                                else {
+                                    return '';
+                                }
+                            }
+                        },
+                        {
+                            'data': 'OperationDate',
+                            'render': function (jsonDate) {
+
+                                if (jsonDate != null) {
+                                    var date = new Date(parseInt(jsonDate.substr(6)));
+                                    var month = ("0" + (date.getMonth() + 1)).slice(-2);
+                                    return ("0" + date.getDate()).slice(-2) + '-' + month + '-' + date.getFullYear();
+                                }
+                                else {
+                                    return '';
+                                }
+                            }
+                        },
                         {
                             'data': null, render: function (data, type, row) {
                                 if (data != null) {
@@ -276,7 +374,7 @@
                                         return '';
                                     } else {
                                         //return '<div class="btn_option pt-0"><a class="editRow"><i class="fas fa-edit"></i></a></div>';
-                                        var link = '<div class="btn_option pt-0"><button class="editRow border-0" name="linkEdit_&"><i class="fas fa-edit"></i></button></div>';
+                                        var link = '<div class="btn_option pt-0" style=" vertical-align: central"><button class="editRow border-0" data-toggle="tooltip" data-placement="top" title="Editar" name="linkEdit_&"><i class="fas fa-edit"></i></button></div>';
                                         link = link.replace("&", row.IdTask);
                                         return link;
                                     }
@@ -290,7 +388,7 @@
                                         return '';
                                     } else {
                                         //return '<div class="btn_option pt-0"><a class="searchRow"><i class="fas fa-search"></i></a></div>';
-                                        var link = '<div class="btn_option pt-0"><button class="searchRow border-0" name="linkSearch_&"><i class="fas fa-search"></i></button></div>';
+                                        var link = '<div class="btn_option pt-0" style=" vertical-align: central"><button class="searchRow border-0" data-toggle="tooltip" data-placement="top" title="Consultar" name="linkSearch_&"><i class="fas fa-search"></i></button></div>';
                                         link = link.replace("&", row.IdTask);
                                         return link;
                                     }
@@ -298,11 +396,110 @@
                             }, 'autowidth': true
                         },
                     ],
+                "rowGroup": {
+                    dataSrc: /*['TypeTask', 'PriorityTask', 'Status'],*/
+                        function (row) {
+                        if (row != null) {
+                            if (row.PersonEmployeeName == null && row.PersonEmployeeLastName == null) {
+                                return '';
+                            } else {
+                                var name = row.PersonEmployeeName + '  ' + row.PersonEmployeeLastName;
+                                return name;
+                            }
+                        } else
+                            return '';
+                    }
+
+                    ,
+                     startRender: function (rows, group, level) {
+                        var all;
+
+                        if (level === 0) {
+                            top = group;
+                            all = group;
+                            middle = '';
+                        } else {
+                            // if parent collapsed, nothing to do
+                            if (!!collapsedGroups[top]) {
+                                return;
+                            }
+                            if (level === 1) {
+                                middle = group
+                            }
+                            all = top + middle + group;
+                        }
+                        console.log(group, level, all)
+
+                        var collapsed = !!collapsedGroups[all];
+
+                        rows.nodes().each(function (r) {
+                            r.style.display = collapsed ? 'none' : '';
+                        });
+
+                        // Add category name to the <tr>. NOTE: Hardcoded colspan
+                        return $('<tr/>')
+                            .append('<td colspan="12">' + group + ' (' + rows.count() + ')</td>')
+                            .attr('data-name', all)
+                            .toggleClass('collapsed', collapsed);
+
+                    }
+                },
                 "columnDefs": [
-                    { "targets": 0, "orderable": false },
-                    { "targets": 6, "bVisible": Editar },
-                    { "targets": 7, "bVisible": Buscar }
+                    { "targets": 0, "width": "5%" },
+                    { "targets": 1, "width": "5%" }, //, "font-size": "80%"
+                    { "targets": 2, "width": "10%" },
+                    { "targets": 3, "width": "20%" },
+                    { "targets": 4, "width": "10%" },
+                    { "targets": 5, "width": "0%" , "visible": false },
+                    { "targets": 6, "width": "10%" },
+                    { "targets": 7, "width": "10%" },
+                    { "targets": 8, "width": "10%" },
+                    { "targets": 9, "width": "10%" },
+                    { "targets": 10, "width": "5%", "bVisible": Editar },
+                    { "targets": 11, "width": "5%","bVisible": Buscar },
                 ],
+                "order": [[5, 'asc']],
+                "createdRow": function (row, data, dataIndex) {
+
+                    /*debugger;*/
+                    var today = new Date(parseInt(Date.now()));
+                    var currentHour = today.getHours();
+                    var currentMinutes = today.getMinutes();
+
+                    var taskHour = data['HourEnd'].Hours
+                    var taskMinute = data['HourEnd'].Minutes;
+
+                    if (data['DateEnd'] != null) {
+                        var date = new Date(parseInt(data['DateEnd'].substr(6)));
+                        //var month = ("0" + (date.getMonth() + 1)).slice(-2);
+                        //d = "0" + date.getDate()).slice(-2) + '-' + month + '-' + date.getFullYear();
+                        var t2 = today.getTime();
+                        var t1 = date.getTime();
+
+                        var Difday = parseInt((t2 - t1) / (24 * 3600 * 1000));
+                    }
+
+
+
+                    if (data['Status'] == 'En Proceso') {
+                       /* $(row).css('background-color', '#61bd4f');*/
+                        $($(row).find("td")[0]).css("background-color", "#61bd4f");
+                    }
+                    else if (data['Status'] == 'En Espera de Feedback') {
+                        /*  $(row).css('background-color', '#ff9f1a');*/
+                        $($(row).find("td")[0]).css("background-color", "#ff9f1a");
+                    }
+                    else if (data['Status'] != 'Finalizado'  && (date < today || (date == today && ((taskHour < currentHour) || (taskHour == currentHour && taskMinute < currentMinutes))))) {
+                       /* $(row).css('background-color', '#eb5a46');*/
+                        $($(row).find("td")[0]).css("background-color", "#eb5a46");
+                    }
+                    else if (data['Status'] != 'Finalizado' && ((Difday == 1 || (Difday == 0 && (((currentHour - taskHour) == 1) ||
+                        (((currentHour - taskHour) == 0) && (((currentMinutes - taskMinute) <= 30) && (currentMinutes - taskMinute) >0)())))))) {
+
+                      /*  $(row).css('background-color', '#f2d600');*/
+                        $($(row).find("td")[0]).css("background-color", "#f2d600");
+                        }
+                },
                 "bAutoWidth": false,
                 "bInfo": false,
                 "bDestroy": true,
@@ -356,6 +553,9 @@
                         data.push(itemArray);
                         data.reverse();
                         ListPersons = data;
+                        ListColaborador = data;
+                        ListSeguidor = data;
+
                         if (ListPersons.length > 0) {
 
                             var persona = $("#filtropersona")[0];
@@ -364,6 +564,13 @@
                             option.text("Seleccione");
                             option.val("0");
                             $("#filtropersona").append(option);
+
+                            var Colaborador = $("#filtrocolaborador")[0];
+                            //debugger;
+                            var option = $(document.createElement('option'));
+                            option.text("Seleccione");
+                            option.val("0");
+                            $("#filtrocolaborador").append(option);
 
                             for (i = 0; i < ListPersons.length; i++) {
 
@@ -375,12 +582,62 @@
 
                                     persona[i + 1] = new Option(ListPersons[i].NumIdentification + " - " + ListPersons[i].LastName + Name, ListPersons[i].IdPerson, "", "");
 
+                                    Colaborador[i + 1] = new Option(ListPersons[i].NumIdentification + " - " + ListPersons[i].LastName + Name, ListPersons[i].IdPerson, "", "");
                                 }
 
                             }
 
                         }
 
+                        //if (ListColaborador.length > 0) {
+
+                        //    var Colaborador = $("#filtrocolaborador")[0];
+                        //    //debugger;
+                        //    var option = $(document.createElement('option'));
+                        //    option.text("Seleccione");
+                        //    option.val("0");
+                        //    $("#filtrocolaborador").append(option);
+
+                        //    for (i = 0; i < ListColaborador.length; i++) {
+
+                        //        if (ListColaborador[i].IdPerson != "" && ListColaborador[i].LastName != "") {
+                        //            var Name = " ";
+                        //            if (ListColaborador[i].Name != "") {
+                        //                Name = " " + ListColaborador[i].Name;
+                        //            }
+
+                        //            Colaborador[i + 1] = new Option(ListColaborador[i].NumIdentification + " - " + ListColaborador[i].LastName + Name, ListColaborador[i].IdPerson, "", "");
+
+                        //        }
+
+                        //    }
+
+                        //}
+
+                        if (ListSeguidor.length > 0) {
+
+                            var Seguidor = $("#filtroseguidor")[0];
+                            //debugger;
+                            var option = $(document.createElement('option'));
+                            option.text("Seleccione");
+                            option.val("0");
+                            $("#filtroseguidor").append(option);
+
+                            for (i = 0; i < ListSeguidor.length; i++) {
+
+                                if (ListSeguidor[i].IdPerson != "" && ListSeguidor[i].LastName != "") {
+                                    var Name = " ";
+                                    if (ListSeguidor[i].Name != "") {
+                                        Name = " " + ListSeguidor[i].Name;
+                                    }
+
+                                    Seguidor[i + 1] = new Option(ListSeguidor[i].NumIdentification + " - " + ListSeguidor[i].LastName + Name, ListSeguidor[i].IdPerson, "", "");
+
+                                }
+
+                            }
+
+                        }
                     }
             });
 
@@ -403,6 +660,18 @@
             cargarDataPerson(SelecCodeValue, ListPersons);
         }
 
+        function filtrarColaborador(person) {
+            //debugger;
+            var SelecCodeValue = person.trim();
+            cargarDataPerson(SelecCodeValue, ListColaborador);
+        }
+
+        function filtrarSeguidor(person) {
+            //debugger;
+            var SelecCodeValue = person.trim();
+            cargarDataPerson(SelecCodeValue, ListSeguidor);
+        }
+
         $('#TTask').on("click", "button.editRow", function () {
             //debugger;
             var data = table.row($(this).parents("tr")).data();
@@ -420,6 +689,7 @@
         });
 
         $(document).ready(function () {
+
 
             //debugger;
             $('.select2').select2({ width: '100%' });
@@ -565,6 +835,13 @@
                 }
 
             }
+
+            $('#TTask tbody').on('click', 'tr.dtrg-start', function () {
+                var name = $(this).data('name');
+                collapsedGroups[name] = !collapsedGroups[name];
+                table.draw(false);
+            });
+
         });
 
     </script>

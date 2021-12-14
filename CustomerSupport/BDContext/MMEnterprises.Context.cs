@@ -68,7 +68,7 @@ namespace CustomerSupport.BDContext
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNAuthenticationUser", strLoginParameter, strPasswordParameter, idUser);
         }
     
-        public virtual ObjectResult<GNLisChart_Result> GNLisChart(Nullable<bool> byEmployee, Nullable<int> idEmployee, Nullable<bool> byDepartment, Nullable<int> idDepartment, Nullable<bool> byMonth, Nullable<int> year, Nullable<bool> xYear, Nullable<int> yearInicio, Nullable<int> yearFin, Nullable<bool> xDate, Nullable<System.DateTime> dateIni, Nullable<System.DateTime> dateEnd)
+        public virtual ObjectResult<GNLisChart_Result> GNLisChart(Nullable<bool> byEmployee, Nullable<int> idEmployee, Nullable<bool> byDepartment, Nullable<int> idDepartment, Nullable<bool> byMonth, Nullable<int> year, Nullable<bool> xYear, Nullable<int> yearInicio, Nullable<int> yearFin, Nullable<bool> xDate, Nullable<System.DateTime> dateIni, Nullable<System.DateTime> dateEnd, Nullable<bool> xtype, Nullable<int> idTypeTask)
         {
             var byEmployeeParameter = byEmployee.HasValue ?
                 new ObjectParameter("ByEmployee", byEmployee) :
@@ -118,12 +118,33 @@ namespace CustomerSupport.BDContext
                 new ObjectParameter("DateEnd", dateEnd) :
                 new ObjectParameter("DateEnd", typeof(System.DateTime));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNLisChart_Result>("GNLisChart", byEmployeeParameter, idEmployeeParameter, byDepartmentParameter, idDepartmentParameter, byMonthParameter, yearParameter, xYearParameter, yearInicioParameter, yearFinParameter, xDateParameter, dateIniParameter, dateEndParameter);
+            var xtypeParameter = xtype.HasValue ?
+                new ObjectParameter("Xtype", xtype) :
+                new ObjectParameter("Xtype", typeof(bool));
+    
+            var idTypeTaskParameter = idTypeTask.HasValue ?
+                new ObjectParameter("IdTypeTask", idTypeTask) :
+                new ObjectParameter("IdTypeTask", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNLisChart_Result>("GNLisChart", byEmployeeParameter, idEmployeeParameter, byDepartmentParameter, idDepartmentParameter, byMonthParameter, yearParameter, xYearParameter, yearInicioParameter, yearFinParameter, xDateParameter, dateIniParameter, dateEndParameter, xtypeParameter, idTypeTaskParameter);
         }
     
         public virtual ObjectResult<GNLisColor_Result> GNLisColor()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNLisColor_Result>("GNLisColor");
+        }
+    
+        public virtual ObjectResult<GNLisConfigurationParameter_Result> GNLisConfigurationParameter(Nullable<int> idConfig, string strAbbreviation)
+        {
+            var idConfigParameter = idConfig.HasValue ?
+                new ObjectParameter("IdConfig", idConfig) :
+                new ObjectParameter("IdConfig", typeof(int));
+    
+            var strAbbreviationParameter = strAbbreviation != null ?
+                new ObjectParameter("strAbbreviation", strAbbreviation) :
+                new ObjectParameter("strAbbreviation", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNLisConfigurationParameter_Result>("GNLisConfigurationParameter", idConfigParameter, strAbbreviationParameter);
         }
     
         public virtual ObjectResult<GNLisNotificationSettings_Result> GNLisNotificationSettings(Nullable<int> idUser, Nullable<int> idPerson)
@@ -396,7 +417,7 @@ namespace CustomerSupport.BDContext
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListServiceRequest_Result>("GNListServiceRequest", idServiceRequestParameter, idServiceTypeParameter, idServiceStatusParameter, idPersonParameter, idUserParameter);
         }
     
-        public virtual ObjectResult<GNListTask_Result> GNListTask(Nullable<int> idTask, Nullable<System.DateTime> dttDateIni, Nullable<System.DateTime> dttDateEnd, Nullable<int> idResponsable, string strTittle, Nullable<int> idPriority, Nullable<int> idStatus, Nullable<int> idTypeTask, Nullable<int> idServiceRequest, Nullable<int> idUser, Nullable<int> idFatherTask)
+        public virtual ObjectResult<GNListTask_Result> GNListTask(Nullable<int> idTask, Nullable<System.DateTime> dttDateIni, Nullable<System.DateTime> dttDateEnd, Nullable<int> idResponsable, string strTittle, Nullable<int> idPriority, Nullable<int> idStatus, Nullable<int> idTypeTask, Nullable<int> idServiceRequest, Nullable<int> idUser, Nullable<int> idFatherTask, Nullable<int> idColaborator, Nullable<int> idFollower)
         {
             var idTaskParameter = idTask.HasValue ?
                 new ObjectParameter("IdTask", idTask) :
@@ -442,7 +463,15 @@ namespace CustomerSupport.BDContext
                 new ObjectParameter("IdFatherTask", idFatherTask) :
                 new ObjectParameter("IdFatherTask", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListTask_Result>("GNListTask", idTaskParameter, dttDateIniParameter, dttDateEndParameter, idResponsableParameter, strTittleParameter, idPriorityParameter, idStatusParameter, idTypeTaskParameter, idServiceRequestParameter, idUserParameter, idFatherTaskParameter);
+            var idColaboratorParameter = idColaborator.HasValue ?
+                new ObjectParameter("IdColaborator", idColaborator) :
+                new ObjectParameter("IdColaborator", typeof(int));
+    
+            var idFollowerParameter = idFollower.HasValue ?
+                new ObjectParameter("IdFollower", idFollower) :
+                new ObjectParameter("IdFollower", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListTask_Result>("GNListTask", idTaskParameter, dttDateIniParameter, dttDateEndParameter, idResponsableParameter, strTittleParameter, idPriorityParameter, idStatusParameter, idTypeTaskParameter, idServiceRequestParameter, idUserParameter, idFatherTaskParameter, idColaboratorParameter, idFollowerParameter);
         }
     
         public virtual ObjectResult<GNListUser_Result> GNListUser(Nullable<int> idUser, Nullable<bool> status, Nullable<int> idPerson)
@@ -1176,19 +1205,6 @@ namespace CustomerSupport.BDContext
         public virtual int sp_upgraddiagrams()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_upgraddiagrams");
-        }
-    
-        public virtual ObjectResult<GNLisConfigurationParameter_Result> GNLisConfigurationParameter(Nullable<int> idConfig, string strAbbreviation)
-        {
-            var idConfigParameter = idConfig.HasValue ?
-                new ObjectParameter("IdConfig", idConfig) :
-                new ObjectParameter("IdConfig", typeof(int));
-    
-            var strAbbreviationParameter = strAbbreviation != null ?
-                new ObjectParameter("strAbbreviation", strAbbreviation) :
-                new ObjectParameter("strAbbreviation", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNLisConfigurationParameter_Result>("GNLisConfigurationParameter", idConfigParameter, strAbbreviationParameter);
         }
     }
 }

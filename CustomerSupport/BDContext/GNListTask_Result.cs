@@ -36,5 +36,9 @@ namespace CustomerSupport.BDContext
         public string LastName { get; set; }
         public string Activity { get; set; }
         public Nullable<bool> confidential { get; set; }
+        public string Colaborator { get; set; }
+        public string Seguidor { get; set; }
+        public Nullable<System.DateTime> OperationDate { get; set; }
+        public Nullable<System.DateTime> CreationDate { get; set; }
     }
 }

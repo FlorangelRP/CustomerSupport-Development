@@ -80,6 +80,8 @@ namespace CustomerSupport.Controllers
             int? IdUser = ((MSerUser)Session["Usuario"]).IdUser;
             int? IdFatherTask = null;
             string strtittle = "";
+            int? IdColaborator = null;
+            int? IdFollower = null;
 
             if (objFilter.IdTask > 0)
                 IdTask = objFilter.IdTask;
@@ -114,15 +116,23 @@ namespace CustomerSupport.Controllers
             if (objFilter.IdFatherTask != null)
                 IdFatherTask = objFilter.IdFatherTask;
 
+            if (objFilter.Tittle != null)
+                strtittle = objFilter.Tittle;
 
-            objListTask = fnListTask(IdTask, dttDateIni, dttDateEnd, IdResponsable, strtittle, IdPriority, IdStatus, IdTypeTask, IdServiceRequest, IdUser, IdFatherTask);
+            if (objFilter.IdColaborator != null)
+                IdColaborator = objFilter.IdColaborator;
+
+            if (objFilter.IdFollower != null)
+                IdFollower = objFilter.IdFollower;
+
+            objListTask = fnListTask(IdTask, dttDateIni, dttDateEnd, IdResponsable, strtittle, IdPriority, IdStatus, IdTypeTask, IdServiceRequest, IdUser, IdFatherTask, IdColaborator,IdFollower);
 
             return Json(objListTask, JsonRequestBehavior.AllowGet);
 
         }
 
 
-        public static List<MTask> fnListTask(int? IdTask = null, DateTime? dttDateIni = null, DateTime? dttDateEnd = null, int? IdResponsable = null, string strTittle = "", int? IdPriority = null, int? IdStatus = null, int? IdTypeTask = null, int? IdServiceRequest = null, int? IdUser = null, int? IdFatherTask = null)
+        public static List<MTask> fnListTask(int? IdTask = null, DateTime? dttDateIni = null, DateTime? dttDateEnd = null, int? IdResponsable = null, string strTittle = "", int? IdPriority = null, int? IdStatus = null, int? IdTypeTask = null, int? IdServiceRequest = null, int? IdUser = null, int? IdFatherTask = null, int? IdColaborator=null, int? IdFollower=null)
         {
 
 
@@ -131,7 +141,7 @@ namespace CustomerSupport.Controllers
 
             MUser objUser = new MUser();
 
-            listTask = (List<MTask>)(from tsk in db.GNListTask(IdTask, dttDateIni, dttDateEnd, IdResponsable, strTittle, IdPriority, IdStatus, IdTypeTask, IdServiceRequest, IdUser, IdFatherTask).ToList()
+            listTask = (List<MTask>)(from tsk in db.GNListTask(IdTask, dttDateIni, dttDateEnd, IdResponsable, strTittle, IdPriority, IdStatus, IdTypeTask, IdServiceRequest, IdUser, IdFatherTask,IdColaborator,IdFollower).ToList()
                                      select new MTask
                                      {
                                          IdTask = tsk.IdTask,
@@ -178,7 +188,14 @@ namespace CustomerSupport.Controllers
                                                                                      DateOperation = tp.DateOperation,
                                                                                      Date = tp.Date,
                                                                                      New = 0,
-                                                                                 }).ToList()
+                                                                                 }).ToList(),
+
+                                         Creator = (string)(from tt in db.GNListPerson(null, null, null, null, tsk.IdUser).ToList()
+                                                            select tt.LastName + " " + tt.Name).First(),
+                                         Colaborator=tsk.Colaborator,
+                                         Follower =tsk.Seguidor,
+                                         OperationDate = tsk.OperationDate,
+                                         CreationDate = tsk.CreationDate
 
                                      }).ToList();
             return listTask;

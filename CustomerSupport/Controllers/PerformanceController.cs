@@ -106,13 +106,14 @@ namespace CustomerSupport.Controllers
             List<MPerformance> listMPerformance = new List<MPerformance>();
             MMEnterprisesEntities db = new MMEnterprisesEntities();
 
-            listMPerformance = (List<MPerformance>)(from tsk in db.GNLisChart(objDatos.XEmployee,objDatos.IdEmployee,objDatos.XDepartament, objDatos.IdDepartment,objDatos.XMonth,objDatos.Year,objDatos.XYear,objDatos.YearIni,objDatos.YearEnd,objDatos.XDate, objDatos.DateIni,objDatos.DateEnd).ToList()
+            listMPerformance = (List<MPerformance>)(from tsk in db.GNLisChart(objDatos.XEmployee,objDatos.IdEmployee,objDatos.XDepartament, objDatos.IdDepartment,objDatos.XMonth,objDatos.Year,objDatos.XYear,objDatos.YearIni,objDatos.YearEnd,objDatos.XDate, objDatos.DateIni,objDatos.DateEnd,objDatos.Xtype,objDatos.IdTypeTask).ToList()
                                                     select new MPerformance
                                                     {
                                                         Nombre = tsk.Nombre,
                                                         StatusTask = tsk.StatusTask,
                                                         Cantidad = (int)tsk.Cantidad
                                                     }).ToList();
+
 
             var grouped = from p in listMPerformance
                           group p by new
@@ -122,8 +123,15 @@ namespace CustomerSupport.Controllers
                           select new { d.Key };
 
             List<string> objLista = new List<string>();
-          
-            var ListTableCatalog = db.VWListCatalog.Where(t => t.IdTable == "STATETASK").ToList();
+            List <VWListCatalog>ListTableCatalog = null;
+            if (objDatos.Xtype==true)
+            {
+                 ListTableCatalog = db.VWListCatalog.Where(t => t.IdTable == "TYPETASK").ToList();
+            }
+            else
+            { 
+             ListTableCatalog = db.VWListCatalog.Where(t => t.IdTable == "STATETASK").ToList();
+            }
             List<string> objListEstado = new List<string>();
             foreach (var item in ListTableCatalog)
             {               

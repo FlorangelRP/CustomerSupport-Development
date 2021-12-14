@@ -75,10 +75,25 @@ namespace CustomerSupport.Models
         public List<MTaskComment> listMTaskComment { get; set; } //Esta lista es para los Comentarios en la actividad
 
         public bool Confidential { get; set; }
-        //public List<MBitacora> listMBitacora { get; set; } //Solo para editar
 
+        public string Creator { get; set; }
+
+        public int? IdColaborator { get; set; }
+        public int? IdFollower { get; set; }
+
+        public string Colaborator { get; set; }
+        public string Follower { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:d}")]
+        [DataType(DataType.Date)]
+        public System.DateTime? OperationDate { get; set; }
+        //public List<MBitacora> listMBitacora { get; set; } //Solo para editar
         //---------------------------------------------------------------------------------------------------------------
 
+
+        [DisplayFormat(DataFormatString = "{0:d}")]
+        [DataType(DataType.Date)]
+        public System.DateTime? CreationDate { get; set; }
     }
 
     public class MTaskPerson

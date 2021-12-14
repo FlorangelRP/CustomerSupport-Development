@@ -3223,6 +3223,7 @@ td.cell-Label label {
 	margin: 0 auto !important;
 }
 
+
 /* ===Style Tooltips=== */
 /* .tooltip .bs-tooltip-right .arrow:before {
 	border-right-color: #333d60 !important;
@@ -3255,6 +3256,15 @@ td.cell-Label label {
 /* border: 1px solid #333d60 !important; */
 /* background-color: #5b769e !important; */
 
+/*tr.odd td:first-child,
+tr.even td:first-child {
+	padding-left: 4em;
+}
+*/
+tr.group,
+tr.group:hover {
+	background-color: #ddd !important;
+}
 /* ===responsive css=== */
 @media screen and (min-width: 1921px) {
 	.ss_index_one, .ss_index_two, .ss_index_three{

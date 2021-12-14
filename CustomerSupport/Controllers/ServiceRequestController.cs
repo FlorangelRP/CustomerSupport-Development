@@ -373,7 +373,7 @@ namespace CustomerSupport.Controllers
                                                                         IdConstructionOption=co.IdConstructionOption,
                                                                         ConstructionOption=co.ConstructionOption
                                                                     }).ToList(),
-                                        listTask = (List<MTask>)(from tsk in db.GNListTask(null,null,null,null,"",null,null,null,d.IdServiceRequest,null,null).ToList()
+                                        listTask = (List<MTask>)(from tsk in db.GNListTask(null,null,null,null,"",null,null,null,d.IdServiceRequest,null,null,null,null).ToList()
                                                     select new MTask
                                                     {
                                                         IdTask = tsk.IdTask,
