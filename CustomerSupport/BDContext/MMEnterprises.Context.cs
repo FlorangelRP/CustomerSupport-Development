@@ -43,6 +43,7 @@ namespace CustomerSupport.BDContext
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<RoleAcces> RoleAcces { get; set; }
         public virtual DbSet<ServiceRequest> ServiceRequest { get; set; }
+        public virtual DbSet<ServiceRequestAssets> ServiceRequestAssets { get; set; }
         public virtual DbSet<Task> Task { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<UserAcces> UserAcces { get; set; }
@@ -423,6 +424,23 @@ namespace CustomerSupport.BDContext
                 new ObjectParameter("IdUser", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListServiceRequest_Result>("GNListServiceRequest", idServiceRequestParameter, idServiceTypeParameter, idServiceStatusParameter, idPersonParameter, idUserParameter);
+        }
+    
+        public virtual ObjectResult<GNListServiceRequestAssets_Result> GNListServiceRequestAssets(Nullable<int> idServiceRequest, Nullable<int> idAssetsType, Nullable<int> idAsset)
+        {
+            var idServiceRequestParameter = idServiceRequest.HasValue ?
+                new ObjectParameter("IdServiceRequest", idServiceRequest) :
+                new ObjectParameter("IdServiceRequest", typeof(int));
+    
+            var idAssetsTypeParameter = idAssetsType.HasValue ?
+                new ObjectParameter("IdAssetsType", idAssetsType) :
+                new ObjectParameter("IdAssetsType", typeof(int));
+    
+            var idAssetParameter = idAsset.HasValue ?
+                new ObjectParameter("IdAsset", idAsset) :
+                new ObjectParameter("IdAsset", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GNListServiceRequestAssets_Result>("GNListServiceRequestAssets", idServiceRequestParameter, idAssetsTypeParameter, idAssetParameter);
         }
     
         public virtual ObjectResult<GNListStatusServiceType_Result> GNListStatusServiceType(Nullable<int> idServiceType, Nullable<int> idServiceStatus, Nullable<bool> btStatusServiceType, Nullable<bool> btStatusServiceStatus)
@@ -854,7 +872,7 @@ namespace CustomerSupport.BDContext
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranServiceConstructionOption", transactionTypeParameter, idServiceRequestParameter, idConstructionOptionParameter);
         }
     
-        public virtual int GNTranServiceRequest(string transactionType, ObjectParameter idServiceRequest, Nullable<int> idServiceType, Nullable<int> idServiceStatus, Nullable<int> idPerson, Nullable<int> idContactType, Nullable<int> idPropertyType, string address, Nullable<decimal> price, Nullable<decimal> downPayment, Nullable<decimal> closingCost, Nullable<decimal> monthlyIncome, Nullable<decimal> debtPayment, Nullable<decimal> piti, Nullable<decimal> ratios, Nullable<decimal> estimatedValue, Nullable<decimal> loanAmount, Nullable<decimal> currentDebt, string assets, string beneficiaries, string process, string wish, Nullable<bool> plane, Nullable<bool> financing, string note, Nullable<int> idUser)
+        public virtual int GNTranServiceRequest(string transactionType, ObjectParameter idServiceRequest, Nullable<int> idServiceType, Nullable<int> idServiceStatus, Nullable<int> idPerson, Nullable<int> idContactType, Nullable<int> idPropertyType, string address, Nullable<decimal> price, Nullable<decimal> downPayment, Nullable<decimal> closingCost, Nullable<decimal> monthlyIncome, Nullable<decimal> debtPayment, Nullable<decimal> piti, Nullable<decimal> ratios, Nullable<decimal> estimatedValue, Nullable<decimal> loanAmount, Nullable<decimal> currentDebt, string assets, string process, string wish, Nullable<bool> plane, Nullable<bool> financing, string note, Nullable<int> idUser, string livT_Beneficiaries, string livT_InheritanceCondition, string livT_ResponsibleAgent1, string livT_ResponsibleAgent2, Nullable<bool> livT_AuthorizeRespAgent, Nullable<bool> livT_ProlongLife, Nullable<bool> livT_DonateOrgans, string livT_Organs, Nullable<bool> livT_OrganForTransplant, Nullable<bool> livT_OrganForTherapy, Nullable<bool> livT_OrganForEducation, Nullable<bool> livT_OrganForInvestigation, string livT_GpNames, string livT_GpPhoneNumber, string livT_GpAddress)
         {
             var transactionTypeParameter = transactionType != null ?
                 new ObjectParameter("TransactionType", transactionType) :
@@ -928,10 +946,6 @@ namespace CustomerSupport.BDContext
                 new ObjectParameter("Assets", assets) :
                 new ObjectParameter("Assets", typeof(string));
     
-            var beneficiariesParameter = beneficiaries != null ?
-                new ObjectParameter("Beneficiaries", beneficiaries) :
-                new ObjectParameter("Beneficiaries", typeof(string));
-    
             var processParameter = process != null ?
                 new ObjectParameter("Process", process) :
                 new ObjectParameter("Process", typeof(string));
@@ -956,7 +970,67 @@ namespace CustomerSupport.BDContext
                 new ObjectParameter("IdUser", idUser) :
                 new ObjectParameter("IdUser", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranServiceRequest", transactionTypeParameter, idServiceRequest, idServiceTypeParameter, idServiceStatusParameter, idPersonParameter, idContactTypeParameter, idPropertyTypeParameter, addressParameter, priceParameter, downPaymentParameter, closingCostParameter, monthlyIncomeParameter, debtPaymentParameter, pitiParameter, ratiosParameter, estimatedValueParameter, loanAmountParameter, currentDebtParameter, assetsParameter, beneficiariesParameter, processParameter, wishParameter, planeParameter, financingParameter, noteParameter, idUserParameter);
+            var livT_BeneficiariesParameter = livT_Beneficiaries != null ?
+                new ObjectParameter("LivT_Beneficiaries", livT_Beneficiaries) :
+                new ObjectParameter("LivT_Beneficiaries", typeof(string));
+    
+            var livT_InheritanceConditionParameter = livT_InheritanceCondition != null ?
+                new ObjectParameter("LivT_InheritanceCondition", livT_InheritanceCondition) :
+                new ObjectParameter("LivT_InheritanceCondition", typeof(string));
+    
+            var livT_ResponsibleAgent1Parameter = livT_ResponsibleAgent1 != null ?
+                new ObjectParameter("LivT_ResponsibleAgent1", livT_ResponsibleAgent1) :
+                new ObjectParameter("LivT_ResponsibleAgent1", typeof(string));
+    
+            var livT_ResponsibleAgent2Parameter = livT_ResponsibleAgent2 != null ?
+                new ObjectParameter("LivT_ResponsibleAgent2", livT_ResponsibleAgent2) :
+                new ObjectParameter("LivT_ResponsibleAgent2", typeof(string));
+    
+            var livT_AuthorizeRespAgentParameter = livT_AuthorizeRespAgent.HasValue ?
+                new ObjectParameter("LivT_AuthorizeRespAgent", livT_AuthorizeRespAgent) :
+                new ObjectParameter("LivT_AuthorizeRespAgent", typeof(bool));
+    
+            var livT_ProlongLifeParameter = livT_ProlongLife.HasValue ?
+                new ObjectParameter("LivT_ProlongLife", livT_ProlongLife) :
+                new ObjectParameter("LivT_ProlongLife", typeof(bool));
+    
+            var livT_DonateOrgansParameter = livT_DonateOrgans.HasValue ?
+                new ObjectParameter("LivT_DonateOrgans", livT_DonateOrgans) :
+                new ObjectParameter("LivT_DonateOrgans", typeof(bool));
+    
+            var livT_OrgansParameter = livT_Organs != null ?
+                new ObjectParameter("LivT_Organs", livT_Organs) :
+                new ObjectParameter("LivT_Organs", typeof(string));
+    
+            var livT_OrganForTransplantParameter = livT_OrganForTransplant.HasValue ?
+                new ObjectParameter("LivT_OrganForTransplant", livT_OrganForTransplant) :
+                new ObjectParameter("LivT_OrganForTransplant", typeof(bool));
+    
+            var livT_OrganForTherapyParameter = livT_OrganForTherapy.HasValue ?
+                new ObjectParameter("LivT_OrganForTherapy", livT_OrganForTherapy) :
+                new ObjectParameter("LivT_OrganForTherapy", typeof(bool));
+    
+            var livT_OrganForEducationParameter = livT_OrganForEducation.HasValue ?
+                new ObjectParameter("LivT_OrganForEducation", livT_OrganForEducation) :
+                new ObjectParameter("LivT_OrganForEducation", typeof(bool));
+    
+            var livT_OrganForInvestigationParameter = livT_OrganForInvestigation.HasValue ?
+                new ObjectParameter("LivT_OrganForInvestigation", livT_OrganForInvestigation) :
+                new ObjectParameter("LivT_OrganForInvestigation", typeof(bool));
+    
+            var livT_GpNamesParameter = livT_GpNames != null ?
+                new ObjectParameter("LivT_GpNames", livT_GpNames) :
+                new ObjectParameter("LivT_GpNames", typeof(string));
+    
+            var livT_GpPhoneNumberParameter = livT_GpPhoneNumber != null ?
+                new ObjectParameter("LivT_GpPhoneNumber", livT_GpPhoneNumber) :
+                new ObjectParameter("LivT_GpPhoneNumber", typeof(string));
+    
+            var livT_GpAddressParameter = livT_GpAddress != null ?
+                new ObjectParameter("LivT_GpAddress", livT_GpAddress) :
+                new ObjectParameter("LivT_GpAddress", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GNTranServiceRequest", transactionTypeParameter, idServiceRequest, idServiceTypeParameter, idServiceStatusParameter, idPersonParameter, idContactTypeParameter, idPropertyTypeParameter, addressParameter, priceParameter, downPaymentParameter, closingCostParameter, monthlyIncomeParameter, debtPaymentParameter, pitiParameter, ratiosParameter, estimatedValueParameter, loanAmountParameter, currentDebtParameter, assetsParameter, processParameter, wishParameter, planeParameter, financingParameter, noteParameter, idUserParameter, livT_BeneficiariesParameter, livT_InheritanceConditionParameter, livT_ResponsibleAgent1Parameter, livT_ResponsibleAgent2Parameter, livT_AuthorizeRespAgentParameter, livT_ProlongLifeParameter, livT_DonateOrgansParameter, livT_OrgansParameter, livT_OrganForTransplantParameter, livT_OrganForTherapyParameter, livT_OrganForEducationParameter, livT_OrganForInvestigationParameter, livT_GpNamesParameter, livT_GpPhoneNumberParameter, livT_GpAddressParameter);
         }
     
         public virtual int GNTranServiceRequestTask(string transactionType, Nullable<int> idTask, Nullable<int> idServiceRequest)

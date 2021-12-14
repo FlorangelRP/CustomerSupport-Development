@@ -28,6 +28,7 @@ namespace CustomerSupport.BDContext
             this.ServiceRequest1 = new HashSet<ServiceRequest>();
             this.ServiceRequest2 = new HashSet<ServiceRequest>();
             this.ServiceRequest3 = new HashSet<ServiceRequest>();
+            this.ServiceRequestAssets = new HashSet<ServiceRequestAssets>();
             this.ServiceRequest4 = new HashSet<ServiceRequest>();
             this.CatalogDetail1 = new HashSet<CatalogDetail>();
             this.CatalogDetail2 = new HashSet<CatalogDetail>();
@@ -62,6 +63,8 @@ namespace CustomerSupport.BDContext
         public virtual ICollection<ServiceRequest> ServiceRequest2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ServiceRequest> ServiceRequest3 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ServiceRequestAssets> ServiceRequestAssets { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ServiceRequest> ServiceRequest4 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -357,7 +357,6 @@ namespace CustomerSupport.Controllers
                                         LoanAmount=d.LoanAmount,
                                         CurrentDebt=d.CurrentDebt,
                                         Assets=d.Assets,
-                                        Beneficiaries=d.Beneficiaries,
                                         Process=d.Process,
                                         Wish=d.Wish,
                                         Plane=d.Plane,
@@ -366,6 +365,32 @@ namespace CustomerSupport.Controllers
                                         IdUser=d.IdUser,
                                         RegisterUser=d.RegisterUser,
                                         RegisterDate = d.RegisterDate,
+                                        LivT_Beneficiaries = d.LivT_Beneficiaries,
+                                        LivT_InheritanceCondition = d.LivT_InheritanceCondition,
+                                        LivT_ResponsibleAgent1 = d.LivT_ResponsibleAgent1,
+                                        LivT_ResponsibleAgent2 = d.LivT_ResponsibleAgent2,
+                                        LivT_AuthorizeRespAgent = d.LivT_AuthorizeRespAgent,
+                                        LivT_ProlongLife = d.LivT_ProlongLife,
+                                        LivT_DonateOrgans = d.LivT_DonateOrgans,
+                                        LivT_Organs = d.LivT_Organs,
+                                        LivT_OrganForTransplant = d.LivT_OrganForTransplant ?? false,
+                                        LivT_OrganForTherapy = d.LivT_OrganForTherapy ?? false,
+                                        LivT_OrganForEducation = d.LivT_OrganForEducation ?? false,
+                                        LivT_OrganForInvestigation = d.LivT_OrganForInvestigation ?? false,
+                                        LivT_GpNames = d.LivT_GpNames,
+                                        LivT_GpPhoneNumber = d.LivT_GpPhoneNumber,
+                                        LivT_GpAddress = d.LivT_GpAddress,
+                                        listServiceRequestAssets = (List<MServiceRequestAssets>)(from liv in db.GNListServiceRequestAssets(d.IdServiceRequest,null,null).ToList()
+                                                                                                    select new MServiceRequestAssets
+                                                                                                    {
+                                                                                                        IdAsset=liv.IdAsset,                                                                                                        
+                                                                                                        IdServiceRequest = liv.IdServiceRequest,
+                                                                                                        IdAssetsType = liv.IdAssetsType,
+                                                                                                        AssetsType=liv.AssetsType,
+                                                                                                        Description = liv.Description,
+                                                                                                        Beneficiaries = liv.Beneficiaries,
+                                                                                                        Administrators= liv.Administrators
+                                                                                                    }).ToList(),
                                         listConstructionOption = (List<MServiceConstructionOption>)(from co in db.GNListServiceConstructionOption(d.IdServiceRequest, null).ToList()
                                                                     select new MServiceConstructionOption
                                                                     {
@@ -420,6 +445,7 @@ namespace CustomerSupport.Controllers
 
                 int SqlResultService;
                 int SqlResult;
+                string TransactionTypeAsset;
 
                 SqlParameter paramOutIdServiceRequest = new SqlParameter();
                 paramOutIdServiceRequest.ParameterName = "@IdServiceRequest";
@@ -588,16 +614,145 @@ namespace CustomerSupport.Controllers
                 {
                     paramAssets.Value = DBNull.Value;
                 }
-                SqlParameter paramBeneficiaries = new SqlParameter();
-                paramBeneficiaries.ParameterName = "@Beneficiaries";
-                if (objServiceRequest.Beneficiaries != null)
+
+                // ----- Parametros de Living Trust - Inicio ---------------------------- //
+
+                SqlParameter paramLivT_Beneficiaries = new SqlParameter();
+                paramLivT_Beneficiaries.ParameterName = "@LivT_Beneficiaries";
+                if (objServiceRequest.LivT_Beneficiaries != null)
                 {
-                    paramBeneficiaries.Value = objServiceRequest.Beneficiaries;
+                    paramLivT_Beneficiaries.Value = objServiceRequest.LivT_Beneficiaries;
                 }
                 else
                 {
-                    paramBeneficiaries.Value = DBNull.Value;
+                    paramLivT_Beneficiaries.Value = DBNull.Value;
                 }
+                SqlParameter paramLivT_InheritanceCondition = new SqlParameter();
+                paramLivT_InheritanceCondition.ParameterName = "@LivT_InheritanceCondition";
+                if (objServiceRequest.LivT_InheritanceCondition != null)
+                {
+                    paramLivT_InheritanceCondition.Value = objServiceRequest.LivT_InheritanceCondition;
+                }
+                else
+                {
+                    paramLivT_InheritanceCondition.Value = DBNull.Value;
+                }
+                SqlParameter paramLivT_ResponsibleAgent1 = new SqlParameter();
+                paramLivT_ResponsibleAgent1.ParameterName = "@LivT_ResponsibleAgent1";
+                if (objServiceRequest.LivT_ResponsibleAgent1 != null)
+                {
+                    paramLivT_ResponsibleAgent1.Value = objServiceRequest.LivT_ResponsibleAgent1;
+                }
+                else
+                {
+                    paramLivT_ResponsibleAgent1.Value = DBNull.Value;
+                }
+                SqlParameter paramLivT_ResponsibleAgent2 = new SqlParameter();
+                paramLivT_ResponsibleAgent2.ParameterName = "@LivT_ResponsibleAgent2";
+                if (objServiceRequest.LivT_ResponsibleAgent2 != null)
+                {
+                    paramLivT_ResponsibleAgent2.Value = objServiceRequest.LivT_ResponsibleAgent2;
+                }
+                else
+                {
+                    paramLivT_ResponsibleAgent2.Value = DBNull.Value;
+                }
+
+                SqlParameter paramLivT_AuthorizeRespAgent = new SqlParameter();
+                paramLivT_AuthorizeRespAgent.ParameterName = "@LivT_AuthorizeRespAgent";
+                if (objServiceRequest.LivT_AuthorizeRespAgent != null)
+                {
+                    paramLivT_AuthorizeRespAgent.Value = objServiceRequest.LivT_AuthorizeRespAgent;
+                }
+                else
+                {
+                    paramLivT_AuthorizeRespAgent.Value = DBNull.Value;
+                }                
+
+                SqlParameter paramLivT_ProlongLife = new SqlParameter();
+                paramLivT_ProlongLife.ParameterName = "@LivT_ProlongLife";
+                if (objServiceRequest.LivT_ProlongLife != null)
+                {
+                    paramLivT_ProlongLife.Value = objServiceRequest.LivT_ProlongLife;
+                }
+                else
+                {
+                    paramLivT_ProlongLife.Value = DBNull.Value;
+                }
+                
+                SqlParameter paramLivT_DonateOrgans = new SqlParameter();
+                paramLivT_DonateOrgans.ParameterName = "@LivT_DonateOrgans";
+                if (objServiceRequest.LivT_DonateOrgans != null)
+                {
+                    paramLivT_DonateOrgans.Value = objServiceRequest.LivT_DonateOrgans;
+                }
+                else
+                {
+                    paramLivT_DonateOrgans.Value = DBNull.Value;
+                }
+                
+                SqlParameter paramLivT_Organs = new SqlParameter();
+                paramLivT_Organs.ParameterName = "@LivT_Organs";
+                if (objServiceRequest.LivT_Organs != null)
+                {
+                    paramLivT_Organs.Value = objServiceRequest.LivT_Organs;
+                }
+                else
+                {
+                    paramLivT_Organs.Value = DBNull.Value;
+                }
+
+                SqlParameter paramLivT_OrganForTransplant = new SqlParameter();
+                paramLivT_OrganForTransplant.ParameterName = "@LivT_OrganForTransplant";
+                paramLivT_OrganForTransplant.Value = objServiceRequest.LivT_OrganForTransplant;             
+
+                SqlParameter paramLivT_OrganForTherapy = new SqlParameter();
+                paramLivT_OrganForTherapy.ParameterName = "@LivT_OrganForTherapy";
+                paramLivT_OrganForTherapy.Value = objServiceRequest.LivT_OrganForTherapy;
+                
+                SqlParameter paramLivT_OrganForEducation = new SqlParameter();
+                paramLivT_OrganForEducation.ParameterName = "@LivT_OrganForEducation";
+                paramLivT_OrganForEducation.Value = objServiceRequest.LivT_OrganForEducation;           
+
+                SqlParameter paramLivT_OrganForInvestigation = new SqlParameter();
+                paramLivT_OrganForInvestigation.ParameterName = "@LivT_OrganForInvestigation";
+                paramLivT_OrganForInvestigation.Value = objServiceRequest.LivT_OrganForInvestigation;
+                
+                SqlParameter paramLivT_GpNames = new SqlParameter();
+                paramLivT_GpNames.ParameterName = "@LivT_GpNames";
+                if (objServiceRequest.LivT_GpNames != null)
+                {
+                    paramLivT_GpNames.Value = objServiceRequest.LivT_GpNames;
+                }
+                else
+                {
+                    paramLivT_GpNames.Value = DBNull.Value;
+                }
+
+                SqlParameter paramLivT_GpPhoneNumber = new SqlParameter();
+                paramLivT_GpPhoneNumber.ParameterName = "@LivT_GpPhoneNumber";
+                if (objServiceRequest.LivT_GpPhoneNumber != null)
+                {
+                    paramLivT_GpPhoneNumber.Value = objServiceRequest.LivT_GpPhoneNumber;
+                }
+                else
+                {
+                    paramLivT_GpPhoneNumber.Value = DBNull.Value;
+                }
+
+                SqlParameter paramLivT_GpAddress = new SqlParameter();
+                paramLivT_GpAddress.ParameterName = "@LivT_GpAddress";
+                if (objServiceRequest.LivT_GpAddress != null)
+                {
+                    paramLivT_GpAddress.Value = objServiceRequest.LivT_GpAddress;
+                }
+                else
+                {
+                    paramLivT_GpAddress.Value = DBNull.Value;
+                }
+
+                // ----- Parametros de Living Trust - Fin ---------------------------- //
+
                 SqlParameter paramProcess = new SqlParameter();
                 paramProcess.ParameterName = "@Process";
                 if (objServiceRequest.Process != null)
@@ -632,8 +787,10 @@ namespace CustomerSupport.Controllers
 
                 SqlResultService = db.Database.ExecuteSqlCommand("GNTranServiceRequest @TransactionType, @IdServiceRequest OUT, @IdServiceType, @IdServiceStatus, @IdPerson " +
                                                         " ,@IdContactType, @IdPropertyType ,@Address, @Price, @DownPayment, @ClosingCost, @MonthlyIncome, @DebtPayment " +
-                                                        " ,@Piti, @Ratios, @EstimatedValue, @LoanAmount, @CurrentDebt, @Assets, @Beneficiaries " +
-                                                        " ,@Process, @Wish, @Plane, @Financing, @Note, @IdUser ",
+                                                        " ,@Piti, @Ratios, @EstimatedValue, @LoanAmount, @CurrentDebt, @Assets, @Process, @Wish, @Plane, @Financing, @Note, @IdUser " +
+                                                        " ,@LivT_Beneficiaries, @LivT_InheritanceCondition, @LivT_ResponsibleAgent1, @LivT_ResponsibleAgent2, @LivT_AuthorizeRespAgent " +
+                                                        " ,@LivT_ProlongLife, @LivT_DonateOrgans, @LivT_Organs, @LivT_OrganForTransplant, @LivT_OrganForTherapy, @LivT_OrganForEducation " +
+                                                        " ,@LivT_OrganForInvestigation, @LivT_GpNames, @LivT_GpPhoneNumber, @LivT_GpAddress ",
                         new SqlParameter[]{
                             new SqlParameter("@TransactionType", TransactionType),
                             paramOutIdServiceRequest,
@@ -653,14 +810,28 @@ namespace CustomerSupport.Controllers
                             paramEstimatedValue,
                             paramLoanAmount,
                             paramCurrentDebt,
-                            paramAssets,
-                            paramBeneficiaries,
+                            paramAssets,                            
                             paramProcess,
                             paramWish,
                             paramPlane,
                             paramFinancing,
                             paramNote,
-                            new SqlParameter("@IdUser", objServiceRequest.IdUser)
+                            new SqlParameter("@IdUser", objServiceRequest.IdUser),
+                            paramLivT_Beneficiaries,
+                            paramLivT_InheritanceCondition, 
+                            paramLivT_ResponsibleAgent1, 
+                            paramLivT_ResponsibleAgent2, 
+                            paramLivT_AuthorizeRespAgent,
+                            paramLivT_ProlongLife, 
+                            paramLivT_DonateOrgans,
+                            paramLivT_Organs,
+                            paramLivT_OrganForTransplant,
+                            paramLivT_OrganForTherapy,
+                            paramLivT_OrganForEducation,
+                            paramLivT_OrganForInvestigation,
+                            paramLivT_GpNames,
+                            paramLivT_GpPhoneNumber,
+                            paramLivT_GpAddress
                         }
                     );
 
@@ -699,45 +870,122 @@ namespace CustomerSupport.Controllers
                         }
                     }
 
-                    //ACTIVIDAD/CITA
-                    if (objServiceRequest.listTask != null)
+                    //BIENES LIVING TRUST
+                    if (objServiceRequest.listServiceRequestAssets != null && objServiceRequest.listServiceRequestAssets.Count() > 0)
                     {
-                        if (objServiceRequest.listTask.Count()>0)
+                        foreach (var item in objServiceRequest.listServiceRequestAssets)
                         {
-                            int IdTask=0;
 
-                            //INVOLUCRADOS EN LA TASK
-                            //Si esta actualizando, elimina los involucrados para volver a insertar (Por ahora 1 Solo)
-                            if (TransactionType == "U")
+                            SqlParameter paramOutIdAsset = new SqlParameter();
+                            paramOutIdAsset.ParameterName = "@IdAsset";
+                            paramOutIdAsset.SqlDbType = System.Data.SqlDbType.Int;
+                            paramOutIdAsset.Direction = System.Data.ParameterDirection.InputOutput;
+                            paramOutIdAsset.Value = item.IdAsset;
+
+                            SqlParameter paramIdAssetsType = new SqlParameter();
+                            paramIdAssetsType.ParameterName = "@IdAssetsType";
+                            paramIdAssetsType.Value = item.IdAssetsType;
+
+                            SqlParameter paramDescription = new SqlParameter();
+                            paramDescription.ParameterName = "@Description";
+                            if (item.Description != null)
                             {
-                                SqlResult = db.Database.ExecuteSqlCommand("GNTranPersonTask @TransactionType, @IdTask, @IdPerson ",
-                                    new SqlParameter[]{
-                                        new SqlParameter("@TransactionType", TransactionType),
-                                        new SqlParameter("@IdTask", ((MTask)objServiceRequest.listTask.First()).IdTask),
-                                        new SqlParameter("@IdPerson", DBNull.Value)
-                                    }
-                                );
-
+                                paramDescription.Value = item.Description;
+                            }
+                            else
+                            {
+                                paramDescription.Value = DBNull.Value;
                             }
 
-                            //(Inserta/Actualiza) las actividades del Servicio
-                            foreach (var item in objServiceRequest.listTask)
+                            SqlParameter paramBeneficiaries = new SqlParameter();
+                            paramBeneficiaries.ParameterName = "@Beneficiaries";
+                            if (item.Beneficiaries != null)
                             {
-                                if(item.IdServiceRequest==null)
-                                item.IdServiceRequest = IdServiceRequest;
-                                item.DateEnd = item.DateIni;
-                                item.HourEnd = item.HourIni;
-                                if(item.IdUser==0)
-                                item.IdUser = objServiceRequest.IdUser;
-                                int intresul =   TaskController.fnGNTranTask(item, TransactionType, ref IdTask, ref Mensaje);
+                                paramBeneficiaries.Value = item.Beneficiaries;
+                            }
+                            else
+                            {
+                                paramBeneficiaries.Value = DBNull.Value;
+                            }
 
-                                if(intresul==0)
-                                {
-                                    return intresul;
+                            SqlParameter paramAdministrators = new SqlParameter();
+                            paramAdministrators.ParameterName = "@Administrators";
+                            if (item.Administrators != null)
+                            {
+                                paramAdministrators.Value = item.Administrators;
+                            }
+                            else
+                            {
+                                paramAdministrators.Value = DBNull.Value;
+                            }
+
+                            if (item.Status == false && TransactionType == "I")
+                            {
+                                continue;
+                            }
+
+                            TransactionTypeAsset = TransactionType;
+                            if (item.Status==false && TransactionType=="U")
+                            {
+                                TransactionTypeAsset = "D";
+                            }
+
+                            SqlResult = db.Database.ExecuteSqlCommand("GNTranServiceRequestAssets @TransactionType, @IdAsset OUT, @IdServiceRequest " +
+                                                                      ", @IdAssetsType, @Description, @Beneficiaries, @Administrators ",
+                                new SqlParameter[]{
+                                    new SqlParameter("@TransactionType", TransactionTypeAsset),
+                                    paramOutIdAsset,
+                                    new SqlParameter("@IdServiceRequest", IdServiceRequest),
+                                    paramIdAssetsType,                                    
+                                    paramDescription,
+                                    paramBeneficiaries,
+                                    paramAdministrators
                                 }
-                            }
+                            );
+                            //IdAsset = Int32.Parse(paramOutIdAsset.Value.ToString());
                         }
+
                     }
+
+                    //ACTIVIDAD/CITA
+                    //if (objServiceRequest.listTask != null)
+                    //{
+                    //    if (objServiceRequest.listTask.Count()>0)
+                    //    {
+                    //        int IdTask=0;
+
+                    //        //INVOLUCRADOS EN LA TASK
+                    //        //Si esta actualizando, elimina los involucrados para volver a insertar (Por ahora 1 Solo)
+                    //        if (TransactionType == "U")
+                    //        {
+                    //            SqlResult = db.Database.ExecuteSqlCommand("GNTranPersonTask @TransactionType, @IdTask, @IdPerson ",
+                    //                new SqlParameter[]{
+                    //                    new SqlParameter("@TransactionType", TransactionType),
+                    //                    new SqlParameter("@IdTask", ((MTask)objServiceRequest.listTask.First()).IdTask),
+                    //                    new SqlParameter("@IdPerson", DBNull.Value)
+                    //                }
+                    //            );
+
+                    //        }
+
+                    //        //(Inserta/Actualiza) las actividades del Servicio
+                    //        foreach (var item in objServiceRequest.listTask)
+                    //        {
+                    //            if(item.IdServiceRequest==null)
+                    //            item.IdServiceRequest = IdServiceRequest;
+                    //            item.DateEnd = item.DateIni;
+                    //            item.HourEnd = item.HourIni;
+                    //            if(item.IdUser==0)
+                    //            item.IdUser = objServiceRequest.IdUser;
+                    //            int intresul =   TaskController.fnGNTranTask(item, TransactionType, ref IdTask, ref Mensaje);
+
+                    //            if(intresul==0)
+                    //            {
+                    //                return intresul;
+                    //            }
+                    //        }
+                    //    }
+                    //}
 
                     Mensaje = "Datos grabados exitosamente.";
                 }

@@ -221,6 +221,9 @@
     <Compile Include="BDContext\GNListServiceConstructionOption_Result.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
+    <Compile Include="BDContext\GNListServiceRequestAssets_Result.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
     <Compile Include="BDContext\GNListServiceRequest_Result.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
@@ -287,6 +290,9 @@
     <Compile Include="BDContext\ServiceRequest.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
+    <Compile Include="BDContext\ServiceRequestAssets.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
     <Compile Include="BDContext\Task.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
@@ -330,6 +336,7 @@
     <Compile Include="Models\MPerformance.cs" />
     <Compile Include="Models\MRole.cs" />
     <Compile Include="Models\MServiceConstructionOption.cs" />
+    <Compile Include="Models\MServiceRequestAssets.cs" />
     <Compile Include="Models\MStatistics.cs" />
     <Compile Include="Models\MTask.cs" />
     <Compile Include="Models\MPerson.cs" />
