@@ -493,8 +493,8 @@
                        /* $(row).css('background-color', '#eb5a46');*/
                         $($(row).find("td")[0]).css("background-color", "#eb5a46");
                     }
-                    else if (data['Status'] != 'Finalizado' && ((Difday == 1 || (Difday == 0 && (((currentHour - taskHour) == 1) ||
-                        (((currentHour - taskHour) == 0) && (((currentMinutes - taskMinute) <= 30) && (currentMinutes - taskMinute) >0)())))))) {
+                    else if (data['Status'] != 'Finalizado' && (Difday == 1 || (Difday == 0 && (((currentHour - taskHour) == 1) ||
+                        (((currentHour - taskHour) == 0) && (((currentMinutes - taskMinute) <= 30) && ((currentMinutes - taskMinute) >0))))))) {
 
                       /*  $(row).css('background-color', '#f2d600');*/
                         $($(row).find("td")[0]).css("background-color", "#f2d600");
@@ -503,6 +503,7 @@
                 "bAutoWidth": false,
                 "bInfo": false,
                 "bDestroy": true,
+                'iDisplayLength': 100,
                 "language": {
                     "sProcessing": "Procesando...",
                     "sLengthMenu": "Mostrar _MENU_ registros",

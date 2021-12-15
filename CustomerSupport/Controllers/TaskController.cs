@@ -191,7 +191,7 @@ namespace CustomerSupport.Controllers
                                                                                  }).ToList(),
 
                                          Creator = (string)(from tt in db.GNListPerson(null, null, null, null, tsk.IdUser).ToList()
-                                                            select tt.LastName + " " + tt.Name).First(),
+                                                            select tt.LastName + " " + tt.Name).FirstOrDefault(),
                                          Colaborator=tsk.Colaborator,
                                          Follower =tsk.Seguidor,
                                          OperationDate = tsk.OperationDate,
