@@ -10,11 +10,15 @@
 namespace CustomerSupport.BDContext
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class GNListCatalog_Result
+    public partial class ConfigTkOnBehalfOf
     {
-        public int IdCatalog { get; set; }
-        public string IdTable { get; set; }
-        public string Description { get; set; }
+        public int IdConfig { get; set; }
+        public int IdUserOnBehalfOf { get; set; }
+        public int IdUser { get; set; }
+    
+        public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
     }
 }

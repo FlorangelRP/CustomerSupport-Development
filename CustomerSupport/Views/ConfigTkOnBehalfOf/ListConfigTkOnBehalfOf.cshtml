@@ -1,0 +1,433 @@
+﻿@using CustomerSupport.Models
+@model List<CustomerSupport.Models.MConfigTkOnBehalfOf>
+
+@{
+    ViewBag.Title = "Configuración para permitir Crear Ticket en nombre de otro usuario";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">@ViewBag.Title</h3>
+    </div>
+    <div class="card-body">
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="m-0 row justify-content-center">
+                <div class="form-horizontal col-md-10">
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    
+
+                    @{
+                        string strLogin = "";
+                        string strName = "";
+                        string strIdUser = "";
+
+                        if (Session["Usuario"] != null)
+                        {
+                            strIdUser = (((MSerUser)Session["Usuario"])).IdUser.ToString();
+                            strLogin = (((MSerUser)Session["Usuario"])).Login;
+                            strName = (((MSerUser)Session["Usuario"])).PersonEmployee.Name + ' ' + (((MSerUser)Session["Usuario"])).PersonEmployee.LastName;
+                        }
+                    }
+
+                    <div class="row">
+                        @*<div class="col-md-2"></div>*@
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="control-label font-weight-bold">Usuario:</div>
+                                @Html.Label(strLogin)
+                                @Html.Hidden("IdUserOnBehalfOf", strIdUser)
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <div class="control-label font-weight-bold">Nombre:</div>
+                                @Html.Label(strName)
+                            </div>
+                        </div>
+                        @*<div class="col-md-2"></div>*@
+                    </div>
+
+
+                    <br />
+                    <div class="row mt-2 mb-2">
+                        <div class="col-md-12 align-self-center">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="control-label font-weight-bold">Empleados autorizados para crear tickets en nombre de @strLogin:</div>
+                                </div>
+                            </div>
+                            <div class="row shadow-sm p-3 m-1 bg-white rounded">
+
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <div class="form-group">
+                                                <div class="control-label">Empleado:</div>
+                                                @*<select id="lst_Employee" class="form-control" style="width: 100%;">*@
+                                                @*</select>*@
+                                                <select class="select2" onchange="filtrarPersona(this.value)" id="filtropersona" data-placeholder="Seleccionar"></select>
+                                                @Html.Hidden("NumIdentification")
+                                                @Html.Hidden("Name")
+                                                @Html.Hidden("LastName")
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <div class="btn_option"><a onclick="addRow();"><i class="fas fa-plus"></i></a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="row pt-3">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <div class="table-responsive">
+                                                    <div class="container">
+
+                                                        <table id="TDetail" class="table table-bordered table-striped">
+                                                            <thead class="font-weight-bold">
+                                                                <tr>
+                                                                    <td style="display:none;">colHid_indexCell</td>
+
+                                                                    <td style="display:none;">colHid_IdConfig</td>
+                                                                    <td style="display:none;">colHid_IdUserOnBehalfOf</td>
+                                                                    <td style="display:none;">colHid_IdUser</td>
+
+                                                                    <td style="display:none;">colHid_NumIdentification</td>
+                                                                    <td style="display:none;">colHid_Name</td>
+                                                                    <td style="display:none;">colHid_LastName</td>
+
+                                                                    <td style="width: 20%;">Nro. Identificacion</td>
+                                                                    <td style="width: 35%;">Nombre</td>
+                                                                    <td style="width: 35%;">Apellidos</td>
+
+                                                                    <td style="width: 10%;">Opciones</td>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="BodyDetail">
+                                                                @if (Model != null && Model.Count() > 0)
+                                                                {
+
+                                                                    string idRow;
+                                                                    string nameCol_IdConfig;
+                                                                    string nameCol_IdUserOnBehalfOf;
+                                                                    string nameCol_IdUser;
+                                                                    string nameCol_NumIdentification;
+                                                                    string nameCol_Name;
+                                                                    string nameCol_LastName;
+
+                                                                    //int i = 0; // foreach (var item in Model)
+
+                                                                    for (var i = 0; i < Model.Count; i++)
+                                                                    {
+                                                                        idRow = "trDetail" + i.ToString();
+                                                                        nameCol_IdConfig = "[" + i.ToString() + "].IdConfig";
+                                                                        nameCol_IdUserOnBehalfOf = "[" + i.ToString() + "].IdUserOnBehalfOf";
+                                                                        nameCol_IdUser = "[" + i.ToString() + "].IdUser";
+                                                                        nameCol_NumIdentification = "[" + i.ToString() + "].NumIdentification";
+                                                                        nameCol_Name = "[" + i.ToString() + "].Name";
+                                                                        nameCol_LastName = "[" + i.ToString() + "].LastName";
+
+                                                                        <tr id='@idRow'>
+                                                                            <td style="display:none;"><input name="item.Index" type="hidden" value='@i' /></td>
+
+                                                                            <td style="display:none;"><input id='@nameCol_IdConfig' name='@nameCol_IdConfig' type="hidden" value='@Model[i].IdConfig' /></td>
+                                                                            <td style="display:none;"><input id='@nameCol_IdUserOnBehalfOf' name='@nameCol_IdUserOnBehalfOf' type="hidden" value='@Model[i].IdUserOnBehalfOf' /></td>
+                                                                            <td style="display:none;"><input id='@nameCol_IdUser' name='@nameCol_IdUser' type="hidden" value='@Model[i].IdUser' /></td>
+
+                                                                            <td style="display:none;"><input id='@nameCol_NumIdentification' name='@nameCol_NumIdentification' type="hidden" value='@Model[i].NumIdentification' /></td>
+                                                                            <td style="display:none;"><input id='@nameCol_Name' name='@nameCol_Name' type="hidden" value='@Model[i].Name' /></td>
+                                                                            <td style="display:none;"><input id='@nameCol_LastName' name='@nameCol_LastName' type="hidden" value='@Model[i].LastName' /></td>
+
+                                                                            <td name="NumIdentification">@Model[i].NumIdentification</td>
+                                                                            <td>@Model[i].Name</td>
+                                                                            <td>@Model[i].LastName</td>
+
+                                                                            <td><div class="btn_option pt-0"><a class="deleteRow" onclick="deleteRow('@i');"><i class="far fa-trash-alt"></i></a></div></td>
+                                                                        </tr>
+
+                                                                        //i += 1;
+                                                                    }
+
+                                                                }
+                                                            </tbody>
+                                                        </table>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-offset-2 col-md-10">
+                            <div class="form-group">
+                                <div class="text-center">
+                                    <button class="white_btn" type="submit">Grabar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-10 text-center">
+                            @*<span class="text-success">@ViewBag.SuccessSave</span>*@
+                            @*<span class="text-danger">@ViewBag.ErrorSave</span>*@
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+@section Scripts {
+
+    <script src="~/Content/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="~/Content/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+    <script type="text/javascript">
+
+        var ListPersons = [];
+
+        function ObtenerPersonas() {
+
+            var UserSession = $("#IdUserOnBehalfOf").val();
+            var params = {
+                Status: true,
+                IdUserSession: UserSession
+            };
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetListUserConfigTkOnBehalfOf", "User")', //?Status=true
+                data: params, //"{}"
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+
+                    var itemArray = {};
+
+                    itemArray.IdUser = "";
+                    itemArray.NumIdentification = "";
+                    itemArray.Name = "";
+                    itemArray.LastName = "";
+
+                    data.push(itemArray);
+                    data.reverse();
+                    ListPersons = data;
+
+                    if (ListPersons.length > 0)
+                    {
+                        var persona = $("#filtropersona")[0];
+
+                        for (i = 0; i < ListPersons.length; i++) {
+
+                            if (ListPersons[i].IdUser != "" && ListPersons[i].PersonEmployee.LastName != "") {
+                                var Name = " ";
+                                if (ListPersons[i].PersonEmployee.Name != "")
+                                {
+                                    Name = " " + ListPersons[i].PersonEmployee.Name;
+                                }
+
+                                persona[i + 1] = new Option(ListPersons[i].PersonEmployee.NumIdentification + " - " + ListPersons[i].PersonEmployee.LastName + Name , ListPersons[i].IdUser, "", "");
+
+                            }
+
+                        }
+                        //persona.value = "Model.IdUser";
+                        //filtrarPersona("Model.IdUser");
+                    }
+
+                }
+            });
+        }
+        ObtenerPersonas();
+
+        function filtrarPersona(person) {
+            var SelecCodeValue = person.trim();
+            cargarDataPerson(SelecCodeValue, ListPersons);
+        }
+
+        function cargarDataPerson(IdUser, lstPersons) {
+
+            if (IdUser == "" || IdUser == "0") { return false; }
+
+            var objPerson = lstPersons.find((m) => m.IdUser == IdUser);
+
+            $("#NumIdentification").val(objPerson.PersonEmployee.NumIdentification); //hidden
+            $("#Name").val(objPerson.PersonEmployee.Name); //hidden
+            $("#LastName").val(objPerson.PersonEmployee.LastName); //hidden
+        }
+
+
+
+        function deleteRow(id) {
+            var controlToBeRemoved = "#trDetail" + id;
+            $(controlToBeRemoved).remove();
+        }
+
+        function addRow(){
+
+            @{
+                Model.Add(new MConfigTkOnBehalfOf());
+            }
+
+            //obtenemos los valores a insertar
+            var strIdConfig = "0";
+            var strIdUserOnBehalfOf = $("#IdUserOnBehalfOf").val();
+            var strIdUser = $("#filtropersona").val();
+
+            var strNumIdentification = $("#NumIdentification").val();
+            var strName = $("#Name").val();
+            var strLastName = $("#LastName").val();
+
+            if (strIdUser.trim() != "") {
+
+                var isFound = doSearchDuplicate('TDetail', strNumIdentification, 'NumIdentification');
+                //alert(isFound);
+                if (isFound) {
+                    toastr.warning("Empleado ya fue agregado, por favor verifique.");
+                    return false;
+                }
+
+                //-------------------------
+                var index = document.getElementById('TDetail').rows.length==0 ? 0 : document.getElementById('TDetail').rows.length - 1;
+
+                var colHid_indexCell = "<td style='display:none'><input name='item.Index' type = 'hidden' value = '" + index + "' /></td > ";
+
+                var colHid_IdConfig = "<td style='display:none'><input id='[" + index + "].IdConfig' name = '[" + index + "].IdConfig' type = 'hidden' value = '" + strIdConfig + "' /></td> ";
+                var colHid_IdUserOnBehalfOf = "<td style='display:none'><input id='[" + index + "].IdUserOnBehalfOf' name = '[" + index + "].IdUserOnBehalfOf' type='hidden' value='" + strIdUserOnBehalfOf + "' /></td> ";
+                var colHid_IdUser = "<td style='display:none'><input id='[" + index + "].IdUser' name = '[" + index + "].IdUser' type = 'hidden' value = '" + strIdUser + "' /></td> ";
+
+                var colHid_NumIdentification = "<td style='display:none'><input id='[" + index + "].NumIdentification' name = '[" + index + "].NumIdentification' type = 'hidden' value = '" + strNumIdentification + "' /></td> ";
+                var colHid_Name = "<td style='display:none'><input id='[" + index + "].Name' name = '[" + index + "].Name' type = 'hidden' value = '" + strName + "' /></td> ";
+                var colHid_LastName = "<td style='display:none'><input id='[" + index + "].LastName' name = '[" + index + "].LastName' type = 'hidden' value = '" + strLastName + "' /></td> ";
+
+                var colNumIdentification = "<td name = 'NumIdentification'>" + strNumIdentification + "</td> ";
+                var colName = "<td>" + strName + "</td> ";
+                var colLastName = "<td>" + strLastName + "</td> ";
+
+                var colDelete = "<td><div class='btn_option pt-0'><a class='deleteRow' onclick='deleteRow(" + index + ");'><i class='far fa-trash-alt'></i></a></div></td> ";
+
+                //insertamos los valores en la tabla
+                var newRow = "<tr id='trDetail" + index + "'>" +
+                    colHid_indexCell + colHid_IdConfig + colHid_IdUserOnBehalfOf + colHid_IdUser +
+                    colHid_NumIdentification + colHid_Name + colHid_LastName +
+                    colNumIdentification + colName + colLastName +
+                    colDelete + "</tr>";
+                $("#TDetail").append(newRow);
+                //--------------------------
+
+                //limpiamos los valores ya agregados
+                document.getElementById('filtropersona').value = "";
+                document.getElementById('NumIdentification').value = "";
+                document.getElementById('Name').value = "";
+                document.getElementById('LastName').value = "";
+            }
+
+        }
+
+        function doSearchDuplicate(tableName, searchText, colName) {
+
+            const tableReg = document.getElementById('' + tableName + '');
+            let found = false;
+
+            // Recorremos todas las filas con contenido de la tabla
+            for (let i = 1; i < tableReg.rows.length; i++) {
+
+                const cellsOfRow = tableReg.rows[i];
+                const cell = cellsOfRow.querySelector("[name*=" + '' + colName + '' + "]");
+                const compareWith = cell.value.toLowerCase();
+
+                // Buscamos el texto en el contenido de la celda y capturamos la posicion de la fila
+                // if (compareWith.indexOf(searchText.toLowerCase()) > -1) {
+                if (compareWith.trim() === searchText.toLowerCase().trim()) {
+                    found = true;
+                    break;
+                }
+
+            }
+
+            return found;
+        }
+
+        $(document).ready(function(){
+
+            //Mensaje de confirmacion--------------------
+            if ("@ViewBag.SuccessSave"!=""){
+                toastr.success("@ViewBag.SuccessSave");
+            }
+            if ("@ViewBag.ErrorSave" != ""){
+                toastr.error("@ViewBag.ErrorSave");
+            }
+            //-------------------------------------------
+
+            $('.select2').select2({ width: '100%' });
+
+            @*$("#lst_Employee").on('change', function () {
+                var selectValue = $(this).val();
+                changeCodeInputHiddenList("lst_Employee", "inpIdPropertyType", selectValue);
+            });
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("fnListUser", "User")?Status=true',
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+
+                    var option = $(document.createElement('option'));
+                    option.text("Seleccione");
+                    option.val("0");
+                    $("#lst_Employee").append(option);
+
+                    $(msg).each(function () {
+                        var option = $(document.createElement('option'));
+                        option.text(this.DetailDesc);
+                        option.val(this.IdUser); //Identity
+
+                        $("#lst_Employee").append(option);
+                    });
+
+                    document.getElementById('lst_Employee').value = "0";
+
+                    changeCodeInputHiddenList("lst_Employee", "inpIdPropertyType", "");
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de Empleados");
+                }
+
+            });*@
+
+        });
+
+    </script>
+}

@@ -155,6 +155,9 @@
     <Compile Include="BDContext\CommentTask.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
+    <Compile Include="BDContext\ConfigTkOnBehalfOf.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
     <Compile Include="BDContext\ConfigurationParameter.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
@@ -192,6 +195,9 @@
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\GNListCommentTask_Result.cs">
+      <DependentUpon>MMEnterprises.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BDContext\GNListConfigTkOnBehalfOf_Result.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\GNListCountry_Result.cs">
@@ -293,15 +299,6 @@
     <Compile Include="BDContext\ServiceRequestAssets.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
-    <Compile Include="BDContext\sp_helpdiagramdefinition_Result.cs">
-      <DependentUpon>MMEnterprises.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BDContext\sp_helpdiagrams_Result.cs">
-      <DependentUpon>MMEnterprises.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BDContext\sysdiagrams.cs">
-      <DependentUpon>MMEnterprises.tt</DependentUpon>
-    </Compile>
     <Compile Include="BDContext\Task.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
@@ -309,9 +306,6 @@
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\UserAcces.cs">
-      <DependentUpon>MMEnterprises.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BDContext\UserAcces_resp.cs">
       <DependentUpon>MMEnterprises.tt</DependentUpon>
     </Compile>
     <Compile Include="BDContext\VWListCatalog.cs">
@@ -331,6 +325,7 @@
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Controllers\ServiceRequestController.cs" />
+    <Compile Include="Controllers\ConfigTkOnBehalfOfController.cs" />
     <Compile Include="Controllers\TableCatalogController.cs" />
     <Compile Include="Controllers\TaskController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
@@ -340,6 +335,7 @@
     </Compile>
     <Compile Include="Models\MCalendar.cs" />
     <Compile Include="Models\MAssociatePosition.cs" />
+    <Compile Include="Models\MConfigTkOnBehalfOf.cs" />
     <Compile Include="Models\MConfigurationParameter.cs" />
     <Compile Include="Models\MNotificationSettings.cs" />
     <Compile Include="Models\MPosition.cs" />
@@ -1221,6 +1217,7 @@
     <Content Include="Scripts\moment.min.js.map" />
     <Content Include="Scripts\moment-with-locales.min.js.map" />
     <Content Include="Views\NotificationSettings\ListNotificationSettings.cshtml" />
+    <Content Include="Views\ConfigTkOnBehalfOf\ListConfigTkOnBehalfOf.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

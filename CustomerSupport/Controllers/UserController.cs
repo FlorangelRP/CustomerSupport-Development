@@ -406,7 +406,7 @@ namespace CustomerSupport.Controllers
                                                            //PersonType = result2.PersonType,
                                                            //IdIdentificationType = result2.IdIdentificationType,
                                                            //IdentificationType = result2.IdentificationType,
-                                                           //NumIdentification = ObjUser.Desencriptar(result2.NumIdentification),
+                                                           NumIdentification = ObjUser.Desencriptar(result2.NumIdentification),
                                                            Name = result2.Name,
                                                            LastName = result2.LastName,
                                                            //Birthday = result2.Birthday,
@@ -716,6 +716,15 @@ namespace CustomerSupport.Controllers
             ListPersonWithoutUser = ListPerson.Where(p => ListUser.All(p2 => p2.IdPerson != p.IdPerson)).ToList();
 
             return Json(ListPersonWithoutUser, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetListUserConfigTkOnBehalfOf(int? IdUserSession = null, int? IdUser = null, bool? Status = null, int? IdPerson = null)
+        {
+            List<MUser> ListUser = new List<MUser>();
+
+            ListUser = fnListUser(IdUser, Status, IdPerson).Where(s => s.IdUser != IdUserSession && s.Login.Trim().ToLower() != "admin").ToList();
+            
+            return Json(ListUser, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Close()
