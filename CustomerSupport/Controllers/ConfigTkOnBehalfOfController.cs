@@ -91,7 +91,7 @@ namespace CustomerSupport.Controllers
 
         /// <summary>
         /// Filtrar por "IdUserOnBehalfOf" para la pantalla "ListConfigTkOnBehalfOf" , la tabla se llena con  IdConfig,IdUser,NumIdentification,Name,LastName.
-        /// Filtrar por "IdUser" para la pantalla "AddTask" y para llenar el combobox usar IdUserOnBehalfOf,NumIdentificationOnBehalfOf,LastNameOnBehalfOf.
+        /// Filtrar por "IdUser" para la pantalla "AddTask" y para llenar el combobox usar IdUserOnBehalfOf,NumIdentificationOnBehalfOf,NameOnBehalfOf,LastNameOnBehalfOf.
         /// </summary>
         public static List<MConfigTkOnBehalfOf> fnListMConfigTkOnBehalfOf(int? IdUser = null, int? IdUserOnBehalfOf = null, int? IdConfig=null)
         {
