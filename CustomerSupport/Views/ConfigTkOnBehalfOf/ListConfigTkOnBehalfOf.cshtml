@@ -106,6 +106,7 @@
                                                                     <td style="display:none;">colHid_NumIdentification</td>
                                                                     <td style="display:none;">colHid_Name</td>
                                                                     <td style="display:none;">colHid_LastName</td>
+                                                                    <td style="display:none;">colHid_Status</td>
 
                                                                     <td style="width: 20%;">Nro. Identificacion</td>
                                                                     <td style="width: 35%;">Nombre</td>
@@ -125,6 +126,7 @@
                                                                     string nameCol_NumIdentification;
                                                                     string nameCol_Name;
                                                                     string nameCol_LastName;
+                                                                    string nameCol_Status;
 
                                                                     //int i = 0; // foreach (var item in Model)
 
@@ -137,24 +139,26 @@
                                                                         nameCol_NumIdentification = "[" + i.ToString() + "].NumIdentification";
                                                                         nameCol_Name = "[" + i.ToString() + "].Name";
                                                                         nameCol_LastName = "[" + i.ToString() + "].LastName";
+                                                                        nameCol_Status = "[" + i.ToString() + "].Status";
 
-                                                                        <tr id='@idRow'>
-                                                                            <td style="display:none;"><input name="item.Index" type="hidden" value='@i' /></td>
+                                                                <tr id='@idRow'>
+                                                                    <td style="display:none;"><input name="item.Index" type="hidden" value='@i' /></td>
 
-                                                                            <td style="display:none;"><input id='@nameCol_IdConfig' name='@nameCol_IdConfig' type="hidden" value='@Model[i].IdConfig' /></td>
-                                                                            <td style="display:none;"><input id='@nameCol_IdUserOnBehalfOf' name='@nameCol_IdUserOnBehalfOf' type="hidden" value='@Model[i].IdUserOnBehalfOf' /></td>
-                                                                            <td style="display:none;"><input id='@nameCol_IdUser' name='@nameCol_IdUser' type="hidden" value='@Model[i].IdUser' /></td>
+                                                                    <td style="display:none;"><input id='@nameCol_IdConfig' name='@nameCol_IdConfig' type="hidden" value='@Model[i].IdConfig' /></td>
+                                                                    <td style="display:none;"><input id='@nameCol_IdUserOnBehalfOf' name='@nameCol_IdUserOnBehalfOf' type="hidden" value='@Model[i].IdUserOnBehalfOf' /></td>
+                                                                    <td style="display:none;"><input id='@nameCol_IdUser' name='@nameCol_IdUser' type="hidden" value='@Model[i].IdUser' /></td>
 
-                                                                            <td style="display:none;"><input id='@nameCol_NumIdentification' name='@nameCol_NumIdentification' type="hidden" value='@Model[i].NumIdentification' /></td>
-                                                                            <td style="display:none;"><input id='@nameCol_Name' name='@nameCol_Name' type="hidden" value='@Model[i].Name' /></td>
-                                                                            <td style="display:none;"><input id='@nameCol_LastName' name='@nameCol_LastName' type="hidden" value='@Model[i].LastName' /></td>
+                                                                    <td style="display:none;"><input id='@nameCol_NumIdentification' name='@nameCol_NumIdentification' type="hidden" value='@Model[i].NumIdentification' /></td>
+                                                                    <td style="display:none;"><input id='@nameCol_Name' name='@nameCol_Name' type="hidden" value='@Model[i].Name' /></td>
+                                                                    <td style="display:none;"><input id='@nameCol_LastName' name='@nameCol_LastName' type="hidden" value='@Model[i].LastName' /></td>
+                                                                    <td style="display:none;"><input id='@nameCol_Status' name='@nameCol_Status' type="hidden" value='@Model[i].Status.ToString().ToLower()' /></td>
 
-                                                                            <td name="NumIdentification">@Model[i].NumIdentification</td>
-                                                                            <td>@Model[i].Name</td>
-                                                                            <td>@Model[i].LastName</td>
+                                                                    <td name="NumIdentification">@Model[i].NumIdentification</td>
+                                                                    <td>@Model[i].Name</td>
+                                                                    <td>@Model[i].LastName</td>
 
-                                                                            <td><div class="btn_option pt-0"><a class="deleteRow" onclick="deleteRow('@i');"><i class="far fa-trash-alt"></i></a></div></td>
-                                                                        </tr>
+                                                                    <td><div class="btn_option pt-0"><a class="deleteRow" onclick="deleteRow('@i');"><i class="far fa-trash-alt"></i></a></div></td>
+                                                                </tr>
 
                                                                         //i += 1;
                                                                     }
@@ -290,8 +294,11 @@
 
 
         function deleteRow(id) {
-            var controlToBeRemoved = "#trDetail" + id;
-            $(controlToBeRemoved).remove();
+            var idTrRow = '#trDetail' + id;
+            var idTdStatus = '[' + id + '].Status';
+
+            document.getElementById('' + idTdStatus + '').value = "false";
+            $(idTrRow).hide();
         }
 
         function addRow(){
@@ -308,10 +315,11 @@
             var strNumIdentification = $("#NumIdentification").val();
             var strName = $("#Name").val();
             var strLastName = $("#LastName").val();
+            var strStatus = "true";
 
             if (strIdUser.trim() != "") {
 
-                var isFound = doSearchDuplicate('TDetail', strNumIdentification, 'NumIdentification');
+                var isFound = doSearchDuplicate('TDetail', strNumIdentification, 'NumIdentification', true);
                 //alert(isFound);
                 if (isFound) {
                     toastr.warning("Empleado ya fue agregado, por favor verifique.");
@@ -330,6 +338,7 @@
                 var colHid_NumIdentification = "<td style='display:none'><input id='[" + index + "].NumIdentification' name = '[" + index + "].NumIdentification' type = 'hidden' value = '" + strNumIdentification + "' /></td> ";
                 var colHid_Name = "<td style='display:none'><input id='[" + index + "].Name' name = '[" + index + "].Name' type = 'hidden' value = '" + strName + "' /></td> ";
                 var colHid_LastName = "<td style='display:none'><input id='[" + index + "].LastName' name = '[" + index + "].LastName' type = 'hidden' value = '" + strLastName + "' /></td> ";
+                var colHid_Status = "<td style='display:none'><input id='[" + index + "].Status' name = '[" + index + "].Status' type = 'hidden' value = '" + strStatus + "' /></td> ";
 
                 var colNumIdentification = "<td name = 'NumIdentification'>" + strNumIdentification + "</td> ";
                 var colName = "<td>" + strName + "</td> ";
@@ -340,14 +349,15 @@
                 //insertamos los valores en la tabla
                 var newRow = "<tr id='trDetail" + index + "'>" +
                     colHid_indexCell + colHid_IdConfig + colHid_IdUserOnBehalfOf + colHid_IdUser +
-                    colHid_NumIdentification + colHid_Name + colHid_LastName +
+                    colHid_NumIdentification + colHid_Name + colHid_LastName + colHid_Status +
                     colNumIdentification + colName + colLastName +
                     colDelete + "</tr>";
                 $("#TDetail").append(newRow);
                 //--------------------------
 
                 //limpiamos los valores ya agregados
-                document.getElementById('filtropersona').value = "";
+                //document.getElementById('filtropersona').value = "";
+                $('#filtropersona').val(null).trigger('change');
                 document.getElementById('NumIdentification').value = "";
                 document.getElementById('Name').value = "";
                 document.getElementById('LastName').value = "";
@@ -355,7 +365,7 @@
 
         }
 
-        function doSearchDuplicate(tableName, searchText, colName) {
+        function doSearchDuplicate(tableName, searchText, colName, HasColStatus) {
 
             const tableReg = document.getElementById('' + tableName + '');
             let found = false;
@@ -367,11 +377,18 @@
                 const cell = cellsOfRow.querySelector("[name*=" + '' + colName + '' + "]");
                 const compareWith = cell.value.toLowerCase();
 
-                // Buscamos el texto en el contenido de la celda y capturamos la posicion de la fila
-                // if (compareWith.indexOf(searchText.toLowerCase()) > -1) {
-                if (compareWith.trim() === searchText.toLowerCase().trim()) {
-                    found = true;
-                    break;
+                if (HasColStatus==true) {
+                    const cellStatus = cellsOfRow.querySelector("[name*=Status]");
+                    if (compareWith.trim() === searchText.toLowerCase().trim() && cellStatus.value!="false") {
+                        found = true;
+                        break;
+                    }
+                }
+                else {
+                    if (compareWith.trim() === searchText.toLowerCase().trim()) {
+                        found = true;
+                        break;
+                    }
                 }
 
             }
@@ -390,7 +407,7 @@
             }
             //-------------------------------------------
 
-            $('.select2').select2({ width: '100%' });
+            $('.select2').select2({ width: '100%', allowClear:true });
 
             @*$("#lst_Employee").on('change', function () {
                 var selectValue = $(this).val();

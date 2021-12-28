@@ -17,5 +17,6 @@ namespace CustomerSupport.Models
         public string NumIdentification { get; set; }
         public string Name { get; set; }
         public string LastName { get; set; }
+        public Nullable<bool> Status { get; set; } //opcional. Se usa para control de eliminacion en Datatable de la view.
     }
 }

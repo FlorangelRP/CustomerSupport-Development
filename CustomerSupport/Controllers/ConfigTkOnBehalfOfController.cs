@@ -146,22 +146,25 @@ namespace CustomerSupport.Controllers
                     foreach (var item in ListConfigTkOnBehalfOf)
                     {
 
-                        SqlParameter paramOutIdConfig = new SqlParameter();
-                        paramOutIdConfig.ParameterName = "@IdConfig";
-                        paramOutIdConfig.SqlDbType = System.Data.SqlDbType.Int;
-                        paramOutIdConfig.Direction = System.Data.ParameterDirection.InputOutput;
-                        paramOutIdConfig.Value = item.IdConfig;
+                        if (item.Status!=false)
+                        {
+                            SqlParameter paramOutIdConfig = new SqlParameter();
+                            paramOutIdConfig.ParameterName = "@IdConfig";
+                            paramOutIdConfig.SqlDbType = System.Data.SqlDbType.Int;
+                            paramOutIdConfig.Direction = System.Data.ParameterDirection.InputOutput;
+                            paramOutIdConfig.Value = item.IdConfig;
 
-                        SqlResult = db.Database.ExecuteSqlCommand("GNTranConfigTkOnBehalfOf @TransactionType, @IdConfig OUT " +
-                                                                  ", @IdUserOnBehalfOf, @IdUser ",
-                            new SqlParameter[]{
+                            SqlResult = db.Database.ExecuteSqlCommand("GNTranConfigTkOnBehalfOf @TransactionType, @IdConfig OUT " +
+                                                                      ", @IdUserOnBehalfOf, @IdUser ",
+                                new SqlParameter[]{
                                 new SqlParameter("@TransactionType", "I"),
                                 paramOutIdConfig,
                                 new SqlParameter("@IdUserOnBehalfOf", item.IdUserOnBehalfOf),
                                 new SqlParameter("@IdUser", item.IdUser)
-                            }
-                        );
-                        IdConfig = Int32.Parse(paramOutIdConfig.Value.ToString());
+                                }
+                            );
+                            IdConfig = Int32.Parse(paramOutIdConfig.Value.ToString());
+                        }
                     }
                     Mensaje = "Datos grabados exitosamente.";
                 }
