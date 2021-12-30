@@ -18,6 +18,18 @@
                 <div class="form-horizontal col-md-10">
 
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div id="UserCreator" class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <div class="control-label">Creado por:</div>
+                                <select id="lst_UserCreator" class="form-control" style="width: 100%;"></select>
+                                @Html.HiddenFor(model => model.IdUser, new { @id = "inIdUser" })
+                                @Html.HiddenFor(model => model.IdCreatedBy, new { @id = "inIdCreatedBy" })
+                                @Html.HiddenFor(model => model.UserName, new { @id = "strUserName" })
+                                @*@Html.ValidationMessageFor(model => model.IdPriority, "", new { @class = "text-danger" })*@
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="row">
                         <div class="col-md-4">
@@ -101,7 +113,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <div class="control-label">Fecha Inicio:</div>
-                                @Html.TextBoxFor(model => model.DateIni, "{0:d}", new { @class = "form-control", @type = "date", @id = "dttDateIni", @Value = @DateTime.Now.ToShortDateString() })
+                                @Html.TextBoxFor(model => model.DateIni, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date", @id = "dttDateIni", @Value = @DateTime.Now.ToShortDateString() })
                                 @Html.ValidationMessageFor(model => model.DateIni, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -171,7 +183,7 @@
                                                         <div class="control-label">Colaborador/seguidor:</div>
                                                         <select class="select2" onchange="filtrarColaborador(this.value)" id="filtroColaborador" data-placeholder="Seleccione"></select>
                                                         @*@Html.HiddenFor(model => model.IdPersonEmployee, new { @id = "IdPersonColaborador," })
-                                                            @Html.ValidationMessageFor(model => model.IdPersonEmployee, "", new { @class = "text-danger" })*@
+                                            @Html.ValidationMessageFor(model => model.IdPersonEmployee, "", new { @class = "text-danger" })*@
 
                                                     </div>
                                                 </div>
@@ -452,7 +464,7 @@
         function filtrarPersona(person) {
             /*debugger;*/
             var SelecCodeValue = person.trim();
-            
+
             cargarDataPerson(SelecCodeValue, ListPersons);
             var combo = document.getElementById("filtropersona");
             var selected = combo.options[combo.selectedIndex].text;
@@ -561,6 +573,19 @@
                 var combo = document.getElementById("lst_Priority");
                 var selected = combo.options[combo.selectedIndex].text;
                 $("#strPriorityTask").val(selected);
+
+            });
+
+
+            $("#lst_UserCreator").on('change', function () {
+                /*debugger;*/
+                var selectValue = $(this).val();
+                //$("#inpIdIdentificationType").val(selectValue);
+                changeCodeInputHiddenList("lst_UserCreator", "inIdUser", selectValue);
+                ////debugger;
+                var combo = document.getElementById("lst_UserCreator");
+                var selected = combo.options[combo.selectedIndex].text;
+                $("#strUser").val(selected);
 
             });
 
@@ -685,6 +710,64 @@
 
             });
 
+           
+
+            var IdUser = @Html.Raw(Json.Encode(Model.IdCreatedBy));
+           /* alert(IdUser)*/
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetConfigTkOnBehalfOf", "ConfigTkOnBehalfOf")?IdUser=' + IdUser,
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                   /* debugger;*/
+                    var option = $(document.createElement('option'));
+                    option.text("Seleccione");
+                    option.val("0");
+
+                    $("#lst_UserCreator").append(option);
+                    var x = document.getElementById("UserCreator");
+                  /*  x.style.display = "none";*/
+                  
+                    $(msg).each(function () {
+
+                        if (msg.length > 0) {
+                            x.style.display = "block";
+                        }
+                        else {
+                            x.style.display = "none";
+                        }
+                        var option = $(document.createElement('option'));
+
+                        var CompleteName = "";
+                        var Name = " ";
+                        if (this.Name != "") {
+                            Name = " " + this.NameOnBehalfOf;
+                        }
+
+                        CompleteName = this.NumIdentificationOnBehalfOf + " - " + this.LastNameOnBehalfOf + Name;
+
+
+                        option.text(CompleteName);
+                        option.val(this.IdUserOnBehalfOf); //Identity
+
+                        $("#lst_UserCreator").append(option);
+
+                        
+                    });
+
+                    document.getElementById('lst_UserCreator').value = "0";
+
+                    changeCodeInputHiddenList("lst_UserCreator", "inIdUser", "");
+                    
+                },
+                error: function (msg) {
+                    $("#error > span").text("Error al llenar lista de Creadores");
+                }
+
+            });
+           
             function changeCodeInputHiddenList(idDropDownList, idInputHidden, valCode) {
                 //debugger;
                 if (valCode === "") {

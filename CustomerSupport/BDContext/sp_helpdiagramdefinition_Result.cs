@@ -11,11 +11,9 @@ namespace CustomerSupport.BDContext
 {
     using System;
     
-    public partial class GNLisConfigurationParameter_Result
+    public partial class sp_helpdiagramdefinition_Result
     {
-        public int IdConfig { get; set; }
-        public string Description { get; set; }
-        public string Abbreviation { get; set; }
-        public string Value { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

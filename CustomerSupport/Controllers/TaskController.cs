@@ -142,63 +142,77 @@ namespace CustomerSupport.Controllers
             MUser objUser = new MUser();
 
             listTask = (List<MTask>)(from tsk in db.GNListTask(IdTask, dttDateIni, dttDateEnd, IdResponsable, strTittle, IdPriority, IdStatus, IdTypeTask, IdServiceRequest, IdUser, IdFatherTask,IdColaborator,IdFollower).ToList()
-                                     select new MTask
-                                     {
-                                         IdTask = tsk.IdTask,
-                                         IdUser = tsk.IdUser,
-                                         UserName = tsk.UserName,
-                                         UserLastName = tsk.UserLastName,
-                                         DateIni = tsk.DateIni,
-                                         DateEnd = tsk.DateEnd,
-                                         HourIni = tsk.HourIni,
-                                         HourEnd = tsk.HourEnd,
-                                         Place = tsk.Place,
-                                         Status = tsk.Status,
-                                         IdStatus = tsk.IdStatus,
-                                         IdFatherTask = tsk.IdFatherTask,
-                                         Tittle = tsk.Tittle,
-                                         IdServiceRequest = tsk.IdServiceRequest,
-                                         IdTypeTask = tsk.IdTypeTask,
-                                         TypeTask = tsk.TypeTask,
-                                         IdPriority = tsk.IdPriority,
-                                         PriorityTask = tsk.PriorityTask,
-                                         IdPersonEmployee = tsk.IdResponsable,
-                                         PersonEmployeeName = tsk.Name,
-                                         PersonEmployeeLastName = tsk.LastName,
-                                         Activity = tsk.Activity,
-                                         Confidential = tsk.confidential == null ? false : (bool)tsk.confidential,
-                                         listTaskPerson = (List<MTaskPerson>)(from tp in db.GNListPersonTask(tsk.IdTask, null).ToList()
-                                                                              select new MTaskPerson
-                                                                              {
-                                                                                  IdPersonEmployee = tp.IdPersonEmployee,
-                                                                                  PersonEmployeeName = tp.PersonEmployeeName,
-                                                                                  PersonEmployeeLastName = tp.PersonEmployeeLastName,
-                                                                                  NumIdentification = objUser.Desencriptar(tp.NumIdentification),
-                                                                                  Iscolaborator = tp.Iscolaborator
-                                                                              }).ToList()
-                                                                              ,
-                                         listMTaskComment = (List<MTaskComment>)(from tp in db.GNListBitacora(tsk.IdTask).ToList()
-                                                                                 select new MTaskComment
-                                                                                 {
-                                                                                     IdComment = tp.IdComment,
-                                                                                     IdTask = tp.IdTask,
-                                                                                     Comment = tp.Comment,
-                                                                                     IdUser = tp.IdUser,
-                                                                                     UserName = tp.UserName,
-                                                                                     DateOperation = tp.DateOperation,
-                                                                                     Date = tp.Date,
-                                                                                     New = 0,
-                                                                                 }).ToList(),
+            select new MTask
+            {
+                IdTask = tsk.IdTask,
+                IdUser = tsk.IdUser,
+                UserName = tsk.UserName,
+                UserLastName = tsk.UserLastName,
+                DateIni = tsk.DateIni,
+                DateEnd = tsk.DateEnd,
+                HourIni = tsk.HourIni,
+                HourEnd = tsk.HourEnd,
+                Place = tsk.Place,
+                Status = tsk.Status,
+                IdStatus = tsk.IdStatus,
+                IdFatherTask = tsk.IdFatherTask,
+                Tittle = tsk.Tittle,
+                IdServiceRequest = tsk.IdServiceRequest,
+                IdTypeTask = tsk.IdTypeTask,
+                TypeTask = tsk.TypeTask,
+                IdPriority = tsk.IdPriority,
+                PriorityTask = tsk.PriorityTask,
+                IdPersonEmployee = tsk.IdResponsable,
+                PersonEmployeeName = tsk.Name,
+                PersonEmployeeLastName = tsk.LastName,
+                Activity = tsk.Activity,
+                Confidential = tsk.confidential == null ? false : (bool)tsk.confidential,
+                listTaskPerson = (List<MTaskPerson>)(from tp in db.GNListPersonTask(tsk.IdTask, null).ToList()
+                                                    select new MTaskPerson
+                                                    {
+                                                        IdPersonEmployee = tp.IdPersonEmployee,
+                                                        PersonEmployeeName = tp.PersonEmployeeName,
+                                                        PersonEmployeeLastName = tp.PersonEmployeeLastName,
+                                                        NumIdentification = objUser.Desencriptar(tp.NumIdentification),
+                                                        Iscolaborator = tp.Iscolaborator
+                                                    }).ToList()
+                                                    ,
+                listMTaskComment = (List<MTaskComment>)(from tp in db.GNListBitacora(tsk.IdTask).ToList()
+                                                        select new MTaskComment
+                                                        {
+                                                            IdComment = tp.IdComment,
+                                                            IdTask = tp.IdTask,
+                                                            Comment = tp.Comment,
+                                                            IdUser = tp.IdUser,
+                                                            UserName = tp.UserName,
+                                                            DateOperation = tp.DateOperation,
+                                                            Date = tp.Date,
+                                                            New = 0,
+                                                        }).ToList(),
 
-                                         Creator = (string)(from tt in db.GNListPerson(null, null, null, null, tsk.IdUser).ToList()
-                                                            select tt.LastName + " " + tt.Name).FirstOrDefault(),
-                                         Colaborator=tsk.Colaborator,
-                                         Follower =tsk.Seguidor,
-                                         OperationDate = tsk.OperationDate,
-                                         CreationDate = tsk.CreationDate
+                Creator = (string)(from tt in db.GNListPerson(null, null, null, null, tsk.IdUser).ToList()
+                                select tt.LastName + " " + tt.Name).FirstOrDefault(),
+                Colaborator=tsk.Colaborator,
+                Follower =tsk.Seguidor,
+                OperationDate = tsk.OperationDate,
+                CreationDate = tsk.CreationDate,
+                IdCreatedBy = tsk.IdCreatedBy,
 
-                                     }).ToList();
+            }).ToList();
+
             return listTask;
+
+            //ListUserCreate = (from result in db.GNListConfigTkOnBehalfOf(IdUser, null, null).ToList()
+            //                  select new MConfigTkOnBehalfOf
+            //                  {
+            //                      IdUserOnBehalfOf = result.IdUserOnBehalfOf,
+            //                      Name = objUser.Desencriptar(result.NumIdentificationOnBehalfOf) + " - " + result.LastNameOnBehalfOf + (result.NameOnBehalfOf != "" ? " " + result.NameOnBehalfOf : ""),
+            //                  }).ToList()
+
+
+
+
+
 
         }
 
@@ -268,8 +282,26 @@ namespace CustomerSupport.Controllers
                 }
             }
 
+
+            List<MTask> listTask = new List<MTask>();
+            MMEnterprisesEntities db = new MMEnterprisesEntities();
+
+            MUser objUser = new MUser();
             MTask objMask = new MTask();
             objMask.listTaskPerson = new List<MTaskPerson>();
+            objMask.IdCreatedBy = ((MSerUser)Session["Usuario"]).IdUser;
+            objMask.IdUser = ((MSerUser)Session["Usuario"]).IdUser;
+
+            //var ListUserCreate = (from result in db.GNListConfigTkOnBehalfOf(((MSerUser)Session["Usuario"]).IdUser, null, null).ToList()
+            //                      select new MConfigTkOnBehalfOf
+            //                      {
+            //                          IdUser = result.IdUserOnBehalfOf,
+            //                          Name = objUser.Desencriptar(result.NumIdentificationOnBehalfOf) + " - " + result.LastNameOnBehalfOf + (result.NameOnBehalfOf != "" ? " " + result.NameOnBehalfOf : ""),
+            //                      }).ToList();
+
+            //SelectList ListUserCreateSelectList = new SelectList(ListUserCreate, "IdUser", "Name");
+
+            //objMask.ListUserCreate = ListUserCreateSelectList;
 
             if (TempData["Success"] != null)
             {
@@ -303,7 +335,12 @@ namespace CustomerSupport.Controllers
                 if (ModelState.IsValid)
                 {
                     //valores por defecto
-                    objTask.IdUser = ((MSerUser)Session["Usuario"]).IdUser;
+                    //objTask.IdUser = ((MSerUser)Session["Usuario"]).IdUser;
+
+                    if(objTask.IdUser ==0)
+                    {
+                        objTask.IdUser= ((MSerUser)Session["Usuario"]).IdUser;
+                    }
 
                     string mensaje = "";
                     int IdTask = 0;
@@ -402,7 +439,8 @@ namespace CustomerSupport.Controllers
         {
             try
             {
-                objTask.IdUser = ((MSerUser)Session["Usuario"]).IdUser;
+                if (objTask.IdUser == 0)
+                    objTask.IdUser = ((MSerUser)Session["Usuario"]).IdUser;
 
                 if (objTask.DateEnd == objTask.DateIni && objTask.HourIni == objTask.HourEnd)
                 {
@@ -582,6 +620,9 @@ namespace CustomerSupport.Controllers
                     IdResponsable.Value = DBNull.Value;
                 }
 
+                if (objTask.IdUser == 0)
+                    objTask.IdUser = (int) objTask.IdCreatedBy;
+
                 bool blnAddComment = false;
                 bool blnEditComment = false;
                 bool blnModifiPriority = false;
@@ -650,7 +691,7 @@ namespace CustomerSupport.Controllers
 
                 SqlResultTask = db.Database.ExecuteSqlCommand("GNTranTask @TransactionType, @IdTask OUT, @IdUser " +
                                                         ", @dttDateIni, @dttDateEnd, @tHourIni, @tHourEnd, @strPlace " +
-                                                        ", @IdFatherTask, @IdResponsable, @strTittle, @IdPriority, @IdStatus, @IdTypeTask,@strActivity,@blnConfidential ",
+                                                        ", @IdFatherTask, @IdResponsable, @strTittle, @IdPriority, @IdStatus, @IdTypeTask,@strActivity,@blnConfidential,@IdCreatedBy ",
                         new SqlParameter[]{
                             new SqlParameter("@TransactionType", TransactionType),
                             paramOutIdTask,
@@ -667,7 +708,8 @@ namespace CustomerSupport.Controllers
                             new SqlParameter("@IdStatus", objTask.IdStatus),
                             new SqlParameter("@IdTypeTask", objTask.IdTypeTask),
                             new SqlParameter("@strActivity", objTask.Activity),
-                            new SqlParameter("@blnConfidential", objTask.Confidential)
+                            new SqlParameter("@blnConfidential", objTask.Confidential),
+                            new SqlParameter("@IdCreatedBy", objTask.IdCreatedBy),
                         }
                     );
 

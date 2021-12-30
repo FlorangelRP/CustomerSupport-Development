@@ -11,11 +11,12 @@ namespace CustomerSupport.BDContext
 {
     using System;
     
-    public partial class GNLisConfigurationParameter_Result
+    public partial class sp_helpdiagrams_Result
     {
-        public int IdConfig { get; set; }
-        public string Description { get; set; }
-        public string Abbreviation { get; set; }
-        public string Value { get; set; }
+        public string Database { get; set; }
+        public string Name { get; set; }
+        public int ID { get; set; }
+        public string Owner { get; set; }
+        public int OwnerID { get; set; }
     }
 }

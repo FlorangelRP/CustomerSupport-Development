@@ -10,12 +10,14 @@
 namespace CustomerSupport.BDContext
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class GNLisConfigurationParameter_Result
+    public partial class sysdiagrams
     {
-        public int IdConfig { get; set; }
-        public string Description { get; set; }
-        public string Abbreviation { get; set; }
-        public string Value { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

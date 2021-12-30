@@ -10,12 +10,16 @@
 namespace CustomerSupport.BDContext
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class GNLisConfigurationParameter_Result
+    public partial class UserAcces_resp
     {
-        public int IdConfig { get; set; }
-        public string Description { get; set; }
-        public string Abbreviation { get; set; }
-        public string Value { get; set; }
+        public int IdUser { get; set; }
+        public int IdOption { get; set; }
+        public bool Visible { get; set; }
+        public bool Create { get; set; }
+        public bool Search { get; set; }
+        public bool Edit { get; set; }
+        public bool Delete { get; set; }
     }
 }

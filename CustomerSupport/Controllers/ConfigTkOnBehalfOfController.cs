@@ -113,7 +113,7 @@ namespace CustomerSupport.Controllers
                                     Name = result.Name,
                                     LastName =result.LastName
                                 }).ToList();
-
+            
             return ListConfigTkOnBehalfOf;
 
         }
@@ -179,6 +179,16 @@ namespace CustomerSupport.Controllers
             }
         }
 
+        public ActionResult GetConfigTkOnBehalfOf(int IdUser)
+        {
+            object ListMConfigTkOnBehalfOf;
+            MMEnterprisesEntities db = new MMEnterprisesEntities();
+
+            ListMConfigTkOnBehalfOf = fnListMConfigTkOnBehalfOf(IdUser,null,null).ToList();
+
+            return Json(ListMConfigTkOnBehalfOf, JsonRequestBehavior.AllowGet);
+
+        }
 
     }
 }

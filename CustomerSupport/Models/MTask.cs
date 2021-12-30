@@ -94,6 +94,10 @@ namespace CustomerSupport.Models
         [DisplayFormat(DataFormatString = "{0:d}")]
         [DataType(DataType.Date)]
         public System.DateTime? CreationDate { get; set; }
+
+        public SelectList ListUserCreate { get; set; }
+
+        public int? IdCreatedBy { get; set; }
     }
 
     public class MTaskPerson
@@ -114,6 +118,7 @@ namespace CustomerSupport.Models
         [Display(Name = "Comment")]
         public string Comment { get; set; }
         public int? IdUser { get; set; }
+        public int? User { get; set; }
         public DateTime? Date { get; set; }
         public string DateOperation { get; set; }
         public string UserName { get; set; }
