@@ -627,7 +627,7 @@
         //element.style.display = 'none';
 
         function mostrarOcultar(index, button) {
-/*            debugger;*/
+            /*debugger;*/
             ocultable = "Ocultable_'" + index + "'";
             Montrado = "Mostrado_'" + index + "'";
             Editar = "Editar_'" + index + "'";
@@ -889,7 +889,7 @@
             });
 
             $("#lst_UserCreator").on('change', function () {
-                debugger;
+                //debugger;
                 var selectValue = $(this).val();
                 //$("#inpIdIdentificationType").val(selectValue);
                 changeCodeInputHiddenList("lst_UserCreator", "inIdUser", selectValue);
@@ -962,7 +962,7 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (msg) {
-                    debugger;
+                    //debugger;
                     var option = $(document.createElement('option'));
                     option.text("Seleccione");
                     option.val("0");

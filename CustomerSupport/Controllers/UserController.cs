@@ -398,7 +398,7 @@ namespace CustomerSupport.Controllers
                             Login = result.Login,
                             Status = result.Status,
                             StatusDesc = result.Status == true ? "Activo" : "Inactivo",
-                            PersonEmployee = (MPerson)(from result2 in db.GNListPerson(result.IdPerson, null, null, null,null).ToList()
+                            PersonEmployee = (MPerson)(from result2 in db.GNListPerson(result.IdPerson, 2, null, null,null).ToList()
                                                        select new MPerson
                                                        {
                                                            //IdPerson = result2.IdPerson,
@@ -449,7 +449,7 @@ namespace CustomerSupport.Controllers
                             Password = objMUser.Desencriptar(result.Password),
                             Status = result.Status,
                             StatusDesc = result.Status == true ? "Activo" : "Inactivo",
-                            PersonEmployee = (MPerson)(from result2 in db.GNListPerson(result.IdPerson, null, null, null,null).ToList()
+                            PersonEmployee = (MPerson)(from result2 in db.GNListPerson(result.IdPerson, 2, null, null,null).ToList()
                                                        select new MPerson
                                                        {
                                                            IdPerson = result2.IdPerson,
@@ -527,7 +527,7 @@ namespace CustomerSupport.Controllers
                         {
                             IdUser = result.IdUser,
                             Login = result.Login,
-                            PersonEmployee = (MSerPerson)(from result2 in db.GNListPerson(result.IdPerson, null, null, null,null).ToList()
+                            PersonEmployee = (MSerPerson)(from result2 in db.GNListPerson(result.IdPerson, 2, null, null,null).ToList()
                                                        select new MSerPerson
                                                        {
                                                            IdPerson = result2.IdPerson,
