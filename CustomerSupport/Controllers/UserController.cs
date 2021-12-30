@@ -418,7 +418,7 @@ namespace CustomerSupport.Controllers
                                                            Position = result2.Position //,
                                                            //ClientPermission = result2.ClientPermission,
                                                            //Status = result2.Status
-                                                       }).ToList().First(),
+                                                       }).ToList().FirstOrDefault(),
                             UserRolesNames = String.Join(",", db.GNListUserRole(null, result.IdUser).Select(c => c.NameRole).ToList())
                             
                                                   

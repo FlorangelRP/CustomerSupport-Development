@@ -728,16 +728,17 @@
 
                     $("#lst_UserCreator").append(option);
                     var x = document.getElementById("UserCreator");
-                  /*  x.style.display = "none";*/
+
+                    if (msg.length > 0) {
+                        x.style.display = "block";
+                    }
+                    else {
+                        x.style.display = "none";
+                    }
                   
                     $(msg).each(function () {
 
-                        if (msg.length > 0) {
-                            x.style.display = "block";
-                        }
-                        else {
-                            x.style.display = "none";
-                        }
+ 
                         var option = $(document.createElement('option'));
 
                         var CompleteName = "";
