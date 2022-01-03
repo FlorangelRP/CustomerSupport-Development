@@ -21,10 +21,10 @@ namespace CustomerSupport.Controllers
 
                 MStatistics objStatistics = new MStatistics();
 
-                int intEmployee = PersonController.fnListPerson(null, 2).Count(); //2-empleado
+                int intEmployee = PersonController.fnListPerson(null, 2, null, true).Count(); //2-empleado
                 objStatistics.NroEmployee = intEmployee;
 
-                int intClient = PersonController.fnListPerson(null, 1).Count(); //1-Client
+                int intClient = PersonController.fnListPerson(null, 1, null, true).Count(); //1-Client
                 objStatistics.NroClient = intClient;
 
                 objStatistics.ServicesProcess = 0;
